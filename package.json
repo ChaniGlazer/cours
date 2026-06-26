@@ -1,0 +1,21 @@
+{
+  "name": "course-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "אתר מכירת קורס עם הרשמה, תשלום מאובטח (Grow / משולם) וצפייה בתוכן לרוכשים בלבד",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "next": "16.2.9",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
