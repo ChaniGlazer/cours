@@ -1,0 +1,503 @@
+/* ===== Design tokens =====
+   ניווט מהיר לטוקנים: צבעים, טיפוגרפיה ומרווחים. שינוי כאן משפיע על כל האתר.
+*/
+:root {
+  --ink: #16242b;
+  --ink-2: #1f343d;
+  --paper: #eef1ec;
+  --paper-2: #e3e8e0;
+  --white: #ffffff;
+  --gold: #d6a24c;
+  --gold-dark: #b9842f;
+  --moss: #3e5c50;
+  --rust: #b6492f;
+  --text-soft: #4b5a60;
+  --border: rgba(22, 36, 43, 0.14);
+  --shadow: 0 18px 40px -20px rgba(22, 36, 43, 0.35);
+
+  --font-display: "Frank Ruhl Libre", "Times New Roman", serif;
+  --font-body: "Heebo", "Segoe UI", Arial, sans-serif;
+
+  --radius: 14px;
+  --container: 1080px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.18;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+}
+
+h2 {
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+iframe {
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold-dark);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===== Layout helpers ===== */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 72px 0;
+}
+
+.section--tight {
+  padding: 40px 0;
+}
+
+.dark-section {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.dark-section .text-soft {
+  color: rgba(238, 241, 236, 0.72);
+}
+
+.text-soft {
+  color: var(--text-soft);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+}
+
+.dark-section .eyebrow {
+  color: var(--gold);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  line-height: 1;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+  background: var(--gold-dark);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.btn-ghost:hover {
+  opacity: 1;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== Cards & forms ===== */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.card-elevated {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 36px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+  text-align: right;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.field input,
+.field textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--gold-dark);
+}
+
+.form-narrow {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.alert {
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.92rem;
+  margin-bottom: 18px;
+}
+
+.alert-error {
+  background: rgba(182, 73, 47, 0.1);
+  color: var(--rust);
+  border: 1px solid rgba(182, 73, 47, 0.3);
+}
+
+.alert-success {
+  background: rgba(62, 92, 80, 0.1);
+  color: var(--moss);
+  border: 1px solid rgba(62, 92, 80, 0.3);
+}
+
+/* ===== Site header / footer ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--paper);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.95rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+.site-footer {
+  background: var(--ink);
+  color: rgba(238, 241, 236, 0.6);
+  padding: 28px 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ===== Signature element: syllabus spine ===== */
+.spine {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 720px;
+}
+
+.spine::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  right: 27px;
+  width: 2px;
+  background: var(--border);
+}
+
+.spine li {
+  position: relative;
+  padding-right: 76px;
+  margin-bottom: 30px;
+}
+
+.spine li:last-child {
+  margin-bottom: 0;
+}
+
+.spine-num {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spine h3 {
+  margin-bottom: 4px;
+}
+
+/* ===== Pricing card ===== */
+.price-card {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.price-amount {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  color: var(--gold);
+  margin: 8px 0;
+}
+
+.price-includes {
+  text-align: right;
+  margin: 24px 0;
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+}
+
+.price-includes li {
+  padding: 6px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.price-includes li::before {
+  content: "✓";
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ===== Lesson list (gated course page) ===== */
+.lesson {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.lesson summary {
+  cursor: pointer;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  list-style: none;
+}
+
+.lesson summary::-webkit-details-marker {
+  display: none;
+}
+
+.lesson-num {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.lesson-body {
+  padding: 0 22px 22px;
+}
+
+.video-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: var(--ink);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.video-wrap iframe,
+.video-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===== Admin ===== */
+.admin-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.lesson-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.lesson-row .field {
+  margin-bottom: 12px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.muted-link {
+  background: none;
+  border: none;
+  color: var(--rust);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: 48px 0;
+  }
+  .price-card {
+    padding: 28px;
+  }
+}
