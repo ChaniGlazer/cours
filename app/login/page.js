@@ -37,6 +37,9 @@ export default async function LoginPage({ searchParams }) {
               התחברות
             </button>
           </form>
+          <p className="text-soft" style={{ textAlign: "center", marginTop: 14, fontSize: "0.9rem" }}>
+            <a href="/forgot-password">שכחתם סיסמה?</a>
+          </p>
         </div>
 
         <p className="text-soft" style={{ textAlign: "center", marginTop: 18 }}>
