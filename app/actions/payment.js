@@ -3,9 +3,9 @@
 import crypto from "node:crypto";
 import { redirect } from "next/navigation";
 import { db, nowIso } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, markUserPaid } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
-import { createPaymentProcess } from "@/lib/grow";
+import { createClearingRequest, getClearingLogById } from "@/lib/invoice4u";
 
 function siteUrl() {
   const url = process.env.SITE_URL;
@@ -42,25 +42,25 @@ export async function startPaymentAction() {
   // שגיאה פנימית מיוחדת של Next.js, וצריך להיזהר שלא ניתפס אותה בטעות ב-catch שלנו.
   let paymentUrl;
   try {
-    const result = await createPaymentProcess({
+    const result = await createClearingRequest({
       sum: price,
       description: settings.course_title || "רכישת קורס",
       fullName: user.name,
       email: user.email,
-      successUrl: `${base}/payment/success?order=${paymentId}`,
-      cancelUrl: `${base}/payment/cancel?order=${paymentId}`,
-      notifyUrl: `${base}/api/payment/webhook`,
-      cField1: paymentId
+      orderId: paymentId,
+      returnUrl: `${base}/payment/success?order=${paymentId}`,
+      docHeadline: settings.course_title
     });
 
-    db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
+    db.prepare("UPDATE payments SET clearing_log_id = ?, raw_log = ?, updated_at = ? WHERE id = ?").run(
+      result.clearingLogId,
       JSON.stringify(result.raw).slice(0, 2000),
       nowIso(),
       paymentId
     );
     paymentUrl = result.url;
   } catch (err) {
-    console.error("[Grow] יצירת תהליך תשלום נכשלה:", err);
+    console.error("[Invoice4U] יצירת בקשת סליקה נכשלה:", err);
     db.prepare("UPDATE payments SET status = 'failed', raw_log = ?, updated_at = ? WHERE id = ?").run(
       String(err?.message || err).slice(0, 2000),
       nowIso(),
@@ -75,6 +75,43 @@ export async function startPaymentAction() {
 
 export async function checkPaymentStatusAction(orderId) {
   if (!orderId) return { status: "unknown" };
-  const payment = db.prepare("SELECT status FROM payments WHERE id = ?").get(orderId);
-  return { status: payment?.status || "unknown" };
+  const payment = db.prepare("SELECT * FROM payments WHERE id = ?").get(orderId);
+  if (!payment) return { status: "unknown" };
+  if (payment.status !== "pending") return { status: payment.status };
+  if (!payment.clearing_log_id) return { status: "pending" };
+
+  // Invoice4U לא שולח webhook אוטומטי לעסקאות רגילות (Type=1) - זה קיים רק ל-Standing
+  // Orders (StandingOrderCallBackUrl). לכן הבדיקה נעשית כאן, בקריאה פעילה לשרת Invoice4U
+  // בכל פעם שהעמוד בודק סטטוס (ראו PaymentStatusPoller.js - נקרא כל 2 שניות).
+  try {
+    const result = await getClearingLogById({ clearingLogId: payment.clearing_log_id });
+
+    // תמיד שומרים את התגובה האחרונה, גם כשעדיין לא ברור אם שולם - כדי שאפשר יהיה
+    // לבדוק ב-raw_log מה בדיוק Invoice4U מחזיר (בלי תלות בלוגים של השרת).
+    db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
+      JSON.stringify(result.raw).slice(0, 2000),
+      nowIso(),
+      orderId
+    );
+
+    if (result.ok === true) {
+      db.prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?").run(nowIso(), orderId);
+      markUserPaid(payment.user_id);
+      return { status: "paid" };
+    }
+
+    if (result.ok === false) {
+      db.prepare("UPDATE payments SET status = 'failed', updated_at = ? WHERE id = ?").run(nowIso(), orderId);
+      return { status: "failed" };
+    }
+  } catch (err) {
+    console.error("[Invoice4U] שגיאה בבדיקת סטטוס סליקה:", err);
+    db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
+      `getClearingLogById error: ${String(err?.message || err).slice(0, 1900)}`,
+      nowIso(),
+      orderId
+    );
+  }
+
+  return { status: "pending" };
 }
