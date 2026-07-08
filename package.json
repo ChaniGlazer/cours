@@ -2,7 +2,7 @@
   "name": "course-site",
   "version": "1.0.0",
   "private": true,
-  "description": "אתר מכירת קורס עם הרשמה, תשלום מאובטח (Grow / משולם) וצפייה בתוכן לרוכשים בלבד",
+  "description": "אתר מכירת קורס עם הרשמה, תשלום מאובטח (Invoice4U Clearing) וצפייה בתוכן לרוכשים בלבד",
   "engines": {
     "node": ">=22.5.0"
   },
