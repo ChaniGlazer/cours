@@ -1,12 +1,15 @@
 import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
 import PaymentStatusPoller from "./PaymentStatusPoller";
 
 export default async function PaymentSuccessPage({ searchParams }) {
   const params = await searchParams;
   const orderId = params?.order;
+  const user = await getCurrentUser();
   let payment = null;
-  if (orderId) {
-    payment = db.prepare("SELECT status FROM payments WHERE id = ?").get(orderId);
+  if (orderId && user) {
+    payment = db.prepare("SELECT status, user_id FROM payments WHERE id = ?").get(orderId);
+    if (payment && payment.user_id !== user.id) payment = null;
   }
 
   if (payment?.status === "paid") {

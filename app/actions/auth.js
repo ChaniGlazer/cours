@@ -9,6 +9,7 @@ import {
   hashPassword,
   verifyPassword
 } from "@/lib/auth";
+import { allowRequest } from "@/lib/rate-limit";
 
 function safeNext(next) {
   // מונע redirect לכתובת חיצונית - מאפשרים רק נתיבים פנימיים שמתחילים ב-/
@@ -25,6 +26,10 @@ export async function registerAction(formData) {
   const next = safeNext((formData.get("next") || "").toString());
 
   const qp = `next=${encodeURIComponent(next)}`;
+
+  if (!(await allowRequest("register", { max: 10 }))) {
+    redirect(`/register?error=rate_limited&${qp}`);
+  }
 
   if (!name || name.length < 2) {
     redirect(`/register?error=name&${qp}`);
@@ -53,6 +58,10 @@ export async function loginAction(formData) {
   const password = (formData.get("password") || "").toString();
   const next = safeNext((formData.get("next") || "").toString());
   const qp = `next=${encodeURIComponent(next)}`;
+
+  if (!(await allowRequest("login", { max: 15 }))) {
+    redirect(`/login?error=rate_limited&${qp}`);
+  }
 
   const user = findUserByEmail(email);
   if (!user) {

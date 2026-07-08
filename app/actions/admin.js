@@ -10,9 +10,13 @@ import {
   isAdmin,
   verifyAdminPassword
 } from "@/lib/admin-auth";
+import { allowRequest } from "@/lib/rate-limit";
 
 export async function adminLoginAction(formData) {
   const password = (formData.get("password") || "").toString();
+  if (!(await allowRequest("admin-login", { max: 8 }))) {
+    redirect("/admin?error=rate_limited");
+  }
   if (!verifyAdminPassword(password)) {
     redirect("/admin?error=1");
   }
