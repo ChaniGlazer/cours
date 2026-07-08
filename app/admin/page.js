@@ -17,7 +17,10 @@ export default async function AdminPage({ searchParams }) {
         <div className="container form-narrow">
           <h1 style={{ textAlign: "center" }}>כניסת ניהול</h1>
           <div className="card-elevated">
-            {params?.error && (
+            {params?.error === "rate_limited" && (
+              <div className="alert alert-error">יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.</div>
+            )}
+            {params?.error && params.error !== "rate_limited" && (
               <div className="alert alert-error">סיסמה שגויה.</div>
             )}
             <form action={adminLoginAction}>

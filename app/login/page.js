@@ -1,7 +1,8 @@
 import { loginAction } from "@/app/actions/auth";
 
 const ERROR_MESSAGES = {
-  invalid: "אימייל או סיסמה שגויים."
+  invalid: "אימייל או סיסמה שגויים.",
+  rate_limited: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."
 };
 
 export default async function LoginPage({ searchParams }) {

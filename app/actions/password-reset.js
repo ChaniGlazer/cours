@@ -6,6 +6,7 @@ import { db, nowIso } from "@/lib/db";
 import { findUserByEmail, hashPassword, createSession } from "@/lib/auth";
 import { sendPasswordResetEmail } from "@/lib/mailer";
 import { getSettings } from "@/lib/settings";
+import { allowRequest } from "@/lib/rate-limit";
 
 const RESET_TOKEN_HOURS = 1;
 
@@ -15,6 +16,10 @@ function hashToken(token) {
 
 export async function requestPasswordResetAction(formData) {
   const email = (formData.get("email") || "").toString().trim().toLowerCase();
+
+  if (!(await allowRequest("password-reset-request", { max: 6 }))) {
+    redirect("/forgot-password?sent=1");
+  }
 
   if (email) {
     const user = findUserByEmail(email);
@@ -54,6 +59,10 @@ export async function resetPasswordAction(formData) {
 
   if (!token) {
     redirect("/forgot-password?error=missing_token");
+  }
+
+  if (!(await allowRequest("password-reset-confirm", { max: 15 }))) {
+    redirect(`/reset-password?token=${encodeURIComponent(token)}&error=rate_limited`);
   }
 
   if (!password || password.length < 8) {

@@ -75,8 +75,10 @@ export async function startPaymentAction() {
 
 export async function checkPaymentStatusAction(orderId) {
   if (!orderId) return { status: "unknown" };
+  const user = await getCurrentUser();
+  if (!user) return { status: "unknown" };
   const payment = db.prepare("SELECT * FROM payments WHERE id = ?").get(orderId);
-  if (!payment) return { status: "unknown" };
+  if (!payment || payment.user_id !== user.id) return { status: "unknown" };
   if (payment.status !== "pending") return { status: payment.status };
   if (!payment.clearing_log_id) return { status: "pending" };
 
