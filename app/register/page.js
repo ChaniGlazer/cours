@@ -5,7 +5,8 @@ const ERROR_MESSAGES = {
   email: "יש להזין כתובת אימייל תקינה.",
   password: "הסיסמה צריכה להיות באורך 8 תווים לפחות.",
   exists: "כתובת האימייל הזו כבר רשומה במערכת. נסו להתחבר במקום זאת.",
-  rate_limited: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."
+  rate_limited: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.",
+  terms: "יש לאשר את התקנון ומדיניות הפרטיות כדי להמשיך."
 };
 
 export default async function RegisterPage({ searchParams }) {
@@ -44,6 +45,20 @@ export default async function RegisterPage({ searchParams }) {
                 minLength={8}
                 autoComplete="new-password"
               />
+            </div>
+            <div className="field" style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                required
+                style={{ marginTop: 4, width: "auto" }}
+              />
+              <label htmlFor="terms" style={{ fontWeight: 400 }}>
+                קראתי ואני מסכימ/ה ל<a href="/terms" target="_blank" rel="noopener noreferrer">תקנון האתר</a> ול
+                <a href="/privacy" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</a>, לרבות לכך שלאחר
+                פתיחת הגישה לתוכן הקורס הדיגיטלי לא תעמוד לי זכות ביטול או החזר כספי.
+              </label>
             </div>
             <button type="submit" className="btn btn-primary btn-block">
               המשך לתשלום

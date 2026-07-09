@@ -57,7 +57,13 @@ export default async function RootLayout({ children }) {
 
         <footer className="site-footer">
           <div className="container">
-            © {new Date().getFullYear()} {settings.course_title || "הקורס שלי"}
+            <div>
+              © {new Date().getFullYear()} {settings.course_title || "הקורס שלי"}
+            </div>
+            <div style={{ marginTop: 8, display: "flex", gap: 14, justifyContent: "center" }}>
+              <a href="/terms">תקנון</a>
+              <a href="/privacy">מדיניות פרטיות</a>
+            </div>
           </div>
         </footer>
       </body>
