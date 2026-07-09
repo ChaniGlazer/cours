@@ -2,7 +2,8 @@ import { resetPasswordAction } from "@/app/actions/password-reset";
 
 const ERROR_MESSAGES = {
   password: "הסיסמה צריכה להיות באורך 8 תווים לפחות.",
-  mismatch: "הסיסמאות אינן תואמות."
+  mismatch: "הסיסמאות אינן תואמות.",
+  rate_limited: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."
 };
 
 export default async function ResetPasswordPage({ searchParams }) {
