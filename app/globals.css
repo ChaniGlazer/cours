@@ -2,18 +2,18 @@
    ניווט מהיר לטוקנים: צבעים, טיפוגרפיה ומרווחים. שינוי כאן משפיע על כל האתר.
 */
 :root {
-  --ink: #16242b;
-  --ink-2: #1f343d;
-  --paper: #eef1ec;
-  --paper-2: #e3e8e0;
+  --ink: #1e3a5f;
+  --ink-2: #0c1f36;
+  --paper: #f7ede0;
+  --paper-2: #eeddc4;
   --white: #ffffff;
-  --gold: #d6a24c;
-  --gold-dark: #b9842f;
+  --gold: #e08a3e;
+  --gold-dark: #b6491b;
   --moss: #3e5c50;
-  --rust: #b6492f;
-  --text-soft: #4b5a60;
-  --border: rgba(22, 36, 43, 0.14);
-  --shadow: 0 18px 40px -20px rgba(22, 36, 43, 0.35);
+  --rust: #9c3324;
+  --text-soft: #52616e;
+  --border: rgba(30, 58, 95, 0.14);
+  --shadow: 0 18px 40px -20px rgba(30, 58, 95, 0.35);
 
   --font-display: "Frank Ruhl Libre", "Times New Roman", serif;
   --font-body: "Heebo", "Segoe UI", Arial, sans-serif;
@@ -115,7 +115,7 @@ iframe {
 }
 
 .dark-section .text-soft {
-  color: rgba(238, 241, 236, 0.72);
+  color: rgba(247, 237, 224, 0.72);
 }
 
 .text-soft {
@@ -248,9 +248,9 @@ iframe {
 }
 
 .alert-error {
-  background: rgba(182, 73, 47, 0.1);
+  background: rgba(156, 51, 36, 0.1);
   color: var(--rust);
-  border: 1px solid rgba(182, 73, 47, 0.3);
+  border: 1px solid rgba(156, 51, 36, 0.3);
 }
 
 .alert-success {
@@ -303,7 +303,7 @@ iframe {
 
 .site-footer {
   background: var(--ink);
-  color: rgba(238, 241, 236, 0.6);
+  color: rgba(247, 237, 224, 0.6);
   padding: 28px 0;
   font-size: 0.85rem;
   text-align: center;
