@@ -64,6 +64,12 @@ export default async function RootLayout({ children }) {
               <a href="/terms">תקנון</a>
               <a href="/privacy">מדיניות פרטיות</a>
             </div>
+            <div className="text-soft" style={{ marginTop: 8, fontSize: "0.85rem" }}>
+              מופעל על ידי{" "}
+              <a href="https://codebloom.co.il" target="_blank" rel="noopener noreferrer">
+                codebloom.co.il
+              </a>
+            </div>
           </div>
         </footer>
       </body>
