@@ -12,6 +12,8 @@ import {
 } from "@/lib/auth";
 import { allowRequest } from "@/lib/rate-limit";
 import { nowIso } from "@/lib/db";
+import { getSettings } from "@/lib/settings";
+import { sendWelcomeEmail } from "@/lib/mailer";
 
 export async function registerAction(formData) {
   const name = (formData.get("name") || "").toString().trim();
@@ -47,6 +49,10 @@ export async function registerAction(formData) {
   const passwordHash = await hashPassword(password);
   const userId = createUser({ name, email, passwordHash, termsAcceptedAt: nowIso() });
   await createSession(userId);
+
+  const settings = getSettings();
+  const siteUrl = (process.env.SITE_URL || "").replace(/\/$/, "");
+  await sendWelcomeEmail({ to: email, name, courseTitle: settings.course_title || "האתר", siteUrl });
 
   redirect(next);
 }
