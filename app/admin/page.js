@@ -1,6 +1,7 @@
 import { isAdmin } from "@/lib/admin-auth";
 import { getSettings, getLessons } from "@/lib/settings";
 import { getCoupons, formatDiscount } from "@/lib/coupons";
+import { getRecentPayments } from "@/lib/payments";
 import {
   adminLoginAction,
   adminLogoutAction,
@@ -10,8 +11,16 @@ import {
   deleteLessonAction,
   createCouponAction,
   toggleCouponAction,
-  deleteCouponAction
+  deleteCouponAction,
+  recheckPaymentAction,
+  markPaymentPaidAction
 } from "@/app/actions/admin";
+
+const PAYMENT_STATUS_LABELS = {
+  pending: "ממתין",
+  paid: "שולם",
+  failed: "נכשל"
+};
 
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
@@ -45,6 +54,8 @@ export default async function AdminPage({ searchParams }) {
   const settings = getSettings();
   const lessons = getLessons();
   const coupons = getCoupons();
+  const payments = getRecentPayments();
+  const currencySymbol = settings.currency === "ILS" ? "₪" : settings.currency;
 
   return (
     <section className="section">
@@ -67,6 +78,15 @@ export default async function AdminPage({ searchParams }) {
         {params?.saved === "coupon" && (
           <div className="alert alert-success">השינוי בקופונים נשמר.</div>
         )}
+        {params?.saved === "payment_paid" && (
+          <div className="alert alert-success">התשלום סומן כשולם, ולמשתמש נפתחה גישה לקורס.</div>
+        )}
+        {params?.saved === "payment_failed" && (
+          <div className="alert alert-error">מול Invoice4U התשלום הזה נכשל - סומן בהתאם.</div>
+        )}
+        {params?.saved === "payment_still_pending" && (
+          <div className="alert alert-error">התשלום עדיין ממתין אצל Invoice4U - נסו לבדוק שוב מאוחר יותר.</div>
+        )}
         {params?.error === "lesson_title" && (
           <div className="alert alert-error">יש להזין כותרת לשיעור.</div>
         )}
@@ -75,6 +95,12 @@ export default async function AdminPage({ searchParams }) {
         )}
         {params?.error === "coupon_duplicate" && (
           <div className="alert alert-error">קוד הקופון הזה כבר קיים.</div>
+        )}
+        {params?.error === "payment_check_failed" && (
+          <div className="alert alert-error">הבדיקה מול Invoice4U נכשלה. נסו שוב, או סמנו את התשלום כשולם ידנית.</div>
+        )}
+        {params?.error === "payment_not_found" && (
+          <div className="alert alert-error">התשלום לא נמצא.</div>
         )}
 
         <div className="admin-grid">
@@ -245,6 +271,46 @@ export default async function AdminPage({ searchParams }) {
                 </button>
               </form>
             </div>
+          </div>
+
+          <div className="card">
+            <h2>תשלומים אחרונים</h2>
+            <p className="text-soft">
+              Invoice4U לא שולח לנו התראה אוטומטית על תשלום שהושלם - האתר מתעדכן כשהמשתמש
+              נשאר בדף האישור עד שהתשלום מאומת. אם משתמש שילם אך התשלום נשאר &quot;ממתין&quot;
+              (למשל סגר את הדפדפן באמצע), אפשר לבדוק כאן שוב מול הסליקה, או לסמן ידנית כשולם.
+            </p>
+
+            {payments.length === 0 && <p className="text-soft">עדיין אין תשלומים.</p>}
+
+            {payments.map((payment) => (
+              <div className="lesson-row" key={payment.id}>
+                <div className="field">
+                  <strong>{payment.user_name}</strong> ({payment.user_email})
+                </div>
+                <p className="text-soft" style={{ margin: 0 }}>
+                  {payment.amount} {currencySymbol} · {PAYMENT_STATUS_LABELS[payment.status] || payment.status} ·{" "}
+                  {new Date(payment.created_at).toLocaleString("he-IL")}
+                  {payment.coupon_code && ` · קופון: ${payment.coupon_code}`}
+                </p>
+                {payment.status !== "paid" && (
+                  <div className="row-actions" style={{ marginTop: 10 }}>
+                    <form action={recheckPaymentAction}>
+                      <input type="hidden" name="id" value={payment.id} />
+                      <button type="submit" className="btn btn-ghost" style={{ padding: "8px 18px" }}>
+                        בדיקה שוב מול הסליקה
+                      </button>
+                    </form>
+                    <form action={markPaymentPaidAction}>
+                      <input type="hidden" name="id" value={payment.id} />
+                      <button type="submit" className="muted-link">
+                        סימון ידני כשולם
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
