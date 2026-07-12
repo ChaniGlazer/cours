@@ -7,18 +7,11 @@ import {
   destroySession,
   findUserByEmail,
   hashPassword,
+  safeNext,
   verifyPassword
 } from "@/lib/auth";
 import { allowRequest } from "@/lib/rate-limit";
 import { nowIso } from "@/lib/db";
-
-function safeNext(next) {
-  // מונע redirect לכתובת חיצונית - מאפשרים רק נתיבים פנימיים שמתחילים ב-/
-  if (typeof next === "string" && next.startsWith("/") && !next.startsWith("//")) {
-    return next;
-  }
-  return "/course";
-}
 
 export async function registerAction(formData) {
   const name = (formData.get("name") || "").toString().trim();

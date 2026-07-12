@@ -21,6 +21,9 @@ export async function applyCouponAction(formData) {
   if (!user) {
     redirect("/login?next=/course");
   }
+  if (user.paid) {
+    redirect("/course");
+  }
 
   const code = (formData.get("code") || "").toString().trim();
   const coupon = findValidCoupon(code);

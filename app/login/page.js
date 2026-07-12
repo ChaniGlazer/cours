@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser, safeNext } from "@/lib/auth";
 import { loginAction } from "@/app/actions/auth";
 
 const ERROR_MESSAGES = {
@@ -9,6 +11,11 @@ export default async function LoginPage({ searchParams }) {
   const params = await searchParams;
   const error = ERROR_MESSAGES[params?.error] || null;
   const next = params?.next || "/course";
+
+  const user = await getCurrentUser();
+  if (user) {
+    redirect(safeNext(next));
+  }
 
   return (
     <section className="section">
