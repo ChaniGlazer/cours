@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings, getLessons } from "@/lib/settings";
+import { parseVideoEmbed } from "@/lib/video";
 
 export default async function HomePage() {
   const user = await getCurrentUser();
@@ -12,6 +13,10 @@ export default async function HomePage() {
     ctaHref = "/course";
     ctaText = user.paid ? "כניסה לקורס" : "להשלמת ההרשמה והתשלום";
   }
+
+  const showPreview = !user?.paid;
+  const previewLesson = lessons[0];
+  const previewEmbed = previewLesson ? parseVideoEmbed(previewLesson.video_url) : null;
 
   const price = settings.price || "0";
   const descriptionParagraphs = (settings.course_description || "")
@@ -32,6 +37,11 @@ export default async function HomePage() {
             <a href={ctaHref} className="btn btn-primary">
               {ctaText}
             </a>
+            {showPreview && previewLesson && (
+              <a href="#preview" className="btn btn-ghost">
+                צפייה חינם בשיעור הראשון
+              </a>
+            )}
             <a href="#syllabus" className="btn btn-ghost">
               לתוכן הקורס
             </a>
@@ -54,6 +64,41 @@ export default async function HomePage() {
         </section>
       )}
 
+      {showPreview && previewLesson && (
+        <section className="section section--tight" id="preview">
+          <div className="container" style={{ maxWidth: 760 }}>
+            <span className="eyebrow">צפייה חינם, בלי הרשמה</span>
+            <h2 style={{ marginTop: 10 }}>שיעור לדוגמה: {previewLesson.title}</h2>
+            {previewLesson.description && (
+              <p className="text-soft" style={{ marginBottom: 20 }}>
+                {previewLesson.description}
+              </p>
+            )}
+            {previewEmbed ? (
+              <div className="video-wrap">
+                {previewEmbed.type === "video" ? (
+                  <video controls src={previewEmbed.src} />
+                ) : (
+                  <iframe
+                    src={previewEmbed.src}
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                    allowFullScreen
+                    title={previewLesson.title}
+                  />
+                )}
+              </div>
+            ) : (
+              <p className="text-soft">קישור לסרטון יתעדכן כאן בקרוב.</p>
+            )}
+            <div style={{ marginTop: 20 }}>
+              <a href={ctaHref} className="btn btn-primary">
+                {ctaText}
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="section" id="syllabus">
         <div className="container">
           <span className="eyebrow">סדר הלימוד</span>
@@ -62,7 +107,22 @@ export default async function HomePage() {
             {lessons.map((lesson, idx) => (
               <li key={lesson.id}>
                 <span className="spine-num">{idx + 1}</span>
-                <h3>{lesson.title}</h3>
+                <h3>
+                  {lesson.title}
+                  {showPreview && idx === 0 && (
+                    <a
+                      href="#preview"
+                      style={{
+                        marginInlineStart: 10,
+                        fontSize: "0.75rem",
+                        color: "var(--gold)",
+                        fontWeight: 700
+                      }}
+                    >
+                      (צפייה חינם)
+                    </a>
+                  )}
+                </h3>
                 {lesson.description && <p className="text-soft">{lesson.description}</p>}
               </li>
             ))}

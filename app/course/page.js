@@ -72,7 +72,7 @@ export default async function CoursePage({ searchParams }) {
                       ) : (
                         <iframe
                           src={embed.src}
-                          allow="autoplay; fullscreen; picture-in-picture"
+                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                           allowFullScreen
                           title={lesson.title}
                         />
