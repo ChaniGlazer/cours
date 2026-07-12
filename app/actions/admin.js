@@ -11,7 +11,10 @@ import {
   verifyAdminPassword
 } from "@/lib/admin-auth";
 import { allowRequest } from "@/lib/rate-limit";
-import { createCoupon, setCouponActive, deleteCoupon } from "@/lib/coupons";
+import { createCoupon, setCouponActive, deleteCoupon, incrementCouponUsage } from "@/lib/coupons";
+import { markUserPaid } from "@/lib/auth";
+import { getClearingLogById } from "@/lib/invoice4u";
+import { getPaymentById } from "@/lib/payments";
 
 export async function adminLoginAction(formData) {
   const password = (formData.get("password") || "").toString();
@@ -136,4 +139,65 @@ export async function deleteCouponAction(formData) {
     deleteCoupon(id);
   }
   redirect("/admin?saved=coupon");
+}
+
+// בודקים שוב מול Invoice4U תשלום שנשאר תקוע ב-pending - למשל אם המשתמש שילם
+// בהצלחה אבל סגר את הדפדפן לפני שהאישור האוטומטי (polling מ-/payment/success)
+// הספיק לעדכן את המערכת שלנו. אין webhook אוטומטי מ-Invoice4U לעסקאות רגילות,
+// אז זו הדרך היחידה לתקן מצב כזה בלי גישה ישירה למסד הנתונים.
+export async function recheckPaymentAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+
+  const id = (formData.get("id") || "").toString();
+  const payment = id ? getPaymentById(id) : null;
+  if (!payment || !payment.clearing_log_id) {
+    redirect("/admin?error=payment_check_failed");
+  }
+
+  let result;
+  try {
+    result = await getClearingLogById({ clearingLogId: payment.clearing_log_id });
+  } catch (err) {
+    console.error("[Admin] בדיקת תשלום מול Invoice4U נכשלה:", err);
+    redirect("/admin?error=payment_check_failed");
+    return;
+  }
+
+  db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
+    JSON.stringify(result.raw).slice(0, 2000),
+    nowIso(),
+    id
+  );
+
+  if (result.ok === true) {
+    db.prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?").run(nowIso(), id);
+    markUserPaid(payment.user_id);
+    if (payment.coupon_code) incrementCouponUsage(payment.coupon_code);
+    redirect("/admin?saved=payment_paid");
+  }
+
+  if (result.ok === false) {
+    db.prepare("UPDATE payments SET status = 'failed', updated_at = ? WHERE id = ?").run(nowIso(), id);
+    redirect("/admin?saved=payment_failed");
+  }
+
+  redirect("/admin?saved=payment_still_pending");
+}
+
+// עקיפה ידנית - למקרה שהתשלום אושר מחוץ למערכת (למשל בבירור טלפוני/בנקאי מול
+// חברת הסליקה) ואי אפשר לאמת אותו שוב דרך recheckPaymentAction.
+export async function markPaymentPaidAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+
+  const id = (formData.get("id") || "").toString();
+  const payment = id ? getPaymentById(id) : null;
+  if (!payment) {
+    redirect("/admin?error=payment_not_found");
+  }
+
+  db.prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?").run(nowIso(), id);
+  markUserPaid(payment.user_id);
+  if (payment.coupon_code) incrementCouponUsage(payment.coupon_code);
+
+  redirect("/admin?saved=payment_paid");
 }
