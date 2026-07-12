@@ -6,6 +6,7 @@ import { db, nowIso } from "@/lib/db";
 import { getCurrentUser, markUserPaid } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { createClearingRequest, getClearingLogById } from "@/lib/invoice4u";
+import { findValidCoupon, computeDiscountedPrice, incrementCouponUsage } from "@/lib/coupons";
 
 function siteUrl() {
   const url = process.env.SITE_URL;
@@ -15,7 +16,22 @@ function siteUrl() {
   return url.replace(/\/$/, "");
 }
 
-export async function startPaymentAction() {
+export async function applyCouponAction(formData) {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect("/login?next=/course");
+  }
+
+  const code = (formData.get("code") || "").toString().trim();
+  const coupon = findValidCoupon(code);
+  if (!coupon) {
+    redirect("/course?error=coupon_invalid");
+  }
+
+  redirect(`/course?coupon=${encodeURIComponent(coupon.code)}`);
+}
+
+export async function startPaymentAction(formData) {
   const user = await getCurrentUser();
   if (!user) {
     redirect("/login?next=/course");
@@ -25,16 +41,23 @@ export async function startPaymentAction() {
   }
 
   const settings = getSettings();
-  const price = parseFloat(settings.price);
-  if (!price || price <= 0) {
+  const basePrice = parseFloat(settings.price);
+  if (!basePrice || basePrice <= 0) {
     redirect("/course?error=price_not_set");
   }
+
+  // מוודאים את הקופון שוב כאן, בזמן החיוב בפועל - לא סומכים על שדה שהגיע
+  // מהטופס בלבד, כי המצב יכול להשתנות מרגע שהמחיר הוצג (למשל קופון שהגיע
+  // בינתיים למכסת השימושים המקסימלית, פג תוקף, או הושבת ע"י המנהל).
+  const couponCode = (formData?.get("coupon_code") || "").toString().trim();
+  const coupon = couponCode ? findValidCoupon(couponCode) : null;
+  const price = computeDiscountedPrice(basePrice, coupon);
 
   const paymentId = crypto.randomUUID();
   const timestamp = nowIso();
   db.prepare(
-    "INSERT INTO payments (id, user_id, amount, status, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?)"
-  ).run(paymentId, user.id, price, timestamp, timestamp);
+    "INSERT INTO payments (id, user_id, amount, status, coupon_code, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?, ?)"
+  ).run(paymentId, user.id, price, coupon?.code || null, timestamp, timestamp);
 
   const base = siteUrl();
 
@@ -99,6 +122,9 @@ export async function checkPaymentStatusAction(orderId) {
     if (result.ok === true) {
       db.prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?").run(nowIso(), orderId);
       markUserPaid(payment.user_id);
+      if (payment.coupon_code) {
+        incrementCouponUsage(payment.coupon_code);
+      }
       return { status: "paid" };
     }
 

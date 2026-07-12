@@ -1,12 +1,16 @@
 import { isAdmin } from "@/lib/admin-auth";
 import { getSettings, getLessons } from "@/lib/settings";
+import { getCoupons, formatDiscount } from "@/lib/coupons";
 import {
   adminLoginAction,
   adminLogoutAction,
   updateSettingsAction,
   createLessonAction,
   updateLessonAction,
-  deleteLessonAction
+  deleteLessonAction,
+  createCouponAction,
+  toggleCouponAction,
+  deleteCouponAction
 } from "@/app/actions/admin";
 
 export default async function AdminPage({ searchParams }) {
@@ -40,6 +44,7 @@ export default async function AdminPage({ searchParams }) {
 
   const settings = getSettings();
   const lessons = getLessons();
+  const coupons = getCoupons();
 
   return (
     <section className="section">
@@ -59,8 +64,17 @@ export default async function AdminPage({ searchParams }) {
         {params?.saved === "lesson" && (
           <div className="alert alert-success">השינוי בשיעורים נשמר.</div>
         )}
+        {params?.saved === "coupon" && (
+          <div className="alert alert-success">השינוי בקופונים נשמר.</div>
+        )}
         {params?.error === "lesson_title" && (
           <div className="alert alert-error">יש להזין כותרת לשיעור.</div>
+        )}
+        {params?.error === "coupon_invalid" && (
+          <div className="alert alert-error">יש להזין קוד קופון, סוג הנחה וערך הנחה חיובי.</div>
+        )}
+        {params?.error === "coupon_duplicate" && (
+          <div className="alert alert-error">קוד הקופון הזה כבר קיים.</div>
         )}
 
         <div className="admin-grid">
@@ -159,6 +173,75 @@ export default async function AdminPage({ searchParams }) {
                 </div>
                 <button type="submit" className="btn btn-primary">
                   הוספת שיעור
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div className="card">
+            <h2>קופוני הנחה</h2>
+            <p className="text-soft">
+              לקוח שמזין קוד קופון תקף בעמוד התשלום יקבל את ההנחה על מחיר הקורס.
+            </p>
+
+            {coupons.map((coupon) => (
+              <div className="lesson-row" key={coupon.id}>
+                <div className="field">
+                  <strong>{coupon.code}</strong> - הנחה של {formatDiscount(coupon)}
+                </div>
+                <p className="text-soft" style={{ margin: 0 }}>
+                  שימושים: {coupon.used_count}
+                  {coupon.max_uses != null ? ` מתוך ${coupon.max_uses}` : " (ללא הגבלה)"}
+                  {coupon.expires_at &&
+                    ` · בתוקף עד ${new Date(coupon.expires_at).toLocaleDateString("he-IL")}`}
+                  {!coupon.active && " · מושבת"}
+                </p>
+                <div className="row-actions" style={{ marginTop: 10 }}>
+                  <form action={toggleCouponAction}>
+                    <input type="hidden" name="id" value={coupon.id} />
+                    <input type="hidden" name="active" value={coupon.active ? "0" : "1"} />
+                    <button type="submit" className="btn btn-ghost" style={{ padding: "8px 18px" }}>
+                      {coupon.active ? "השבתה" : "הפעלה"}
+                    </button>
+                  </form>
+                  <form action={deleteCouponAction}>
+                    <input type="hidden" name="id" value={coupon.id} />
+                    <button type="submit" className="muted-link">
+                      מחיקת קופון
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ))}
+
+            <div className="lesson-row" style={{ borderStyle: "dashed" }}>
+              <h3>הוספת קופון חדש</h3>
+              <form action={createCouponAction}>
+                <div className="field">
+                  <label>קוד קופון</label>
+                  <input name="code" placeholder="למשל: SUMMER25" required />
+                </div>
+                <div className="field">
+                  <label>סוג הנחה</label>
+                  <select name="discount_type" defaultValue="percent">
+                    <option value="percent">אחוזים</option>
+                    <option value="amount">סכום קבוע (₪)</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label>ערך ההנחה</label>
+                  <input name="discount_value" type="number" min="0" step="0.01" required />
+                </div>
+                <div className="field">
+                  <label>מספר שימושים מקסימלי (אופציונלי)</label>
+                  <input name="max_uses" type="number" min="1" step="1" />
+                </div>
+                <div className="field">
+                  <label>תוקף עד תאריך (אופציונלי)</label>
+                  <input name="expires_at" type="date" />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  הוספת קופון
                 </button>
               </form>
             </div>

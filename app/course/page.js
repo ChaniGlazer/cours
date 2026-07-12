@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings, getLessons } from "@/lib/settings";
 import { parseVideoEmbed } from "@/lib/video";
-import { startPaymentAction } from "@/app/actions/payment";
+import { startPaymentAction, applyCouponAction } from "@/app/actions/payment";
+import { findValidCoupon, computeDiscountedPrice, formatDiscount } from "@/lib/coupons";
 
 export default async function CoursePage({ searchParams }) {
   const params = await searchParams;
@@ -14,6 +15,11 @@ export default async function CoursePage({ searchParams }) {
   const settings = getSettings();
 
   if (!user.paid) {
+    const currencySymbol = settings.currency === "ILS" ? "₪" : settings.currency;
+    const basePrice = parseFloat(settings.price) || 0;
+    const coupon = params?.coupon ? findValidCoupon(params.coupon) : null;
+    const finalPrice = coupon ? computeDiscountedPrice(basePrice, coupon) : basePrice;
+
     return (
       <section className="section">
         <div className="container" style={{ maxWidth: 520 }}>
@@ -28,15 +34,46 @@ export default async function CoursePage({ searchParams }) {
               לא הוגדר מחיר לקורס. יש להגדיר מחיר בעמוד הניהול (/admin) ולנסות שוב.
             </div>
           )}
+          {params?.error === "coupon_invalid" && (
+            <div className="alert alert-error">קוד הקופון אינו תקף, פג תוקף, או הגיע למכסת השימושים.</div>
+          )}
+          {params?.coupon && !coupon && !params?.error && (
+            <div className="alert alert-error">קוד הקופון אינו תקף יותר.</div>
+          )}
 
           <div className="price-card" style={{ marginTop: 24 }}>
             <span className="eyebrow">{settings.course_title}</span>
-            <div className="price-amount">
-              {settings.price} {settings.currency === "ILS" ? "₪" : settings.currency}
-            </div>
+            {coupon ? (
+              <>
+                <div className="text-soft" style={{ textDecoration: "line-through" }}>
+                  {basePrice} {currencySymbol}
+                </div>
+                <div className="price-amount">
+                  {finalPrice} {currencySymbol}
+                </div>
+                <p className="text-soft">קופון {coupon.code} הופעל - הנחה של {formatDiscount(coupon)}</p>
+              </>
+            ) : (
+              <div className="price-amount">
+                {basePrice} {currencySymbol}
+              </div>
+            )}
             <form action={startPaymentAction}>
+              {coupon && <input type="hidden" name="coupon_code" value={coupon.code} />}
               <button type="submit" className="btn btn-primary btn-block">
                 לתשלום מאובטח
+              </button>
+            </form>
+          </div>
+
+          <div className="card" style={{ marginTop: 20 }}>
+            <h2 style={{ fontSize: "1.1rem" }}>יש לכם קוד קופון?</h2>
+            <form action={applyCouponAction} style={{ display: "flex", gap: 10, alignItems: "flex-end" }}>
+              <div className="field" style={{ flex: 1, marginBottom: 0 }}>
+                <input name="code" placeholder="קוד קופון" defaultValue={coupon?.code || ""} />
+              </div>
+              <button type="submit" className="btn btn-ghost">
+                החלת קופון
               </button>
             </form>
           </div>

@@ -11,6 +11,7 @@ import {
   verifyAdminPassword
 } from "@/lib/admin-auth";
 import { allowRequest } from "@/lib/rate-limit";
+import { createCoupon, setCouponActive, deleteCoupon } from "@/lib/coupons";
 
 export async function adminLoginAction(formData) {
   const password = (formData.get("password") || "").toString();
@@ -89,4 +90,50 @@ export async function deleteLessonAction(formData) {
     db.prepare("DELETE FROM lessons WHERE id = ?").run(id);
   }
   redirect("/admin?saved=lesson");
+}
+
+export async function createCouponAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+
+  const code = (formData.get("code") || "").toString().trim();
+  const discountType = (formData.get("discount_type") || "").toString();
+  const discountValue = parseFloat((formData.get("discount_value") || "").toString());
+  const maxUsesRaw = (formData.get("max_uses") || "").toString().trim();
+  const maxUses = maxUsesRaw ? parseInt(maxUsesRaw, 10) : null;
+  const expiresAtRaw = (formData.get("expires_at") || "").toString().trim();
+  const expiresAt = expiresAtRaw ? new Date(expiresAtRaw).toISOString() : null;
+
+  if (!code || !["percent", "amount"].includes(discountType) || !(discountValue > 0)) {
+    redirect("/admin?error=coupon_invalid");
+  }
+
+  try {
+    createCoupon({ code, discountType, discountValue, maxUses, expiresAt });
+  } catch (err) {
+    if (String(err?.message || "").includes("UNIQUE")) {
+      redirect("/admin?error=coupon_duplicate");
+    }
+    throw err;
+  }
+
+  redirect("/admin?saved=coupon");
+}
+
+export async function toggleCouponAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+  const id = (formData.get("id") || "").toString();
+  const active = formData.get("active") === "1";
+  if (id) {
+    setCouponActive(id, active);
+  }
+  redirect("/admin?saved=coupon");
+}
+
+export async function deleteCouponAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+  const id = (formData.get("id") || "").toString();
+  if (id) {
+    deleteCoupon(id);
+  }
+  redirect("/admin?saved=coupon");
 }
