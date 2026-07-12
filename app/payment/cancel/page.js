@@ -1,6 +1,14 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+
 export default async function PaymentCancelPage({ searchParams }) {
   const params = await searchParams;
   const reason = params?.reason;
+
+  const user = await getCurrentUser();
+  if (user?.paid) {
+    redirect("/course");
+  }
 
   return (
     <section className="section">
