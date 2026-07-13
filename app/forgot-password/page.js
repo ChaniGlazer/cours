@@ -1,5 +1,10 @@
 import { requestPasswordResetAction } from "@/app/actions/password-reset";
 
+export const metadata = {
+  title: "שכחתי סיסמה",
+  robots: { index: false, follow: false }
+};
+
 const ERROR_MESSAGES = {
   missing_token: "הקישור לא תקין. בקשו קישור איפוס חדש.",
   expired: "הקישור פג תוקף או שלא היה תקין. בקשו קישור איפוס חדש."

@@ -22,6 +22,12 @@ const PAYMENT_STATUS_LABELS = {
   failed: "נכשל"
 };
 
+// גם ב-robots.js וגם כאן (הגנה כפולה) - עמוד ניהול לא אמור להופיע באינדוקס בשום מצב.
+export const metadata = {
+  title: "ניהול האתר",
+  robots: { index: false, follow: false }
+};
+
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
   if (!(await isAdmin())) {

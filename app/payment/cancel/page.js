@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 
+export const metadata = {
+  title: "התשלום בוטל",
+  robots: { index: false, follow: false }
+};
+
 export default async function PaymentCancelPage({ searchParams }) {
   const params = await searchParams;
   const reason = params?.reason;

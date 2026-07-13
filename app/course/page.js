@@ -5,6 +5,13 @@ import { parseVideoEmbed } from "@/lib/video";
 import { startPaymentAction, applyCouponAction } from "@/app/actions/payment";
 import { findValidCoupon, computeDiscountedPrice, formatDiscount } from "@/lib/coupons";
 
+// מוגן בהתחברות ותשלום - אין ערך לחיפוש בהצגת מסך "יש להתחבר"/"יש לשלם"
+// לבוטים, ולכן גם ב-robots.js וגם כאן (הגנה כפולה) הוא לא מסומן לאינדוקס.
+export const metadata = {
+  title: "אזור הקורס",
+  robots: { index: false, follow: false }
+};
+
 export default async function CoursePage({ searchParams }) {
   const params = await searchParams;
   const user = await getCurrentUser();

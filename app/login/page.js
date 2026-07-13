@@ -2,6 +2,11 @@ import { redirect } from "next/navigation";
 import { getCurrentUser, safeNext } from "@/lib/auth";
 import { loginAction } from "@/app/actions/auth";
 
+export const metadata = {
+  title: "התחברות",
+  robots: { index: false, follow: false }
+};
+
 const ERROR_MESSAGES = {
   invalid: "אימייל או סיסמה שגויים.",
   rate_limited: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."

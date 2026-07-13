@@ -1,5 +1,10 @@
 import { resetPasswordAction } from "@/app/actions/password-reset";
 
+export const metadata = {
+  title: "איפוס סיסמה",
+  robots: { index: false, follow: false }
+};
+
 const ERROR_MESSAGES = {
   password: "הסיסמה צריכה להיות באורך 8 תווים לפחות.",
   mismatch: "הסיסמאות אינן תואמות.",

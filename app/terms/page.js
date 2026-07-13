@@ -1,5 +1,6 @@
 export const metadata = {
-  title: "תקנון האתר"
+  title: "תקנון האתר",
+  description: "תנאי השימוש באתר ותנאי רכישת הקורס הדיגיטלי - הרשמה, תשלום, ביטול עסקה וקניין רוחני."
 };
 
 export default function TermsPage() {

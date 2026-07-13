@@ -2,6 +2,11 @@ import { redirect } from "next/navigation";
 import { getCurrentUser, safeNext } from "@/lib/auth";
 import { registerAction } from "@/app/actions/auth";
 
+export const metadata = {
+  title: "הרשמה",
+  robots: { index: false, follow: false }
+};
+
 const ERROR_MESSAGES = {
   name: "יש להזין שם מלא (לפחות 2 תווים).",
   email: "יש להזין כתובת אימייל תקינה.",
