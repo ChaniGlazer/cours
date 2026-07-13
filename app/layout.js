@@ -1,7 +1,12 @@
 import "./globals.css";
+import Script from "next/script";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
+
+// מזהה מעקב Google Ads (ניתן ע"י צוות Google Ads) - לא סוד: מזהה כזה תמיד
+// גלוי ב-HTML הציבורי של כל דף, כך שאין סיבה לשמור אותו כמשתנה סביבה.
+const GOOGLE_ADS_ID = "AW-18320465832";
 
 function siteUrl() {
   const url = process.env.SITE_URL;
@@ -54,6 +59,22 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body>
+        {/* Google tag (gtag.js) - מוטמע עם next/script (afterInteractive) לפי
+            ההנחיה הרשמית של Next.js לתגי אנליטיקס/פרסום של צד שלישי, במקום
+            תגית <script> גולמית ב-<head> כפי שמופיע בהוראות הגנריות של גוגל. */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_ID}');
+          `}
+        </Script>
+
         <header className="site-header">
           <div className="container">
             <a className="brand" href="/">
