@@ -14,6 +14,13 @@ import { getSettings } from "@/lib/settings";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+// חובה: הקריאה ל-getSettings() למטה פותחת חיבור ל-DB. בלי force-dynamic,
+// Next.js מנסה לבצע לתמונה הזו prerender בזמן build (כי אין לה פרמטרים
+// דינמיים) - וזה נכשל בפריסות עם דיסק קבוע נפרד מזמן ה-build (כמו Render,
+// שבו DATA_DIR/var/data מחובר רק לשירות הרץ בפועל, לא לשלב ה-build). מעבר
+// לתיקון הכשל הזה, גם רוצים שהתמונה תמיד תשקף את ההגדרות העדכניות מה-DB,
+// לא ערכים שנקפאו בזמן ה-build.
+export const dynamic = "force-dynamic";
 
 export default async function Image() {
   const settings = getSettings();
