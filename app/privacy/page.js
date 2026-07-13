@@ -1,5 +1,6 @@
 export const metadata = {
-  title: "מדיניות פרטיות"
+  title: "מדיניות פרטיות",
+  description: "כיצד האתר אוסף, משתמש ושומר על מידע אישי - הרשמה, תשלום, עוגיות ומסירת מידע לצדדים שלישיים."
 };
 
 export default function PrivacyPage() {

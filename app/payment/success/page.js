@@ -3,6 +3,11 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import PaymentStatusPoller from "./PaymentStatusPoller";
 
+export const metadata = {
+  title: "אישור תשלום",
+  robots: { index: false, follow: false }
+};
+
 export default async function PaymentSuccessPage({ searchParams }) {
   const params = await searchParams;
   const orderId = params?.order;

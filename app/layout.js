@@ -3,11 +3,39 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
 
+function siteUrl() {
+  const url = process.env.SITE_URL;
+  return url ? url.replace(/\/$/, "") : "http://localhost:3000";
+}
+
 export async function generateMetadata() {
   const settings = getSettings();
+  const courseTitle = settings.course_title || "הקורס שלי";
+  const description = settings.course_subtitle || "";
+
   return {
-    title: settings.course_title || "הקורס שלי",
-    description: settings.course_subtitle || ""
+    // נדרש כדי ש-Next.js יוכל להפוך קישורים יחסיים (כמו תמונת ה-Open Graph
+    // הדינמית ב-app/opengraph-image.js) לכתובות מלאות בתגיות ה-meta.
+    metadataBase: new URL(siteUrl()),
+    title: {
+      default: courseTitle,
+      // עמודים שמגדירים metadata.title משלהם (מחרוזת פשוטה) מקבלים אותו
+      // מוצג כ-"<כותרת העמוד> | <שם הקורס>" - ראו למשל app/login/page.js.
+      template: `%s | ${courseTitle}`
+    },
+    description,
+    openGraph: {
+      title: courseTitle,
+      description,
+      type: "website",
+      locale: "he_IL",
+      siteName: courseTitle
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: courseTitle,
+      description
+    }
   };
 }
 
