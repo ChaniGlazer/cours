@@ -1,8 +1,5 @@
 // app/robots.js
-function siteUrl() {
-  const url = process.env.SITE_URL;
-  return url ? url.replace(/\/$/, "") : "http://localhost:3000";
-}
+import { siteUrl } from "@/lib/site";
 
 export default function robots() {
   const base = siteUrl();
