@@ -3,15 +3,11 @@ import Script from "next/script";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
+import { siteUrl } from "@/lib/site";
 
 // מזהה מעקב Google Ads (ניתן ע"י צוות Google Ads) - לא סוד: מזהה כזה תמיד
 // גלוי ב-HTML הציבורי של כל דף, כך שאין סיבה לשמור אותו כמשתנה סביבה.
 const GOOGLE_ADS_ID = "AW-18320465832";
-
-function siteUrl() {
-  const url = process.env.SITE_URL;
-  return url ? url.replace(/\/$/, "") : "http://localhost:3000";
-}
 
 export async function generateMetadata() {
   const settings = getSettings();

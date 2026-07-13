@@ -7,14 +7,7 @@ import { getCurrentUser, markUserPaid } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { createClearingRequest, getClearingLogById } from "@/lib/invoice4u";
 import { findValidCoupon, computeDiscountedPrice, incrementCouponUsage } from "@/lib/coupons";
-
-function siteUrl() {
-  const url = process.env.SITE_URL;
-  if (!url) {
-    throw new Error("יש להגדיר את משתנה הסביבה SITE_URL (כתובת האתר בפועל) לפני קבלת תשלומים");
-  }
-  return url.replace(/\/$/, "");
-}
+import { siteUrl } from "@/lib/site";
 
 export async function applyCouponAction(formData) {
   const user = await getCurrentUser();
@@ -62,7 +55,7 @@ export async function startPaymentAction(formData) {
     "INSERT INTO payments (id, user_id, amount, status, coupon_code, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?, ?)"
   ).run(paymentId, user.id, price, coupon?.code || null, timestamp, timestamp);
 
-  const base = siteUrl();
+  const base = siteUrl({ required: true });
 
   // הערה: redirect() נקרא מחוץ ל-try/catch בכוונה - redirect() פועל ע"י "זריקת"
   // שגיאה פנימית מיוחדת של Next.js, וצריך להיזהר שלא ניתפס אותה בטעות ב-catch שלנו.

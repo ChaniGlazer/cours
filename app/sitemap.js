@@ -3,10 +3,7 @@
 // כולל רק עמודי תוכן ציבוריים בעלי ערך לחיפוש. עמודים דינמיים/מוגנים
 // (למשל /course, /login, /admin, /payment/*) לא נכללים בכוונה - ראו הסבר
 // ב-app/robots.js.
-function siteUrl() {
-  const url = process.env.SITE_URL;
-  return url ? url.replace(/\/$/, "") : "http://localhost:3000";
-}
+import { siteUrl } from "@/lib/site";
 
 export default function sitemap() {
   const base = siteUrl();
