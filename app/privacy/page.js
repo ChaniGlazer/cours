@@ -9,7 +9,7 @@ export default function PrivacyPage() {
       <div className="container legal-doc">
         <span className="eyebrow">פרטיות</span>
         <h1 style={{ marginTop: 10 }}>מדיניות פרטיות</h1>
-        <p className="text-soft">עודכן לאחרונה: 09.07.2026</p>
+        <p className="text-soft">עודכן לאחרונה: 13.07.2026</p>
 
         <h2>1. כללי</h2>
         <p>
@@ -49,8 +49,12 @@ export default function PrivacyPage() {
           לשרתי Google.
         </p>
         <p>
-          2.6 איננו אוספים ואיננו משתמשים בכלי מעקב, ניתוח סטטיסטי (analytics) או פרסום ממוקד (כגון
-          Google Analytics או Facebook Pixel) במועד עדכון מדיניות זו.
+          2.6 האתר משתמש בתג Google Ads (Google tag) לצורך מדידת המרות ואפקטיביות קמפיינים פרסומיים. תג
+          זה עשוי להציב עוגיות בדפדפן שלך ולשתף עם Google מידע על השימוש שלך באתר, בהתאם למדיניות
+          הפרטיות של Google. ניתן לנהל או לבטל את ההסכמה למעקב פרסומי של Google דרך הגדרות המודעות
+          בחשבון ה-Google שלך (adssettings.google.com), או באמצעות הגדרות הדפדפן. מלבד זאת, איננו
+          משתמשים בכלי ניתוח סטטיסטי (analytics) נוספים (כגון Google Analytics) או פרסום ממוקד באמצעות
+          פלטפורמות אחרות (כגון Facebook Pixel) במועד עדכון מדיניות זו.
         </p>
 
         <h2>3. מטרות השימוש במידע</h2>
@@ -70,6 +74,9 @@ export default function PrivacyPage() {
           <br />
           <strong>YouTube / Vimeo</strong> - לצורך הצגת תוכן הווידאו של הקורס (חשיפה טכנית בלבד, הנובעת
           מהטמעת הנגן).
+          <br />
+          <strong>Google Ads</strong> - לצורך מדידת המרות ואפקטיביות קמפיינים פרסומיים, בהתאם למדיניות
+          הפרטיות של Google.
         </p>
         <p>
           לא נמסור מידע אישי לגורם נוסף כלשהו, אלא אם נידרש לכך על פי דין, צו שיפוטי, או דרישה של רשות
