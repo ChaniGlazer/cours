@@ -1,12 +1,15 @@
 import { isAdmin } from "@/lib/admin-auth";
-import { getSettings, getLessons } from "@/lib/settings";
+import { getSettings, getLessons, getTestimonials } from "@/lib/settings";
 import {
   adminLoginAction,
   adminLogoutAction,
   updateSettingsAction,
   createLessonAction,
   updateLessonAction,
-  deleteLessonAction
+  deleteLessonAction,
+  createTestimonialAction,
+  updateTestimonialAction,
+  deleteTestimonialAction
 } from "@/app/actions/admin";
 
 export default async function AdminPage({ searchParams }) {
@@ -37,6 +40,7 @@ export default async function AdminPage({ searchParams }) {
 
   const settings = getSettings();
   const lessons = getLessons();
+  const testimonials = getTestimonials();
 
   return (
     <section className="section">
@@ -56,8 +60,14 @@ export default async function AdminPage({ searchParams }) {
         {params?.saved === "lesson" && (
           <div className="alert alert-success">השינוי בשיעורים נשמר.</div>
         )}
+        {params?.saved === "testimonial" && (
+          <div className="alert alert-success">ההמלצה נשמרה.</div>
+        )}
         {params?.error === "lesson_title" && (
           <div className="alert alert-error">יש להזין כותרת לשיעור.</div>
+        )}
+        {params?.error === "testimonial_fields" && (
+          <div className="alert alert-error">יש להזין שם וטקסט המלצה.</div>
         )}
 
         <div className="admin-grid">
@@ -85,10 +95,151 @@ export default async function AdminPage({ searchParams }) {
                 <label htmlFor="price">מחיר (₪)</label>
                 <input id="price" name="price" type="number" min="0" step="1" defaultValue={settings.price} required />
               </div>
+
+              <h3 style={{ marginTop: 20 }}>וידאו וסימני אמון (מסך ראשון)</h3>
+              <p className="text-soft" style={{ fontSize: "0.9rem" }}>
+                דירוג ומספר דירוגים מוצגים באתר רק אם שניהם מלאים - כדי לא להציג נתון חלקי או מזויף.
+              </p>
+              <div className="field">
+                <label htmlFor="hero_video_url">קישור וידאו תדריך קצר (Hero)</label>
+                <input id="hero_video_url" name="hero_video_url" defaultValue={settings.hero_video_url} />
+              </div>
+              <div className="field">
+                <label htmlFor="rating_value">דירוג ממוצע (למשל 4.9)</label>
+                <input id="rating_value" name="rating_value" defaultValue={settings.rating_value} />
+              </div>
+              <div className="field">
+                <label htmlFor="rating_count">כמות דירוגים/תלמידים (למשל 240+)</label>
+                <input id="rating_count" name="rating_count" defaultValue={settings.rating_count} />
+              </div>
+              <div className="field">
+                <label htmlFor="stat_highlight">נתון מספרי בולט (למשל: "72% מהבוגרים דיווחו על שדרוג בשכר תוך 6 חודשים")</label>
+                <input id="stat_highlight" name="stat_highlight" defaultValue={settings.stat_highlight} />
+              </div>
+
+              <h3 style={{ marginTop: 20 }}>לפני / אחרי הקורס</h3>
+              <div className="field">
+                <label htmlFor="problem_text">האתגר לפני הקורס</label>
+                <textarea id="problem_text" name="problem_text" rows={4} defaultValue={settings.problem_text} />
+              </div>
+              <div className="field">
+                <label htmlFor="outcome_text">התוצאה אחרי הקורס</label>
+                <textarea id="outcome_text" name="outcome_text" rows={4} defaultValue={settings.outcome_text} />
+              </div>
+
+              <h3 style={{ marginTop: 20 }}>פרופיל המדריך/ה</h3>
+              <p className="text-soft" style={{ fontSize: "0.9rem" }}>
+                חלק זה יוצג רק אם יש שם למדריך/ה.
+              </p>
+              <div className="field">
+                <label htmlFor="instructor_name">שם המדריך/ה</label>
+                <input id="instructor_name" name="instructor_name" defaultValue={settings.instructor_name} />
+              </div>
+              <div className="field">
+                <label htmlFor="instructor_photo_url">קישור לתמונת פרופיל</label>
+                <input id="instructor_photo_url" name="instructor_photo_url" defaultValue={settings.instructor_photo_url} />
+              </div>
+              <div className="field">
+                <label htmlFor="instructor_bio">ביוגרפיה קצרה</label>
+                <textarea id="instructor_bio" name="instructor_bio" rows={4} defaultValue={settings.instructor_bio} />
+              </div>
+
+              <h3 style={{ marginTop: 20 }}>הסרת סיכון</h3>
+              <div className="field">
+                <label htmlFor="guarantee_text">מדיניות אחריות/החזר כספי (למשל: "30 יום החזר כספי מלא, ללא שאלות")</label>
+                <input id="guarantee_text" name="guarantee_text" defaultValue={settings.guarantee_text} />
+              </div>
+
               <button type="submit" className="btn btn-primary">
                 שמירת הגדרות
               </button>
             </form>
+          </div>
+
+          <div className="card">
+            <h2>המלצות תלמידים</h2>
+            <p className="text-soft">
+              המלצות עם תוצאה מדידה (לא רק ניסוח כללי) הן ההוכחה החברתית האפקטיבית ביותר. הרשימה
+              מוצגת באתר רק אם יש בה לפחות המלצה אחת.
+            </p>
+
+            {testimonials.map((t) => (
+              <div className="lesson-row" key={t.id}>
+                <form action={updateTestimonialAction}>
+                  <input type="hidden" name="id" value={t.id} />
+                  <div className="field">
+                    <label>שם</label>
+                    <input name="name" defaultValue={t.name} required />
+                  </div>
+                  <div className="field">
+                    <label>תפקיד / הקשר</label>
+                    <input name="role" defaultValue={t.role || ""} />
+                  </div>
+                  <div className="field">
+                    <label>ציטוט ההמלצה</label>
+                    <textarea name="quote" rows={3} defaultValue={t.quote} required />
+                  </div>
+                  <div className="field">
+                    <label>תוצאה מדידה (אופציונלי)</label>
+                    <input name="result" defaultValue={t.result || ""} />
+                  </div>
+                  <div className="field">
+                    <label>קישור לתמונה (אופציונלי)</label>
+                    <input name="photo_url" defaultValue={t.photo_url || ""} />
+                  </div>
+                  <div className="field">
+                    <label>סדר תצוגה</label>
+                    <input name="position" type="number" defaultValue={t.position} style={{ maxWidth: 100 }} />
+                  </div>
+                  <div className="row-actions">
+                    <button type="submit" className="btn btn-ghost" style={{ padding: "8px 18px" }}>
+                      שמירה
+                    </button>
+                  </div>
+                </form>
+                <form action={deleteTestimonialAction}>
+                  <input type="hidden" name="id" value={t.id} />
+                  <div className="row-actions">
+                    <button type="submit" className="muted-link">
+                      מחיקת המלצה
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ))}
+
+            <div className="lesson-row" style={{ borderStyle: "dashed" }}>
+              <h3>הוספת המלצה חדשה</h3>
+              <form action={createTestimonialAction}>
+                <div className="field">
+                  <label>שם</label>
+                  <input name="name" required />
+                </div>
+                <div className="field">
+                  <label>תפקיד / הקשר</label>
+                  <input name="role" />
+                </div>
+                <div className="field">
+                  <label>ציטוט ההמלצה</label>
+                  <textarea name="quote" rows={3} required />
+                </div>
+                <div className="field">
+                  <label>תוצאה מדידה (אופציונלי)</label>
+                  <input name="result" />
+                </div>
+                <div className="field">
+                  <label>קישור לתמונה (אופציונלי)</label>
+                  <input name="photo_url" />
+                </div>
+                <div className="field">
+                  <label>סדר תצוגה</label>
+                  <input name="position" type="number" defaultValue={testimonials.length + 1} style={{ maxWidth: 100 }} />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  הוספת המלצה
+                </button>
+              </form>
+            </div>
           </div>
 
           <div className="card">
