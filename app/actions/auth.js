@@ -36,13 +36,13 @@ export async function registerAction(formData) {
     redirect(`/register?error=password&${qp}`);
   }
 
-  const existing = findUserByEmail(email);
+  const existing = await findUserByEmail(email);
   if (existing) {
     redirect(`/register?error=exists&${qp}`);
   }
 
   const passwordHash = await hashPassword(password);
-  const userId = createUser({ name, email, passwordHash });
+  const userId = await createUser({ name, email, passwordHash });
   await createSession(userId);
 
   redirect(next);
@@ -54,7 +54,7 @@ export async function loginAction(formData) {
   const next = safeNext((formData.get("next") || "").toString());
   const qp = `next=${encodeURIComponent(next)}`;
 
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user) {
     redirect(`/login?error=invalid&${qp}`);
   }

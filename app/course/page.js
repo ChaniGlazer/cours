@@ -11,7 +11,7 @@ export default async function CoursePage({ searchParams }) {
     redirect("/login?next=/course");
   }
 
-  const settings = getSettings();
+  const settings = await getSettings();
 
   if (!user.paid) {
     return (
@@ -45,7 +45,7 @@ export default async function CoursePage({ searchParams }) {
     );
   }
 
-  const lessons = getLessons();
+  const lessons = await getLessons();
 
   return (
     <section className="section">

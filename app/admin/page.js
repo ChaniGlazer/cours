@@ -38,9 +38,9 @@ export default async function AdminPage({ searchParams }) {
     );
   }
 
-  const settings = getSettings();
-  const lessons = getLessons();
-  const testimonials = getTestimonials();
+  const settings = await getSettings();
+  const lessons = await getLessons();
+  const testimonials = await getTestimonials();
 
   return (
     <section className="section">

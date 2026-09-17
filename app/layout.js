@@ -4,7 +4,7 @@ import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
 
 export async function generateMetadata() {
-  const settings = getSettings();
+  const settings = await getSettings();
   return {
     title: settings.course_title || "הקורס שלי",
     description: settings.course_subtitle || ""
@@ -13,7 +13,7 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   const user = await getCurrentUser();
-  const settings = getSettings();
+  const settings = await getSettings();
 
   return (
     <html lang="he" dir="rtl">

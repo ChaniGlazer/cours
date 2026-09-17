@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import PaymentStatusPoller from "./PaymentStatusPoller";
 
 export default async function PaymentSuccessPage({ searchParams }) {
@@ -6,7 +6,8 @@ export default async function PaymentSuccessPage({ searchParams }) {
   const orderId = params?.order;
   let payment = null;
   if (orderId) {
-    payment = db.prepare("SELECT status FROM payments WHERE id = ?").get(orderId);
+    const db = await getDb();
+    payment = await db.prepare("SELECT status FROM payments WHERE id = ?").bind(orderId).first();
   }
 
   if (payment?.status === "paid") {

@@ -13,9 +13,9 @@ function Stars() {
 
 export default async function HomePage() {
   const user = await getCurrentUser();
-  const settings = getSettings();
-  const lessons = getLessons();
-  const testimonials = getTestimonials();
+  const settings = await getSettings();
+  const lessons = await getLessons();
+  const testimonials = await getTestimonials();
 
   let ctaHref = "/register";
   let ctaText = "הרשמה והתחלת הלימוד";
