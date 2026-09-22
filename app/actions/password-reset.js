@@ -41,7 +41,7 @@ export async function requestPasswordResetAction(formData) {
       await sendPasswordResetEmail({
         to: user.email,
         resetUrl,
-        courseTitle: settings.course_title || "האתר"
+        courseTitle: settings.site_title || "האתר"
       });
     }
   }
@@ -86,5 +86,5 @@ export async function resetPasswordAction(formData) {
   await db.prepare("DELETE FROM sessions WHERE user_id = ?").bind(resetRow.user_id).run();
 
   await createSession(resetRow.user_id);
-  redirect("/course");
+  redirect("/courses");
 }

@@ -6,14 +6,14 @@ import { logoutAction } from "@/app/actions/auth";
 export async function generateMetadata() {
   const settings = await getSettings();
   return {
-    title: settings.course_title || "הקורס שלי",
-    description: settings.course_subtitle || ""
+    title: settings.site_title || "קורסים בעידן ה-AI"
   };
 }
 
 export default async function RootLayout({ children }) {
   const user = await getCurrentUser();
   const settings = await getSettings();
+  const brand = settings.site_title || "קורסים בעידן ה-AI";
 
   return (
     <html lang="he" dir="rtl">
@@ -28,13 +28,14 @@ export default async function RootLayout({ children }) {
       <body>
         <header className="site-header">
           <div className="container">
-            <a className="brand" href="/">
-              {settings.course_title || "הקורס שלי"}
+            <a className="brand" href="/courses">
+              {brand}
             </a>
             <nav className="nav-links">
+              <a href="/courses">קטלוג קורסים</a>
               {user ? (
                 <>
-                  <a href="/course">{user.paid ? "לקורס" : "האזור האישי"}</a>
+                  <a href="/my-courses">האזור שלי</a>
                   <form action={logoutAction}>
                     <button type="submit" className="btn btn-ghost" style={{ padding: "8px 18px" }}>
                       התנתקות
@@ -57,7 +58,7 @@ export default async function RootLayout({ children }) {
 
         <footer className="site-footer">
           <div className="container">
-            © {new Date().getFullYear()} {settings.course_title || "הקורס שלי"}
+            © {new Date().getFullYear()} {brand}
           </div>
         </footer>
       </body>

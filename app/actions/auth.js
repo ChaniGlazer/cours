@@ -15,7 +15,7 @@ function safeNext(next) {
   if (typeof next === "string" && next.startsWith("/") && !next.startsWith("//")) {
     return next;
   }
-  return "/course";
+  return "/courses";
 }
 
 export async function registerAction(formData) {

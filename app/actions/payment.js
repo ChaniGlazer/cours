@@ -3,8 +3,9 @@
 import crypto from "node:crypto";
 import { redirect } from "next/navigation";
 import { getDb, nowIso } from "@/lib/db";
-import { getCurrentUser, markUserPaid } from "@/lib/auth";
-import { getSettings } from "@/lib/settings";
+import { getCurrentUser } from "@/lib/auth";
+import { getCourseBySlug } from "@/lib/courses";
+import { hasPurchasedCourse } from "@/lib/purchases";
 import { createClearingRequest, getClearingLogById } from "@/lib/invoice4u";
 
 function siteUrl() {
@@ -15,19 +16,24 @@ function siteUrl() {
   return url.replace(/\/$/, "");
 }
 
-export async function startPaymentAction() {
+export async function startPaymentAction(courseId) {
   const user = await getCurrentUser();
   if (!user) {
-    redirect("/login?next=/course");
-  }
-  if (user.paid) {
-    redirect("/course");
+    redirect(`/login?next=${encodeURIComponent(`/courses/${courseId}`)}`);
   }
 
-  const settings = await getSettings();
-  const price = parseFloat(settings.price);
+  const course = await getCourseBySlug(courseId);
+  if (!course || !course.is_paid) {
+    redirect(`/courses/${courseId}`);
+  }
+
+  if (await hasPurchasedCourse(user.id, courseId)) {
+    redirect(`/courses/${courseId}`);
+  }
+
+  const price = course.price_ils;
   if (!price || price <= 0) {
-    redirect("/course?error=price_not_set");
+    redirect(`/courses/${courseId}?error=price_not_set`);
   }
 
   const paymentId = crypto.randomUUID();
@@ -35,9 +41,9 @@ export async function startPaymentAction() {
   const db = await getDb();
   await db
     .prepare(
-      "INSERT INTO payments (id, user_id, amount, status, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?)"
+      "INSERT INTO payments (id, user_id, amount, status, course_id, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?, ?)"
     )
-    .bind(paymentId, user.id, price, timestamp, timestamp)
+    .bind(paymentId, user.id, price, courseId, timestamp, timestamp)
     .run();
 
   const base = siteUrl();
@@ -48,12 +54,12 @@ export async function startPaymentAction() {
   try {
     const result = await createClearingRequest({
       sum: price,
-      description: settings.course_title || "רכישת קורס",
+      description: course.title,
       fullName: user.name,
       email: user.email,
       orderId: paymentId,
       returnUrl: `${base}/payment/success?order=${paymentId}`,
-      docHeadline: settings.course_title
+      docHeadline: course.title
     });
 
     await db
@@ -67,7 +73,7 @@ export async function startPaymentAction() {
       .prepare("UPDATE payments SET status = 'failed', raw_log = ?, updated_at = ? WHERE id = ?")
       .bind(String(err?.message || err).slice(0, 2000), nowIso(), paymentId)
       .run();
-    redirect("/payment/cancel?reason=init_failed");
+    redirect(`/payment/cancel?reason=init_failed&course=${courseId}`);
     return;
   }
 
@@ -100,8 +106,7 @@ export async function checkPaymentStatusAction(orderId) {
         .prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?")
         .bind(nowIso(), orderId)
         .run();
-      await markUserPaid(payment.user_id);
-      return { status: "paid" };
+      return { status: "paid", courseId: payment.course_id };
     }
 
     if (result.ok === false) {

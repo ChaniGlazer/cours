@@ -7,8 +7,10 @@ export default async function PaymentSuccessPage({ searchParams }) {
   let payment = null;
   if (orderId) {
     const db = await getDb();
-    payment = await db.prepare("SELECT status FROM payments WHERE id = ?").bind(orderId).first();
+    payment = await db.prepare("SELECT status, course_id FROM payments WHERE id = ?").bind(orderId).first();
   }
+
+  const courseHref = payment?.course_id ? `/courses/${payment.course_id}` : "/courses";
 
   if (payment?.status === "paid") {
     return (
@@ -16,7 +18,7 @@ export default async function PaymentSuccessPage({ searchParams }) {
         <div className="container form-narrow" style={{ textAlign: "center" }}>
           <h1>התשלום התקבל 🎉</h1>
           <p className="text-soft">הגישה לקורס נפתחה עבורכם.</p>
-          <a href="/course" className="btn btn-primary">
+          <a href={courseHref} className="btn btn-primary">
             כניסה לקורס
           </a>
         </div>
@@ -30,7 +32,7 @@ export default async function PaymentSuccessPage({ searchParams }) {
         <div className="container form-narrow" style={{ textAlign: "center" }}>
           <h1>התשלום לא הושלם</h1>
           <p className="text-soft">משהו לא הסתדר עם התשלום. ניתן לנסות שוב.</p>
-          <a href="/course" className="btn btn-primary">
+          <a href={courseHref} className="btn btn-primary">
             חזרה לתשלום
           </a>
         </div>
