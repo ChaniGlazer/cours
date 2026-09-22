@@ -9,14 +9,21 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types",
+    "db:migrate:local": "wrangler d1 migrations apply course-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply course-db --remote"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "next": "16.2.9",
-    "nodemailer": "^9.0.1",
+    "next": "16.3.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.6",
+    "wrangler": "^4.133.0"
   }
 }
