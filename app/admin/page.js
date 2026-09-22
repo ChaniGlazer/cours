@@ -245,8 +245,9 @@ export default async function AdminPage({ searchParams }) {
           <div className="card">
             <h2>שיעורים</h2>
             <p className="text-soft">
-              הדביקו קישור YouTube, Vimeo, או קישור לקובץ וידאו (mp4). השיעורים מוצגים בעמוד
-              הבית ובאזור הקורס לפי שדה הסדר.
+              אפשר להדביק קישור YouTube/Vimeo/mp4, או להדביק קובץ HTML שלם של השיעור (עדיף) -
+              אם יש תוכן HTML הוא זה שיוצג, וקישור הווידאו יתעלם. השיעורים מוצגים בעמוד הבית
+              ובאזור הקורס לפי שדה הסדר.
             </p>
 
             {lessons.map((lesson) => (
@@ -262,8 +263,18 @@ export default async function AdminPage({ searchParams }) {
                     <input name="description" defaultValue={lesson.description || ""} />
                   </div>
                   <div className="field">
-                    <label>קישור לסרטון</label>
+                    <label>קישור לסרטון (אופציונלי, רק אם אין תוכן HTML)</label>
                     <input name="video_url" defaultValue={lesson.video_url || ""} />
+                  </div>
+                  <div className="field">
+                    <label>תוכן HTML של השיעור (הדביקו כאן קובץ HTML שלם)</label>
+                    <textarea
+                      name="html_content"
+                      rows={8}
+                      dir="ltr"
+                      style={{ fontFamily: "monospace", fontSize: "0.85rem" }}
+                      defaultValue={lesson.html_content || ""}
+                    />
                   </div>
                   <div className="field">
                     <label>סדר תצוגה</label>
@@ -298,8 +309,17 @@ export default async function AdminPage({ searchParams }) {
                   <input name="description" />
                 </div>
                 <div className="field">
-                  <label>קישור לסרטון</label>
+                  <label>קישור לסרטון (אופציונלי, רק אם אין תוכן HTML)</label>
                   <input name="video_url" />
+                </div>
+                <div className="field">
+                  <label>תוכן HTML של השיעור (הדביקו כאן קובץ HTML שלם)</label>
+                  <textarea
+                    name="html_content"
+                    rows={8}
+                    dir="ltr"
+                    style={{ fontFamily: "monospace", fontSize: "0.85rem" }}
+                  />
                 </div>
                 <div className="field">
                   <label>סדר תצוגה</label>

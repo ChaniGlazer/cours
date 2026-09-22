@@ -119,6 +119,7 @@ export async function createLessonAction(formData) {
   const title = (formData.get("title") || "").toString().trim();
   const description = (formData.get("description") || "").toString().trim();
   const video_url = (formData.get("video_url") || "").toString().trim();
+  const html_content = (formData.get("html_content") || "").toString();
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
   let position = Number.isFinite(positionRaw) ? positionRaw : null;
   if (position === null) position = (await getLessonCount()) + 1;
@@ -128,9 +129,9 @@ export async function createLessonAction(formData) {
   const db = await getDb();
   await db
     .prepare(
-      "INSERT INTO lessons (id, title, description, video_url, position, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO lessons (id, title, description, video_url, html_content, position, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
     )
-    .bind(crypto.randomUUID(), title, description, video_url, position, nowIso())
+    .bind(crypto.randomUUID(), title, description, video_url, html_content, position, nowIso())
     .run();
 
   redirect("/admin?saved=lesson");
@@ -143,6 +144,7 @@ export async function updateLessonAction(formData) {
   const title = (formData.get("title") || "").toString().trim();
   const description = (formData.get("description") || "").toString().trim();
   const video_url = (formData.get("video_url") || "").toString().trim();
+  const html_content = (formData.get("html_content") || "").toString();
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
   const position = Number.isFinite(positionRaw) ? positionRaw : 0;
 
@@ -150,8 +152,10 @@ export async function updateLessonAction(formData) {
 
   const db = await getDb();
   await db
-    .prepare("UPDATE lessons SET title = ?, description = ?, video_url = ?, position = ? WHERE id = ?")
-    .bind(title, description, video_url, position, id)
+    .prepare(
+      "UPDATE lessons SET title = ?, description = ?, video_url = ?, html_content = ?, position = ? WHERE id = ?"
+    )
+    .bind(title, description, video_url, html_content, position, id)
     .run();
 
   redirect("/admin?saved=lesson");

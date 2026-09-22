@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings, getLessons } from "@/lib/settings";
 import { parseVideoEmbed } from "@/lib/video";
 import { startPaymentAction } from "@/app/actions/payment";
+import LessonHtmlFrame from "@/app/components/LessonHtmlFrame";
 
 export default async function CoursePage({ searchParams }) {
   const params = await searchParams;
@@ -65,7 +66,9 @@ export default async function CoursePage({ searchParams }) {
                 </summary>
                 <div className="lesson-body">
                   {lesson.description && <p className="text-soft">{lesson.description}</p>}
-                  {embed ? (
+                  {lesson.html_content ? (
+                    <LessonHtmlFrame html={lesson.html_content} />
+                  ) : embed ? (
                     <div className="video-wrap">
                       {embed.type === "video" ? (
                         <video controls src={embed.src} />

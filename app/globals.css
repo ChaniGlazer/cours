@@ -464,6 +464,15 @@ iframe {
   border: 0;
 }
 
+.lesson-html-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
 /* ===== Hero grid (with optional preview video) ===== */
 .hero-grid--split {
   display: grid;
