@@ -12,7 +12,13 @@
     {
       "binding": "DB",
       "database_name": "course-db",
-      "database_id": "REPLACE_WITH_YOUR_DATABASE_ID"
+      "database_id": "f8740b14-74b8-431c-947b-07f97bda894d"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "course.codebloom.co.il",
+      "custom_domain": true
     }
   ]
 }
