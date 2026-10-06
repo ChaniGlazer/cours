@@ -15,12 +15,12 @@ export default function PaymentStatusPoller({ orderId }) {
     let active = true;
 
     const interval = setInterval(async () => {
-      const { status } = await checkPaymentStatusAction(orderId);
+      const { status, courseId } = await checkPaymentStatusAction(orderId);
       if (!active) return;
 
       if (status === "paid") {
         clearInterval(interval);
-        router.push("/course");
+        router.push(courseId ? `/courses/${courseId}` : "/courses");
       } else if (status === "failed") {
         clearInterval(interval);
         router.refresh();

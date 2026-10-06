@@ -10,14 +10,14 @@ const ERROR_MESSAGES = {
 export default async function RegisterPage({ searchParams }) {
   const params = await searchParams;
   const error = ERROR_MESSAGES[params?.error] || null;
-  const next = params?.next || "/course";
+  const next = params?.next || "/courses";
 
   return (
     <section className="section">
       <div className="container form-narrow">
         <h1 style={{ textAlign: "center" }}>הרשמה</h1>
         <p className="text-soft" style={{ textAlign: "center", marginBottom: 28 }}>
-          יוצרים חשבון, ואז ממשיכים לתשלום מאובטח לקבלת גישה לקורס.
+          יוצרים חשבון, ואז ממשיכים ללימוד או לתשלום מאובטח (לקורסים בתשלום).
         </p>
 
         <div className="card-elevated">
@@ -45,7 +45,7 @@ export default async function RegisterPage({ searchParams }) {
               />
             </div>
             <button type="submit" className="btn btn-primary btn-block">
-              המשך לתשלום
+              המשך
             </button>
           </form>
         </div>

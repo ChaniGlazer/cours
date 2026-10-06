@@ -7,7 +7,7 @@ const ERROR_MESSAGES = {
 export default async function LoginPage({ searchParams }) {
   const params = await searchParams;
   const error = ERROR_MESSAGES[params?.error] || null;
-  const next = params?.next || "/course";
+  const next = params?.next || "/courses";
 
   return (
     <section className="section">

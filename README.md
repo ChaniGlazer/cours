@@ -7,24 +7,29 @@
 ## מה בנוי כאן
 
 - **Next.js 16** (App Router) + **React 19** - קוד אחד גם לדפים וגם לשרת.
-- **מסד נתונים**: SQLite מובנה ב-Node.js (`node:sqlite`) - קובץ יחיד בתיקיית
-  `data/`, בלי שום התקנה חיצונית.
+- **אחסון**: [Cloudflare Workers](https://workers.cloudflare.com/) (דרך
+  [OpenNext](https://opennext.js.org/cloudflare)), בלי שרת/דיסק לנהל.
+- **מסד נתונים**: [Cloudflare D1](https://developers.cloudflare.com/d1/) - SQLite
+  serverless מנוהל על ידי Cloudflare (ראו `migrations/0001_init.sql` למבנה הטבלאות).
 - **הרשמה והתחברות**: סיסמאות מוצפנות (`bcrypt`), session מאובטח ב-cookie
   שמאוחסן במסד הנתונים (לא JWT) - כך שתמיד אפשר "להתנתק" משתמש מסוים אם צריך.
 - **תשלום**: אינטגרציה עם ה-Clearing API של Invoice4U - פתיחת בקשת סליקה
   (iframe מאובטח), ובדיקת סטטוס פעילה בעמוד ההצלחה (Invoice4U לא שולח
   webhook לעסקאות רגילות, אז האתר שואל אותו ישירות מה קרה עם התשלום).
+- **מייל**: [Resend](https://resend.com) (REST API) - לשליחת מייל איפוס סיסמה.
 - **עמוד ניהול** (`/admin`, מוגן בסיסמה אחת מסביבת השרת): עריכת כל תוכן הקורס
   והשיעורים.
 
 ## הרצה מקומית (לבדיקות)
 
-דרישה: **Node.js גרסה 22.5 ומעלה** (כדי ש-`node:sqlite` יעבוד).
-
 ```bash
 cp .env.example .env
 # ערכו את .env: לפחות SITE_URL ו-ADMIN_PASSWORD
 npm install
+
+# יצירת מסד D1 מקומי (קובץ SQLite זמני שמנהל wrangler) והרצת ה-migration
+npm run db:migrate:local
+
 npm run dev
 ```
 
@@ -41,10 +46,12 @@ npm run dev
 |---|---|
 | `SITE_URL` | כתובת האתר בפועל, **בלי** `/` בסוף. חשוב לעדכן כשעוברים מ-localhost לדומיין האמיתי. |
 | `ADMIN_PASSWORD` | הסיסמה לכניסה ל-`/admin`. בחרו סיסמה חזקה וייחודית - היא היחידה שמגנה על ניהול האתר. |
-| `DATA_DIR` | אופציונלי. נתיב לתיקייה שבה יישמר קובץ מסד הנתונים. כברירת מחדל זו תיקיית `data/` בתוך הפרויקט. **ברנדר (Render) ובדומיו - חובה להגדיר את זה לנתיב של דיסק קבוע (Persistent Disk)**, ראו הערה בהמשך. |
 | `INVOICE4U_API_KEY` | מפתח ה-API של Invoice4U (נוצר ב-private.invoice4u.co.il, ראו בהמשך). |
 | `INVOICE4U_CC_COMPANY` | קוד חברת הסליקה שמוגדרת בחשבון שלכם: Meshulam=7, UPay=6, YaadSarig=12, Cardcom=15. |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | אופציונלי - לשליחת מייל איפוס סיסמה. בלעדיהם, קישור האיפוס יודפס ללוג של השרת בלבד (ראו בהמשך). |
+| `RESEND_API_KEY`, `EMAIL_FROM` | אופציונלי - לשליחת מייל איפוס סיסמה דרך Resend. בלעדיהם, קישור האיפוס יודפס ללוג של השרת בלבד (ראו בהמשך). |
+
+בפריסה בפועל (לא בפיתוח מקומי) יש להגדיר את המשתנים האלה כ-secrets דרך `wrangler
+secret put <NAME>` (לא בקובץ `.env`) - ראו "פריסה ל-Cloudflare Workers" בהמשך.
 
 ## הגדרת Invoice4U (Clearing API) - שלב חשוב
 
@@ -99,29 +106,28 @@ npm run dev
 מייל עם קישור חד-פעמי שתקף לשעה. הקישור מאפשר לבחור סיסמה חדשה ומתחבר
 אוטומטית לאחר מכן (וגם מבטל סשנים פתוחים אחרים של אותו משתמש, כהגנה).
 
-**בלי הגדרת SMTP** - האתר עדיין "עובד", אבל במקום לשלוח מייל, קישור
+**בלי הגדרת Resend** - האתר עדיין "עובד", אבל במקום לשלוח מייל, קישור
 האיפוס יודפס ללוג השרת (`console.warn`) עם הכתובת שביקשה אותו. זה שימושי
 לבדיקות, אבל לאתר חי כדאי להגדיר שליחת מייל אמיתית.
 
-### הדרך הקלה ביותר: Gmail עם App Password
+### הגדרת Resend
 
-1. בחשבון ה-Gmail שתרצו לשלוח ממנו, הפעילו אימות דו-שלבי (חובה כדי
-   ליצור App Password).
-2. ב-[הגדרות אבטחה של Google](https://myaccount.google.com/apppasswords)
-   צרו "App Password" חדש (לדוגמה בשם "course-site").
-3. הגדירו ב-`.env`:
-   ```
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=youraddress@gmail.com
-   SMTP_PASS=<ה-App Password שקיבלתם, 16 תווים בלי רווחים>
-   SMTP_FROM=youraddress@gmail.com
-   ```
+Cloudflare Workers לא תומך בצורה אמינה בחיבורי SMTP גולמיים, ולכן שליחת המייל
+נעשית דרך ה-REST API של [Resend](https://resend.com) (יש חבילת חינם).
 
-זה מתאים להיקף שליחה קטן (כמה התראות איפוס סיסמה ביום). אם בעתיד תרצו
-נפח גדול יותר או כתובת שולח מהדומיין שלכם - אפשר לעבור לכל ספק דואר
-טרנזקציוני (SendGrid, Mailgun, Resend וכו') ולהשתמש בפרטי ה-SMTP שהם
-נותנים, בלי לשנות קוד.
+1. פתחו חשבון ב-[resend.com](https://resend.com) ואמתו דומיין שלכם (Domains →
+   Add Domain, ועדכון רשומות ה-DNS שמבקשים - אם הדומיין כבר מנוהל ב-Cloudflare,
+   קל להוסיף אותן שם).
+2. ב-**API Keys**, צרו מפתח חדש.
+3. הגדירו:
+   ```
+   RESEND_API_KEY=<המפתח שקיבלתם>
+   EMAIL_FROM=noreply@your-domain.co.il
+   ```
+   (`EMAIL_FROM` חייב להיות מהדומיין שאומת בשלב 1.)
+
+בפריסה בפועל מגדירים את שני אלה כ-secrets (`wrangler secret put`), לא ב-`.env`
+- ראו "פריסה ל-Cloudflare Workers" בהמשך.
 
 ## וידאו לשיעורים
 
@@ -136,59 +142,63 @@ npm run dev
 יהיה נגיש רק מתוך האתר שלכם, **Vimeo** מאפשר הגדרת "domain-level privacy"
 שמגבילה הטמעה רק לדומיין שלכם.
 
-## פריסה לאחסון עצמי (VPS)
+## פריסה ל-Cloudflare Workers
 
-1. דרישה: שרת עם **Node.js 22.5+**. (אם הספק שלכם מתקין Node ישן יותר -
-   צריך לשדרג, אחרת `node:sqlite` לא יעבוד.)
-2. העלו את כל התיקייה (חוץ מ-`node_modules` ו-`.next`) לשרת.
-3. בשרת:
+האתר בנוי לרוץ על [Cloudflare Workers](https://workers.cloudflare.com/) - אין
+שרת לנהל ואין צורך בדיסק קבוע, כי מסד הנתונים הוא Cloudflare D1 (מנוהל).
+
+הפריסה נעשית דרך [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare),
+ה-adapter הרשמי שממיר בנייה של Next.js להרצה על Workers.
+
+### הגדרה חד-פעמית
+
+1. התקינו והתחברו ל-Cloudflare (אם עוד לא):
    ```bash
    npm install
-   npm run build
+   npx wrangler login
    ```
-4. הריצו עם מנהל תהליכים כדי שהאתר יישאר פעיל וגם יקום מחדש לאחר קריסה
-   או הפעלה מחדש של השרת, למשל עם [pm2](https://pm2.keymetrics.io/):
+2. צרו מסד D1:
    ```bash
-   npm install -g pm2
-   pm2 start npm --name course-site -- start
-   pm2 save
-   pm2 startup
+   npx wrangler d1 create course-db
    ```
-5. הציבו **Nginx** (או שרת web אחר) כ-reverse proxy לפורט 3000, עם תעודת
-   SSL (למשל באמצעות `certbot`) - כדי שהאתר ירוץ על `https://` עם הדומיין
-   שלכם. תשלומים אמיתיים **חייבים** HTTPS.
-6. עדכנו את `SITE_URL` ב-`.env` לכתובת הדומיין האמיתית - כתובת ה-`ReturnUrl`
-   שנשלחת ל-Invoice4U נבנית אוטומטית ממנה, כך שאין צורך בעדכון נוסף.
-
-> **חשוב**: קובץ מסד הנתונים נשמר בתיקיית `data/` על דיסק השרת. כדי שהמידע
-> (משתמשים, תשלומים, שיעורים) לא יימחק בכל פריסה מחדש - ודאו שהתיקייה הזו
-> נשמרת בין פריסות (לא נמחקת/משוכתבת), וגבו אותה מדי פעם
-> (`cp -r data data-backup-$(date +%F)`). הפרויקט **לא** מתאים כמו שהוא
-> לאחסון serverless טהור (כמו Vercel) ללא דיסק קבוע, כי שם הקובץ יימחק בכל
-> deploy.
-
-### פריסה ל-Render
-
-Render הוא דוגמה נפוצה לפלטפורמה כזו, וטעון תשומת לב מיוחדת כי **שטח
-האחסון הרגיל של שירות Web Service ב-Render הוא ארעי (ephemeral)** - כל
-מה שלא על דיסק קבוע נמחק בכל פריסה מחדש (ולפעמים גם בכל הפעלה מחדש של
-השירות).
-
-1. בעמוד השירות ב-Render: **Disks** → הוסיפו דיסק קבוע (Persistent Disk),
-   ובחרו לו נתיב חיבור (Mount Path), למשל `/var/data`.
-2. בעמוד **Environment** של השירות, הוסיפו משתנה סביבה:
+   הפקודה תדפיס `database_id` - העתיקו אותו ל-`wrangler.jsonc`, לשדה
+   `d1_databases[0].database_id` (במקום `REPLACE_WITH_YOUR_DATABASE_ID`).
+3. הריצו את ה-migration (יוצר את הטבלאות ומזין נתוני ברירת מחדל) על המסד
+   האמיתי בענן:
+   ```bash
+   npm run db:migrate:remote
    ```
-   DATA_DIR=/var/data
+4. הגדירו את משתני הסביבה הרגישים כ-secrets (לא בקובץ `.env` - זה לא נשלח
+   לענן):
+   ```bash
+   npx wrangler secret put ADMIN_PASSWORD
+   npx wrangler secret put INVOICE4U_API_KEY
+   npx wrangler secret put INVOICE4U_CC_COMPANY
+   npx wrangler secret put SITE_URL
+   npx wrangler secret put RESEND_API_KEY
+   npx wrangler secret put EMAIL_FROM
    ```
-   (כך קובץ ה-SQLite יישמר על הדיסק הקבוע, ולא בתיקיית הפרויקט שנמחקת
-   בכל פריסה.)
-3. הגדירו גם את שאר משתני הסביבה (`SITE_URL`, `ADMIN_PASSWORD`,
-   `INVOICE4U_API_KEY`, `INVOICE4U_CC_COMPANY`) באותו עמוד.
-4. Build command: `npm install && npm run build`. Start command:
-   `npm start`.
 
-אם תפרסו בלי דיסק קבוע ובלי `DATA_DIR` - האתר יעבוד, אבל כל משתמש, תשלום
-ושינוי שעשיתם ב-`/admin` יימחקו בפריסה הבאה.
+### פריסה
+
+```bash
+npm run deploy
+```
+
+הפקודה בונה את האתר (`opennextjs-cloudflare build`) ומפרסמת אותו ל-Workers
+(`opennextjs-cloudflare deploy`). בסיום תודפס כתובת ה-`workers.dev` של האתר;
+לחיבור דומיין משלכם - **Workers & Pages → השירות → Settings → Domains &
+Routes** בדשבורד של Cloudflare.
+
+> **חשוב**: `SITE_URL` צריך לשקף את הדומיין שבו האתר ירוץ בפועל (כתובת
+> ה-`ReturnUrl` שנשלחת ל-Invoice4U נבנית ממנו) - עדכנו את ה-secret הזה
+> (`wrangler secret put SITE_URL`) ופרסו מחדש אחרי שחיברתם דומיין.
+
+לבדיקה מקומית של גרסת ה-build לפני פריסה (רץ מול D1 מקומי, לא הענן האמיתי):
+
+```bash
+npm run preview
+```
 
 ## מבנה הפרויקט (למי שרוצה להתאים)
 
@@ -202,11 +212,13 @@ app/
   admin/page.js          עמוד ניהול
   actions/             כל הלוגיקה בצד שרת (Server Actions)
 lib/
-  db.js                חיבור למסד הנתונים + יצירת הטבלאות
+  db.js                גישה למסד הנתונים (Cloudflare D1)
   auth.js, admin-auth.js   הרשמה/התחברות/הרשאות
   invoice4u.js         אינטגרציית הסליקה (Invoice4U Clearing API)
-  mailer.js            שליחת מייל איפוס סיסמה
+  mailer.js            שליחת מייל איפוס סיסמה (Resend)
   settings.js, video.js   עזרים
+migrations/
+  0001_init.sql        מבנה הטבלאות + נתוני ברירת מחדל (מורץ דרך wrangler d1 migrations)
 ```
 
 - **עיצוב**: כל הצבעים, הגופנים והרווחים מוגדרים כמשתני CSS בראש

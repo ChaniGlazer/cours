@@ -2,9 +2,10 @@
 
 import crypto from "node:crypto";
 import { redirect } from "next/navigation";
-import { db, nowIso } from "@/lib/db";
-import { getCurrentUser, markUserPaid } from "@/lib/auth";
-import { getSettings } from "@/lib/settings";
+import { getDb, nowIso } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
+import { getCourseBySlug } from "@/lib/courses";
+import { hasPurchasedCourse } from "@/lib/purchases";
 import { createClearingRequest, getClearingLogById } from "@/lib/invoice4u";
 
 function siteUrl() {
@@ -15,26 +16,35 @@ function siteUrl() {
   return url.replace(/\/$/, "");
 }
 
-export async function startPaymentAction() {
+export async function startPaymentAction(courseId) {
   const user = await getCurrentUser();
   if (!user) {
-    redirect("/login?next=/course");
-  }
-  if (user.paid) {
-    redirect("/course");
+    redirect(`/login?next=${encodeURIComponent(`/courses/${courseId}`)}`);
   }
 
-  const settings = getSettings();
-  const price = parseFloat(settings.price);
+  const course = await getCourseBySlug(courseId);
+  if (!course || !course.is_paid) {
+    redirect(`/courses/${courseId}`);
+  }
+
+  if (await hasPurchasedCourse(user.id, courseId)) {
+    redirect(`/courses/${courseId}`);
+  }
+
+  const price = course.price_ils;
   if (!price || price <= 0) {
-    redirect("/course?error=price_not_set");
+    redirect(`/courses/${courseId}?error=price_not_set`);
   }
 
   const paymentId = crypto.randomUUID();
   const timestamp = nowIso();
-  db.prepare(
-    "INSERT INTO payments (id, user_id, amount, status, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?)"
-  ).run(paymentId, user.id, price, timestamp, timestamp);
+  const db = await getDb();
+  await db
+    .prepare(
+      "INSERT INTO payments (id, user_id, amount, status, course_id, created_at, updated_at) VALUES (?, ?, ?, 'pending', ?, ?, ?)"
+    )
+    .bind(paymentId, user.id, price, courseId, timestamp, timestamp)
+    .run();
 
   const base = siteUrl();
 
@@ -44,29 +54,26 @@ export async function startPaymentAction() {
   try {
     const result = await createClearingRequest({
       sum: price,
-      description: settings.course_title || "רכישת קורס",
+      description: course.title,
       fullName: user.name,
       email: user.email,
       orderId: paymentId,
       returnUrl: `${base}/payment/success?order=${paymentId}`,
-      docHeadline: settings.course_title
+      docHeadline: course.title
     });
 
-    db.prepare("UPDATE payments SET clearing_log_id = ?, raw_log = ?, updated_at = ? WHERE id = ?").run(
-      result.clearingLogId,
-      JSON.stringify(result.raw).slice(0, 2000),
-      nowIso(),
-      paymentId
-    );
+    await db
+      .prepare("UPDATE payments SET clearing_log_id = ?, raw_log = ?, updated_at = ? WHERE id = ?")
+      .bind(result.clearingLogId, JSON.stringify(result.raw).slice(0, 2000), nowIso(), paymentId)
+      .run();
     paymentUrl = result.url;
   } catch (err) {
     console.error("[Invoice4U] יצירת בקשת סליקה נכשלה:", err);
-    db.prepare("UPDATE payments SET status = 'failed', raw_log = ?, updated_at = ? WHERE id = ?").run(
-      String(err?.message || err).slice(0, 2000),
-      nowIso(),
-      paymentId
-    );
-    redirect("/payment/cancel?reason=init_failed");
+    await db
+      .prepare("UPDATE payments SET status = 'failed', raw_log = ?, updated_at = ? WHERE id = ?")
+      .bind(String(err?.message || err).slice(0, 2000), nowIso(), paymentId)
+      .run();
+    redirect(`/payment/cancel?reason=init_failed&course=${courseId}`);
     return;
   }
 
@@ -75,7 +82,8 @@ export async function startPaymentAction() {
 
 export async function checkPaymentStatusAction(orderId) {
   if (!orderId) return { status: "unknown" };
-  const payment = db.prepare("SELECT * FROM payments WHERE id = ?").get(orderId);
+  const db = await getDb();
+  const payment = await db.prepare("SELECT * FROM payments WHERE id = ?").bind(orderId).first();
   if (!payment) return { status: "unknown" };
   if (payment.status !== "pending") return { status: payment.status };
   if (!payment.clearing_log_id) return { status: "pending" };
@@ -88,29 +96,32 @@ export async function checkPaymentStatusAction(orderId) {
 
     // תמיד שומרים את התגובה האחרונה, גם כשעדיין לא ברור אם שולם - כדי שאפשר יהיה
     // לבדוק ב-raw_log מה בדיוק Invoice4U מחזיר (בלי תלות בלוגים של השרת).
-    db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
-      JSON.stringify(result.raw).slice(0, 2000),
-      nowIso(),
-      orderId
-    );
+    await db
+      .prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?")
+      .bind(JSON.stringify(result.raw).slice(0, 2000), nowIso(), orderId)
+      .run();
 
     if (result.ok === true) {
-      db.prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?").run(nowIso(), orderId);
-      markUserPaid(payment.user_id);
-      return { status: "paid" };
+      await db
+        .prepare("UPDATE payments SET status = 'paid', updated_at = ? WHERE id = ?")
+        .bind(nowIso(), orderId)
+        .run();
+      return { status: "paid", courseId: payment.course_id };
     }
 
     if (result.ok === false) {
-      db.prepare("UPDATE payments SET status = 'failed', updated_at = ? WHERE id = ?").run(nowIso(), orderId);
+      await db
+        .prepare("UPDATE payments SET status = 'failed', updated_at = ? WHERE id = ?")
+        .bind(nowIso(), orderId)
+        .run();
       return { status: "failed" };
     }
   } catch (err) {
     console.error("[Invoice4U] שגיאה בבדיקת סטטוס סליקה:", err);
-    db.prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?").run(
-      `getClearingLogById error: ${String(err?.message || err).slice(0, 1900)}`,
-      nowIso(),
-      orderId
-    );
+    await db
+      .prepare("UPDATE payments SET raw_log = ?, updated_at = ? WHERE id = ?")
+      .bind(`getClearingLogById error: ${String(err?.message || err).slice(0, 1900)}`, nowIso(), orderId)
+      .run();
   }
 
   return { status: "pending" };
