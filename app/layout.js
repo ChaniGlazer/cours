@@ -2,11 +2,27 @@ import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
+import { SITE_URL, AUTHOR_NAME } from "@/lib/seo";
+
+const DEFAULT_DESCRIPTION =
+  "קורסים בעברית ללימוד פייתון ופיתוח אפליקציות בעידן ה-AI, עם שיעורים אינטראקטיביים ותרגילים. חלק מהקורסים חינמיים.";
 
 export async function generateMetadata() {
   const settings = await getSettings();
+  const brand = settings.site_title || "קורסים בעידן ה-AI";
   return {
-    title: settings.site_title || "קורסים בעידן ה-AI"
+    metadataBase: new URL(SITE_URL),
+    title: { default: brand, template: `%s | ${brand}` },
+    description: DEFAULT_DESCRIPTION,
+    authors: [{ name: AUTHOR_NAME }],
+    openGraph: {
+      type: "website",
+      locale: "he_IL",
+      siteName: brand,
+      title: brand,
+      description: DEFAULT_DESCRIPTION
+    },
+    twitter: { card: "summary", title: brand, description: DEFAULT_DESCRIPTION }
   };
 }
 

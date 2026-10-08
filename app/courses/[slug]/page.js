@@ -2,7 +2,26 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
+import { getApprovedTestimonials, getUserTestimonial } from "@/lib/testimonials";
+import TestimonialForm from "./TestimonialForm";
+import { CourseBadge } from "@/app/components/ui";
+import { CourseCta, CourseProgress, Syllabus } from "@/app/components/CourseClient";
 import { startPaymentAction } from "@/app/actions/payment";
+import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const course = await getCourseBySlug(slug);
+  if (!course) return { title: "הקורס לא נמצא", robots: { index: false } };
+  const description = toDescription(course.description, course.subtitle || course.title);
+  const path = `/courses/${course.id}`;
+  return {
+    title: course.title,
+    description,
+    alternates: { canonical: path },
+    openGraph: { type: "website", locale: "he_IL", url: path, title: course.title, description }
+  };
+}
 
 export default async function CoursePage({ params, searchParams }) {
   const { slug } = await params;
@@ -15,15 +34,40 @@ export default async function CoursePage({ params, searchParams }) {
   const hasAccess = !course.is_paid || purchased;
 
   const lessons = await getLessonsForCourse(course.id);
+  const openSlugs = lessons.filter((_, i) => !(course.is_paid && !hasAccess && i > 0)).map((l) => l.slug);
+  const testimonials = await getApprovedTestimonials(course.id);
+  const canReview = Boolean(user) && hasAccess && !course.coming_soon;
+  const myTestimonial = canReview ? await getUserTestimonial(user.id, course.id) : null;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.title,
+    description: toDescription(course.description, course.subtitle || course.title),
+    url: absoluteUrl(`/courses/${course.id}`),
+    inLanguage: "he",
+    provider: { "@type": "Person", name: AUTHOR_NAME },
+    offers: {
+      "@type": "Offer",
+      price: course.is_paid ? String(course.price_ils || 0) : "0",
+      priceCurrency: "ILS",
+      availability: course.coming_soon ? "https://schema.org/PreOrder" : "https://schema.org/InStock"
+    },
+    hasCourseInstance: { "@type": "CourseInstance", courseMode: "online", courseWorkload: "PT0S" }
+  };
 
   return (
     <>
-      <section className="section dark-section hero-section">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
+      <section className="section dark-section course-hero">
         <div className="container">
-          <span className={`course-badge ${course.is_paid ? "course-badge--paid" : "course-badge--free"}`}>
-            {course.is_paid ? `₪${course.price_ils}` : "חינם"}
-          </span>
-          <h1 style={{ marginTop: 14 }}>{course.title}</h1>
+          <nav className="crumbs" aria-label="פירורי לחם">
+            <a href="/courses">קורסים</a>
+            <span aria-hidden="true">›</span>
+            <span>{course.title}</span>
+          </nav>
+          <CourseBadge course={course} />
+          <h1>{course.title}</h1>
           {course.subtitle && (
             <p className="text-soft" style={{ fontSize: "1.15rem", maxWidth: 560 }}>
               {course.subtitle}
@@ -36,8 +80,12 @@ export default async function CoursePage({ params, searchParams }) {
             </div>
           )}
 
-          <div style={{ marginTop: 28, display: "flex", gap: 14, flexWrap: "wrap" }}>
-            {course.is_paid && !hasAccess ? (
+          <div className="course-hero__actions">
+            {course.coming_soon && !hasAccess ? (
+              <span className="btn btn-off" aria-disabled="true">
+                הקורס ייפתח בקרוב
+              </span>
+            ) : course.is_paid && !hasAccess ? (
               user ? (
                 <form action={startPaymentAction.bind(null, course.id)}>
                   <button type="submit" className="btn btn-primary">
@@ -50,15 +98,13 @@ export default async function CoursePage({ params, searchParams }) {
                 </a>
               )
             ) : (
-              lessons.length > 0 && (
-                <a href={`/courses/${course.id}/${lessons[0].slug}`} className="btn btn-primary">
-                  {hasAccess ? "המשך ללימוד" : "התחל ללמוד"}
-                </a>
+              openSlugs.length > 0 && (
+                <>
+                  <CourseCta courseId={course.id} slugs={openSlugs} />
+                  <CourseProgress courseId={course.id} slugs={openSlugs} />
+                </>
               )
             )}
-            <a href="#syllabus" className="btn btn-ghost">
-              לתוכן הקורס
-            </a>
           </div>
         </div>
       </section>
@@ -87,32 +133,77 @@ export default async function CoursePage({ params, searchParams }) {
           <span className="eyebrow">סילבוס</span>
           <h2 style={{ marginTop: 10 }}>שיעורי הקורס</h2>
 
-          {lessons.length === 0 ? (
+          {course.coming_soon && !hasAccess ? (
+            <div className="notice-soon">
+              הקורס הזה עדיין בהכנה ויפתח בקרוב. בינתיים אפשר לעבור לקורסים האחרים בקטלוג.{" "}
+              <a href="/courses">לקטלוג הקורסים</a>
+            </div>
+          ) : lessons.length === 0 ? (
             <p className="text-soft" style={{ marginTop: 20 }}>
               השיעורים יתעדכנו כאן בקרוב.
             </p>
           ) : (
-            <ol className="spine" style={{ marginTop: 36 }}>
-              {lessons.map((lesson, idx) => {
-                const locked = course.is_paid && !hasAccess && idx > 0;
-                return (
-                  <li key={lesson.id}>
-                    <span className="spine-num">{locked ? "🔒" : idx + 1}</span>
-                    {locked ? (
-                      <h3 className="text-soft">{lesson.title}</h3>
-                    ) : (
-                      <h3>
-                        <a href={`/courses/${course.id}/${lesson.slug}`}>{lesson.title}</a>
-                      </h3>
-                    )}
-                    {lesson.description && <p className="text-soft">{lesson.description}</p>}
-                  </li>
-                );
-              })}
-            </ol>
+            <Syllabus
+              courseId={course.id}
+              lessons={lessons.map((l, i) => ({
+                slug: l.slug,
+                title: l.title,
+                description: l.description,
+                locked: course.is_paid && !hasAccess && i > 0
+              }))}
+            />
           )}
         </div>
       </section>
+
+      {(testimonials.length > 0 || canReview) && (
+        <section className="section section--tight" id="testimonials">
+          <div className="container">
+            <span className="eyebrow">המלצות</span>
+            <h2 style={{ marginTop: 10 }}>מה אומרים התלמידים</h2>
+
+            {testimonials.length === 0 && (
+              <p className="empty-note">עדיין אין המלצות על הקורס. אחרי שתסיימו ללמוד, אפשר להיות הראשונים לכתוב.</p>
+            )}
+
+            {testimonials.length > 0 && (
+              <div className="testimonial-grid">
+                {testimonials.map((t) => (
+                  <figure className="testimonial-card" key={t.id}>
+                    <blockquote>“{t.quote}”</blockquote>
+                    {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
+                    <figcaption>
+                      {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
+                      <span>
+                        <strong>{t.name}</strong>
+                        {t.role && <small>{t.role}</small>}
+                      </span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            )}
+
+            {!course.coming_soon && (
+              <div style={{ marginTop: 32, maxWidth: 640 }}>
+                {canReview ? (
+                  <TestimonialForm courseId={course.id} defaultName={user.name} existing={myTestimonial} />
+                ) : !user ? (
+                  <p className="text-soft">
+                    למדתם בקורס?{" "}
+                    <a href={`/login?next=${encodeURIComponent(`/courses/${course.id}#testimonials`)}`}>
+                      התחברו כדי לכתוב המלצה
+                    </a>
+                    .
+                  </p>
+                ) : (
+                  <p className="text-soft">כתיבת המלצה פתוחה לתלמידים שרכשו את הקורס.</p>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </>
   );
 }

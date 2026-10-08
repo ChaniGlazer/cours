@@ -19,3 +19,5 @@ export default async function PaymentCancelPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };

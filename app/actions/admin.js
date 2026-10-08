@@ -2,6 +2,7 @@
 
 import crypto from "node:crypto";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { getDb, nowIso } from "@/lib/db";
 import { updateSettings } from "@/lib/settings";
 import { slugify } from "@/lib/courses";
@@ -26,6 +27,12 @@ export async function adminLogoutAction() {
   redirect("/admin");
 }
 
+const fail = (error) => ({ ok: false, error, ts: Date.now() });
+const done = (message, extra = {}) => {
+  revalidatePath("/admin");
+  return { ok: true, message, ts: Date.now(), ...extra };
+};
+
 const SETTINGS_TEXT_FIELDS = [
   "site_title",
   "instructor_name",
@@ -34,7 +41,7 @@ const SETTINGS_TEXT_FIELDS = [
   "guarantee_text"
 ];
 
-export async function updateSettingsAction(formData) {
+export async function updateSettingsAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const values = {};
@@ -43,10 +50,10 @@ export async function updateSettingsAction(formData) {
   }
 
   await updateSettings(values);
-  redirect("/admin?saved=settings");
+  return done("ההגדרות נשמרו");
 }
 
-export async function createTestimonialAction(formData) {
+export async function createTestimonialAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const name = (formData.get("name") || "").toString().trim();
@@ -57,20 +64,21 @@ export async function createTestimonialAction(formData) {
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
   const position = Number.isFinite(positionRaw) ? positionRaw : 0;
 
-  if (!name || !quote) redirect("/admin?error=testimonial_fields");
+  if (!name || !quote) return fail("יש להזין שם וטקסט המלצה.");
 
+  const newId = crypto.randomUUID();
   const db = await getDb();
   await db
     .prepare(
       "INSERT INTO testimonials (id, name, role, quote, result, photo_url, position, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     )
-    .bind(crypto.randomUUID(), name, role, quote, result, photo_url, position, nowIso())
+    .bind(newId, name, role, quote, result, photo_url, position, nowIso())
     .run();
 
-  redirect("/admin?saved=testimonial");
+  return done("ההמלצה נוספה", { createdId: newId });
 }
 
-export async function updateTestimonialAction(formData) {
+export async function updateTestimonialAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const id = (formData.get("id") || "").toString();
@@ -79,33 +87,36 @@ export async function updateTestimonialAction(formData) {
   const quote = (formData.get("quote") || "").toString().trim();
   const result = (formData.get("result") || "").toString().trim();
   const photo_url = (formData.get("photo_url") || "").toString().trim();
+  const statusRaw = (formData.get("status") || "").toString();
+  const status = ["approved", "pending", "rejected"].includes(statusRaw) ? statusRaw : "approved";
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
   const position = Number.isFinite(positionRaw) ? positionRaw : 0;
 
-  if (!id || !name || !quote) redirect("/admin?error=testimonial_fields");
+  if (!id || !name || !quote) return fail("יש להזין שם וטקסט המלצה.");
 
   const db = await getDb();
   await db
     .prepare(
-      "UPDATE testimonials SET name = ?, role = ?, quote = ?, result = ?, photo_url = ?, position = ? WHERE id = ?"
+      "UPDATE testimonials SET name = ?, role = ?, quote = ?, result = ?, photo_url = ?, position = ?, status = ? WHERE id = ?"
     )
-    .bind(name, role, quote, result, photo_url, position, id)
+    .bind(name, role, quote, result, photo_url, position, status, id)
     .run();
 
-  redirect("/admin?saved=testimonial");
+  revalidatePath("/courses", "layout");
+  return done(status === "approved" ? "ההמלצה נשמרה ומוצגת באתר" : status === "pending" ? "ההמלצה נשמרה וממתינה לאישור" : "ההמלצה נשמרה ולא תוצג");
 }
 
-export async function deleteTestimonialAction(formData) {
+export async function deleteTestimonialAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
   const id = (formData.get("id") || "").toString();
   if (id) {
     const db = await getDb();
     await db.prepare("DELETE FROM testimonials WHERE id = ?").bind(id).run();
   }
-  redirect("/admin?saved=testimonial");
+  return done("ההמלצה נמחקה", { deleted: true });
 }
 
-export async function createCourseAction(formData) {
+export async function createCourseAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const title = (formData.get("title") || "").toString().trim();
@@ -115,7 +126,7 @@ export async function createCourseAction(formData) {
   const priceRaw = parseInt((formData.get("price_ils") || "").toString(), 10);
   const price_ils = Number.isFinite(priceRaw) ? priceRaw : null;
 
-  if (!title) redirect("/admin?error=course_title");
+  if (!title) return fail("יש להזין כותרת לקורס.");
 
   const id = slugify(title, crypto.randomUUID().slice(0, 8));
 
@@ -130,10 +141,10 @@ export async function createCourseAction(formData) {
     .bind(id, title, subtitle, description, is_paid, price_ils, maxPosition + 1, nowIso())
     .run();
 
-  redirect("/admin?saved=course");
+  return done("הקורס נוצר (חינמי כברירת מחדל)", { createdId: id });
 }
 
-export async function updateCourseAction(formData) {
+export async function updateCourseAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const id = (formData.get("id") || "").toString();
@@ -141,25 +152,26 @@ export async function updateCourseAction(formData) {
   const subtitle = (formData.get("subtitle") || "").toString().trim();
   const description = (formData.get("description") || "").toString().trim();
   const is_paid = formData.get("is_paid") ? 1 : 0;
+  const coming_soon = formData.get("coming_soon") ? 1 : 0;
   const priceRaw = parseInt((formData.get("price_ils") || "").toString(), 10);
   const price_ils = Number.isFinite(priceRaw) ? priceRaw : null;
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
   const position = Number.isFinite(positionRaw) ? positionRaw : 0;
 
-  if (!id || !title) redirect("/admin?error=course_title");
+  if (!id || !title) return fail("יש להזין כותרת לקורס.");
 
   const db = await getDb();
   await db
     .prepare(
-      "UPDATE courses SET title = ?, subtitle = ?, description = ?, is_paid = ?, price_ils = ?, position = ? WHERE id = ?"
+      "UPDATE courses SET title = ?, subtitle = ?, description = ?, is_paid = ?, coming_soon = ?, price_ils = ?, position = ? WHERE id = ?"
     )
-    .bind(title, subtitle, description, is_paid, price_ils, position, id)
+    .bind(title, subtitle, description, is_paid, coming_soon, price_ils, position, id)
     .run();
 
-  redirect("/admin?saved=course");
+  return done("הקורס נשמר");
 }
 
-export async function createLessonAction(formData) {
+export async function createLessonAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const course_id = (formData.get("course_id") || "").toString();
@@ -169,7 +181,7 @@ export async function createLessonAction(formData) {
   const html_content = (formData.get("html_content") || "").toString();
   const positionRaw = parseInt((formData.get("position") || "").toString(), 10);
 
-  if (!title || !course_id) redirect("/admin?error=lesson_title");
+  if (!title || !course_id) return fail("יש להזין כותרת לשיעור ולבחור קורס.");
 
   const db = await getDb();
 
@@ -181,18 +193,19 @@ export async function createLessonAction(formData) {
 
   const slugInput = (formData.get("slug") || "").toString().trim();
   const slug = slugify(slugInput || title, crypto.randomUUID().slice(0, 8));
+  const newId = crypto.randomUUID();
 
   await db
     .prepare(
       "INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     )
-    .bind(crypto.randomUUID(), course_id, slug, title, description, video_url, html_content, position, nowIso())
+    .bind(newId, course_id, slug, title, description, video_url, html_content, position, nowIso())
     .run();
 
-  redirect("/admin?saved=lesson");
+  return done("השיעור נוסף", { createdId: newId });
 }
 
-export async function updateLessonAction(formData) {
+export async function updateLessonAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
 
   const id = (formData.get("id") || "").toString();
@@ -206,7 +219,7 @@ export async function updateLessonAction(formData) {
   const slugInput = (formData.get("slug") || "").toString().trim();
   const slug = slugify(slugInput || title, id.slice(0, 8));
 
-  if (!id || !title || !course_id) redirect("/admin?error=lesson_title");
+  if (!id || !title || !course_id) return fail("יש להזין כותרת לשיעור ולבחור קורס.");
 
   const db = await getDb();
   await db
@@ -216,15 +229,15 @@ export async function updateLessonAction(formData) {
     .bind(course_id, slug, title, description, video_url, html_content, position, id)
     .run();
 
-  redirect("/admin?saved=lesson");
+  return done("השיעור נשמר");
 }
 
-export async function deleteLessonAction(formData) {
+export async function deleteLessonAction(_prev, formData) {
   if (!(await isAdmin())) redirect("/admin");
   const id = (formData.get("id") || "").toString();
   if (id) {
     const db = await getDb();
     await db.prepare("DELETE FROM lessons WHERE id = ?").bind(id).run();
   }
-  redirect("/admin?saved=lesson");
+  return done("השיעור נמחק", { deleted: true });
 }

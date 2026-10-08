@@ -57,3 +57,5 @@ export default async function RegisterPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };

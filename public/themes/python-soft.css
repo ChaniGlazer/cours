@@ -1,0 +1,620 @@
+/* themes/python-soft.css
+ *
+ * ערכת נושא "python-soft": בהירה, רכה ועגולה, לקורסים שמוגדר להם theme = 'python-soft'.
+ * קובץ יחיד שמשרת שני הקשרים, ובשניהם הכללים מוגבלים לערכה (אין דליפה לקורסים אחרים):
+ *   1. מעטפת האתר (כותרת, עמוד קורס, עמוד שיעור): מוגבל ל-.theme-python-soft ול-body:has(.theme-python-soft).
+ *   2. תוכן השיעור (iframe): מוגבל ל-html[data-theme="python-soft"]. השיעורים עצמם לא נערכים;
+ *      הקובץ הזה נטען אחריהם ודורס רק מראה (משתני צבע, רקעים, פינות, צללים, פריסה).
+ * מראה בלבד: אין כאן שום שינוי טקסט, מבנה או התנהגות.
+ *
+ * הערה לגבי ניגודיות: כל צבע של טקסט נבחר לעמוד ב-AA (4.5:1) על הרקע שלו. לכן גווני הטקסט
+ * (--ps-*-ink) כהים מעט מגווני המילוי, והכפתור הראשי עמוק במעט מהגרדיאנט שבייחוס.
+ */
+
+/* ---------- 1. טוקנים (משותפים) ---------- */
+.theme-python-soft,
+body:has(.theme-python-soft),
+html[data-theme="python-soft"] {
+  --ps-bg: #F5F3FF;
+  --ps-panel: #FFFFFF;
+  --ps-panel-2: #F0EEFF;
+  --ps-ink: #25224F;
+  --ps-ink-dim: #4F4C78;
+  --ps-ink-faint: #6E6A94;
+  --ps-primary: #5B6CFF;
+  --ps-primary-ink: #3F4FE0;
+  --ps-primary-2: #8B6BFF;
+  --ps-primary-soft: #E8EBFF;
+  --ps-accent: #FF7B6B;
+  --ps-accent-ink: #BF3F2B;
+  --ps-accent-soft: #FFE8E3;
+  --ps-success: #1FB985;
+  --ps-success-ink: #0B7A55;
+  --ps-success-soft: #DDF7EC;
+  --ps-danger: #E5486A;
+  --ps-danger-ink: #C21F45;
+  --ps-danger-soft: #FFE4EA;
+  --ps-warn: #D98A00;
+  --ps-warn-ink: #8F5C00;
+  --ps-warn-soft: #FFF0D4;
+  --ps-line: rgba(91, 108, 255, 0.14);
+  --ps-line-strong: rgba(91, 108, 255, 0.28);
+  --ps-radius: 28px;
+  --ps-shadow: 0 1px 2px rgba(50, 40, 140, 0.05), 0 16px 48px -16px rgba(60, 50, 150, 0.24);
+  --ps-shadow-sm: 0 1px 2px rgba(50, 40, 140, 0.05), 0 8px 24px -10px rgba(60, 50, 150, 0.2);
+  --ps-code-bg: #221F55;
+  --ps-code-head: #2D2A72;
+  --ps-code-ink: #ECEBFF;
+  --ps-btn: linear-gradient(135deg, #4F60F5, #7A5AF5);
+  --ps-btn-shadow: 0 12px 26px -12px rgba(91, 108, 255, 0.8);
+  --ps-btn-green: linear-gradient(135deg, #1AA37A, #0B7A55);
+  --ps-display: "Rubik", "Assistant", sans-serif;
+  --ps-sans: "Assistant", "Heebo", sans-serif;
+  --ps-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* ---------- 2. תוכן השיעור (iframe) ---------- */
+
+/* 2a. מיפוי משתני הצבע של השיעורים הקיימים לערכה (אוצר המילים שלהם משותף) */
+html[data-theme="python-soft"] {
+  color-scheme: light;
+  --bg: var(--ps-bg); --bg-panel: var(--ps-panel); --bg-panel-2: var(--ps-panel-2);
+  --ink: var(--ps-ink); --ink-dim: var(--ps-ink-dim); --ink-faint: var(--ps-ink-faint);
+  --line: var(--ps-line); --line-strong: var(--ps-line-strong);
+  --radius: var(--ps-radius);
+  --display: var(--ps-display); --sans: var(--ps-sans); --mono: var(--ps-mono);
+  /* צבע ראשי: אינדיגו. הבחנה שניה: קורל */
+  --main: var(--ps-primary-ink); --main-soft: var(--ps-primary-soft);
+  --for: var(--ps-primary-ink); --for-soft: var(--ps-primary-soft);
+  --while: var(--ps-accent-ink); --while-soft: var(--ps-accent-soft);
+  --short: var(--ps-success-ink); --short-soft: var(--ps-success-soft);
+  --pink: var(--ps-accent-ink); --pink-soft: var(--ps-accent-soft);
+  --star: var(--ps-warn-ink); --star-soft: var(--ps-warn-soft);
+  --teal: var(--ps-accent-ink); --teal-soft: var(--ps-accent-soft);
+  --var: var(--ps-primary-2); --var-soft: var(--ps-primary-soft);
+  --inp: var(--ps-accent-ink); --inp-soft: var(--ps-accent-soft);
+  --amber: var(--ps-warn-ink);
+  --success: var(--ps-success-ink); --success-soft: var(--ps-success-soft);
+  --yes: var(--ps-success-ink); --yes-soft: var(--ps-success-soft);
+  --danger: var(--ps-danger-ink); --danger-soft: var(--ps-danger-soft);
+  --no: var(--ps-danger-ink); --no-soft: var(--ps-danger-soft);
+  /* שיעורי "מילונים" משתמשים באוצר מילים אחר */
+  --gold: var(--ps-primary-ink); --gold-text: var(--ps-primary-ink); --gold-soft: var(--ps-primary-soft);
+  --moss: var(--ps-success-ink); --moss-soft: var(--ps-success-soft);
+  --rust: var(--ps-accent-ink); --rust-soft: var(--ps-accent-soft);
+  --code-bg: var(--ps-code-bg); --code-head: var(--ps-code-head); --code-ink: var(--ps-code-ink);
+  --tok-kw: #C4A7FF; --tok-str: #9BE8B5; --tok-fn: #8FB4FF; --tok-num: #FFD08A; --tok-cmt: #A5A2D6;
+}
+
+html[data-theme="python-soft"],
+html[data-theme="python-soft"] body { background: transparent; }
+html[data-theme="python-soft"] body {
+  color: var(--ps-ink);
+  font-family: var(--ps-sans);
+  font-size: 18px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+html[data-theme="python-soft"] body::before { content: none; }
+html[data-theme="python-soft"] ::selection { background: var(--ps-primary); color: #fff; }
+
+/* פריסה: התוכן נפרש לרוחב, ופסקאות נשארות קריאות */
+html[data-theme="python-soft"] .wrap {
+  max-width: 1560px;
+  padding-inline: clamp(20px, 5vw, 84px);
+}
+html[data-theme="python-soft"] .wrap > p,
+html[data-theme="python-soft"] .lede,
+html[data-theme="python-soft"] .hero-sub { max-width: 66ch; }
+html[data-theme="python-soft"] .hero .hero-sub { margin-inline: auto; }
+html[data-theme="python-soft"] section { padding-block: clamp(56px, 6.5vw, 100px); border-top: 0; }
+html[data-theme="python-soft"] section + section { border-top: 0; }
+html[data-theme="python-soft"] section:nth-of-type(even) { background: rgba(255, 255, 255, 0.55); }
+
+/* טיפוגרפיה */
+html[data-theme="python-soft"] h1,
+html[data-theme="python-soft"] h2,
+html[data-theme="python-soft"] h3,
+html[data-theme="python-soft"] h4 { font-family: var(--ps-display); font-weight: 700; color: var(--ps-ink); letter-spacing: -0.005em; }
+html[data-theme="python-soft"] h1 { font-weight: 800; }
+html[data-theme="python-soft"] p { color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] p strong, html[data-theme="python-soft"] li strong { color: var(--ps-ink); }
+html[data-theme="python-soft"] h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+html[data-theme="python-soft"] .hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1.12; }
+html[data-theme="python-soft"] .lede { font-size: clamp(18px, 1.5vw, 20px); }
+html[data-theme="python-soft"] .accent,
+html[data-theme="python-soft"] .accent-for,
+html[data-theme="python-soft"] .a1 {
+  background: linear-gradient(90deg, #4455EA, #8B6BFF); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+html[data-theme="python-soft"] .accent-while,
+html[data-theme="python-soft"] .a2 {
+  background: linear-gradient(90deg, #D4452F, #E8794E); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+html[data-theme="python-soft"] button:focus-visible,
+html[data-theme="python-soft"] a:focus-visible,
+html[data-theme="python-soft"] input:focus-visible,
+html[data-theme="python-soft"] textarea:focus-visible,
+html[data-theme="python-soft"] summary:focus-visible { outline: 3px solid rgba(63, 79, 224, 0.55); outline-offset: 3px; }
+
+/* תגיות (eyebrow / badge / pill) */
+html[data-theme="python-soft"] .eyebrow {
+  display: inline-block; font-family: var(--ps-sans); font-weight: 700; font-size: 14px; letter-spacing: 0.02em;
+  color: var(--ps-primary-ink); background: var(--ps-primary-soft); border: 0; border-radius: 100px; padding: 4px 16px; margin-bottom: 14px;
+}
+html[data-theme="python-soft"] .hero .eyebrow { display: inline-flex !important; justify-content: center; }
+html[data-theme="python-soft"] .eyebrow.while-c,
+html[data-theme="python-soft"] .eyebrow.rust { color: var(--ps-accent-ink); background: var(--ps-accent-soft); }
+html[data-theme="python-soft"] .eyebrow.gold { color: var(--ps-primary-ink); background: var(--ps-primary-soft); }
+html[data-theme="python-soft"] .banner .badge,
+html[data-theme="python-soft"] .exercises-banner .badge {
+  background: var(--ps-btn); color: #fff; font-family: var(--ps-sans); border-radius: 100px;
+}
+
+/* שורת השם העליונה */
+html[data-theme="python-soft"] .name-bar { background: rgba(255, 255, 255, 0.75); border-bottom: 1px solid var(--ps-line); backdrop-filter: blur(14px); }
+html[data-theme="python-soft"] .name-bar-input { background: var(--ps-panel-2); border: 2px solid transparent; border-radius: 100px; }
+html[data-theme="python-soft"] .name-bar-input:focus { border-color: var(--ps-primary); background: #fff; }
+html[data-theme="python-soft"] .name-bar-jump { background: var(--ps-primary-soft); color: var(--ps-primary-ink); border: 0; font-family: var(--ps-display); }
+html[data-theme="python-soft"] .name-bar-jump:hover { background: var(--ps-primary); color: #fff; }
+
+/* כרטיסים */
+html[data-theme="python-soft"] .panel,
+html[data-theme="python-soft"] .playground,
+html[data-theme="python-soft"] .teaser,
+html[data-theme="python-soft"] .range-explainer,
+html[data-theme="python-soft"] .balloon-game,
+html[data-theme="python-soft"] .detective-card,
+html[data-theme="python-soft"] .exercise-card,
+html[data-theme="python-soft"] .ex-card,
+html[data-theme="python-soft"] .task-card,
+html[data-theme="python-soft"] .q-card,
+html[data-theme="python-soft"] .quiz-card,
+html[data-theme="python-soft"] .rescue,
+html[data-theme="python-soft"] .certificate-box,
+html[data-theme="python-soft"] .code-card:not(.solo-code),
+html[data-theme="python-soft"] .case,
+html[data-theme="python-soft"] .tbl-wrap {
+  background: var(--ps-panel); border: 1px solid rgba(91, 108, 255, 0.07); border-radius: var(--ps-radius); box-shadow: var(--ps-shadow); overflow: hidden;
+}
+html[data-theme="python-soft"] .exercise-card,
+html[data-theme="python-soft"] .ex-card,
+html[data-theme="python-soft"] .task-card { overflow: visible; }
+html[data-theme="python-soft"] .rescue { border-color: rgba(229, 72, 106, 0.28); }
+html[data-theme="python-soft"] .rescue.fixed { border-color: rgba(31, 185, 133, 0.4); }
+html[data-theme="python-soft"] .code-card.solo-code { background: var(--ps-code-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 14px 34px -16px rgba(34, 31, 85, 0.55); border: 0; }
+html[data-theme="python-soft"] .code-card-label { background: var(--ps-code-head); color: #C9C6F0; border-bottom: 0; }
+html[data-theme="python-soft"] .code-card:not(.solo-code) .code-card-label { background: transparent; color: var(--ps-ink-dim); border-bottom: 1px solid var(--ps-line); }
+html[data-theme="python-soft"] .panel-bar,
+html[data-theme="python-soft"] .panel-foot,
+html[data-theme="python-soft"] .playground-controls,
+html[data-theme="python-soft"] .pg-bar,
+html[data-theme="python-soft"] .guess-row,
+html[data-theme="python-soft"] .field-row { border-color: var(--ps-line); }
+html[data-theme="python-soft"] .exercise-card.for-accent,
+html[data-theme="python-soft"] .exercise-card.while-accent,
+html[data-theme="python-soft"] .exercise-card.rust,
+html[data-theme="python-soft"] .ex-card,
+html[data-theme="python-soft"] .task-card,
+html[data-theme="python-soft"] .exercise-card { border-inline-start: 6px solid var(--ps-primary); }
+html[data-theme="python-soft"] .exercise-card.while-accent,
+html[data-theme="python-soft"] .exercise-card.rust { border-inline-start-color: var(--ps-accent); }
+html[data-theme="python-soft"] .banner,
+html[data-theme="python-soft"] .exercises-banner {
+  background: linear-gradient(135deg, var(--ps-primary-soft), var(--ps-accent-soft)); border: 1px solid var(--ps-line); border-radius: var(--ps-radius); box-shadow: var(--ps-shadow-sm);
+}
+html[data-theme="python-soft"] .banner p,
+html[data-theme="python-soft"] .exercises-banner p { color: var(--ps-ink); }
+
+/* קולאאוטים */
+html[data-theme="python-soft"] .callout {
+  background: var(--ps-primary-soft); border: 1px solid rgba(91, 108, 255, 0.2); border-inline-start: 1px solid rgba(91, 108, 255, 0.2);
+  border-radius: 20px; padding: 16px 22px; color: var(--ps-ink);
+}
+html[data-theme="python-soft"] .callout.java { background: var(--ps-accent-soft); border-color: rgba(255, 123, 107, 0.3); }
+html[data-theme="python-soft"] .ai-note,
+html[data-theme="python-soft"] .em-ask { background: var(--ps-warn-soft); border: 1px solid rgba(217, 138, 0, 0.22); border-radius: 20px; color: var(--ps-ink); }
+html[data-theme="python-soft"] .teaser-result { color: var(--ps-ink); border-top-color: var(--ps-line); }
+
+/* בלוקי קוד */
+html[data-theme="python-soft"] pre.code-static,
+html[data-theme="python-soft"] .codeblock,
+html[data-theme="python-soft"] .playground-code,
+html[data-theme="python-soft"] .balloon-code,
+html[data-theme="python-soft"] .detective-code,
+html[data-theme="python-soft"] .detective-output,
+html[data-theme="python-soft"] .detective-out,
+html[data-theme="python-soft"] .q-card pre,
+html[data-theme="python-soft"] .exercise-code,
+html[data-theme="python-soft"] .ex-code,
+html[data-theme="python-soft"] .rescue pre,
+html[data-theme="python-soft"] .run-code,
+html[data-theme="python-soft"] .log,
+html[data-theme="python-soft"] .out-box,
+html[data-theme="python-soft"] .tree,
+html[data-theme="python-soft"] .exercise-hint {
+  background: var(--ps-code-bg); color: var(--ps-code-ink); border-radius: 20px; border-color: transparent;
+}
+html[data-theme="python-soft"] .code-card pre { color: var(--ps-code-ink); }
+html[data-theme="python-soft"] .code-card:not(.solo-code) pre { background: var(--ps-code-bg); margin: 0 16px 16px; border-radius: 16px; }
+html[data-theme="python-soft"] .codeblock .line.hit,
+html[data-theme="python-soft"] .playground-code .line.active,
+html[data-theme="python-soft"] .balloon-code .line.active { background: rgba(196, 167, 255, 0.22); box-shadow: inset 3px 0 0 #C4A7FF; }
+html[data-theme="python-soft"] .codeblock .note { color: #B9B6E8; }
+html[data-theme="python-soft"] .codeblock .note.on { color: #7CE8B5; }
+html[data-theme="python-soft"] .tok-kw { color: #C4A7FF; }
+html[data-theme="python-soft"] .tok-str { color: #9BE8B5; }
+html[data-theme="python-soft"] .tok-fn { color: #8FB4FF; }
+html[data-theme="python-soft"] .tok-num { color: #FFD08A; }
+html[data-theme="python-soft"] .tok-bool { color: #FFD08A; }
+html[data-theme="python-soft"] .tok-var { color: var(--ps-code-ink); }
+html[data-theme="python-soft"] .tok-com,
+html[data-theme="python-soft"] .tok-cm,
+html[data-theme="python-soft"] .tok-cmt { color: #A5A2D6; font-style: italic; }
+html[data-theme="python-soft"] .exercise-output,
+html[data-theme="python-soft"] .exercise-hint,
+html[data-theme="python-soft"] .ex-out { background: var(--ps-panel-2); color: var(--ps-ink-dim); border-radius: 16px; }
+html[data-theme="python-soft"] .exercise-hint { background: var(--ps-code-bg); color: var(--ps-code-ink); }
+html[data-theme="python-soft"] .log .res,
+html[data-theme="python-soft"] .out-box .ok { color: #FFD08A; }
+html[data-theme="python-soft"] .log .bad,
+html[data-theme="python-soft"] .out-box .bad { color: #FF9FB2; }
+html[data-theme="python-soft"] .log .arrow,
+html[data-theme="python-soft"] .out-box .cap { color: #A5A2D6; }
+html[data-theme="python-soft"] .log .empty { color: #A5A2D6; }
+html[data-theme="python-soft"] .playground-code .line.err { background: rgba(255, 159, 178, 0.18); box-shadow: inset 3px 0 0 #FF9FB2; color: #FFC2CE; }
+html[data-theme="python-soft"] .playground-code .line.out { color: #FFD08A; }
+html[data-theme="python-soft"] .run-code .line.active { background: var(--ps-code-head); box-shadow: inset 3px 0 0 #C4A7FF; }
+html[data-theme="python-soft"] .exercise-code input,
+html[data-theme="python-soft"] .ex-code input,
+html[data-theme="python-soft"] .detective-code input,
+html[data-theme="python-soft"] .code-in { background: #fff; color: var(--ps-ink); border: 2px solid transparent; border-radius: 10px; }
+html[data-theme="python-soft"] .exercise-code input:focus,
+html[data-theme="python-soft"] .ex-code input:focus,
+html[data-theme="python-soft"] .code-in:focus { outline: none; border-color: var(--ps-primary); }
+html[data-theme="python-soft"] .tree .key { color: #8FB4FF; }
+html[data-theme="python-soft"] .tree .leaf { background: var(--ps-code-head); color: #FFD08A; border: 1px solid rgba(255, 255, 255, 0.18); }
+html[data-theme="python-soft"] .tree .leaf.on { background: #FFD08A; color: var(--ps-code-bg); }
+
+/* בתוך בלוקי קוד כהים: גווני ההדגשה של השיעור מוחלפים בגרסאות בהירות (הגרסאות הכהות נועדו לרקע בהיר) */
+html[data-theme="python-soft"] :is(.codeblock, .playground-code, .balloon-code, .detective-code, .detective-output, .detective-out, .exercise-code, .ex-code, .q-card pre, .rescue pre, .run-code, .log, .tree, .out-box, .exercise-hint, pre.code-static, .code-card.solo-code, .puz-pane.target) {
+  --main: #C4A7FF; --for: #8FB4FF; --while: #FFB4A8; --short: #9BE8B5; --pink: #FFB4A8; --star: #FFD08A; --teal: #FFB4A8;
+  --var: #C4A7FF; --inp: #FFB4A8; --amber: #FFD08A; --yes: #9BE8B5; --no: #FF9FB2; --success: #9BE8B5; --danger: #FF9FB2;
+  --gold: #FFD08A; --gold-text: #FFD08A; --moss: #9BE8B5; --rust: #FFB4A8;
+  --ink: #ECEBFF; --ink-dim: #CFCCF2; --ink-faint: #A5A2D6;
+  --main-soft: rgba(196, 167, 255, 0.22); --for-soft: rgba(143, 180, 255, 0.22); --while-soft: rgba(255, 180, 168, 0.2);
+  --short-soft: rgba(155, 232, 181, 0.2); --pink-soft: rgba(255, 180, 168, 0.2); --star-soft: rgba(255, 208, 138, 0.2);
+  --teal-soft: rgba(255, 180, 168, 0.2); --var-soft: rgba(196, 167, 255, 0.22); --inp-soft: rgba(255, 180, 168, 0.2);
+  --yes-soft: rgba(155, 232, 181, 0.2); --no-soft: rgba(255, 159, 178, 0.2); --success-soft: rgba(155, 232, 181, 0.2); --danger-soft: rgba(255, 159, 178, 0.2);
+}
+html[data-theme="python-soft"] :is(.codeblock, .playground-code, .balloon-code, .detective-code, .run-code) .line { color: var(--ps-code-ink); }
+html[data-theme="python-soft"] .code-card.solo-code .code-card-label { color: #C9C6F0; }
+html[data-theme="python-soft"] .code-card .code-card-label { color: #C9C6F0; }
+html[data-theme="python-soft"] .code-card:not(.solo-code) .code-card-label { color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] :is(.codeblock, .playground-code, .balloon-code, .detective-code, .run-code) .line.active,
+html[data-theme="python-soft"] :is(.codeblock, .playground-code, .balloon-code, .detective-code, .run-code) .line.hit { background: rgba(196, 167, 255, 0.22); box-shadow: inset 3px 0 0 #C4A7FF; }
+html[data-theme="python-soft"] .kv .arrow { color: var(--ps-ink-dim); }
+
+/* שדות קלט */
+html[data-theme="python-soft"] input[type="text"],
+html[data-theme="python-soft"] input[type="number"],
+html[data-theme="python-soft"] select,
+html[data-theme="python-soft"] textarea,
+html[data-theme="python-soft"] .txt-in {
+  background: var(--ps-panel-2); color: var(--ps-ink); border: 2px solid transparent; border-radius: 14px;
+}
+html[data-theme="python-soft"] input[type="text"]:focus,
+html[data-theme="python-soft"] input[type="number"]:focus,
+html[data-theme="python-soft"] textarea:focus,
+html[data-theme="python-soft"] .exercise-answer:focus { outline: none; border-color: var(--ps-primary); background: #fff; }
+html[data-theme="python-soft"] .exercise-answer,
+html[data-theme="python-soft"] .ex-answer,
+html[data-theme="python-soft"] .cert-fallback-text { background: var(--ps-panel-2); border: 2px solid transparent; border-radius: 16px; color: var(--ps-ink); }
+html[data-theme="python-soft"] input[type="range"] { accent-color: #6C7BFF; }
+
+/* כפתורים: ראשי (גרדיאנט), משני (לבן), פעיל (רך) */
+html[data-theme="python-soft"] .big-btn,
+html[data-theme="python-soft"] .run-btn,
+html[data-theme="python-soft"] .btn.main,
+html[data-theme="python-soft"] .btn.primary,
+html[data-theme="python-soft"] .btn.teal,
+html[data-theme="python-soft"] .btn.amber {
+  font-family: var(--ps-display); font-weight: 600; color: #fff; background: var(--ps-btn); border: 0; border-radius: 100px;
+  box-shadow: var(--ps-btn-shadow); transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+html[data-theme="python-soft"] .big-btn { padding: 14px 38px; }
+html[data-theme="python-soft"] .big-btn:active { transform: translateY(2px); box-shadow: var(--ps-btn-shadow); }
+html[data-theme="python-soft"] .big-btn:hover:not(:disabled),
+html[data-theme="python-soft"] .run-btn:hover:not(:disabled),
+html[data-theme="python-soft"] .btn.main:hover:not(:disabled),
+html[data-theme="python-soft"] .btn.primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91, 108, 255, 0.9); }
+html[data-theme="python-soft"] .btn:disabled,
+html[data-theme="python-soft"] .run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+html[data-theme="python-soft"] .btn,
+html[data-theme="python-soft"] .guess-btn,
+html[data-theme="python-soft"] .exercise-check-btn,
+html[data-theme="python-soft"] .pill,
+html[data-theme="python-soft"] .cmd,
+html[data-theme="python-soft"] .lvl,
+html[data-theme="python-soft"] .chip,
+html[data-theme="python-soft"] .tab,
+html[data-theme="python-soft"] .diff-tab,
+html[data-theme="python-soft"] .range-tab,
+html[data-theme="python-soft"] .seg button,
+html[data-theme="python-soft"] .reveal-btn,
+html[data-theme="python-soft"] .rescue-choice,
+html[data-theme="python-soft"] .q-opt,
+html[data-theme="python-soft"] .quiz-choice,
+html[data-theme="python-soft"] .balloon-buttons button,
+html[data-theme="python-soft"] .m-tab {
+  background: #fff; color: var(--ps-ink); border: 1.5px solid var(--ps-line); box-shadow: var(--ps-shadow-sm);
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+html[data-theme="python-soft"] .btn.main,
+html[data-theme="python-soft"] .btn.primary,
+html[data-theme="python-soft"] .btn.teal,
+html[data-theme="python-soft"] .btn.amber { background: var(--ps-btn); color: #fff; border: 0; box-shadow: var(--ps-btn-shadow); }
+html[data-theme="python-soft"] .balloon-buttons button.primary { background: var(--ps-btn); color: #fff; border: 0; }
+html[data-theme="python-soft"] .btn:hover:not(:disabled),
+html[data-theme="python-soft"] .guess-btn:hover,
+html[data-theme="python-soft"] .exercise-check-btn:hover,
+html[data-theme="python-soft"] .pill:hover:not(:disabled),
+html[data-theme="python-soft"] .cmd:hover:not(:disabled),
+html[data-theme="python-soft"] .rescue-choice:hover:not(:disabled),
+html[data-theme="python-soft"] .q-opt:hover:not(:disabled),
+html[data-theme="python-soft"] .quiz-choice:hover:not(:disabled) { border-color: var(--ps-primary); transform: translateY(-1px); }
+html[data-theme="python-soft"] .btn.main:hover:not(:disabled),
+html[data-theme="python-soft"] .btn.primary:hover:not(:disabled) { border: 0; }
+html[data-theme="python-soft"] .pill.active,
+html[data-theme="python-soft"] .tab.active,
+html[data-theme="python-soft"] .diff-tab.active,
+html[data-theme="python-soft"] .range-tab.active,
+html[data-theme="python-soft"] .lvl.on,
+html[data-theme="python-soft"] .chip.on,
+html[data-theme="python-soft"] .seg button.on,
+html[data-theme="python-soft"] .m-tab.active { background: var(--ps-primary-soft); color: var(--ps-primary-ink); border-color: rgba(91, 108, 255, 0.35); }
+html[data-theme="python-soft"] .chip { color: var(--ps-primary-ink); border-color: rgba(91, 108, 255, 0.35); }
+html[data-theme="python-soft"] .pill.reset { background: transparent; box-shadow: none; border-style: dashed; color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] .reveal-btn { background: transparent; box-shadow: none; border: 1.5px dashed var(--ps-line-strong); color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] .reveal-btn:hover { color: var(--ps-ink); }
+html[data-theme="python-soft"] .quiz-choice.for-c { color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .quiz-choice.while-c { color: var(--ps-accent-ink); }
+html[data-theme="python-soft"] .diff-tab.for-c.active { color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .diff-tab.while-c.active { color: var(--ps-accent-ink); background: var(--ps-accent-soft); border-color: rgba(255, 123, 107, 0.45); }
+
+/* תשובות: נכון בירוק-מנטה, שגוי בוורוד רך */
+html[data-theme="python-soft"] .q-opt.right,
+html[data-theme="python-soft"] .rescue-choice.right,
+html[data-theme="python-soft"] .quiz-choice.right,
+html[data-theme="python-soft"] .opt.good { background: var(--ps-success-soft); border-color: var(--ps-success); color: var(--ps-success-ink); }
+html[data-theme="python-soft"] .q-opt.wrong,
+html[data-theme="python-soft"] .rescue-choice.wrong,
+html[data-theme="python-soft"] .quiz-choice.wrong { background: var(--ps-danger-soft); border-color: var(--ps-danger); color: var(--ps-danger-ink); }
+html[data-theme="python-soft"] .correct,
+html[data-theme="python-soft"] .ok,
+html[data-theme="python-soft"] .status-ok { color: var(--ps-success-ink); }
+html[data-theme="python-soft"] .wrong,
+html[data-theme="python-soft"] .bad,
+html[data-theme="python-soft"] .no,
+html[data-theme="python-soft"] .status-no { color: var(--ps-danger-ink); }
+html[data-theme="python-soft"] button.q-opt.wrong,
+html[data-theme="python-soft"] button.rescue-choice.wrong { color: var(--ps-danger-ink); }
+html[data-theme="python-soft"] .rescue-feedback.correct,
+html[data-theme="python-soft"] .guess-feedback.correct,
+html[data-theme="python-soft"] .exercise-feedback.correct,
+html[data-theme="python-soft"] .quiz-feedback.correct,
+html[data-theme="python-soft"] .q-fb.ok,
+html[data-theme="python-soft"] .ex-fb.ok { color: var(--ps-success-ink); }
+html[data-theme="python-soft"] .rescue-feedback.wrong,
+html[data-theme="python-soft"] .guess-feedback.wrong,
+html[data-theme="python-soft"] .exercise-feedback.wrong,
+html[data-theme="python-soft"] .quiz-feedback.wrong,
+html[data-theme="python-soft"] .q-fb.no,
+html[data-theme="python-soft"] .ex-fb.bad { color: var(--ps-danger-ink); }
+html[data-theme="python-soft"] .verdict.yes, html[data-theme="python-soft"] .tf.t { background: var(--ps-success-soft); color: var(--ps-success-ink); }
+html[data-theme="python-soft"] .verdict.no, html[data-theme="python-soft"] .tf.f { background: var(--ps-danger-soft); color: var(--ps-danger-ink); }
+
+/* טבלאות, מונים, מדדים */
+html[data-theme="python-soft"] .tbl th { background: var(--ps-panel-2); color: var(--ps-ink); }
+html[data-theme="python-soft"] .tbl td { background: #fff; color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] .tbl th.py, html[data-theme="python-soft"] .tbl td.py { color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .diff-answer { background: #fff; border: 1px solid var(--ps-line); border-radius: 20px; }
+html[data-theme="python-soft"] .diff-num-badge { background: var(--ps-primary-soft); color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .recap li,
+html[data-theme="python-soft"] .goals li { background: #fff; border: 1px solid var(--ps-line); border-radius: 20px; box-shadow: var(--ps-shadow-sm); color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] .recap li::before { color: var(--ps-success-ink); }
+html[data-theme="python-soft"] .bar-track,
+html[data-theme="python-soft"] .meter { background: #ECE9FF; }
+html[data-theme="python-soft"] .bar-fill { background: linear-gradient(90deg, #6C7BFF, #8B6BFF); }
+html[data-theme="python-soft"] .rb-cell { background: var(--ps-panel-2); border-color: var(--ps-line); }
+html[data-theme="python-soft"] .rb-cell.wall { background: #B9B6E8; border-color: #A5A2D6; }
+html[data-theme="python-soft"] .rb-robot .body { color: #fff; background: var(--ps-btn); }
+html[data-theme="python-soft"] .tile.now { color: #fff; background: var(--ps-btn); }
+html[data-theme="python-soft"] .tile { color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .kv { background: var(--ps-panel-2); border: 1px solid var(--ps-line); border-radius: 16px; }
+html[data-theme="python-soft"] .kv.hit { background: var(--ps-primary-soft); border-color: var(--ps-primary); }
+html[data-theme="python-soft"] .box { background: var(--ps-panel-2); color: var(--ps-ink-dim); border-color: var(--ps-line-strong); }
+html[data-theme="python-soft"] .box.on { background: var(--ps-primary-soft); color: var(--ps-primary-ink); border-color: var(--ps-primary); }
+html[data-theme="python-soft"] .em-chip { background: var(--ps-warn-soft); border-color: rgba(217, 138, 0, 0.35); }
+html[data-theme="python-soft"] .em-chip.keep { background: var(--ps-panel-2); border-color: var(--ps-line-strong); }
+html[data-theme="python-soft"] .flip-front, html[data-theme="python-soft"] .flip-back { border: 0; box-shadow: var(--ps-shadow); border-radius: 28px; }
+html[data-theme="python-soft"] .flip-back { background: var(--ps-code-bg); color: var(--ps-code-ink); }
+html[data-theme="python-soft"] .bit-card { background: var(--ps-accent-soft); border-color: rgba(255, 123, 107, 0.35); }
+html[data-theme="python-soft"] .bit-num { color: var(--ps-ink-dim); }
+html[data-theme="python-soft"] .flow .node { background: #fff; box-shadow: var(--ps-shadow-sm); border: 0; border-radius: 20px; }
+html[data-theme="python-soft"] .cert-name-display strong { color: var(--ps-primary-ink); }
+html[data-theme="python-soft"] .teaser-count,
+html[data-theme="python-soft"] .exercise-note,
+html[data-theme="python-soft"] .ex-note { color: var(--ps-ink-faint); }
+html[data-theme="python-soft"] footer { color: var(--ps-ink-faint); }
+
+/* ---------- 3. מעטפת האתר (כותרת, עמוד קורס, עמוד שיעור) ---------- */
+
+body:has(.theme-python-soft) {
+  background: var(--ps-bg);
+  color: var(--ps-ink);
+  font-family: var(--ps-sans);
+  line-height: 1.75;
+  font-size: 18px;
+}
+body:has(.theme-python-soft)::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139, 107, 255, 0.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255, 123, 107, 0.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31, 185, 133, 0.13), transparent 60%);
+}
+body:has(.theme-python-soft) .site-header {
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  color: var(--ps-ink); border-bottom: 1px solid var(--ps-line);
+}
+body:has(.theme-python-soft) .brand { color: var(--ps-ink); font-family: var(--ps-display); }
+body:has(.theme-python-soft) .nav-links a { color: var(--ps-ink-dim); }
+body:has(.theme-python-soft) .nav-links a:hover { color: var(--ps-primary-ink); }
+body:has(.theme-python-soft) .nav-links a.btn-primary { color: #fff; }
+body:has(.theme-python-soft) .site-header .btn-ghost { color: var(--ps-ink); border-color: var(--ps-line-strong); }
+body:has(.theme-python-soft) .site-footer { background: transparent; color: var(--ps-ink-faint); border-top: 1px solid var(--ps-line); }
+
+.theme-python-soft h1,
+.theme-python-soft h2,
+.theme-python-soft h3 { font-family: var(--ps-display); color: var(--ps-ink); }
+.theme-python-soft .btn-primary {
+  background: var(--ps-btn); color: #fff; border: 0; box-shadow: var(--ps-btn-shadow); font-family: var(--ps-display); font-weight: 600;
+}
+.theme-python-soft .btn-primary:hover { background: var(--ps-btn); transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91, 108, 255, 0.9); }
+.theme-python-soft .btn-secondary { background: #fff; color: var(--ps-ink); border: 0; box-shadow: var(--ps-shadow-sm); }
+.theme-python-soft .btn-secondary:hover { background: #fff; color: var(--ps-primary-ink); transform: translateY(-1px); }
+.theme-python-soft .btn-done { background: #fff; color: var(--ps-success-ink); border: 1.5px solid var(--ps-success); }
+.theme-python-soft .btn-done.is-done { background: var(--ps-btn-green); color: #fff; border-color: transparent; }
+.theme-python-soft .crumbs { color: var(--ps-ink-dim); }
+.theme-python-soft .ui-progress { background: #ECE9FF; }
+.theme-python-soft .ui-progress > i { background: linear-gradient(90deg, #4F60F5, #7A5AF5, #FF7B6B); }
+
+/* עמוד שיעור: סרגל צד, כותרת פירורים, כפתורי ניווט */
+.theme-python-soft { --header-h: 80px; }
+.theme-python-soft.lesson-page { padding-bottom: 56px; font-family: var(--ps-sans); }
+.theme-python-soft .lesson-layout { max-width: 1680px; gap: 0; }
+
+/* הכרטיס: עמודת flex שצמודה מתחת לכותרת האתר ולא חורגת מהמסך. רק אזור הרשימה גולל */
+.theme-python-soft .lesson-side {
+  display: flex; flex-direction: column; gap: 2px;
+  position: sticky; top: calc(var(--header-h) + 12px); align-self: start;
+  max-height: calc(100vh - var(--header-h) - 24px); overflow: hidden;
+  margin: 20px 20px 0; padding: 16px 14px 12px;
+  background: #fff; border: 1px solid rgba(91, 108, 255, 0.07); border-radius: var(--ps-radius); box-shadow: var(--ps-shadow);
+  font-family: var(--ps-sans);
+}
+.theme-python-soft .lesson-side h2 { font-family: var(--ps-display); font-size: 1.15rem; font-weight: 700; line-height: 1.3; margin: 10px 8px 8px; color: var(--ps-ink); flex: none; }
+.theme-python-soft .lesson-side__back {
+  flex: none; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin: 0 8px;
+  font-size: 0.85rem; font-weight: 700; color: var(--ps-primary-ink); background: var(--ps-primary-soft);
+  border-radius: 100px; padding: 6px 14px; text-decoration: none; transition: background 0.15s ease, color 0.15s ease;
+}
+.theme-python-soft .lesson-side__back:hover { background: var(--ps-primary); color: #fff; text-decoration: none; }
+.theme-python-soft .lesson-side__back:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; }
+
+/* אזור הרשימה: היחיד שגולל, עם פס גלילה דק ושקוף ודהייה בקצה רק כשיש עוד תוכן */
+.theme-python-soft .lesson-side__list {
+  position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  margin: 0 -6px; padding: 6px 6px; gap: 1px; /* padding כדי שטבעת הפוקוס והזוהר לא ייחתכו */
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  --ft: 0px; --fb: 0px;
+}
+.theme-python-soft .lesson-side__list::-webkit-scrollbar { width: 6px; }
+.theme-python-soft .lesson-side__list::-webkit-scrollbar-track { background: transparent; }
+.theme-python-soft .lesson-side__list::-webkit-scrollbar-thumb { background: rgba(91, 108, 255, 0.35); border-radius: 6px; }
+.theme-python-soft .lesson-side__list::-webkit-scrollbar-thumb:hover { background: rgba(91, 108, 255, 0.6); }
+.theme-python-soft .lesson-side__list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+/* Firefox לא תומך ב-::-webkit-scrollbar: שם משתמשים במאפיינים הסטנדרטיים (ב-Chrome הם היו דורסים את ה-6px) */
+@supports not selector(::-webkit-scrollbar) {
+  .theme-python-soft .lesson-side__list { scrollbar-width: thin; scrollbar-color: rgba(91, 108, 255, 0.35) transparent; }
+}
+.theme-python-soft .lesson-side__list[data-fade-top="1"] { --ft: 14px; }
+.theme-python-soft .lesson-side__list[data-fade-bottom="1"] { --fb: 22px; }
+.theme-python-soft .lesson-side__list[data-fade-top="1"],
+.theme-python-soft .lesson-side__list[data-fade-bottom="1"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
+}
+
+/* שורות השיעורים: צפופות יותר, כותרת עד שתי שורות */
+.theme-python-soft .side-item {
+  display: flex; align-items: center; gap: 12px; flex: none; min-height: 0; padding: 6px 12px; border-radius: 16px;
+  font-family: var(--ps-sans); font-size: 0.97rem; font-weight: 600; line-height: 1.35; color: var(--ps-ink);
+  text-decoration: none; transition: background 0.15s ease, transform 0.15s ease;
+}
+.theme-python-soft .side-item__t {
+  min-width: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  overflow-wrap: break-word; word-break: normal;
+}
+.theme-python-soft a.side-item:hover { background: var(--ps-panel-2); color: var(--ps-ink); transform: translateX(-2px); }
+.theme-python-soft a.side-item:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; background: var(--ps-panel-2); }
+.theme-python-soft .side-item i {
+  width: 36px; height: 36px; flex: none; display: grid; place-items: center; border: 0; border-radius: 50%;
+  background: var(--ps-panel-2); color: var(--ps-ink-dim); font-family: var(--ps-display); font-style: normal; font-weight: 700; font-size: 0.9rem; direction: ltr;
+}
+.theme-python-soft .side-item.is-done i { background: var(--ps-btn-green); color: #fff; }
+.theme-python-soft .side-item.is-current { background: var(--ps-primary-soft); color: var(--ps-primary-ink); box-shadow: none; font-weight: 700; }
+.theme-python-soft .side-item.is-current i { background: var(--ps-btn); color: #fff; box-shadow: 0 6px 14px -6px rgba(91, 108, 255, 0.7); }
+.theme-python-soft .side-item.is-locked { color: var(--ps-ink-faint); }
+.theme-python-soft .lesson-main { padding-inline: clamp(8px, 1.5vw, 24px); }
+.theme-python-soft .lesson-html-frame { border-radius: var(--ps-radius); background: transparent; min-height: 60vh; }
+.theme-python-soft .lesson-pager { border-top-color: var(--ps-line); }
+.theme-python-soft .lesson-drawer-toggle {
+  background: #fff; border: 0; box-shadow: var(--ps-shadow-sm); border-radius: 100px; color: var(--ps-ink);
+  font-family: var(--ps-sans); font-weight: 700; min-height: 48px; padding: 10px 20px;
+}
+/* כותרת הכרטיס: טבעת התקדמות (שיעורים שהושלמו מתוך הכול) ושם הקורס. הטקסט שלידה תמיד תואם את המספר בטבעת */
+.theme-python-soft .lesson-side__head { flex: none; display: flex; align-items: center; gap: 12px; padding: 2px 8px 2px; }
+.theme-python-soft .lesson-side__headtext { min-width: 0; }
+.theme-python-soft .lesson-side__head h2 { margin: 0 0 2px; font-size: 1.02rem; line-height: 1.25; }
+.theme-python-soft .progress-ring { position: relative; width: 52px; height: 52px; flex: none; }
+.theme-python-soft .progress-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
+.theme-python-soft .ring-track { fill: none; stroke: #E4E1FF; stroke-width: 4.5; }
+.theme-python-soft .ring-fill { fill: none; stroke: url(#psRing); stroke-width: 4.5; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
+.theme-python-soft .ring-num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--ps-display); font-weight: 700; font-size: 0.78rem; color: var(--ps-ink); direction: ltr; }
+.theme-python-soft .progress-text { display: flex; flex-direction: column; line-height: 1.3; }
+.theme-python-soft .progress-text b { font-size: 0.88rem; color: var(--ps-ink); font-weight: 700; }
+.theme-python-soft .progress-text span { font-size: 0.78rem; color: var(--ps-ink-dim); }
+
+/* ציר הזמן: קו אנכי שעובר במרכז העיגולים (מרכז העיגול: 12px padding + 18px רדיוס = 30px מהקצה) */
+.theme-python-soft .side-item { position: relative; }
+.theme-python-soft .side-item i { position: relative; z-index: 1; }
+.theme-python-soft .side-item:not(:last-child)::before,
+.theme-python-soft .side-item:not(:first-child)::after {
+  content: ""; position: absolute; width: 2px; inset-inline-start: 29px; background: rgba(91, 108, 255, 0.2); pointer-events: none;
+}
+.theme-python-soft .side-item:not(:last-child)::before { top: calc(50% + 18px); bottom: -2px; } /* מהעיגול ועד העיגול הבא (כולל רווח הרשימה) */
+.theme-python-soft .side-item:not(:first-child)::after { top: 0; height: calc(50% - 18px); }
+.theme-python-soft .side-item.is-done::before { background: rgba(31, 185, 133, 0.5); }
+.theme-python-soft .side-item.is-done + .side-item::after { background: rgba(31, 185, 133, 0.5); }
+
+/* תת-כיתוב קטן (שורה אחת): "אתם כאן" / "הושלם" */
+.theme-python-soft .side-item__body { min-width: 0; display: flex; flex-direction: column; }
+.theme-python-soft .side-item__s { font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--ps-ink-dim); }
+.theme-python-soft .side-item.is-current .side-item__s { color: var(--ps-primary-ink); }
+.theme-python-soft .side-item.is-done:not(.is-current) .side-item__s { color: var(--ps-success-ink); }
+
+/* כפתור "המשך לשיעור הבא": קבוע בתחתית הכרטיס ותמיד גלוי */
+.theme-python-soft .lesson-side__foot { flex: none; margin-top: 2px; padding: 8px 6px 0; border-top: 1px solid var(--ps-line); }
+.theme-python-soft .lesson-side__next { width: 100%; min-height: 44px; padding: 10px 16px; font-size: 0.95rem; }
+.theme-python-soft .lesson-side__next:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .theme-python-soft .ring-fill { transition: none; }
+}
+
+@media (max-width: 860px) {
+  .theme-python-soft .lesson-side { margin: 10px 16px 0; position: static; max-height: none; overflow: visible; padding-bottom: 14px; }
+  .theme-python-soft .lesson-side.is-open { background: #fff; border: 1px solid rgba(91, 108, 255, 0.07); }
+  .theme-python-soft .lesson-side__list { overflow: visible; margin: 0; padding: 4px 0; scrollbar-gutter: auto; -webkit-mask-image: none !important; mask-image: none !important; }
+  .theme-python-soft .side-item { padding: 8px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-python-soft a.side-item:hover { transform: none; }
+  .theme-python-soft .lesson-side__list { scroll-behavior: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="python-soft"] *, .theme-python-soft * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

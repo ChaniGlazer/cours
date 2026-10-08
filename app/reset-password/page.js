@@ -65,3 +65,5 @@ export default async function ResetPasswordPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };

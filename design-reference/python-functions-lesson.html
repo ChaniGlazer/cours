@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פונקציות בפייתון: משחקים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-head: #2D2A72;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 62ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1.12; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin-top: 20px; font-size: clamp(18px, 1.6vw, 21px); max-width: 52ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+/* cards & shared */
+.card { background: var(--bg-panel); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(91,108,255,.07); }
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.code-card { background: var(--code-bg); border-radius: 20px; overflow: hidden; margin-top: 16px; box-shadow: 0 14px 34px -16px rgba(34,31,85,.55); }
+.code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 16px; background: var(--code-head); font-size: 13.5px; font-weight: 700; color: #B9B6E8; }
+.copy-btn { font-size: 13px; font-weight: 700; color: #fff; background: rgba(255,255,255,.14); border: none; border-radius: 100px; padding: 4px 14px; transition: background .15s; }
+.copy-btn:hover { background: rgba(255,255,255,.26); }
+.code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 20px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.8; color: var(--code-ink); }
+.tok-kw { color: #C4A7FF; } .tok-str { color: #9BE8B5; } .tok-fn { color: #8FB4FF; } .tok-num { color: #FFD08A; } .tok-cm { color: #8C89C4; font-style: italic; }
+.term .prompt { color: #7CE8B5; user-select: none; }
+.term .out, .out { color: #B9B6E8; }
+
+.link-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: 15px; color: #3F4FE0; background: var(--cyan-soft); border-radius: 100px; padding: 9px 20px; text-decoration: none; direction: ltr; transition: all .18s; }
+.link-btn:hover { background: var(--cyan); color: #fff; transform: translateY(-1px); box-shadow: 0 10px 22px -10px rgba(91,108,255,.7); }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: var(--shadow-sm); }
+.btn.green { background: linear-gradient(135deg, #34D6A0, #1FB985); box-shadow: 0 12px 26px -12px rgba(31,185,133,.8); }
+
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 16px; transition: all .15s; box-shadow: var(--shadow-sm); }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15.5px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+
+/* ===== python functions lesson ===== */
+.hero-visual { min-width: 0; }
+.machine-card { background: #fff; border-radius: 34px; padding: 28px; box-shadow: var(--shadow); border: 1px solid rgba(91,108,255,.07); }
+.machine-card h3 { font-size: 19px; margin-bottom: 14px; }
+.m-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.m-tab { border: none; background: var(--bg-panel-2); color: var(--ink-dim); font-weight: 700; font-size: 15px; padding: 8px 18px; border-radius: 100px; transition: all .15s; }
+.m-tab.active { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; box-shadow: 0 10px 20px -10px rgba(91,108,255,.8); }
+.belt { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 6px 0 18px; direction: ltr; }
+.chipnum { height: 74px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 28px; font-weight: 700; transition: transform .5s ease, opacity .4s; }
+.chipnum.in { background: var(--cyan-soft); color: #3F4FE0; }
+.chipnum.out { background: var(--success-soft); color: #0F8F63; opacity: .35; transform: scale(.85); }
+.chipnum.out.pop { opacity: 1; transform: scale(1.06); }
+.chipnum.in.go { transform: translateX(46%) scale(.6); opacity: .2; }
+.gear { width: 96px; height: 96px; border-radius: 28px; background: linear-gradient(135deg, #FF9A85, #FF7B6B); display: flex; align-items: center; justify-content: center; font-size: 46px; box-shadow: 0 16px 30px -14px rgba(255,123,107,.9); }
+.gear.spin span { display: inline-block; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ctrl-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; direction: rtl; }
+.ctrl-row input[type="range"] { flex: 1; min-width: 120px; accent-color: #6C7BFF; }
+.ctrl-row .val { font-family: var(--mono); font-weight: 700; font-size: 20px; color: #3F4FE0; min-width: 34px; text-align: center; }
+.mini-out { margin-top: 14px; }
+
+.cmp-grid { margin-top: 30px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 900px) { .cmp-grid { grid-template-columns: minmax(0, 1fr); } }
+.cmp-card { background: #fff; border-radius: 28px; padding: 22px; box-shadow: var(--shadow); min-width: 0; }
+.cmp-card h4 { font-size: 18px; margin-bottom: 4px; }
+.cmp-card .code-card { margin-top: 12px; }
+.bars { margin-top: 26px; background: #fff; border-radius: 28px; padding: 24px 28px; box-shadow: var(--shadow); }
+.bars .row { display: grid; grid-template-columns: 150px 1fr 90px; gap: 14px; align-items: center; margin-top: 12px; }
+@media (max-width: 560px) { .bars .row { grid-template-columns: 90px 1fr 60px; } }
+.bar-track { height: 22px; border-radius: 22px; background: #ECE9FF; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 22px; transition: width .4s ease; }
+.bar-fill.bad { background: linear-gradient(90deg, #FF9A85, #FF7B6B); }
+.bar-fill.good { background: linear-gradient(90deg, #34D6A0, #1FB985); }
+.bars .num { font-family: var(--mono); font-weight: 700; direction: ltr; text-align: left; }
+
+.anat { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 960px) { .anat { grid-template-columns: minmax(0, 1fr); } }
+.anat-code { background: var(--code-bg); border-radius: 26px; padding: 26px 28px; font-family: var(--mono); font-size: 17px; line-height: 2.1; color: var(--code-ink); direction: ltr; text-align: left; overflow-x: auto; white-space: pre; }
+.part { cursor: pointer; border-radius: 8px; padding: 2px 4px; transition: background .15s; border-bottom: 2px dashed rgba(255,255,255,.35); }
+.part:hover { background: rgba(255,255,255,.14); }
+.part.sel { background: rgba(255,181,71,.28); border-bottom-color: #FFB547; }
+.ind { color: #6E6AB5; }
+.anat-explain { background: #fff; border-radius: 26px; padding: 26px 28px; box-shadow: var(--shadow); border-top: 6px solid var(--cyan); position: sticky; top: 90px; }
+.anat-explain h4 { font-size: 21px; color: #3F4FE0; margin-bottom: 8px; }
+.anat-explain p { font-size: 17px; color: var(--ink); }
+.anat-explain .hint { margin-top: 12px; font-size: 14.5px; color: var(--ink-faint); }
+
+.duo { margin-top: 30px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+@media (max-width: 960px) { .duo { grid-template-columns: minmax(0, 1fr); } }
+.game-card { background: #fff; border-radius: 30px; padding: clamp(22px, 2.6vw, 34px); box-shadow: var(--shadow); min-width: 0; }
+.game-card h3 { font-size: 22px; }
+.game-card > p { margin-top: 6px; }
+.badge-game { display: inline-block; font-weight: 700; font-size: 13px; background: var(--violet-soft); color: #E0553F; border-radius: 100px; padding: 3px 12px; margin-bottom: 10px; }
+.form-grid { margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 600px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
+.form-grid label { display: block; font-size: 14px; font-weight: 700; color: var(--ink-dim); margin-bottom: 4px; }
+select.soft { width: 100%; padding: 10px 14px; border-radius: 14px; border: 2px solid transparent; background: var(--bg-panel-2); font-family: var(--sans); font-size: 16px; color: var(--ink); }
+select.soft:focus { outline: none; border-color: var(--cyan); }
+.chk { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 600; color: var(--ink-dim); cursor: pointer; }
+.chk input { width: 20px; height: 20px; accent-color: #6C7BFF; }
+.pizza-stage { margin-top: 16px; background: linear-gradient(135deg, #FFF3E8, #FFE8E3); border-radius: 22px; padding: 18px; text-align: center; min-height: 100px; }
+.pizza-art { font-size: 44px; line-height: 1.3; letter-spacing: 4px; }
+.pizza-text { margin-top: 6px; font-family: var(--mono); font-size: 14.5px; direction: ltr; color: var(--ink); word-break: break-word; }
+.call-line { margin-top: 14px; font-family: var(--mono); font-size: 15px; direction: ltr; text-align: left; background: var(--bg-panel-2); border-radius: 14px; padding: 10px 16px; color: #3F4FE0; }
+.seg { display: inline-flex; background: var(--bg-panel-2); border-radius: 100px; padding: 4px; margin-top: 14px; }
+.seg button { border: none; background: none; font-weight: 700; font-size: 15px; color: var(--ink-dim); padding: 8px 20px; border-radius: 100px; }
+.seg button.active { background: #fff; color: #3F4FE0; box-shadow: var(--shadow-sm); }
+.console { margin-top: 16px; background: #16143E; border-radius: 18px; padding: 14px 18px; font-family: var(--mono); font-size: 14px; line-height: 1.8; color: #ECEBFF; direction: ltr; text-align: left; min-height: 96px; white-space: pre-wrap; }
+.console .ok { color: #7CE8B5; } .console .err { color: #FF9FB2; } .console .dim { color: #8C89C4; }
+
+/* monster */
+.battle { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 980px) { .battle { grid-template-columns: minmax(0, 1fr); } }
+.arena { background: linear-gradient(160deg, #EEF0FF, #FFEDE8); border-radius: 32px; padding: 26px; box-shadow: var(--shadow); }
+.fighters { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: center; }
+.fighter .face { font-size: 76px; line-height: 1.1; transition: transform .2s; }
+.fighter.hit .face { animation: shake .4s; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-10px) rotate(-6deg); } 75% { transform: translateX(10px) rotate(6deg); } }
+.fighter b { display: block; font-family: var(--display); font-size: 18px; margin-top: 4px; }
+.hpbar { height: 16px; border-radius: 16px; background: rgba(255,255,255,.8); margin-top: 8px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(60,50,150,.15); }
+.hpbar i { display: block; height: 100%; border-radius: 16px; transition: width .4s ease; }
+.hpbar i.h { background: linear-gradient(90deg, #34D6A0, #1FB985); }
+.hpbar i.m { background: linear-gradient(90deg, #FF9A85, #FF5E6C); }
+.hpnum { font-family: var(--mono); font-size: 13.5px; color: var(--ink-dim); margin-top: 4px; direction: ltr; }
+.actions { margin-top: 22px; display: grid; gap: 10px; }
+.act { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: none; background: #fff; border-radius: 18px; padding: 12px 18px; box-shadow: var(--shadow-sm); font-family: var(--mono); font-size: 14.5px; color: var(--ink); direction: ltr; transition: transform .15s, box-shadow .15s; }
+.act:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow); }
+.act:disabled { opacity: .45; cursor: not-allowed; }
+.act small { font-family: var(--sans); color: var(--ink-faint); font-weight: 700; direction: rtl; }
+.battle-log { margin-top: 16px; min-height: 130px; max-height: 190px; overflow-y: auto; background: #16143E; border-radius: 18px; padding: 14px 18px; font-size: 14.5px; line-height: 1.7; color: #ECEBFF; }
+.battle-log div { margin-bottom: 4px; }
+.battle-log .call { font-family: var(--mono); color: #FFD08A; direction: ltr; text-align: left; }
+.endbox { margin-top: 14px; text-align: center; font-family: var(--display); font-weight: 700; font-size: 22px; min-height: 30px; }
+.dictview { margin-top: 14px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; background: var(--bg-panel-2); border-radius: 14px; padding: 10px 14px; color: #3F4FE0; white-space: pre-wrap; }
+
+/* puzzle */
+.puz-tabs { display: flex; gap: 8px; margin: 18px 0 16px; flex-wrap: wrap; }
+.puz-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 800px) { .puz-grid { grid-template-columns: minmax(0, 1fr); } }
+.puz-pane { background: var(--bg-panel-2); border-radius: 22px; padding: 16px; min-height: 230px; }
+.puz-pane h4 { font-size: 15px; color: var(--ink-faint); margin-bottom: 10px; }
+.pline { display: block; width: 100%; text-align: left; direction: ltr; border: none; background: #fff; border-radius: 12px; padding: 9px 14px; margin-bottom: 8px; font-family: var(--mono); font-size: 14.5px; color: var(--ink); white-space: pre; box-shadow: var(--shadow-sm); transition: transform .15s; overflow-x: auto; }
+.pline:hover { transform: translateY(-2px); }
+.puz-pane.target { background: var(--code-bg); }
+.puz-pane.target h4 { color: #B9B6E8; }
+.puz-pane.target .pline { background: #2D2A72; color: #ECEBFF; box-shadow: none; }
+.puz-empty { color: #8C89C4; font-size: 14.5px; text-align: center; padding-top: 40px; }
+
+/* scope */
+.scope-grid { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 1050px) { .scope-grid { grid-template-columns: minmax(0, 1fr); } }
+.scope-card { background: #fff; border-radius: 28px; padding: 24px; box-shadow: var(--shadow); min-width: 0; }
+.scope-card h4 { font-size: 18px; margin-bottom: 8px; }
+.scope-card .code-card { margin-top: 10px; }
+.scope-card .btn { margin-top: 14px; padding: 10px 24px; font-size: 15px; }
+.scope-out { margin-top: 12px; min-height: 52px; border-radius: 14px; padding: 10px 14px; font-family: var(--mono); font-size: 14px; direction: ltr; text-align: left; background: var(--bg-panel-2); color: var(--ink-dim); white-space: pre-wrap; }
+.scope-out.err { background: var(--danger-soft); color: #C9304F; }
+.scope-out.ok { background: var(--success-soft); color: #0F8F63; }
+
+/* detective */
+.det-grid { margin-top: 30px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 960px) { .det-grid { grid-template-columns: minmax(0, 1fr); } }
+.det-card { background: #fff; border-radius: 28px; padding: 24px 26px; box-shadow: var(--shadow); min-width: 0; }
+.det-card h4 { font-size: 17px; color: var(--ink-faint); margin-bottom: 4px; }
+.det-card .qq { font-weight: 700; color: var(--ink); font-size: 17px; margin: 12px 0; }
+
+/* exercises */
+.ex-grid { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 1100px) { .ex-grid { grid-template-columns: minmax(0, 1fr); } }
+.ex-card { background: #fff; border-radius: 28px; padding: 24px 26px; box-shadow: var(--shadow); min-width: 0; }
+.ex-card h3 { font-size: 19px; }
+.ex-card .tag-lv { display: inline-block; font-size: 12.5px; font-weight: 700; padding: 2px 12px; border-radius: 100px; margin-bottom: 8px; }
+.lv1 { background: var(--success-soft); color: #0F8F63; } .lv2 { background: var(--warn-soft); color: #B87400; } .lv3 { background: var(--violet-soft); color: #E0553F; }
+.ex-card p { margin-top: 8px; font-size: 16.5px; }
+.ex-card textarea { width: 100%; margin-top: 14px; min-height: 130px; resize: vertical; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14px; line-height: 1.7; background: var(--bg-panel-2); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; color: var(--ink); }
+.ex-card textarea:focus { outline: none; border-color: var(--cyan); background: #fff; }
+.dl-box { margin-top: 28px; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border-radius: 30px; padding: clamp(24px, 3vw, 40px); display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; box-shadow: 0 26px 56px -26px rgba(91,108,255,.85); }
+.dl-box h3 { color: #fff; font-size: 24px; } .dl-box p { color: rgba(255,255,255,.92); }
+.dl-box .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.dl-box input[type="text"] { padding: 12px 18px; border-radius: 100px; border: none; font-family: var(--sans); font-size: 16px; min-width: 200px; }
+.dl-box .btn { background: #fff; color: #3F4FE0; box-shadow: 0 12px 24px -12px rgba(0,0,0,.4); }
+.dl-status { width: 100%; color: #fff; font-weight: 700; min-height: 22px; }
+
+/* flip cards */
+.flips { margin-top: 30px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 1000px) { .flips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .flips { grid-template-columns: minmax(0, 1fr); } }
+.flip { perspective: 1000px; height: 200px; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; }
+.flip-in { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,.2,.2,1); }
+.flip.on .flip-in { transform: rotateY(180deg); }
+.flip-f, .flip-b { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px; box-shadow: var(--shadow); }
+.flip-f { background: #fff; }
+.flip-f .em { font-size: 40px; } .flip-f b { font-family: var(--display); font-size: 21px; color: var(--ink); } .flip-f small { color: var(--ink-faint); font-size: 13.5px; }
+.flip-b { background: var(--code-bg); transform: rotateY(180deg); color: var(--code-ink); font-family: var(--mono); font-size: 14px; direction: ltr; text-align: left; white-space: pre; justify-content: center; align-items: flex-start; }
+
+</style>
+</head>
+<body>
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">פייתון בעידן ה-AI</span>
+    <span class="lesson-chip">פונקציות</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <div class="eyebrow c">שיעור חדש · פונקציות</div>
+      <h1>כותבים <span class="a1">פעם אחת</span>,<br>משתמשים <span class="a2">בלי סוף</span></h1>
+      <p class="hero-sub">פונקציה היא "מכונה" קטנה שאתם בונים בעצמכם: נכנס מידע, יוצאת תוצאה. אחרי שמבינים אותה, הקוד נהיה קצר, נקי, וגם הרבה יותר כיף. והפעם לומדים דרך משחקים.</p>
+      <div class="time-row">
+        <span class="pill">⏱ כ-45 דקות</span>
+        <span class="pill">🎮 חמישה משחקים</span>
+        <span class="pill">🐍 מילונים + פונקציות</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="machine-card">
+        <h3>🎛 מכונת הקסמים: נסו בעצמכם</h3>
+        <div class="m-tabs" id="m-tabs"></div>
+        <div class="belt">
+          <div class="chipnum in" id="m-in">7</div>
+          <div class="gear" id="m-gear"><span>⚙️</span></div>
+          <div class="chipnum out" id="m-out">?</div>
+        </div>
+        <div class="ctrl-row">
+          <button class="btn" id="m-run" type="button">▶ הפעל</button>
+          <input type="range" id="m-range" min="1" max="12" value="7" aria-label="מספר קלט">
+          <span class="val" id="m-val">7</span>
+        </div>
+        <div class="code-card"><div class="code-card-head"><span>הקוד שמאחורי המכונה</span></div><pre id="m-code"></pre></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="eyebrow c">למה צריך?</div>
+    <h2 class="section-title">בלי פונקציות, כותבים הכול שוב ושוב</h2>
+    <p class="lede">נניח שאתם מזמינים חברים למסיבה, ולכל אחד שולחים אותה הודעה. תראו מה קורה לקוד כשהחברים מתרבים.</p>
+
+    <div class="cmp-grid">
+      <div class="cmp-card">
+        <h4>😩 בלי פונקציה: העתק-הדבק</h4>
+        <p>כל חבר חדש = עוד שלוש שורות.</p>
+        <div class="code-card"><pre><span class="tok-fn">print</span>(<span class="tok-str">"Hi Dana!"</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">"Come to the party"</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">"See you there"</span>)
+
+<span class="tok-fn">print</span>(<span class="tok-str">"Hi Yuval!"</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">"Come to the party"</span>)
+<span class="tok-fn">print</span>(<span class="tok-str">"See you there"</span>)
+<span class="tok-cm"># ...ועוד פעם לכל חבר</span></pre></div>
+      </div>
+      <div class="cmp-card">
+        <h4>😎 עם פונקציה: כותבים פעם אחת</h4>
+        <p>כל חבר חדש = שורה אחת.</p>
+        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">invite</span>(name):
+    <span class="tok-fn">print</span>(<span class="tok-str">"Hi "</span> + name + <span class="tok-str">"!"</span>)
+    <span class="tok-fn">print</span>(<span class="tok-str">"Come to the party"</span>)
+    <span class="tok-fn">print</span>(<span class="tok-str">"See you there"</span>)
+
+invite(<span class="tok-str">"Dana"</span>)
+invite(<span class="tok-str">"Yuval"</span>)
+invite(<span class="tok-str">"Noa"</span>)</pre></div>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="ctrl-row"><strong style="color:var(--ink)">כמה חברים מזמינים?</strong><input type="range" id="b-range" min="1" max="20" value="5" aria-label="מספר חברים"><span class="val" id="b-val">5</span></div>
+      <div class="row"><span>בלי פונקציה</span><div class="bar-track"><div class="bar-fill bad" id="bar-bad"></div></div><span class="num" id="num-bad"></span></div>
+      <div class="row"><span>עם פונקציה</span><div class="bar-track"><div class="bar-fill good" id="bar-good"></div></div><span class="num" id="num-good"></span></div>
+      <p style="margin-top:16px;">ויש עוד יתרון: רוצים לשנות את נוסח ההודעה? עם פונקציה משנים <strong>במקום אחד</strong>, והכול מתעדכן.</p>
+    </div>
+
+    <div class="callout info"><span class="ico">💡</span><p>את הפונקציות כבר פגשתם! <code>print()</code>, <code>len()</code>, <code>input()</code> ואפילו <code>client.responses.create()</code> מהקורס על OpenAI: כולן פונקציות שמישהו כתב פעם אחת. היום תכתבו משלכם.</p></div>
+  </div>
+</section>
+
+<!-- ANATOMY -->
+<section id="anatomy">
+  <div class="wrap">
+    <div class="eyebrow v">פירוק המכונה</div>
+    <h2 class="section-title">איך נראית פונקציה מבפנים?</h2>
+    <p class="lede">לחצו על כל חלק בקוד ותראו מה תפקידו. רמז: יש שבעה חלקים.</p>
+    <div class="anat">
+      <div class="anat-code" id="anat-code"><span class="part" data-k="def">def</span> <span class="part" data-k="name">greet</span><span class="part" data-k="params">(name, times)</span><span class="part" data-k="colon">:</span>
+<span class="ind part" data-k="body">····</span>message = <span class="tok-str">"Hi "</span> + name + <span class="tok-str">" "</span>
+<span class="ind part" data-k="body">····</span><span class="part" data-k="return">return</span> message * times
+
+result = <span class="part" data-k="call">greet(<span class="tok-str">"Dana"</span>, 2)</span>
+<span class="tok-fn">print</span>(result)</div>
+      <div class="anat-explain">
+        <h4 id="an-t">👆 לחצו על חלק בקוד</h4>
+        <p id="an-x">כל חלק מסומן בקו מקווקו. לחיצה עליו תסביר מה הוא עושה.</p>
+        <div class="hint" id="an-h">התוצאה כשמריצים את הקוד: <code>Hi Dana Hi Dana</code></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARAMS GAMES -->
+<section id="params">
+  <div class="wrap">
+    <div class="eyebrow c">שני משחקים קטנים</div>
+    <h2 class="section-title">מה נכנס, ומה יוצא</h2>
+    <p class="lede">פרמטרים הם מה שנכנס לפונקציה. <code>return</code> הוא מה שיוצא ממנה. יש גם ערכי ברירת מחדל. נבין את שלושתם עם פיצה, ועם קופסה אחת שעושה בלגן.</p>
+    <div class="duo">
+      <div class="game-card">
+        <span class="badge-game">🎮 משחק 1</span>
+        <h3>מפעל הפיצות</h3>
+        <p>בחרו ארגומנטים, וראו איזו פיצה הפונקציה מחזירה. שימו לב מה קורה כשלא שולחים את <code>extra_cheese</code>.</p>
+        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">make_pizza</span>(size, topping, extra_cheese=<span class="tok-kw">False</span>):
+    text = size + <span class="tok-str">" pizza with "</span> + topping
+    <span class="tok-kw">if</span> extra_cheese:
+        text = text + <span class="tok-str">" and extra cheese"</span>
+    <span class="tok-kw">return</span> text</pre></div>
+        <div class="form-grid">
+          <div><label for="pz-size">size</label><select class="soft" id="pz-size"><option value="small">small</option><option value="medium" selected>medium</option><option value="large">large</option></select></div>
+          <div><label for="pz-top">topping</label><select class="soft" id="pz-top"><option value="olives">olives</option><option value="corn" selected>corn</option><option value="mushrooms">mushrooms</option></select></div>
+          <div><label>extra_cheese</label><label class="chk"><input type="checkbox" id="pz-ex"> שלחו True</label></div>
+        </div>
+        <div class="call-line" id="pz-call"></div>
+        <div class="pizza-stage"><div class="pizza-art" id="pz-art"></div><div class="pizza-text" id="pz-text"></div></div>
+      </div>
+
+      <div class="game-card">
+        <span class="badge-game">🎮 משחק 2</span>
+        <h3>print או return?</h3>
+        <p>שתי פונקציות שנראות כמעט זהות. הריצו כל אחת, וגלו למה אחת מהן שוברת את התוכנית.</p>
+        <div class="seg" id="pr-seg"><button type="button" data-v="print" class="active">גרסה א׳: print</button><button type="button" data-v="return">גרסה ב׳: return</button></div>
+        <div class="code-card"><pre id="pr-code"></pre></div>
+        <div class="row" style="display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap;"><button class="btn" id="pr-run" type="button" style="padding:10px 26px;font-size:15px;">▶ הריצו</button><span id="pr-x" style="font-family:var(--mono);color:var(--ink-dim);direction:ltr"></span></div>
+        <div class="console" id="pr-con"><span class="dim">לחצו "הריצו" כדי לראות מה קורה...</span></div>
+        <div class="callout info" style="margin-top:14px;"><span class="ico">📦</span><p><code>print</code> רק <strong>מציג</strong> למסך. <code>return</code> <strong>מחזיר ערך</strong> שאפשר לשמור, לחשב איתו ולהעביר הלאה.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONSTER -->
+<section id="monster">
+  <div class="wrap">
+    <div class="eyebrow v">המשחק הגדול</div>
+    <h2 class="section-title">הקרב על המפלצת</h2>
+    <p class="lede">שלוש פונקציות מנהלות את כל המשחק, ובקרב משתמשים במילון של הגיבור ושל המפלצת (בדיוק מה שלמדתם בשיעור הקודם). כל לחיצה היא קריאה לפונקציה. נסו לנצח את גרוג!</p>
+    <div class="battle">
+      <div class="arena">
+        <div class="fighters">
+          <div class="fighter" id="f-hero"><div class="face">🧙‍♀️</div><b>Noa</b><div class="hpbar"><i class="h" id="hp-hero" style="width:100%"></i></div><div class="hpnum" id="hpn-hero">100 / 100</div></div>
+          <div class="fighter" id="f-mon"><div class="face">👹</div><b>Grog</b><div class="hpbar"><i class="m" id="hp-mon" style="width:100%"></i></div><div class="hpnum" id="hpn-mon">80 / 80</div></div>
+        </div>
+        <div class="actions">
+          <button class="act" id="a-normal" type="button"><span>attack(monster)</span><small>מכה רגילה: 10</small></button>
+          <button class="act" id="a-strong" type="button"><span>attack(monster, 25)</span><small id="s-strong">מכה חזקה: 3 שימושים</small></button>
+          <button class="act" id="a-heal" type="button"><span>heal(hero)</span><small id="s-heal">ריפוי: 2 שימושים</small></button>
+        </div>
+        <div class="endbox" id="endbox"></div>
+        <div style="text-align:center;margin-top:8px;"><button class="btn ghost" id="restart" type="button" style="padding:8px 22px;font-size:14.5px;" hidden>שחקו שוב</button></div>
+      </div>
+      <div>
+        <div class="code-card" style="margin-top:0"><div class="code-card-head"><span>game.py</span></div><pre><span class="tok-kw">def</span> <span class="tok-fn">attack</span>(target, power=10):
+    target[<span class="tok-str">"hp"</span>] = target[<span class="tok-str">"hp"</span>] - power
+    <span class="tok-kw">return</span> target[<span class="tok-str">"hp"</span>]
+
+<span class="tok-kw">def</span> <span class="tok-fn">heal</span>(person):
+    person[<span class="tok-str">"hp"</span>] = <span class="tok-fn">min</span>(person[<span class="tok-str">"hp"</span>] + 20, 100)
+    <span class="tok-kw">return</span> person[<span class="tok-str">"hp"</span>]</pre></div>
+        <div class="dictview" id="dictview"></div>
+        <div class="battle-log" id="log"><div style="color:#8C89C4">הקרב מתחיל! בחרו פעולה...</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUZZLE -->
+<section id="puzzle">
+  <div class="wrap">
+    <div class="eyebrow c">משחק הרכבה</div>
+    <h2 class="section-title">סדרו את הקוד</h2>
+    <p class="lede">השורות התבלבלו! לחצו עליהן לפי הסדר הנכון כדי להרכיב תוכנית שעובדת. לחיצה על שורה בצד ימין מחזירה אותה.</p>
+    <div class="puz-tabs seg-like" id="puz-tabs"></div>
+    <div class="game-card">
+      <p id="puz-task" style="font-weight:700;color:var(--ink);font-size:17px;"></p>
+      <div class="puz-grid" style="margin-top:14px;">
+        <div class="puz-pane"><h4>השורות המבולבלות</h4><div id="puz-pool"></div></div>
+        <div class="puz-pane target"><h4>התוכנית שלכם</h4><div id="puz-built"></div></div>
+      </div>
+      <div class="row" style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap;"><button class="btn" id="puz-check" type="button">בדקו</button><button class="btn ghost" id="puz-reset" type="button">אפסו</button><span class="fb" id="puz-fb"></span></div>
+      <div class="console" id="puz-out" hidden></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section id="scope">
+  <div class="wrap">
+    <div class="eyebrow v">חשוב לדעת</div>
+    <h2 class="section-title">הבועה של הפונקציה</h2>
+    <p class="lede">משתנה שנוצר <strong style="color:var(--ink)">בתוך</strong> פונקציה חי רק בתוכה, כמו חדר סגור. כשהפונקציה נגמרת, החדר נעלם. הריצו את שלושת המקרים וראו.</p>
+    <div class="scope-grid">
+      <div class="scope-card">
+        <h4>🫧 מקרה 1: לנסות להציץ פנימה</h4>
+        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">make_secret</span>():
+    secret = 42
+
+make_secret()
+<span class="tok-fn">print</span>(secret)</pre></div>
+        <button class="btn" data-sc="1" type="button">▶ הריצו</button>
+        <div class="scope-out" id="sc-1">...</div>
+      </div>
+      <div class="scope-card">
+        <h4>📦 מקרה 2: להוציא החוצה עם return</h4>
+        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">make_secret</span>():
+    secret = 42
+    <span class="tok-kw">return</span> secret
+
+x = make_secret()
+<span class="tok-fn">print</span>(x)</pre></div>
+        <button class="btn" data-sc="2" type="button">▶ הריצו</button>
+        <div class="scope-out" id="sc-2">...</div>
+      </div>
+      <div class="scope-card">
+        <h4>👀 מקרה 3: להסתכל החוצה</h4>
+        <div class="code-card"><pre>bonus = 10
+
+<span class="tok-kw">def</span> <span class="tok-fn">add_bonus</span>(score):
+    <span class="tok-kw">return</span> score + bonus
+
+<span class="tok-fn">print</span>(add_bonus(5))</pre></div>
+        <button class="btn" data-sc="3" type="button">▶ הריצו</button>
+        <div class="scope-out" id="sc-3">...</div>
+      </div>
+    </div>
+    <div class="callout warn"><span class="ico">🧠</span><p><strong>כלל זהב:</strong> פונקציה יכולה <strong>לקרוא</strong> משתנים מבחוץ, אבל מה שהיא יוצרת בפנים נשאר בפנים. כדי להוציא תוצאה, משתמשים ב-<code>return</code>.</p></div>
+  </div>
+</section>
+
+<!-- DETECTIVE -->
+<section id="detective">
+  <div class="wrap">
+    <div class="eyebrow c">בלשי קוד</div>
+    <h2 class="section-title">מה ידפיס הקוד?</h2>
+    <p class="lede">בלי להריץ: קראו את הקוד, נחשו את הפלט, ובדקו. חמש חידות, כל אחת עם פינה מסוכנת.</p>
+    <div class="det-grid" id="det-grid"></div>
+    <div class="score-box" id="det-score" style="margin-top:22px;font-family:var(--display);font-weight:700;font-size:21px;color:#3F4FE0;"></div>
+  </div>
+</section>
+
+<!-- EXERCISES -->
+<section id="exercises">
+  <div class="wrap">
+    <div class="eyebrow v">עכשיו אתם</div>
+    <h2 class="section-title">שלושה אתגרים לכתיבה</h2>
+    <p class="lede">כתבו את הפתרונות בעורך הפייתון שלכם, הריצו, ובדקו שהתוצאה כמו בדוגמה. אחר כך הדביקו כאן והורידו קובץ מסכם.</p>
+    <div class="ex-grid">
+      <div class="ex-card">
+        <span class="tag-lv lv1">קל</span>
+        <h3>1 · זוגי או לא?</h3>
+        <p>כתבו פונקציה <code>is_even(n)</code> שמחזירה <code>True</code> אם המספר זוגי, ו-<code>False</code> אם לא.</p>
+        <div class="code-card"><pre><span class="tok-fn">print</span>(is_even(4))   <span class="tok-cm"># True</span>
+<span class="tok-fn">print</span>(is_even(7))   <span class="tok-cm"># False</span></pre></div>
+        <textarea id="ex1" placeholder="# הדביקו כאן את הפתרון"></textarea>
+      </div>
+      <div class="ex-card">
+        <span class="tag-lv lv2">בינוני</span>
+        <h3>2 · חנות עם הנחה</h3>
+        <p>כתבו <code>discount(price, percent=10)</code> שמחזירה את המחיר אחרי הנחה. אם לא שולחים אחוז, ההנחה היא 10%.</p>
+        <div class="code-card"><pre><span class="tok-fn">print</span>(discount(200))      <span class="tok-cm"># 180.0</span>
+<span class="tok-fn">print</span>(discount(200, 25))  <span class="tok-cm"># 150.0</span></pre></div>
+        <textarea id="ex2" placeholder="# הדביקו כאן את הפתרון"></textarea>
+      </div>
+      <div class="ex-card">
+        <span class="tag-lv lv3">אתגר</span>
+        <h3>3 · מכה בגיבור</h3>
+        <p>הגיבור הוא מילון עם <code>"hp"</code>. כתבו <code>hit(person, damage)</code> שמורידה חיים, <strong>אבל לא מתחת ל-0</strong>, ומחזירה את החיים שנשארו.</p>
+        <div class="code-card"><pre>hero = {<span class="tok-str">"name"</span>: <span class="tok-str">"Noa"</span>, <span class="tok-str">"hp"</span>: 50}
+<span class="tok-fn">print</span>(hit(hero, 20))  <span class="tok-cm"># 30</span>
+<span class="tok-fn">print</span>(hit(hero, 70))  <span class="tok-cm"># 0</span></pre></div>
+        <textarea id="ex3" placeholder="# הדביקו כאן את הפתרון"></textarea>
+      </div>
+    </div>
+
+    <div class="dl-box">
+      <div><h3>📥 סיימתם? הורידו קובץ תוצאות</h3><p>הקובץ כולל את התשובות שלכם ואת תוצאות החידות והמשחקים.</p></div>
+      <div class="row"><input type="text" id="stu-name" placeholder="השם שלכם" aria-label="שם"><button class="btn" id="dl-btn" type="button">⬇ הורידו קובץ</button></div>
+      <div class="dl-status" id="dl-status"></div>
+    </div>
+    <div id="dl-fallback" hidden style="margin-top:16px;"><p style="font-size:14px;">ההורדה האוטומטית לא זמינה. סמנו את הטקסט, העתיקו, ושמרו כקובץ <code>.html</code>:</p><textarea id="dl-text" readonly style="width:100%;min-height:120px;direction:ltr;font-family:var(--mono);font-size:12px;border-radius:16px;padding:12px;margin-top:8px;"></textarea></div>
+  </div>
+</section>
+
+<!-- RECAP -->
+<section id="recap">
+  <div class="wrap">
+    <div class="eyebrow c">לסיכום</div>
+    <h2 class="section-title">ארבעה דברים לזכור</h2>
+    <p class="lede">לחצו על כרטיס כדי להפוך אותו.</p>
+    <div class="flips">
+      <button class="flip" type="button"><div class="flip-in"><div class="flip-f"><span class="em">🧱</span><b>def</b><small>מגדירים פונקציה</small></div><div class="flip-b">def hello():
+    print("Hi")
+
+hello()</div></div></button>
+      <button class="flip" type="button"><div class="flip-in"><div class="flip-f"><span class="em">🕳</span><b>פרמטר</b><small>מידע שנכנס</small></div><div class="flip-b">def hello(name):
+    print("Hi " + name)
+
+hello("Dana")</div></div></button>
+      <button class="flip" type="button"><div class="flip-in"><div class="flip-f"><span class="em">📦</span><b>return</b><small>ערך שיוצא</small></div><div class="flip-b">def double(x):
+    return x * 2
+
+y = double(4)   # 8</div></div></button>
+      <button class="flip" type="button"><div class="flip-in"><div class="flip-f"><span class="em">🫧</span><b>תחום</b><small>מה חי איפה</small></div><div class="flip-b">def f():
+    a = 1
+
+f()
+print(a)   # NameError</div></div></button>
+    </div>
+    <div class="callout ok" style="margin-top:34px;"><span class="ico">🚀</span><p><strong>בשיעור הבא:</strong> מודולים וספריות. פונקציות שאחרים כתבו בשבילכם, ואתם רק עושים <code>import</code> ומשתמשים. כך בדיוק משתמשים בספריית OpenAI.</p></div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">פייתון בעידן ה-AI · שיעור פונקציות</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+var progress = { machine: false, pizza: false, pr: false, monster: "", puzzle: {}, scope: {}, det: { right: 0, done: 0, total: 5 } };
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true }); upd();
+})();
+
+/* ---------- hero machine ---------- */
+(function () {
+  var machines = {
+    double: { label: "מכפיל", code: 'def double(x):\n    return x * 2', fn: function (x) { return x * 2; }, call: "double" },
+    add5: { label: "מוסיף 5", code: 'def add_five(x):\n    return x + 5', fn: function (x) { return x + 5; }, call: "add_five" },
+    square: { label: "ריבוע", code: 'def square(x):\n    return x * x', fn: function (x) { return x * x; }, call: "square" },
+    even: { label: "זוגי?", code: 'def is_even(x):\n    return x % 2 == 0', fn: function (x) { return x % 2 === 0 ? "True" : "False"; }, call: "is_even" }
+  };
+  var cur = "double", busy = false;
+  var tabs = $("m-tabs");
+  Object.keys(machines).forEach(function (k) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "m-tab" + (k === cur ? " active" : ""); b.textContent = machines[k].label; b.dataset.k = k;
+    b.addEventListener("click", function () {
+      cur = k;
+      tabs.querySelectorAll(".m-tab").forEach(function (x) { x.classList.toggle("active", x === b); });
+      reset(); render();
+    });
+    tabs.appendChild(b);
+  });
+  var range = $("m-range");
+  function reset() { $("m-out").textContent = "?"; $("m-out").classList.remove("pop"); $("m-in").classList.remove("go"); }
+  function render() {
+    var m = machines[cur];
+    $("m-in").textContent = range.value;
+    $("m-val").textContent = range.value;
+    $("m-code").textContent = m.code + '\n\nprint(' + m.call + '(' + range.value + '))';
+  }
+  range.addEventListener("input", function () { reset(); render(); });
+  $("m-run").addEventListener("click", function () {
+    if (busy) return;
+    busy = true; progress.machine = true;
+    var m = machines[cur], x = parseInt(range.value, 10);
+    reset();
+    $("m-gear").classList.add("spin");
+    $("m-in").classList.add("go");
+    setTimeout(function () {
+      $("m-out").textContent = m.fn(x);
+      $("m-out").classList.add("pop");
+    }, reduceMotion ? 0 : 700);
+    setTimeout(function () {
+      $("m-gear").classList.remove("spin");
+      $("m-in").classList.remove("go");
+      busy = false;
+    }, reduceMotion ? 0 : 1100);
+  });
+  render();
+})();
+
+/* ---------- lines bars ---------- */
+(function () {
+  var r = $("b-range");
+  function upd() {
+    var n = parseInt(r.value, 10), bad = 3 * n, good = n + 4;
+    $("b-val").textContent = n;
+    $("bar-bad").style.width = (bad / 60 * 100) + "%";
+    $("bar-good").style.width = (good / 60 * 100) + "%";
+    $("num-bad").textContent = bad + " lines";
+    $("num-good").textContent = good + " lines";
+  }
+  r.addEventListener("input", upd); upd();
+})();
+
+/* ---------- anatomy ---------- */
+(function () {
+  var info = {
+    def: ["def", "מילת הקסם שאומרת לפייתון: \"אני מגדיר פונקציה חדשה\". עד שלא קוראים לפונקציה, שום דבר בתוכה לא רץ."],
+    name: ["שם הפונקציה", "השם שבו קוראים לה אחר כך. בחרו שם שמסביר מה היא עושה (greet, calculate_price), ובאותם כללים כמו שמות משתנים."],
+    params: ["פרמטרים", "ה\"חורים\" שדרכם נכנס מידע מבחוץ. כאן יש שניים: name ו-times. בתוך הפונקציה הם מתנהגים כמו משתנים רגילים."],
+    colon: ["נקודתיים", "מסמנות \"עכשיו מתחיל הגוף של הפונקציה\". בלעדיהן תקבלו SyntaxError."],
+    body: ["הגוף: ההזחה", "כל מה שמוזח (4 רווחים) שייך לפונקציה. בפייתון ההזחה היא לא קישוט אלא הדרך להגיד מה שייך למה, כמו הסוגריים המסולסלים בג'אווה."],
+    "return": ["return", "מה שהפונקציה מחזירה החוצה. ברגע שהיא מגיעה לשורה הזו, היא מסתיימת והערך \"יוצא\" למי שקרא לה."],
+    call: ["קריאה לפונקציה", "כאן הפונקציה באמת רצה. \"Dana\" ו-2 הם ארגומנטים: הם נכנסים לפרמטרים name ו-times לפי הסדר. התוצאה נשמרת במשתנה result."]
+  };
+  var parts = document.querySelectorAll(".part");
+  parts.forEach(function (p) {
+    p.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var k = p.dataset.k;
+      parts.forEach(function (x) { x.classList.toggle("sel", x.dataset.k === k); });
+      $("an-t").textContent = info[k][0];
+      $("an-x").textContent = info[k][1];
+      $("an-h").textContent = "";
+    });
+  });
+})();
+
+/* ---------- pizza ---------- */
+(function () {
+  var emo = { olives: "🫒", corn: "🌽", mushrooms: "🍄" };
+  function upd() {
+    var size = $("pz-size").value, top = $("pz-top").value, ex = $("pz-ex").checked;
+    var call = 'make_pizza("' + size + '", "' + top + '"' + (ex ? ", extra_cheese=True" : "") + ")";
+    $("pz-call").textContent = "print(" + call + ")";
+    var n = { small: 1, medium: 2, large: 3 }[size];
+    var art = "";
+    for (var i = 0; i < n; i++) art += "🍕";
+    art += " " + emo[top] + (ex ? " 🧀" : "");
+    $("pz-art").textContent = art;
+    $("pz-text").textContent = size + " pizza with " + top + (ex ? " and extra cheese" : "");
+    progress.pizza = true;
+  }
+  ["pz-size", "pz-top", "pz-ex"].forEach(function (id) { $(id).addEventListener("change", upd); });
+  upd(); progress.pizza = false;
+})();
+
+/* ---------- print vs return ---------- */
+(function () {
+  var ver = "print";
+  var codes = {
+    print: '<span class="tok-kw">def</span> <span class="tok-fn">add_one</span>(n):\n    <span class="tok-fn">print</span>(n + 1)\n\nx = add_one(5)\n<span class="tok-fn">print</span>(x * 2)',
+    "return": '<span class="tok-kw">def</span> <span class="tok-fn">add_one</span>(n):\n    <span class="tok-kw">return</span> n + 1\n\nx = add_one(5)\n<span class="tok-fn">print</span>(x * 2)'
+  };
+  function show() {
+    $("pr-code").innerHTML = codes[ver];
+    document.querySelectorAll("#pr-seg button").forEach(function (b) { b.classList.toggle("active", b.dataset.v === ver); });
+    $("pr-x").textContent = "";
+    $("pr-con").innerHTML = '<span class="dim">לחצו "הריצו" כדי לראות מה קורה...</span>';
+  }
+  document.querySelectorAll("#pr-seg button").forEach(function (b) { b.addEventListener("click", function () { ver = b.dataset.v; show(); }); });
+  $("pr-run").addEventListener("click", function () {
+    progress.pr = true;
+    if (ver === "print") {
+      $("pr-x").textContent = "x = None";
+      $("pr-con").innerHTML = '6\n<span class="err">Traceback (most recent call last):\n  File "main.py", line 5, in &lt;module&gt;\n    print(x * 2)\nTypeError: unsupported operand type(s) for *: \'NoneType\' and \'int\'</span>\n<span class="dim">הפונקציה רק הציגה 6 למסך, ולא החזירה כלום, ולכן x ריק (None).</span>';
+    } else {
+      $("pr-x").textContent = "x = 6";
+      $("pr-con").innerHTML = '<span class="ok">12</span>\n<span class="dim">הפונקציה החזירה 6, הוא נשמר ב-x, ואפשר היה להמשיך לחשב איתו.</span>';
+    }
+  });
+  show();
+})();
+
+/* ---------- monster ---------- */
+(function () {
+  var hero, mon, strong, heals, over;
+  function reset() {
+    hero = { name: "Noa", hp: 100 }; mon = { name: "Grog", hp: 80 }; strong = 3; heals = 2; over = false;
+    $("log").innerHTML = '<div style="color:#8C89C4">הקרב מתחיל! בחרו פעולה...</div>';
+    $("endbox").textContent = ""; $("restart").hidden = true; render();
+  }
+  function render() {
+    $("hp-hero").style.width = hero.hp + "%"; $("hp-mon").style.width = (mon.hp / 80 * 100) + "%";
+    $("hpn-hero").textContent = hero.hp + " / 100"; $("hpn-mon").textContent = mon.hp + " / 80";
+    $("dictview").textContent = 'hero = {"name": "Noa", "hp": ' + hero.hp + '}\nmonster = {"name": "Grog", "hp": ' + mon.hp + '}';
+    $("a-normal").disabled = over; $("a-strong").disabled = over || strong <= 0; $("a-heal").disabled = over || heals <= 0 || hero.hp >= 100;
+    $("s-strong").textContent = "מכה חזקה: " + strong + " שימושים"; $("s-heal").textContent = "ריפוי: " + heals + " שימושים";
+  }
+  function log(call, text) {
+    var l = $("log");
+    var c = document.createElement("div"); c.className = "call"; c.textContent = "> " + call; l.appendChild(c);
+    var t = document.createElement("div"); t.textContent = text; l.appendChild(t);
+    l.scrollTop = l.scrollHeight;
+  }
+  function shake(id) { var f = $(id); f.classList.remove("hit"); void f.offsetWidth; f.classList.add("hit"); }
+  function attack(target, power) { target.hp = Math.max(0, target.hp - power); return target.hp; }
+  function heal(p) { p.hp = Math.min(p.hp + 20, 100); return p.hp; }
+  function monsterTurn() {
+    var r = attack(hero, 12);
+    shake("f-hero");
+    log("attack(hero, 12)", "👹 גרוג תוקף! לנועה נשארו " + r + " חיים.");
+    if (hero.hp <= 0) { over = true; $("endbox").textContent = "😵 הפסדתם... נסו שוב!"; $("restart").hidden = false; progress.monster = "lost"; }
+  }
+  function act(kind) {
+    if (over) return;
+    if (kind === "normal") { var r = attack(mon, 10); shake("f-mon"); log("attack(monster)", "💥 פגעתם ב-10! לגרוג נשארו " + r + "."); }
+    if (kind === "strong") { strong--; var r2 = attack(mon, 25); shake("f-mon"); log("attack(monster, 25)", "⚡ מכה חזקה של 25! לגרוג נשארו " + r2 + "."); }
+    if (kind === "heal") { heals--; var r3 = heal(hero); log("heal(hero)", "💚 ריפוי! לנועה יש עכשיו " + r3 + " חיים."); }
+    if (mon.hp <= 0) { over = true; $("endbox").textContent = "🏆 ניצחתם את גרוג!"; $("restart").hidden = false; progress.monster = "won"; render(); return; }
+    monsterTurn();
+    render();
+  }
+  $("a-normal").addEventListener("click", function () { act("normal"); });
+  $("a-strong").addEventListener("click", function () { act("strong"); });
+  $("a-heal").addEventListener("click", function () { act("heal"); });
+  $("restart").addEventListener("click", reset);
+  reset();
+})();
+
+/* ---------- puzzle ---------- */
+(function () {
+  var puzzles = [
+    { name: "ריבוע", task: "בנו פונקציה שמחזירה את הריבוע של מספר, והדפיסו את הריבוע של 4.", lines: ["def square(n):", "    return n * n", "print(square(4))"], shuffle: [2, 0, 1], ok: [[0, 1, 2]], out: "16" },
+    { name: "ברכה", task: "פונקציה שמברכת, ואם שלחו excited=True, מוסיפה סימני קריאה.", lines: ["def greet(name, excited=False):", "    if excited:", "        return \"Hi \" + name + \"!!!\"", "    return \"Hi \" + name", "print(greet(\"Dana\", True))"], shuffle: [3, 0, 4, 2, 1], ok: [[0, 1, 2, 3, 4]], out: "Hi Dana!!!" },
+    { name: "זהב", task: "מוסיפים זהב לגיבור שהוא מילון, ומדפיסים כמה זהב יש לו עכשיו.", lines: ["hero = {\"name\": \"Noa\", \"gold\": 5}", "def add_gold(person, amount):", "    person[\"gold\"] = person[\"gold\"] + amount", "    return person[\"gold\"]", "print(add_gold(hero, 10))"], shuffle: [4, 2, 0, 3, 1], ok: [[0, 1, 2, 3, 4], [1, 2, 3, 0, 4]], out: "15" }
+  ];
+  var cur = 0, chosen = [];
+  var tabs = $("puz-tabs");
+  puzzles.forEach(function (p, i) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "m-tab" + (i === 0 ? " active" : ""); b.textContent = "פאזל " + (i + 1) + ": " + p.name;
+    b.addEventListener("click", function () { cur = i; chosen = []; tabs.querySelectorAll(".m-tab").forEach(function (x) { x.classList.toggle("active", x === b); }); render(); });
+    tabs.appendChild(b);
+  });
+  function render() {
+    var p = puzzles[cur];
+    $("puz-task").textContent = p.task;
+    $("puz-fb").textContent = ""; $("puz-fb").className = "fb"; $("puz-out").hidden = true;
+    var pool = $("puz-pool"), built = $("puz-built"); pool.innerHTML = ""; built.innerHTML = "";
+    p.shuffle.forEach(function (idx) {
+      if (chosen.indexOf(idx) !== -1) return;
+      var b = document.createElement("button"); b.type = "button"; b.className = "pline"; b.textContent = p.lines[idx];
+      b.addEventListener("click", function () { chosen.push(idx); render(); });
+      pool.appendChild(b);
+    });
+    if (!pool.children.length) pool.innerHTML = '<div style="color:var(--ink-faint);text-align:center;padding-top:30px;">כל השורות במקום 👍</div>';
+    chosen.forEach(function (idx) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "pline"; b.textContent = p.lines[idx];
+      b.addEventListener("click", function () { chosen.splice(chosen.indexOf(idx), 1); render(); });
+      built.appendChild(b);
+    });
+    if (!chosen.length) built.innerHTML = '<div class="puz-empty">לחצו על שורות בצד ימין כדי להרכיב את התוכנית</div>';
+  }
+  $("puz-reset").addEventListener("click", function () { chosen = []; render(); });
+  $("puz-check").addEventListener("click", function () {
+    var p = puzzles[cur], fb = $("puz-fb");
+    if (chosen.length < p.lines.length) { fb.textContent = "עדיין חסרות שורות."; fb.className = "fb wrong"; return; }
+    var good = p.ok.some(function (o) { return o.join(",") === chosen.join(","); });
+    if (good) {
+      fb.textContent = "מושלם! התוכנית עובדת."; fb.className = "fb correct"; progress.puzzle[cur] = true;
+      var o = $("puz-out"); o.hidden = false; o.innerHTML = '<span class="dim">$ python main.py</span>\n<span class="ok">' + esc(p.out) + '</span>';
+    } else {
+      fb.textContent = "הסדר עדיין לא נכון. רמז: קודם מגדירים, ורק אחר כך קוראים לפונקציה."; fb.className = "fb wrong";
+    }
+  });
+  render();
+})();
+
+/* ---------- scope ---------- */
+(function () {
+  var res = {
+    1: ["err", "NameError: name 'secret' is not defined\n\nהמשתנה secret חי רק בתוך הפונקציה, והיא כבר נגמרה."],
+    2: ["ok", "42\n\nreturn הוציא את הערך מהחדר, ושמרנו אותו ב-x."],
+    3: ["ok", "15\n\nפונקציה יכולה לקרוא משתנה מבחוץ (bonus)."]
+  };
+  document.querySelectorAll("[data-sc]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var k = b.dataset.sc, o = $("sc-" + k);
+      o.className = "scope-out " + res[k][0]; o.textContent = res[k][1]; progress.scope[k] = true;
+    });
+  });
+})();
+
+/* ---------- detective ---------- */
+(function () {
+  var qs = [
+    { code: 'def f(x):\n    return x + 1\n\nprint(f(f(1)))', opts: ["2", "3", "4"], ok: 1, why: "f(1) מחזירה 2, ואז f(2) מחזירה 3. אפשר להכניס פונקציה בתוך פונקציה." },
+    { code: 'def f(x):\n    print(x * 2)\n\ny = f(4)\nprint(y)', opts: ["8", "8 ואז None", "8 ואז 8"], ok: 1, why: "f מדפיסה 8 אבל לא מחזירה כלום, אז y הוא None. זו בדיוק ההבדל בין print ל-return." },
+    { code: 'def power(base, exp=2):\n    return base ** exp\n\nprint(power(3), power(2, 3))', opts: ["9 8", "6 6", "9 6"], ok: 0, why: "power(3) משתמשת בברירת המחדל exp=2 ולכן 3 בריבוע = 9. power(2, 3) היא 2 בחזקת 3 = 8." },
+    { code: 'x = 5\n\ndef change():\n    x = 10\n\nchange()\nprint(x)', opts: ["10", "5", "שגיאה"], ok: 1, why: "ה-x בתוך הפונקציה הוא משתנה חדש ומקומי, ולא נוגע ב-x שבחוץ. לכן x נשאר 5." },
+    { code: 'def add_point(player):\n    player["score"] += 1\n\np = {"score": 0}\nadd_point(p)\nadd_point(p)\nprint(p["score"])', opts: ["0", "2", "שגיאה"], ok: 1, why: "מילון עובר לפונקציה כמו שהוא, ולא עותק. כשהפונקציה משנה אותו, השינוי נשאר גם בחוץ." }
+  ];
+  var host = $("det-grid");
+  qs.forEach(function (q, i) {
+    var card = document.createElement("div"); card.className = "det-card";
+    card.innerHTML = '<h4>חידה ' + (i + 1) + '</h4><div class="code-card" style="margin-top:6px"><pre>' + esc(q.code) + '</pre></div><div class="qq">מה יודפס?</div><div class="choices"></div><div class="fb"></div>';
+    var ch = card.querySelector(".choices"), fb = card.querySelector(".fb");
+    q.opts.forEach(function (o, j) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "choice"; b.textContent = o; b.style.direction = "ltr"; b.style.textAlign = "left";
+      if (/[֐-׿]/.test(o)) { b.style.direction = "rtl"; b.style.textAlign = "start"; }
+      b.addEventListener("click", function () {
+        var all = ch.querySelectorAll(".choice"); all.forEach(function (x) { x.disabled = true; });
+        progress.det.done++;
+        if (j === q.ok) { b.classList.add("right"); fb.textContent = "נכון! " + q.why; fb.className = "fb correct"; progress.det.right++; }
+        else { b.classList.add("wrong"); all[q.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + q.why; fb.className = "fb wrong"; }
+        if (progress.det.done === qs.length) $("det-score").textContent = progress.det.right === qs.length ? "🏆 " + progress.det.right + " מתוך " + qs.length + ". בלשים מושלמים!" : progress.det.right + " מתוך " + qs.length + ". כדאי לחזור לחידות שהתבלבלתם בהן.";
+      });
+      ch.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- download results ---------- */
+(function () {
+  function summaryHtml(name) {
+    var p = progress, date = new Date().toLocaleDateString("he-IL");
+    var puz = Object.keys(p.puzzle).length;
+    function sec(t, id) { var v = $(id).value.trim() || "(לא הוזן קוד)"; return "<h2>" + t + "</h2><pre>" + esc(v) + "</pre>"; }
+    return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תוצאות · ' + esc(name) + '</title><style>body{font-family:Arial,sans-serif;background:#F5F3FF;color:#25224F;padding:40px 20px;line-height:1.7}.w{max-width:760px;margin:0 auto}h1{margin:0 0 4px}h2{margin:28px 0 8px;color:#4453E0;font-size:18px}pre{direction:ltr;text-align:left;background:#221F55;color:#ECEBFF;border-radius:14px;padding:14px 18px;white-space:pre-wrap;font-size:14px}.card{background:#fff;border-radius:18px;padding:16px 20px;box-shadow:0 6px 24px rgba(60,50,150,.12)}</style></head><body><div class="w"><h1>תוצאות · שיעור פונקציות</h1><div>שם: ' + esc(name) + ' · תאריך: ' + date + '</div>' +
+      '<h2>משחקים וחידות</h2><div class="card"><div>קרב המפלצת: ' + (p.monster === "won" ? "ניצחון 🏆" : p.monster === "lost" ? "הפסד (שיחקו)" : "לא שוחק") + '</div><div>פאזלי הרכבה שנפתרו: ' + puz + ' מתוך 3</div><div>בלשי קוד: ' + p.det.right + ' נכונות מתוך ' + p.det.total + '</div></div>' +
+      sec("אתגר 1 · is_even", "ex1") + sec("אתגר 2 · discount", "ex2") + sec("אתגר 3 · hit", "ex3") + '</div></body></html>';
+  }
+  $("dl-btn").addEventListener("click", function () {
+    var name = $("stu-name").value.trim() || "תלמיד";
+    var html = summaryHtml(name), st = $("dl-status");
+    try {
+      var blob = new Blob([html], { type: "text/html;charset=utf-8" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = "python-functions-results.html"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+      st.textContent = "הקובץ ירד! שלחו אותו למורה.";
+    } catch (e) {
+      st.textContent = "ההורדה האוטומטית לא עבדה. הטקסט מוכן להעתקה למטה.";
+      $("dl-text").value = html; $("dl-fallback").hidden = false;
+    }
+  });
+})();
+
+/* ---------- flips ---------- */
+document.querySelectorAll(".flip").forEach(function (f) { f.addEventListener("click", function () { f.classList.toggle("on"); }); });
+
+</script>
+</body>
+</html>

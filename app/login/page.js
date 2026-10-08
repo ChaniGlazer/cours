@@ -49,3 +49,5 @@ export default async function LoginPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };

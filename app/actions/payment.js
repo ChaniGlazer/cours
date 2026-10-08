@@ -23,7 +23,7 @@ export async function startPaymentAction(courseId) {
   }
 
   const course = await getCourseBySlug(courseId);
-  if (!course || !course.is_paid) {
+  if (!course || !course.is_paid || course.coming_soon) {
     redirect(`/courses/${courseId}`);
   }
 

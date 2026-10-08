@@ -47,3 +47,5 @@ export default async function ForgotPasswordPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };

@@ -50,3 +50,5 @@ export default async function PaymentSuccessPage({ searchParams }) {
     </section>
   );
 }
+
+export const metadata = { robots: { index: false, follow: false } };
