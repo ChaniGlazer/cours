@@ -40,22 +40,22 @@ for (const H of HEIGHTS) {
         scrollbarWidth: list.offsetWidth - list.clientWidth,
         items: [...nav.querySelectorAll(".side-item")].map((e) => (e.querySelector(".side-item__t") || e).textContent.trim().replace(/\s+/g, " ")),
         ring: (() => {
-          const n = nav.querySelector(".ring-num"); const t = nav.querySelector(".progress-text b"); const rg = nav.querySelector(".progress-ring");
+          const n = nav.querySelector(".ring-num"); const rg = nav.querySelector(".progress-ring"); const sp = nav.querySelector(".progress-text span");
           if (!n) return null;
           const [d, tot] = n.textContent.split("/").map(Number);
-          const m = t.textContent.match(/(\d+)\D+(\d+)/);
-          const fill = nav.querySelector(".ring-fill"); const C = 2 * Math.PI * 18;
+          const fill = nav.querySelector(".ring-fill"); const C = 2 * Math.PI * 24;
           const off = parseFloat(getComputedStyle(fill).strokeDashoffset);
-          return { ring: n.textContent, text: t.textContent.trim(), consistent: Number(m[1]) === d && Number(m[2]) === tot, fillMatches: Math.abs((1 - off / C) - d / tot) < 0.01, label: rg.getAttribute("aria-label"), dir: getComputedStyle(n).direction };
+          const sm = sp.textContent.match(/\d+/); const spN = /אחד/.test(sp.textContent) ? 1 : /עוד לא/.test(sp.textContent) ? 0 : Number(sm && sm[0]);
+          return { ring: n.textContent, text: sp.textContent.trim(), consistent: spN === d, fillMatches: Math.abs((1 - off / C) - d / tot) < 0.01, label: rg.getAttribute("aria-label"), dir: getComputedStyle(n).direction };
         })(),
         lineAlign: (() => {
-          const els = [...nav.querySelectorAll(".side-item")]; if (els.length < 2) return null;
-          const a = els[0], i = a.querySelector("i").getBoundingClientRect(); const ar = a.getBoundingClientRect();
-          const cs = getComputedStyle(a, "::before"); const w = parseFloat(cs.width);
-          const rtl = getComputedStyle(a).direction === "rtl";
-          const startOffset = parseFloat(rtl ? cs.right : cs.left);
-          const lineCenter = rtl ? ar.right - startOffset - w / 2 : ar.left + startOffset + w / 2;
-          return Math.round(Math.abs(lineCenter - (i.left + i.width / 2)) * 100) / 100;
+          const tr = nav.querySelector(".lesson-side__track"), fl = nav.querySelector(".lesson-side__track-fill");
+          const dots = [...nav.querySelectorAll(".side-item > i")]; if (!tr || dots.length < 2) return null;
+          const cx = (r) => r.left + r.width / 2, cy = (r) => r.top + r.height / 2;
+          const t = tr.getBoundingClientRect(), f = fl.getBoundingClientRect();
+          const d0 = dots[0].getBoundingClientRect(), dN = dots[dots.length - 1].getBoundingClientRect();
+          const cur = nav.querySelector(".is-current > i").getBoundingClientRect();
+          return { xOff: Math.round(Math.abs(cx(t) - cx(d0)) * 100) / 100, trackTopOff: Math.round(Math.abs(t.top - cy(d0)) * 10) / 10, trackBottomOff: Math.round(Math.abs(t.bottom - cy(dN)) * 10) / 10, fillBottomOff: Math.round(Math.abs(f.bottom - cy(cur)) * 10) / 10, fillH: Math.round(f.height), trackW: t.width };
         })(),
         currentVisible: (() => { const c = nav.querySelector(".side-item.is-current"); if (!c) return null; const cr = c.getBoundingClientRect(), lr = list.getBoundingClientRect(); return cr.top >= lr.top - 1 && cr.bottom <= lr.bottom + 1; })(),
         bottomButtonVisible: (() => { const b = nav.querySelector(".lesson-side__next"); if (!b) return null; const r = b.getBoundingClientRect(); return r.bottom <= window.innerHeight && r.top >= 0; })()
@@ -68,4 +68,4 @@ for (const H of HEIGHTS) {
 }
 await browser.close();
 fs.writeFileSync(path.join(outDir, `${label}.json`), JSON.stringify(report, null, 1), "utf8");
-for (const r of report) console.log(`${label} H=${r.H} ${r.state.padEnd(6)} nav ${r.navTop}-${r.navBottom} (viewport ${r.viewport}) overflow:${r.overflowsViewport} scrolls:${r.listScrolls} (${r.listScrollHeight}/${r.listClientHeight}) scrollbar:${r.scrollbarWidth}px currentVisible:${r.currentVisible} errors:${r.errors.length} btn:${r.bottomButtonVisible} ring:${r.ring ? r.ring.ring + "|" + r.ring.consistent + "|" + r.ring.fillMatches : "-"} lineOff:${r.lineAlign}px`);
+for (const r of report) console.log(`${label} H=${r.H} ${r.state.padEnd(6)} nav ${r.navTop}-${r.navBottom} (viewport ${r.viewport}) overflow:${r.overflowsViewport} scrolls:${r.listScrolls} (${r.listScrollHeight}/${r.listClientHeight}) scrollbar:${r.scrollbarWidth}px currentVisible:${r.currentVisible} errors:${r.errors.length} btn:${r.bottomButtonVisible} ring:${r.ring ? r.ring.ring + "|" + r.ring.consistent + "|" + r.ring.fillMatches : "-"} line:${JSON.stringify(r.lineAlign)}`);

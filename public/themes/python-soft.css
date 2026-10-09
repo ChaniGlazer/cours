@@ -495,69 +495,91 @@ body:has(.theme-python-soft) .site-footer { background: transparent; color: var(
 .theme-python-soft.lesson-page { padding-bottom: 56px; font-family: var(--ps-sans); }
 .theme-python-soft .lesson-layout { max-width: 1680px; gap: 0; }
 
-/* הכרטיס: עמודת flex שצמודה מתחת לכותרת האתר ולא חורגת מהמסך. רק אזור הרשימה גולל */
+/* הכרטיס: עמודת flex שלא חורגת מהמסך. רק אזור הרשימה גולל. מראה לפי nav-demo (וריאנט א׳, ציר זמן) */
+@media (min-width: 861px) {
+  .theme-python-soft .lesson-layout { grid-template-columns: 370px minmax(0, 1fr); } /* 330 כרטיס + 2×20 שוליים */
+}
 .theme-python-soft .lesson-side {
-  display: flex; flex-direction: column; gap: 2px;
-  position: sticky; top: calc(var(--header-h) + 12px); align-self: start;
-  max-height: calc(100vh - var(--header-h) - 24px); overflow: hidden;
-  margin: 20px 20px 0; padding: 16px 14px 12px;
-  background: #fff; border: 1px solid rgba(91, 108, 255, 0.07); border-radius: var(--ps-radius); box-shadow: var(--ps-shadow);
+  display: flex; flex-direction: column; gap: 0;
+  position: sticky; top: 84px; align-self: start; width: 330px;
+  max-height: calc(100vh - 110px); overflow: hidden;
+  margin: 20px 20px 0; padding: 22px 20px 20px;
+  background: #fff; border: 0; border-radius: 30px;
+  box-shadow: 0 1px 2px rgba(50, 40, 140, 0.05), 0 16px 48px -16px rgba(60, 50, 150, 0.24);
   font-family: var(--ps-sans);
 }
-.theme-python-soft .lesson-side h2 { font-family: var(--ps-display); font-size: 1.15rem; font-weight: 700; line-height: 1.3; margin: 10px 8px 8px; color: var(--ps-ink); flex: none; }
+.theme-python-soft .lesson-side h2 { font-family: var(--ps-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin: 0; padding: 0 4px; color: var(--ps-ink); flex: none; }
+/* חזרה: קישור שקט. אזור הלחיצה 44px (padding + שוליים שליליים) בלי לשנות את הפריסה */
 .theme-python-soft .lesson-side__back {
-  flex: none; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin: 0 8px;
-  font-size: 0.85rem; font-weight: 700; color: var(--ps-primary-ink); background: var(--ps-primary-soft);
-  border-radius: 100px; padding: 6px 14px; text-decoration: none; transition: background 0.15s ease, color 0.15s ease;
+  flex: none; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+  color: #5A577F; font-size: 14.5px; font-weight: 600; line-height: 22px; background: none; border: 0;
+  padding: 11px 4px; margin: -11px 0 3px; text-decoration: none; transition: color 0.15s ease;
 }
-.theme-python-soft .lesson-side__back:hover { background: var(--ps-primary); color: #fff; text-decoration: none; }
-.theme-python-soft .lesson-side__back:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; }
+.theme-python-soft .lesson-side__back:hover { color: #3F4FE0; text-decoration: none; }
+.theme-python-soft .lesson-side__back:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; border-radius: 8px; }
 
-/* אזור הרשימה: היחיד שגולל, עם פס גלילה דק ושקוף ודהייה בקצה רק כשיש עוד תוכן */
+/* אזור הרשימה: היחיד שגולל. פס דק שקוף-למחצה, ודהייה בקצה רק כשיש עוד תוכן בכיוון הזה */
 .theme-python-soft .lesson-side__list {
   position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
-  margin: 0 -6px; padding: 6px 6px; gap: 1px; /* padding כדי שטבעת הפוקוס והזוהר לא ייחתכו */
-  scrollbar-gutter: stable;
+  padding: 4px 6px 6px; margin: 0 -6px;
   overscroll-behavior: contain;
   --ft: 0px; --fb: 0px;
 }
 .theme-python-soft .lesson-side__list::-webkit-scrollbar { width: 6px; }
 .theme-python-soft .lesson-side__list::-webkit-scrollbar-track { background: transparent; }
 .theme-python-soft .lesson-side__list::-webkit-scrollbar-thumb { background: rgba(91, 108, 255, 0.35); border-radius: 6px; }
-.theme-python-soft .lesson-side__list::-webkit-scrollbar-thumb:hover { background: rgba(91, 108, 255, 0.6); }
 .theme-python-soft .lesson-side__list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 /* Firefox לא תומך ב-::-webkit-scrollbar: שם משתמשים במאפיינים הסטנדרטיים (ב-Chrome הם היו דורסים את ה-6px) */
 @supports not selector(::-webkit-scrollbar) {
   .theme-python-soft .lesson-side__list { scrollbar-width: thin; scrollbar-color: rgba(91, 108, 255, 0.35) transparent; }
 }
-.theme-python-soft .lesson-side__list[data-fade-top="1"] { --ft: 14px; }
+.theme-python-soft .lesson-side__list[data-fade-top="1"] { --ft: 12px; }
 .theme-python-soft .lesson-side__list[data-fade-bottom="1"] { --fb: 22px; }
 .theme-python-soft .lesson-side__list[data-fade-top="1"],
 .theme-python-soft .lesson-side__list[data-fade-bottom="1"] {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%);
 }
+.theme-python-soft .lesson-side__list.no-scroll { -webkit-mask-image: none; mask-image: none; }
 
-/* שורות השיעורים: צפופות יותר, כותרת עד שתי שורות */
+/* ציר הזמן: הקו עובר במרכז העיגולים (8px padding פריט + 20px חצי עיגול = 28px מהקצה). top/height נקבעים ב-JS */
+.theme-python-soft .lesson-side__items { position: relative; display: flex; flex-direction: column; }
+.theme-python-soft .lesson-side__track,
+.theme-python-soft .lesson-side__track-fill {
+  position: absolute; inset-inline-start: 26.5px; width: 3px; border-radius: 3px; pointer-events: none;
+}
+.theme-python-soft .lesson-side__track { top: 29px; bottom: 29px; background: #ECE9FF; }
+.theme-python-soft .lesson-side__track-fill { top: 29px; height: 0; background: linear-gradient(180deg, #34D6A0, #6C7BFF); }
+
+/* שורות השיעורים */
 .theme-python-soft .side-item {
-  display: flex; align-items: center; gap: 12px; flex: none; min-height: 0; padding: 6px 12px; border-radius: 16px;
-  font-family: var(--ps-sans); font-size: 0.97rem; font-weight: 600; line-height: 1.35; color: var(--ps-ink);
-  text-decoration: none; transition: background 0.15s ease, transform 0.15s ease;
+  position: relative; display: flex; align-items: center; gap: 14px; flex: none; width: 100%; min-height: 0;
+  padding: 9px 8px; border-radius: 18px; text-align: start; text-decoration: none;
+  font-family: var(--ps-sans); color: #5A577F; transition: background 0.15s ease;
 }
 .theme-python-soft .side-item__t {
-  min-width: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  min-width: 0; font-size: 15.5px; font-weight: 600; line-height: 1.35;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
   overflow-wrap: break-word; word-break: normal;
 }
-.theme-python-soft a.side-item:hover { background: var(--ps-panel-2); color: var(--ps-ink); transform: translateX(-2px); }
-.theme-python-soft a.side-item:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; background: var(--ps-panel-2); }
+.theme-python-soft a.side-item:hover { background: #F0EEFF; color: #5A577F; }
+.theme-python-soft a.side-item:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; background: #F0EEFF; }
 .theme-python-soft .side-item i {
-  width: 36px; height: 36px; flex: none; display: grid; place-items: center; border: 0; border-radius: 50%;
-  background: var(--ps-panel-2); color: var(--ps-ink-dim); font-family: var(--ps-display); font-style: normal; font-weight: 700; font-size: 0.9rem; direction: ltr;
+  position: relative; z-index: 1; width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: #fff; border: 3px solid #ECE9FF; color: #8B88AE;
+  font-family: var(--ps-display); font-style: normal; font-weight: 700; font-size: 14.5px; direction: ltr;
 }
-.theme-python-soft .side-item.is-done i { background: var(--ps-btn-green); color: #fff; }
-.theme-python-soft .side-item.is-current { background: var(--ps-primary-soft); color: var(--ps-primary-ink); box-shadow: none; font-weight: 700; }
-.theme-python-soft .side-item.is-current i { background: var(--ps-btn); color: #fff; box-shadow: 0 6px 14px -6px rgba(91, 108, 255, 0.7); }
-.theme-python-soft .side-item.is-locked { color: var(--ps-ink-faint); }
+.theme-python-soft .side-item.is-done i { background: linear-gradient(135deg, #34D6A0, #1FB985); border-color: transparent; color: #fff; }
+.theme-python-soft .side-item.is-done .side-item__t { color: #25224F; }
+.theme-python-soft .side-item.is-current { background: linear-gradient(90deg, rgba(91, 108, 255, 0.12), rgba(139, 107, 255, 0.04)); box-shadow: none; }
+.theme-python-soft .side-item.is-current .side-item__t { color: #3F4FE0; font-weight: 700; }
+.theme-python-soft .side-item.is-current i {
+  background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border-color: transparent; color: #fff;
+  box-shadow: 0 0 0 6px rgba(91, 108, 255, 0.16); animation: ps-nav-glow 2.4s ease-in-out infinite;
+}
+@keyframes ps-nav-glow { 50% { box-shadow: 0 0 0 10px rgba(91, 108, 255, 0.07); } }
+@media (prefers-reduced-motion: reduce) { .theme-python-soft .side-item.is-current i { animation: none; } }
+.theme-python-soft .side-item.is-locked { color: #8B88AE; }
 .theme-python-soft .lesson-main { padding-inline: clamp(8px, 1.5vw, 24px); }
 .theme-python-soft .lesson-html-frame { border-radius: var(--ps-radius); background: transparent; min-height: 60vh; }
 .theme-python-soft .lesson-pager { border-top-color: var(--ps-line); }
@@ -565,50 +587,33 @@ body:has(.theme-python-soft) .site-footer { background: transparent; color: var(
   background: #fff; border: 0; box-shadow: var(--ps-shadow-sm); border-radius: 100px; color: var(--ps-ink);
   font-family: var(--ps-sans); font-weight: 700; min-height: 48px; padding: 10px 20px;
 }
-/* כותרת הכרטיס: טבעת התקדמות (שיעורים שהושלמו מתוך הכול) ושם הקורס. הטקסט שלידה תמיד תואם את המספר בטבעת */
-.theme-python-soft .lesson-side__head { flex: none; display: flex; align-items: center; gap: 12px; padding: 2px 8px 2px; }
-.theme-python-soft .lesson-side__headtext { min-width: 0; }
-.theme-python-soft .lesson-side__head h2 { margin: 0 0 2px; font-size: 1.02rem; line-height: 1.25; }
-.theme-python-soft .progress-ring { position: relative; width: 52px; height: 52px; flex: none; }
-.theme-python-soft .progress-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-.theme-python-soft .ring-track { fill: none; stroke: #E4E1FF; stroke-width: 4.5; }
-.theme-python-soft .ring-fill { fill: none; stroke: url(#psRing); stroke-width: 4.5; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
-.theme-python-soft .ring-num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--ps-display); font-weight: 700; font-size: 0.78rem; color: var(--ps-ink); direction: ltr; }
-.theme-python-soft .progress-text { display: flex; flex-direction: column; line-height: 1.3; }
-.theme-python-soft .progress-text b { font-size: 0.88rem; color: var(--ps-ink); font-weight: 700; }
-.theme-python-soft .progress-text span { font-size: 0.78rem; color: var(--ps-ink-dim); }
-
-/* ציר הזמן: קו אנכי שעובר במרכז העיגולים (מרכז העיגול: 12px padding + 18px רדיוס = 30px מהקצה) */
-.theme-python-soft .side-item { position: relative; }
-.theme-python-soft .side-item i { position: relative; z-index: 1; }
-.theme-python-soft .side-item:not(:last-child)::before,
-.theme-python-soft .side-item:not(:first-child)::after {
-  content: ""; position: absolute; width: 2px; inset-inline-start: 29px; background: rgba(91, 108, 255, 0.2); pointer-events: none;
-}
-.theme-python-soft .side-item:not(:last-child)::before { top: calc(50% + 18px); bottom: -2px; } /* מהעיגול ועד העיגול הבא (כולל רווח הרשימה) */
-.theme-python-soft .side-item:not(:first-child)::after { top: 0; height: calc(50% - 18px); }
-.theme-python-soft .side-item.is-done::before { background: rgba(31, 185, 133, 0.5); }
-.theme-python-soft .side-item.is-done + .side-item::after { background: rgba(31, 185, 133, 0.5); }
+/* טבעת התקדמות (שיעורים שהושלמו מתוך הכול) ושורת הסטטוס שלידה: כותרת אחת ושורה קטנה אחת */
+.theme-python-soft .lesson-side__head { flex: none; display: flex; align-items: center; gap: 14px; margin: 16px 4px 18px; }
+.theme-python-soft .progress-ring { position: relative; width: 58px; height: 58px; flex: none; }
+.theme-python-soft .progress-ring svg { width: 58px; height: 58px; transform: rotate(-90deg); display: block; }
+.theme-python-soft .ring-track { fill: none; stroke: #ECE9FF; stroke-width: 6; }
+.theme-python-soft .ring-fill { fill: none; stroke: url(#psRing); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
+.theme-python-soft .ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--ps-display); font-weight: 700; font-size: 15px; color: #3F4FE0; direction: ltr; }
+.theme-python-soft .progress-text { min-width: 0; }
+.theme-python-soft .progress-text b { display: block; font-family: var(--ps-display); font-size: 15.5px; font-weight: 700; line-height: 1.5; color: var(--ps-ink); }
+.theme-python-soft .progress-text span { font-size: 13.5px; color: #8B88AE; }
 
 /* תת-כיתוב קטן (שורה אחת): "אתם כאן" / "הושלם" */
-.theme-python-soft .side-item__body { min-width: 0; display: flex; flex-direction: column; }
-.theme-python-soft .side-item__s { font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--ps-ink-dim); }
-.theme-python-soft .side-item.is-current .side-item__s { color: var(--ps-primary-ink); }
-.theme-python-soft .side-item.is-done:not(.is-current) .side-item__s { color: var(--ps-success-ink); }
+.theme-python-soft .side-item__body { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.theme-python-soft .side-item__s { font-size: 12.5px; font-weight: 400; line-height: 1.3; margin-top: 1px; color: #8B88AE; }
 
 /* כפתור "המשך לשיעור הבא": קבוע בתחתית הכרטיס ותמיד גלוי */
-.theme-python-soft .lesson-side__foot { flex: none; margin-top: 2px; padding: 8px 6px 0; border-top: 1px solid var(--ps-line); }
-.theme-python-soft .lesson-side__next { width: 100%; min-height: 44px; padding: 10px 16px; font-size: 0.95rem; }
+.theme-python-soft .lesson-side__foot { flex: none; margin-top: 14px; padding: 0; }
+.theme-python-soft .lesson-side__next { width: 100%; min-height: 44px; padding: 12px 28px; font-size: 16px; }
 .theme-python-soft .lesson-side__next:focus-visible { outline: 3px solid rgba(91, 108, 255, 0.45); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   .theme-python-soft .ring-fill { transition: none; }
 }
 
 @media (max-width: 860px) {
-  .theme-python-soft .lesson-side { margin: 10px 16px 0; position: static; max-height: none; overflow: visible; padding-bottom: 14px; }
+  .theme-python-soft .lesson-side { width: auto; margin: 10px 16px 0; position: static; max-height: none; overflow: visible; }
   .theme-python-soft .lesson-side.is-open { background: #fff; border: 1px solid rgba(91, 108, 255, 0.07); }
-  .theme-python-soft .lesson-side__list { overflow: visible; margin: 0; padding: 4px 0; scrollbar-gutter: auto; -webkit-mask-image: none !important; mask-image: none !important; }
-  .theme-python-soft .side-item { padding: 8px 12px; }
+  .theme-python-soft .lesson-side__list { overflow: visible; -webkit-mask-image: none !important; mask-image: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .theme-python-soft a.side-item:hover { transform: none; }
