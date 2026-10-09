@@ -1,0 +1,133 @@
+/* עיצוב דף הקורסים (/courses), לפי design-reference/courses-design.html.
+   הצבעים והגופנים מגיעים מהטוקנים הגלובליים ב-globals.css (--paper, --white, --paper-2, --border, --ink,
+   --text-soft, --gold = מבטא ורוד, --moss = מנטה). כל הכללים כאן בקידומת cx- כדי לא לדלוף לדפים אחרים. */
+
+.cx {
+  --cx-yellow: #FFD27A;
+  --cx-blue: #8FB8FF;
+  --cx-comment: #9E97BA;
+  --cx-pad: clamp(20px, 5vw, 72px);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+.cx h1, .cx h2, .cx h3 { font-family: var(--font-display); font-weight: 400; margin: 0; }
+.cx p { margin: 0; }
+.cx pre { margin: 0; }
+.cx-wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--cx-pad); box-sizing: border-box; }
+.cx-accent { color: var(--gold); }
+.cx-mint { color: var(--moss); }
+.cx-strong { font-weight: 700; }
+.cx-muted { color: var(--text-soft); }
+.cx-mono { font-family: var(--font-mono); font-size: 15px; }
+.cx a:focus-visible, .cx button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* hero */
+.cx-hero { background-image: radial-gradient(#3A3558 1.2px, transparent 1.2px); background-size: 30px 30px; }
+.cx-hero__grid { display: flex; flex-wrap: wrap; align-items: center; gap: 56px; padding-top: 72px; padding-bottom: 96px; }
+.cx-hero__text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 28px; align-items: flex-start; }
+.cx-pill { display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--white); color: var(--text-soft); font-size: 16px; font-weight: 600; }
+.cx-pill__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--moss); }
+.cx-h1 { font-size: clamp(42px, 6vw, 78px); line-height: 1.08; text-wrap: balance; }
+.cx-hero__sub { max-width: 520px; font-size: 21px; color: var(--text-soft); text-wrap: pretty; }
+.cx-hero__actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.cx-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 30px; border-radius: 999px; background: var(--gold); color: var(--on-accent); font-size: 20px; font-weight: 700; text-decoration: none; }
+.cx-btn--xl { min-height: 60px; padding: 0 34px; }
+.cx-btn--dark { background: var(--paper); color: var(--ink); }
+.cx-link-under { display: inline-flex; align-items: center; min-height: 56px; padding: 0 12px; color: var(--ink); font-size: 18px; font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--border); }
+.cx-link-under:hover { border-bottom-color: var(--gold); }
+
+.cx-hero__mock { flex: 1 1 460px; min-width: 0; }
+.cx-editor { border: 1px solid var(--border); border-radius: 20px; background: var(--white); overflow: hidden; box-shadow: 14px 14px 0 var(--paper-2); }
+.cx-editor__bar { display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--paper-2); }
+.cx-dot { width: 12px; height: 12px; border-radius: 50%; }
+.cx-dot--accent { background: var(--gold); }
+.cx-dot--yellow { background: var(--cx-yellow); }
+.cx-dot--mint { background: var(--moss); }
+.cx-editor__file { margin-inline-start: 12px; font-family: var(--font-mono); font-size: 14px; color: var(--text-soft); }
+.cx-code { padding: 24px 24px 20px; font-family: var(--font-mono); font-size: 16px; line-height: 1.75; color: var(--ink); text-align: left; overflow-x: auto; }
+.cx-code--inset { padding: 16px 18px; border-radius: 12px; background: var(--paper); font-size: 15px; line-height: 1.7; }
+.cx-kw { color: var(--gold); }
+.cx-fn { color: var(--cx-yellow); }
+.cx-num { color: var(--cx-blue); }
+.cx-cm { color: var(--cx-comment); }
+.cx-editor__result { display: flex; flex-direction: column; gap: 10px; padding: 18px 24px 22px; border-top: 1px solid var(--border); background: var(--paper); }
+.cx-editor__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cx-bars { display: flex; gap: 8px; }
+.cx-bars span { flex: 1; height: 8px; border-radius: 4px; background: var(--moss); }
+
+/* catalog */
+.cx-catalog { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cx-catalog__inner { padding-top: 88px; padding-bottom: 88px; display: flex; flex-direction: column; gap: 40px; }
+.cx-catalog__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.cx-catalog__title { display: flex; flex-direction: column; gap: 10px; }
+.cx-h2 { font-size: clamp(34px, 4vw, 52px); line-height: 1.15; }
+.cx-h2--sm { font-size: clamp(32px, 3.6vw, 46px); }
+.cx-lede { color: var(--text-soft); font-size: 19px; max-width: 560px; }
+.cx-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.cx-tab { display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 999px; border: 2px solid var(--border); background: transparent; color: var(--ink); font-size: 17px; font-weight: 700; text-decoration: none; }
+.cx-tab:hover { border-color: var(--gold); }
+.cx-tab.is-active { background: var(--gold); border-color: var(--gold); color: var(--on-accent); }
+.cx-catalog .resume-card { margin-top: 0; background: var(--paper); }
+
+.cx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(310px, 100%), 1fr)); gap: 24px; }
+.cx-card { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 20px; background: var(--paper); overflow: hidden; }
+.cx-card__cover { padding: 22px 22px 26px; background: var(--paper-2); border-bottom: 1px solid var(--border); min-height: 150px; box-sizing: border-box; }
+.cx-card__covertop { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.cx-card__stage { font-weight: 700; font-size: 15px; color: var(--text-soft); }
+.cx-tag { padding: 4px 14px; border-radius: 999px; border: 1.5px solid; font-size: 15px; font-weight: 700; }
+.cx-tag--free { border-color: var(--moss); color: var(--moss); }
+.cx-tag--paid { border-color: var(--gold); color: var(--gold); }
+.cx-tag--soon { border-color: var(--text-soft); color: var(--text-soft); }
+.cx-card__code { font-family: var(--font-mono); font-size: 15px; line-height: 1.7; color: var(--ink); text-align: left; white-space: pre-wrap; }
+.cx-card__body { display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 26px; flex: 1; }
+.cx-card__title { font-size: 26px; line-height: 1.25; }
+.cx-card__desc { color: var(--text-soft); font-size: 17px; }
+.cx-card__meta { color: var(--ink); font-size: 15px; font-weight: 600; }
+.cx-card__action { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.cx-card__action .ui-progress { width: 100%; }
+.cx-card__action .btn { min-height: 48px; padding: 0 24px; font-size: 18px; box-shadow: none; }
+.cx-card__action .btn:hover { transform: none; }
+.cx-empty { padding: 48px 24px; border: 2px dashed var(--border); border-radius: 20px; text-align: center; color: var(--text-soft); font-size: 19px; }
+
+/* lesson anatomy */
+.cx-anatomy { padding-top: 96px; padding-bottom: 96px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; }
+.cx-anatomy__text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+.cx-anatomy__lede { max-width: 560px; color: var(--ink); font-size: 22px; line-height: 1.55; text-wrap: pretty; }
+.cx-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+.cx-steps li { display: flex; gap: 18px; align-items: flex-start; }
+.cx-steps__n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--gold); color: var(--on-accent); font-family: var(--font-display); font-size: 20px; }
+.cx-steps__t { font-weight: 700; font-size: 20px; }
+.cx-anatomy__demo { flex: 1 1 440px; min-width: 0; }
+.cx-exercise { border: 1px solid var(--border); border-radius: 20px; background: var(--white); padding: 26px; display: flex; flex-direction: column; gap: 20px; }
+.cx-exercise__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cx-exercise__title { font-weight: 700; font-size: 19px; }
+.cx-exercise__tag { padding: 3px 12px; border-radius: 999px; background: var(--paper-2); color: var(--text-soft); font-size: 14px; font-weight: 700; }
+.cx-tests { display: flex; flex-direction: column; gap: 10px; }
+.cx-test { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--paper); }
+.cx-test--fail { border: 1.5px solid var(--gold); }
+.cx-tests__hint { padding: 4px 4px 0; color: var(--text-soft); font-size: 16px; }
+
+/* instructor */
+.cx-instructor { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cx-instructor__inner { padding-top: 80px; padding-bottom: 80px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+.cx-instructor__text { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.cx-instructor__p { color: var(--text-soft); font-size: 20px; max-width: 640px; text-wrap: pretty; }
+
+/* final CTA */
+.cx-final { padding-top: 96px; padding-bottom: 96px; }
+.cx-final__box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; padding: clamp(32px, 5vw, 64px); border-radius: 28px; background: var(--gold); color: var(--on-accent); }
+.cx-final__text { flex: 1 1 360px; display: flex; flex-direction: column; gap: 12px; }
+.cx-final__lead { font-family: var(--font-display); font-size: clamp(26px, 3vw, 38px); line-height: 1.25; }
+
+@media (max-width: 640px) {
+  .cx-hero__grid { padding-top: 48px; padding-bottom: 64px; gap: 40px; }
+  .cx-catalog__inner { padding-top: 64px; padding-bottom: 64px; }
+  .cx-anatomy, .cx-final { padding-top: 64px; padding-bottom: 64px; }
+  .cx-editor { box-shadow: 8px 8px 0 var(--paper-2); }
+  .cx-code { font-size: 14px; padding: 18px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .cx * { transition: none !important; } }

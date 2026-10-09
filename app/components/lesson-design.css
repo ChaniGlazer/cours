@@ -1,0 +1,76 @@
+/* עמוד שיעור: תבנית אחת לכל הקורסים, לפי design-reference/lesson-page.html.
+   הצבעים והגופנים מהטוקנים ב-globals.css (--paper רקע, --white משטח, --paper-2 משטח שני, --border קו,
+   --ink טקסט, --text-soft טקסט משני, --gold מבטא ורוד, --moss מנטה, --on-accent טקסט על מבטא). */
+
+.lx { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 18px; line-height: 1.6; overflow-x: clip; }
+.lx a { text-decoration: none; }
+.lx a:focus-visible, .lx button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.lx-accent { color: var(--gold); }
+
+.lx-page { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px; max-width: 1360px; margin: 0 auto; padding: 32px clamp(20px, 4vw, 48px) 96px; box-sizing: border-box; }
+
+/* כרטיס צד */
+.lx-aside { flex: 1 1 340px; max-width: 400px; min-width: 0; position: sticky; top: 92px; align-self: flex-start; }
+.lx-card { border: 1px solid var(--border); border-radius: 24px; background: var(--white); padding: 24px; display: flex; flex-direction: column; gap: 22px; max-height: calc(100vh - 116px); box-sizing: border-box; }
+.lx-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text-soft); font-weight: 700; font-size: 16px; }
+.lx-back:hover { color: var(--ink); }
+.lx-card__title { font-family: var(--font-display); font-size: 24px; line-height: 1.3; }
+.lx-ring { display: flex; align-items: center; gap: 18px; }
+.lx-ring__svg { flex: none; transform: rotate(90deg) scaleX(-1); }
+.lx-ring__text { display: flex; flex-direction: column; min-width: 0; }
+.lx-ring__count { text-align: right; font-family: var(--font-mono); font-weight: 600; font-size: 22px; }
+.lx-ring__label { font-weight: 700; font-size: 18px; }
+.lx-ring__note { color: var(--text-soft); font-size: 15px; }
+
+.lx-list { margin: 0; padding: 0; list-style: none; max-height: 440px; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; flex: 0 1 auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.lx-item { display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; color: var(--ink); min-height: 44px; }
+a.lx-item:hover { background: var(--paper-2); }
+.lx-item.is-current { background: var(--paper-2); }
+.lx-item.is-locked { color: var(--text-soft); }
+.lx-item__rail { flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px; }
+.lx-circle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); background: var(--paper); color: var(--ink); font-family: var(--font-display); font-size: 16px; box-sizing: border-box; }
+.lx-circle.is-current { border-color: var(--gold); background: var(--gold); color: var(--on-accent); }
+.lx-circle.is-done { border-color: var(--moss); background: var(--moss); color: var(--on-accent); }
+.lx-item__line { flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--border); }
+.lx-item__text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px; }
+.lx-item__title { font-size: 17px; font-weight: 700; line-height: 1.35; }
+.lx-item__sub { color: var(--gold); font-size: 14px; font-weight: 700; }
+.lx-item__sub--done { color: var(--moss); }
+.lx-next { display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 999px; background: var(--gold); color: var(--on-accent); font-size: 19px; font-weight: 700; flex: none; }
+.lx-next:hover { background: var(--gold-dark); }
+
+/* תוכן */
+.lx-main { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+.lx-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--text-soft); font-size: 16px; font-weight: 600; }
+.lx-crumbs a { border-bottom: 1px solid var(--border); }
+.lx-crumbs a:hover { color: var(--ink); }
+.lx-crumbs__cur { color: var(--ink); }
+
+.lx-hero { display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; padding: 24px 0 8px; background-image: radial-gradient(#3A3558 1.2px, transparent 1.2px); background-size: 30px 30px; }
+.lx-hero__badge { display: inline-flex; align-items: center; padding: 6px 18px; border: 1.5px solid var(--gold); border-radius: 999px; background: var(--paper); color: var(--gold); font-size: 16px; font-weight: 700; }
+.lx-hero__h1 { margin: 0; padding: 4px 16px; background: var(--paper); font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 6vw, 84px); line-height: 1.1; text-wrap: balance; }
+.lx-hero__p { margin: 0; max-width: 620px; padding: 4px 12px; background: var(--paper); font-size: 21px; color: var(--text-soft); text-wrap: pretty; }
+.lx-hero__cta { display: inline-flex; align-items: center; gap: 10px; min-height: 60px; padding: 0 36px; border-radius: 999px; background: var(--gold); color: var(--on-accent); font-size: 21px; font-weight: 700; }
+
+/* כותרת של שיעור בלי הירו (שיעור עם HTML מציג כותרת משלו, ושם נשאר h1 מוסתר) */
+.lx-content { min-width: 0; scroll-margin-top: 96px; }
+.lx-content .lesson-html-frame { min-height: 60vh; border-radius: 20px; background: transparent; }
+.lx-content .video-wrap { max-width: 900px; margin-inline: auto; }
+
+.lx-complete { max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 28px; border-top: 1px solid var(--border); }
+.lx-complete__q { color: var(--text-soft); font-size: 18px; }
+.lx-complete__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.lx-ghost { display: inline-flex; align-items: center; min-height: 56px; padding: 0 22px; border-radius: 999px; border: 2px solid var(--border); color: var(--ink); font-size: 17px; font-weight: 700; }
+.lx-ghost:hover { border-color: var(--gold); }
+.lx-done { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; border: 2px solid var(--border); background: transparent; color: var(--ink); font-family: inherit; font-size: 19px; font-weight: 700; cursor: pointer; }
+.lx-done:hover { border-color: var(--moss); }
+.lx-done.is-done { background: var(--moss); border-color: var(--moss); color: var(--on-accent); }
+
+@media (max-width: 900px) {
+  .lx-aside { flex: 1 1 100%; max-width: none; position: static; }
+  .lx-card { max-height: none; }
+  .lx-list { max-height: 320px; }
+  .lx-main { flex-basis: 100%; gap: 40px; }
+  .lx-page { gap: 32px; padding-bottom: 64px; }
+}
+@media (prefers-reduced-motion: reduce) { .lx * { transition: none !important; } }

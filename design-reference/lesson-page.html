@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיעור פתיחה - מה זה פייתון?</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+body{margin:0;background:#14121F}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+[hidden]{display:none !important}
+</style>
+
+</head>
+<body>
+
+
+<div style="--accent: #FF7F96; --mint: #6FE0A0; --ink: #14121F; --surface: #1D1A2D; --surface2: #26223B; --line: #3A3558; --text: #F4F1FA; --muted: #BDB7D3; background: #14121F; color: #F4F1FA; font-family: 'Assistant', system-ui, sans-serif; font-size: 18px; line-height: 1.6; overflow-x: hidden">
+
+<!-- TOP BAR -->
+<header style="border-bottom: 1px solid var(--line); background: var(--ink)">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px clamp(20px, 4vw, 48px); max-width: 1360px; margin: 0 auto; box-sizing: border-box">
+<a href="courses-catalog.html" style="display: flex; align-items: center; gap: 10px; font-family: 'Secular One', sans-serif; font-size: 21px">
+<span dir="ltr" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: var(--ink); font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 16px">&lt;/&gt;</span>
+<span>קורסים בעידן ה-AI</span>
+</a>
+<nav style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px">
+<a href="courses-catalog.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--muted); font-weight: 600; font-size: 16px">קטלוג קורסים</a>
+<a href="#top" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--muted); font-weight: 600; font-size: 16px">התחברות</a>
+<a href="#top" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 2px solid var(--accent); border-radius: 999px; color: var(--accent); font-weight: 700; font-size: 16px">הרשמה</a>
+</nav>
+</div>
+</header>
+
+<div id="top" style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px; max-width: 1360px; margin: 0 auto; padding: 32px clamp(20px, 4vw, 48px) 96px; box-sizing: border-box">
+
+<!-- SIDEBAR -->
+<aside style="flex: 1 1 340px; max-width: 400px; min-width: 0">
+<div style="border: 1px solid var(--line); border-radius: 24px; background: var(--surface); padding: 24px; display: flex; flex-direction: column; gap: 22px">
+<a href="courses-catalog.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--muted); font-weight: 700; font-size: 16px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+חזרה לקטלוג הקורסים
+</a>
+<div style="font-family: 'Secular One', sans-serif; font-size: 24px; line-height: 1.3">קורס לימוד פייתון בעידן ה-AI</div>
+
+<div style="display: flex; align-items: center; gap: 18px">
+<svg width="76" height="76" viewBox="0 0 76 76" aria-hidden="true" style="flex: none; transform: rotate(90deg) scaleX(-1)">
+<circle cx="38" cy="38" r="31" fill="none" stroke="#14121F" stroke-width="8"></circle>
+<circle cx="38" cy="38" r="31" fill="none" stroke="#6FE0A0" stroke-width="8" stroke-linecap="round" stroke-dasharray="194.8" id="ring" stroke-dashoffset="194.8"></circle>
+</svg>
+<div style="display: flex; flex-direction: column; min-width: 0">
+<span dir="ltr" style="text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 22px"><span id="count">0</span>/8</span>
+<span style="font-weight: 700; font-size: 18px"><span id="plabel">מתחילים!</span></span>
+<span style="color: var(--muted); font-size: 15px"><span id="pnote">עוד לא סיימתם שיעורים</span></span>
+</div>
+</div>
+
+<ol style="margin: 0; padding: 0; list-style: none; max-height: 440px; overflow-y: auto; display: flex; flex-direction: column">
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: #26223B">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span id="circle1" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #FF7F96; background: #FF7F96; color: #14121F; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box"><span id="num1">1</span><svg id="chk1" hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור פתיחה - מה זה פייתון?</span>
+<span style="color: var(--accent); font-size: 14px; font-weight: 700">אתם כאן</span>
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">2</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 1 - פלט, משתנים וקלט</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">3</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 2 - תנאים (if)</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">4</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 3 - לולאות for ו-while</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">5</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 4 - for מקוצר בשורה אחת</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">6</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 5 - רשימות (list)</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">7</span>
+<span style="flex: 1; width: 2px; min-height: 14px; margin-top: 4px; background: var(--line)"></span>
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 6 - מילונים (dict)</span>
+
+</span>
+</a>
+</li>
+<li>
+<a href="#top" style="display: flex; align-items: stretch; gap: 14px; padding: 0 8px; border-radius: 14px; background: transparent">
+<span style="flex: none; display: flex; flex-direction: column; align-items: center; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #3A3558; background: #14121F; color: #F4F1FA; font-family: 'Secular One', sans-serif; font-size: 16px; box-sizing: border-box">8</span>
+
+</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0 14px">
+<span style="font-size: 17px; font-weight: 700; line-height: 1.35">שיעור 7 - פונקציות</span>
+
+</span>
+</a>
+</li>
+
+</ol>
+
+<a href="#lesson" style="display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 999px; background: var(--accent); color: var(--ink); font-size: 19px; font-weight: 700">המשך לשיעור הבא</a>
+</div>
+</aside>
+
+<!-- MAIN -->
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 72px">
+
+<!-- HERO -->
+<section style="display: flex; flex-direction: column; gap: 56px">
+<nav aria-label="נתיב" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 16px; font-weight: 600">
+<a href="courses-catalog.html" style="border-bottom: 1px solid var(--line)">קורסים</a>
+<span aria-hidden="true">›</span>
+<span>קורס לימוד פייתון בעידן ה-AI</span>
+<span aria-hidden="true">›</span>
+<span style="color: var(--text)">שיעור 1</span>
+</nav>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; padding: 24px 0 8px; background-image: radial-gradient(#3A3558 1.2px, transparent 1.2px); background-size: 30px 30px">
+<span style="display: inline-flex; align-items: center; padding: 6px 18px; border: 1.5px solid var(--accent); border-radius: 999px; background: var(--ink); color: var(--accent); font-size: 16px; font-weight: 700">שיעור פתיחה · פייתון</span>
+<h1 style="margin: 0; padding: 4px 16px; background: var(--ink); font-family: 'Secular One', sans-serif; font-weight: 400; font-size: clamp(40px, 6vw, 84px); line-height: 1.1; text-wrap: balance">
+המחשב יעשה בדיוק<br>
+<span style="color: var(--accent)">מה שתגידו לו</span>
+</h1>
+<p style="margin: 0; max-width: 620px; padding: 4px 12px; background: var(--ink); font-size: 21px; color: var(--muted); text-wrap: pretty">זה הכוח הגדול של תכנות, וגם הסיכון. לפני שנכיר את פייתון, בואו נראה את זה בעצמנו.</p>
+<a href="#lesson" style="display: inline-flex; align-items: center; gap: 10px; min-height: 60px; padding: 0 36px; border-radius: 999px; background: var(--accent); color: var(--ink); font-size: 21px; font-weight: 700">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M6 13l6 6 6-6"></path></svg>
+בואו נתחיל
+</a>
+</div>
+</section>
+
+<!-- RUN EXAMPLE -->
+<section id="lesson" style="max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 32px">הקוד הראשון שלך</h2>
+<p style="margin: 0; font-size: 20px; color: var(--muted)">נבקש מהמחשב להגיד שלום. לחצו על הרצה.</p>
+<div style="border: 1px solid var(--line); border-radius: 20px; background: var(--surface); overflow: hidden">
+<div dir="ltr" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 10px 18px; border-bottom: 1px solid var(--line); background: var(--surface2)">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted)">hello.py</span>
+<button type="button" id="runBtn" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 0; background: var(--mint); color: var(--ink); font-size: 16px; font-weight: 700; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>
+<span dir="rtl">הרצה</span>
+</button>
+</div>
+<pre dir="ltr" style="margin: 0; padding: 22px 24px; font-family: 'JetBrains Mono', monospace; font-size: 18px; line-height: 1.7; color: var(--text); text-align: left"><span style="color: #FFD27A">print</span>(<span style="color: var(--mint)">"שלום, עולם!"</span>)</pre>
+<div id="runOut" hidden style="padding: 16px 24px 20px; border-top: 1px solid var(--line); background: var(--ink); display: flex; flex-direction: column; gap: 6px">
+<span style="color: var(--muted); font-size: 14px; font-weight: 700">פלט</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--mint)">שלום, עולם!</span>
+</div>
+</div>
+</section>
+
+<!-- EXERCISE -->
+<section style="max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: var(--accent); color: var(--ink); font-family: 'JetBrains Mono', monospace; font-weight: 600">&gt;_</span>
+<h2 style="margin: 0; font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 32px">תרגיל</h2>
+</div>
+<p style="margin: 0; font-size: 20px; text-wrap: pretty">הדפיסו למסך משפט משלכם באמצעות <span dir="ltr" style="font-family: 'JetBrains Mono', monospace">print</span>.</p>
+<div id="exBox" style="border: 1.5px solid #3A3558; border-radius: 20px; background: var(--surface); overflow: hidden">
+<div dir="ltr" style="padding: 10px 18px; border-bottom: 1px solid var(--line); background: var(--surface2); font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted)">exercise.py</div>
+<textarea dir="ltr" aria-label="כתבו כאן את הקוד" rows="3" spellcheck="false" id="code" style="display: block; width: 100%; box-sizing: border-box; padding: 20px 24px; border: 0; background: transparent; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 18px; line-height: 1.7; resize: vertical; outline: none; text-align: left">print("")</textarea>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--line); background: var(--ink)">
+<button type="button" id="checkBtn" style="min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0; background: var(--accent); color: var(--ink); font-size: 18px; font-weight: 700; cursor: pointer">בדיקה</button>
+<button type="button" id="hintBtn" aria-expanded="false" style="min-height: 48px; padding: 0 20px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--text); font-size: 17px; font-weight: 700; cursor: pointer">רמז</button>
+</div>
+</div>
+<div id="hint" hidden style="padding: 16px 20px; border-radius: 14px; background: var(--surface2); color: var(--text); font-size: 18px">הטקסט שרוצים להדפיס צריך להיות בתוך מרכאות, ובתוך הסוגריים של <span dir="ltr" style="font-family: 'JetBrains Mono', monospace">print</span>.</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div id="t1" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: var(--surface); border: 1.5px solid #3A3558">
+<span data-s="idle" style="flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); box-sizing: border-box"></span>
+<svg data-s="pass" hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6FE0A0" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+<svg data-s="fail" hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF7F96" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+<span style="font-size: 18px; font-weight: 600">הקוד משתמש ב-print</span>
+</div>
+<div id="t2" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: var(--surface); border: 1.5px solid #3A3558">
+<span data-s="idle" style="flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); box-sizing: border-box"></span>
+<svg data-s="pass" hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6FE0A0" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+<svg data-s="fail" hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF7F96" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+<span style="font-size: 18px; font-weight: 600">מודפס משפט, בתוך מרכאות</span>
+</div>
+
+<div id="ok" hidden style="padding: 16px 20px; border-radius: 14px; background: var(--mint); color: var(--ink); font-size: 20px; font-weight: 700">כל הכבוד! עברתם את התרגיל. אפשר לסמן את השיעור כהושלם.</div>
+<div id="bad" hidden style="padding: 4px 4px 0; color: var(--muted); font-size: 18px">עוד לא. תסתכלו על הבדיקה שנכשלה, ונסו שוב.</div>
+</div>
+</section>
+
+<!-- COMPLETE -->
+<section style="max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 28px; border-top: 1px solid var(--line)">
+<span style="color: var(--muted); font-size: 18px">סיימתם את השיעור?</span>
+<button type="button" id="doneBtn" aria-pressed="false" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; border: 2px solid #3A3558; background: transparent; color: #F4F1FA; font-size: 19px; font-weight: 700; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+<span id="doneText">סמן כהושלם</span>
+</button>
+</section>
+
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  function hid(el,v){if(v){el.setAttribute('hidden','')}else{el.removeAttribute('hidden')}}
+  var done=false;
+  function setDone(v){
+    done=v;
+    $('doneBtn').setAttribute('aria-pressed',String(v));
+    $('doneBtn').style.background=v?'#6FE0A0':'transparent';
+    $('doneBtn').style.color=v?'#14121F':'#F4F1FA';
+    $('doneBtn').style.borderColor=v?'#6FE0A0':'#3A3558';
+    $('doneText').textContent=v?'הושלם':'סמן כהושלם';
+    $('count').textContent=v?'1':'0';
+    $('ring').setAttribute('stroke-dashoffset',String(194.8*(1-(v?1:0)/8)));
+    $('plabel').textContent=v?'התחלה טובה!':'מתחילים!';
+    $('pnote').textContent=v?'סיימתם שיעור אחד':'עוד לא סיימתם שיעורים';
+    var c=$('circle1');
+    c.style.background=v?'#6FE0A0':'#FF7F96';c.style.borderColor=v?'#6FE0A0':'#FF7F96';
+    hid($('num1'),v);hid($('chk1'),!v);
+  }
+  $('doneBtn').addEventListener('click',function(){setDone(!done)});
+  $('runBtn').addEventListener('click',function(){$('runOut').hidden=false});
+  $('hintBtn').addEventListener('click',function(){var h=$('hint');h.hidden=!h.hidden;this.setAttribute('aria-expanded',String(!h.hidden))});
+  function show(id,ok,checked){
+    var el=$(id);
+    hid(el.querySelector('[data-s=idle]'),checked);
+    hid(el.querySelector('[data-s=pass]'),!(checked&&ok));
+    hid(el.querySelector('[data-s=fail]'),!(checked&&!ok));
+    el.style.borderColor=!checked?'#3A3558':(ok?'#6FE0A0':'#FF7F96');
+  }
+  function evaluate(checked){
+    var code=$('code').value;
+    var a=/print\s*\(/.test(code), b=/print\s*\(\s*(["'])[^"']+\1\s*\)/.test(code);
+    show('t1',a,checked);show('t2',b,checked);
+    var all=checked&&a&&b;
+    $('ok').hidden=!all;$('bad').hidden=!(checked&&!all);
+    $('exBox').style.borderColor=all?'#6FE0A0':'#3A3558';
+  }
+  $('checkBtn').addEventListener('click',function(){evaluate(true)});
+  $('code').addEventListener('input',function(){evaluate(false)});
+})();
+</script>
+</body>
+</html>

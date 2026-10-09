@@ -37,7 +37,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -45,7 +45,10 @@ export default async function RootLayout({ children }) {
         <header className="site-header">
           <div className="container">
             <a className="brand" href="/courses">
-              {brand}
+              <span className="brand__icon" aria-hidden="true">
+                {"</>"}
+              </span>
+              <span>{brand}</span>
             </a>
             <nav className="nav-links">
               <a href="/courses">קטלוג קורסים</a>
@@ -61,7 +64,7 @@ export default async function RootLayout({ children }) {
               ) : (
                 <>
                   <a href="/login">התחברות</a>
-                  <a href="/register" className="btn btn-primary" style={{ padding: "8px 20px" }}>
+                  <a href="/register" className="btn btn-primary btn-outline" style={{ padding: "0 20px" }}>
                     הרשמה
                   </a>
                 </>
@@ -74,7 +77,21 @@ export default async function RootLayout({ children }) {
 
         <footer className="site-footer">
           <div className="container">
-            © {new Date().getFullYear()} {brand}
+            <span>
+              © {new Date().getFullYear()} {brand}
+            </span>
+            <span>[אימייל ליצירת קשר]</span>
+            <nav aria-label="קישורי תחתית">
+              <a href="/courses">קטלוג קורסים</a>
+              {user ? (
+                <a href="/my-courses">האזור שלי</a>
+              ) : (
+                <>
+                  <a href="/login">התחברות</a>
+                  <a href="/register">הרשמה</a>
+                </>
+              )}
+            </nav>
           </div>
         </footer>
       </body>

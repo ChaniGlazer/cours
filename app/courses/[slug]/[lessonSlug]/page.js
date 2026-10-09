@@ -71,30 +71,25 @@ export default async function LessonPage({ params }) {
     locked: course.is_paid && !hasAccess && i > 0
   }));
 
-  const heading = lesson.html_content ? (
-    // שיעור HTML מציג כותרת משלו, ולכן נשאר רק h1 מוסתר ויזואלית (נגישות ו-SEO).
-    <h1 className="sr-only">{lesson.title}</h1>
-  ) : (
-    <div className="lesson-main__head">
-      <h1>{lesson.title}</h1>
-      {lesson.description && <p className="text-soft">{lesson.description}</p>}
-    </div>
-  );
+  // שיעור HTML מציג כותרת והירו משלו, ולכן נשאר רק h1 מוסתר ויזואלית (נגישות ו-SEO).
+  // שאר השיעורים (וידאו או בלי תוכן) מקבלים את ההירו של התבנית.
+  const heading = <h1 className="sr-only">{lesson.title}</h1>;
+  const hero = lesson.html_content ? null : { title: lesson.title, description: lesson.description };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
       <LessonLayout
-        theme={course.theme}
         course={{ id: course.id, title: course.title }}
         lessons={lessonItems}
         currentSlug={lessonSlug}
         prev={prevLesson ? { slug: prevLesson.slug, title: prevLesson.title } : null}
         next={nextLesson ? { slug: nextLesson.slug, title: nextLesson.title } : null}
         heading={heading}
+        hero={hero}
       >
         {lesson.html_content ? (
-          <LessonHtmlFrame html={lesson.html_content} theme={course.theme} />
+          <LessonHtmlFrame html={lesson.html_content} />
         ) : embed ? (
           <div className="video-wrap">
             {embed.type === "video" ? (

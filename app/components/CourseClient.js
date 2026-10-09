@@ -59,7 +59,7 @@ export function ResumeCard({ courses }) {
 }
 
 // התקדמות בתוך כרטיס קורס בקטלוג (מוצגת רק אם יש התקדמות) + כפתור התחל/המשך.
-export function CardAction({ courseId, slugs }) {
+export function CardAction({ courseId, slugs, arrow = null }) {
   const progress = useProgress();
   const done = countDone(progress, courseId, slugs);
   const started = slugs.some((s) => lessonStatus(progress, courseId, s) !== "new");
@@ -69,6 +69,7 @@ export function CardAction({ courseId, slugs }) {
       {done > 0 && <ProgressBar value={done} max={slugs.length} label="התקדמות בקורס" />}
       <a href={`/courses/${courseId}/${target}`} className="btn btn-primary btn-block">
         {started ? "המשך ללימוד" : "התחל ללמוד"}
+        {arrow}
       </a>
     </>
   );
