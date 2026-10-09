@@ -289,19 +289,6 @@ export default async function CoursesCatalogPage({ searchParams }) {
           </div>
         </div>
       </section>
-
-      {/* FINAL CTA */}
-      <section className="cx-wrap cx-final">
-        <div className="cx-final__box">
-          <div className="cx-final__text">
-            <p className="cx-final__lead">השיעור הראשון בפייתון פתוח, חינם, ואפשר להתחיל עכשיו.</p>
-          </div>
-          <a href={startHref} className="cx-btn cx-btn--dark cx-btn--xl">
-            התחל ללמוד
-            <Arrow size={22} />
-          </a>
-        </div>
-      </section>
     </div>
   );
 }
