@@ -1,0 +1,632 @@
+UPDATE lessons SET title='שיעור 1 - פלט, משתנים וקלט', slug='python-basics', html_content='<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור ראשון בפייתון — פלט, משתנים וקלט</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12102A; --bg-panel: #1D1A3D; --bg-panel-2: #262148;
+    --ink: #F5F3FF; --ink-dim: #B4AEDB; --ink-faint: #6F699E;
+    --main: #7CE38B; --main-soft: #173B22;
+    --var: #FFB84D; --var-soft: #4A3A1C;
+    --inp: #4DD4F0; --inp-soft: #14394A;
+    --success: #5CE1A6; --danger: #FF6B6B; --danger-soft: #3E1D22;
+    --line: rgba(245,243,255,0.10); --line-strong: rgba(245,243,255,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif; --sans: "Assistant", sans-serif; --mono: "JetBrains Mono", monospace;
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(620px 420px at 12% -5%, rgba(124,227,139,0.10), transparent 60%), radial-gradient(620px 420px at 100% 22%, rgba(255,184,77,0.09), transparent 60%), var(--bg);
+    color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--main); color: #08210f; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+  p { color: var(--ink-dim); margin: 0; }
+  h1, h2 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; }
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  section { padding: 62px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 13px; margin-bottom: 12px; color: var(--ink-faint); }
+  .eyebrow.g { color: var(--main); } .eyebrow.a { color: var(--var); } .eyebrow.c { color: var(--inp); }
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
+  .lede { font-size: 18px; margin-top: 14px; }
+
+  .name-bar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .name-bar-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .name-bar-inner label { font-size: 13.5px; color: var(--ink-dim); flex-shrink: 0; }
+  .name-bar-input { flex: 1; min-width: 160px; max-width: 260px; font-family: var(--sans); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink); padding: 9px 12px; }
+  .name-bar-jump { margin-inline-start: auto; font-family: var(--display); font-weight: 700; font-size: 13.5px; color: var(--main); background: transparent; border: 1px solid var(--main); border-radius: 100px; padding: 8px 16px; white-space: nowrap; }
+  .name-bar-jump:hover { background: var(--main-soft); }
+
+  .hero { padding: 70px 0 54px; text-align: center; }
+  .hero .eyebrow { display: flex; justify-content: center; }
+  .hero h1 { font-size: clamp(2.2rem, 7vw, 3.3rem); line-height: 1.16; }
+  .accent { color: var(--main); }
+  .hero-sub { max-width: 46ch; margin: 18px auto 0; font-size: 18.5px; }
+  .try { margin: 34px auto 0; max-width: 520px; text-align: right; }
+  .try-label { font-weight: 700; font-size: 15px; margin-bottom: 10px; color: var(--ink); }
+  .try-row { display: flex; align-items: center; gap: 10px; direction: ltr; background: var(--bg-panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-family: var(--mono); font-size: 16px; }
+  .try-row input { flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 7px 10px; direction: rtl; }
+  .try .terminal { margin-top: 14px; }
+  .big-btn { margin-top: 20px; font-family: var(--display); font-weight: 800; font-size: 18px; color: #08210f; background: var(--main); border: none; border-radius: 100px; padding: 14px 38px; box-shadow: 0 8px 0 #3f9a50, 0 10px 24px rgba(124,227,139,0.2); transition: transform 0.08s ease, box-shadow 0.08s ease; }
+  .big-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #3f9a50; }
+  .try-msg { margin-top: 14px; min-height: 26px; color: var(--success); font-weight: 700; text-align: center; }
+
+  .tok-kw { color: #C792EA; } .tok-str { color: #A8D48A; } .tok-num { color: #F5C97B; } .tok-fn { color: #7EC1F5; }
+  .panel { margin-top: 28px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .panel-pad { padding: 18px 24px; }
+  .panel-bar { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .panel-bar label { font-weight: 700; font-size: 15px; }
+  .panel-foot { padding: 14px 24px 16px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-dim); min-height: 52px; }
+  .codeblock { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2; padding: 14px 0; background: rgba(0,0,0,0.2); min-height: 58px; }
+  .codeblock .line { padding: 1px 22px; white-space: pre; }
+  .codeblock .line.active { background: var(--inp-soft); box-shadow: inset 3px 0 0 var(--inp); }
+  .codeblock.single { padding: 16px 22px; white-space: pre-wrap; word-break: break-word; }
+  .mini-label { font-size: 13px; font-weight: 700; color: var(--ink-faint); margin: 14px 0 8px; }
+
+  .terminal { background: #0B0A1C; border: 1px solid var(--line-strong); border-radius: 12px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 1.8; padding: 12px 16px; min-height: 66px; color: #D6FFE0; }
+  .terminal:empty::before { content: "הפלט יופיע כאן"; color: var(--ink-faint); font-style: italic; direction: rtl; font-family: var(--sans); }
+  .terminal .t-line { white-space: pre-wrap; word-break: break-word; unicode-bidi: plaintext; }
+  .terminal .t-err { color: var(--danger); }
+  .terminal .t-ask { color: var(--inp); }
+  .terminal .t-in { background: transparent; border: none; border-bottom: 1px solid var(--inp); border-radius: 0; color: #fff; font-family: var(--mono); font-size: 14.5px; padding: 0 4px; width: 150px; direction: auto; }
+  .terminal .t-typed { color: #fff; }
+  .panel .terminal { margin: 0; border-radius: 0; border-left: none; border-right: none; border-bottom: none; }
+
+  .btn { font-weight: 700; font-size: 14px; color: var(--ink); background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 100px; padding: 9px 18px; }
+  .btn:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn.g { background: var(--main); border-color: var(--main); color: #08210f; }
+  .btn.a { background: var(--var); border-color: var(--var); color: #1a1204; }
+  .btn.c { background: var(--inp); border-color: var(--inp); color: #04202a; }
+  input[type="number"], input[type="text"], select, textarea { font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 8px 10px; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 24px 0; }
+  .chip { font-weight: 700; font-size: 13.5px; border-radius: 100px; padding: 8px 15px; background: transparent; border: 2px solid var(--main); color: var(--main); }
+  .chip.on { background: var(--main-soft); }
+  .chip.bad { border-color: var(--danger); color: var(--danger); } .chip.bad.on { background: var(--danger-soft); }
+
+  .shelf { display: flex; gap: 12px; flex-wrap: wrap; direction: ltr; min-height: 118px; align-items: flex-start; }
+  .vbox { width: 148px; background: var(--var-soft); border: 2px solid var(--var); border-radius: 14px; padding: 10px 12px 12px; text-align: center; }
+  .vbox.pop { animation: pop 0.34s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes pop { from { transform: scale(0.7); opacity: 0.2; } to { transform: scale(1); opacity: 1; } }
+  .vname { font-family: var(--mono); font-weight: 700; color: var(--var); font-size: 15px; }
+  .vval { font-family: var(--mono); font-weight: 700; color: var(--ink); font-size: 20px; margin: 6px 0; min-height: 30px; word-break: break-word; unicode-bidi: plaintext; }
+  .vtype { display: inline-block; font-size: 11.5px; font-weight: 700; color: var(--ink-dim); border: 1px solid var(--line-strong); border-radius: 100px; padding: 0 8px; margin-bottom: 8px; }
+  .vbox button { display: block; width: 100%; font-family: var(--mono); font-size: 12px; color: var(--ink); background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; padding: 4px 6px; }
+  .vbox button:hover { border-color: var(--var); }
+  .empty-note { color: var(--ink-faint); font-style: italic; font-size: 14px; align-self: center; direction: rtl; }
+
+  .seg { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+  .seg button { font-family: var(--mono); font-weight: 700; font-size: 14px; padding: 8px 18px; border-radius: 100px; border: 2px solid var(--line-strong); background: transparent; color: var(--ink-dim); }
+  .seg button.on { border-color: var(--inp); color: var(--inp); background: var(--inp-soft); }
+
+  .exercises-banner { margin-bottom: 8px; background: linear-gradient(135deg, var(--main-soft), var(--var-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px; }
+  .exercises-banner .badge { display: inline-block; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--bg); background: var(--main); border-radius: 100px; padding: 4px 12px; margin-bottom: 10px; }
+  .exercises-banner p { margin-top: 10px; font-size: 16px; color: var(--ink); }
+  .exercise-card { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--main); border-radius: 16px; padding: 22px 24px; }
+  .exercise-num { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+  .exercise-task { margin: 8px 0 14px; font-weight: 600; color: var(--ink); font-size: 15.5px; }
+  .exercise-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2.1; background: rgba(0,0,0,0.22); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; overflow-x: auto; white-space: pre; }
+  .code-in { direction: ltr; text-align: left; width: 170px; padding: 4px 8px; font-size: 14px; color: var(--main); }
+  .code-in.sm { width: 70px; text-align: center; }
+  .exercise-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .exercise-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .exercise-feedback.correct { color: var(--success); } .exercise-feedback.wrong { color: var(--danger); }
+  .exercise-output { margin-top: 12px; font-family: var(--mono); font-size: 13.5px; direction: ltr; text-align: left; background: rgba(0,0,0,0.18); border-radius: 8px; padding: 10px 12px; color: var(--ink-dim); min-height: 20px; unicode-bidi: plaintext; }
+  .exercise-note { font-size: 13.5px; color: var(--ink-faint); font-style: italic; margin: 0 0 10px; }
+  .exercise-answer { width: 100%; direction: ltr; text-align: left; font-size: 13.5px; line-height: 1.7; resize: vertical; }
+  .exercise-divider { margin-top: 38px; display: flex; align-items: center; gap: 14px; color: var(--ink-faint); font-family: var(--mono); font-size: 13px; }
+  .exercise-divider::before, .exercise-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .certificate-box { margin-top: 28px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cert-name-display { font-size: 15px; color: var(--ink-dim); }
+  .cert-name-display strong { color: var(--main); }
+  .cert-status { width: 100%; margin: 0; font-size: 14.5px; color: var(--ink-dim); min-height: 22px; }
+  .cert-status.correct { color: var(--success); } .cert-status.wrong { color: var(--danger); }
+  .cert-fallback { margin-top: 16px; }
+  .cert-fallback-note { font-size: 13.5px; color: var(--ink-faint); margin: 0 0 10px; }
+  .cert-fallback-text { width: 100%; direction: ltr; text-align: left; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+  footer { padding: 44px 0 70px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="name-bar">
+  <div class="wrap name-bar-inner">
+    <label for="cert-name">מי כותבת? רשמו את השם כאן — הוא יופיע בקובץ שתורידו בסוף:</label>
+    <input type="text" id="cert-name" class="name-bar-input" placeholder="השם שלך">
+    <button type="button" id="jump-to-exercises" class="name-bar-jump">לתרגילים ⬇</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">שיעור ראשון · פייתון</div>
+    <h1>התוכנית הראשונה<br><span class="accent">שלכן</span></h1>
+    <p class="hero-sub">בשיעור הזה נלמד שלושה דברים: להציג דברים על המסך, לשמור מידע במשתנים, ולשאול את המשתמשת שאלות. נתחיל מיד — בלי תיאוריה.</p>
+
+    <div class="try">
+      <div class="try-label">שנו את הטקסט ולחצו ״הריצי״:</div>
+      <div class="try-row"><span>print("</span><input type="text" id="hero-text" value="שלום עולם!" maxlength="40" aria-label="הטקסט להדפסה"><span>")</span></div>
+      <div class="terminal" id="hero-term"></div>
+      <button class="big-btn" id="hero-run" type="button">▶ הריצי</button>
+      <div class="try-msg" id="hero-msg"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== PRINT ===== -->
+  <section id="print">
+    <div class="wrap">
+      <div class="eyebrow g">חלק 1 · פלט</div>
+      <h2 class="section-title">print — מציגה על המסך</h2>
+      <p class="lede">מה שכתוב בסוגריים של <span class="mono">print</span> מופיע על המסך. <strong>טקסט</strong> כותבים בין מרכאות, ו<strong>מספרים</strong> בלי. לחצו על כל דוגמה וראו מה יוצא.</p>
+
+      <div class="panel">
+        <div class="chips" id="print-chips"></div>
+        <div class="panel-pad">
+          <div class="mini-label" style="margin-top:0;">הקוד</div>
+          <div class="codeblock single" id="print-code" style="border-radius:12px;"></div>
+          <div class="mini-label">הפלט</div>
+          <div class="terminal" id="print-term" style="border-radius:12px;"></div>
+        </div>
+        <div class="panel-foot" id="print-why">בחרו דוגמה.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VARIABLES ===== -->
+  <section id="variables">
+    <div class="wrap">
+      <div class="eyebrow a">חלק 2 · משתנים</div>
+      <h2 class="section-title">משתנה — קופסה עם שם</h2>
+      <p class="lede">כותבים שם, סימן <span class="mono">=</span>, וערך — והערך נכנס לקופסה. אפשר לשים טקסט (במרכאות) או מספר. נסו: שימו ערך בקופסה, ואז שימו ערך אחר באותה קופסה.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="var-name">הקופסה:</label>
+          <select id="var-name"><option>name</option><option>age</option><option>city</option></select>
+          <span class="mono" style="color:var(--ink-faint)">=</span>
+          <input type="text" id="var-val" placeholder="דנה או 15" style="width:130px" maxlength="20" autocomplete="off">
+          <button class="btn a" id="var-set" type="button">שימי בקופסה</button>
+        </div>
+        <div class="panel-pad">
+          <div class="mini-label" style="margin-top:0;">הקופסאות</div>
+          <div class="shelf" id="shelf"></div>
+          <div class="mini-label">הקוד שנכתב</div>
+          <div class="codeblock" id="var-code" style="border-radius:12px;"></div>
+          <div style="margin-top:14px;"><button class="btn" id="var-plus" type="button" disabled>age = age + 1</button></div>
+        </div>
+        <div class="terminal" id="var-term"></div>
+        <div class="panel-foot" id="var-note">לחצו על ״print(...)״ בתוך קופסה כדי להדפיס את מה שבפנים.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INPUT ===== -->
+  <section id="input">
+    <div class="wrap">
+      <div class="eyebrow c">חלק 3 · קלט</div>
+      <h2 class="section-title">input — שואלת ומחכה</h2>
+      <p class="lede"><span class="mono">input</span> שואלת את המשתמשת שאלה, מחכה לתשובה, והתשובה נכנסת למשתנה. הריצו את התוכנית ועקבו אחרי השורה המודגשת.</p>
+
+      <div class="panel">
+        <div class="codeblock" id="in-code">
+          <div class="line">name = input("איך קוראים לך? ")</div>
+          <div class="line">print("שלום", name)</div>
+        </div>
+        <div class="terminal" id="in-term"></div>
+        <div class="panel-bar" style="border-top:1px solid var(--line); border-bottom:none;">
+          <button class="btn c" id="in-run" type="button">▶ הריצי</button>
+          <span style="font-size:14.5px; color:var(--ink-dim);" id="in-hint">התוכנית תחכה שתכתבי תשובה ותלחצי Enter.</span>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="font-size:1.35rem; margin-top:46px;">המלכודת: input תמיד מחזירה טקסט</h2>
+      <p class="lede" style="font-size:16.5px;">הקלידו שני מספרים. בלי <span class="mono">int</span> פייתון מחברת אותם כמו מילים. עם <span class="mono">int</span> היא הופכת אותם למספרים אמיתיים.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="t-a">מספר ראשון:</label>
+          <input type="text" id="t-a" value="5" style="width:70px" autocomplete="off">
+          <label for="t-b">שני:</label>
+          <input type="text" id="t-b" value="3" style="width:70px" autocomplete="off">
+          <div class="seg">
+            <button class="on" data-int="0" type="button">בלי int</button>
+            <button data-int="1" type="button">עם int</button>
+          </div>
+        </div>
+        <div class="codeblock" id="trap-code"></div>
+        <div class="terminal" id="trap-term"></div>
+        <div class="panel-foot" id="trap-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXERCISES ===== -->
+  <section id="exercises">
+    <div class="wrap">
+      <div class="exercises-banner">
+        <span class="badge">👇 מפה זה עלייך</span>
+        <h2 class="section-title">התרגילים שלכן</h2>
+        <p>שלושה תרגילים קצרים עם בדיקה, ותרגיל אחד שכותבים בעורך. בסוף מורידות קובץ עם התוצאות.</p>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 1 · print</div>
+        <p class="exercise-task">השלימו את הקוד כך שהמסך יציג: שלום עולם</p>
+        <div class="exercise-code">print(<input type="text" class="code-in" id="ex1-in" placeholder="?" autocomplete="off">)</div>
+        <div class="exercise-controls">
+          <button class="btn g" id="ex1-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex1-fb"></span>
+        </div>
+        <div class="exercise-output" id="ex1-out"></div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 2 · משתנים</div>
+        <p class="exercise-task">בלי להריץ — מה יודפס?</p>
+        <div class="exercise-code">x = 5
+x = x + 3
+print(x)</div>
+        <div class="exercise-controls">
+          <span style="font-size:14.5px; font-weight:600;">התשובה שלי:</span>
+          <input type="text" class="code-in sm" id="ex2-in" autocomplete="off">
+          <button class="btn g" id="ex2-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex2-fb"></span>
+        </div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 3 · input</div>
+        <p class="exercise-task">התוכנית שואלת בת כמה את ומדפיסה את הגיל בשנה הבאה. מה חסר כדי שהחיבור יעבוד על מספר?</p>
+        <div class="exercise-code">age = <input type="text" class="code-in sm" id="ex3-in" placeholder="?" autocomplete="off">(input("בת כמה את? "))
+print(age + 1)</div>
+        <div class="exercise-controls">
+          <button class="btn g" id="ex3-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex3-fb"></span>
+        </div>
+      </div>
+
+      <div class="exercise-divider"><span>בעורך הפייתון שלכן</span></div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 4 · מכונת העתיד</div>
+        <p class="exercise-task">כתבו תוכנית ששואלת את המשתמשת איך קוראים לה ובאיזו שנה נולדה, ומדפיסה באיזו שנה היא תהיה בת 30 וכמה שנים נשארו עד אז. נניחו שהשנה היא 2026 ושמרו אותה במשתנה. למשל: <span class="mono">דנה, תהיי בת 30 בשנת 2038 — עוד 12 שנים!</span></p>
+        <p class="exercise-note">✍️ כתבו ושמרו בעורך, ואז הדביקו כאן:</p>
+        <textarea class="exercise-answer" id="ex4-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFICATE ===== -->
+  <section id="certificate">
+    <div class="wrap">
+      <div class="eyebrow">לסיום</div>
+      <h2 class="section-title">שלחו לי את התוצאות</h2>
+      <p class="lede">לוחצות על הכפתור — יורד קובץ מעוצב עם מה שפתרתן והקוד מתרגיל 4.</p>
+      <div class="certificate-box">
+        <span class="cert-name-display">מורידה עבור: <strong id="cert-name-display">—</strong></span>
+        <button class="btn g" id="cert-download" type="button">⬇️ הורידי קובץ תוצאות</button>
+        <p class="cert-status" id="cert-status"></p>
+      </div>
+      <div class="cert-fallback" id="cert-fallback" hidden>
+        <p class="cert-fallback-note">ההורדה האוטומטית לא זמינה כאן. סמנו הכול בתיבה (Ctrl+A / Cmd+A), העתיקו, הדביקו לקובץ טקסט חדש ושמרו אותו בסיומת .html:</p>
+        <textarea class="cert-fallback-text" id="cert-fallback-text" readonly rows="8"></textarea>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">שיעור ראשון בפייתון · פלט, משתנים וקלט</div></footer>
+
+<script>
+window.lessonProgress = { first: false, ex1: false, ex2: false, ex3: false };
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function highlight(code) {
+  return esc(code).replace(/("[^"]*")|\b(for|in|if|else|and|or|not|while)\b|\b(print|input|int|range|len)\b|\b(\d+)\b/g, function (m, str, kw, fn, num) {
+    if (str) return ''<span class="tok-str">'' + str + "</span>";
+    if (kw) return ''<span class="tok-kw">'' + kw + "</span>";
+    if (fn) return ''<span class="tok-fn">'' + fn + "</span>";
+    return ''<span class="tok-num">'' + num + "</span>";
+  });
+}
+function termClear(t) { t.innerHTML = ""; }
+function termAdd(t, text, cls) {
+  var d = document.createElement("div");
+  d.className = "t-line" + (cls ? " " + cls : "");
+  d.textContent = text;
+  t.appendChild(d);
+  return d;
+}
+
+$("jump-to-exercises").addEventListener("click", function () {
+  $("exercises").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+/* ---------- hero: first program ---------- */
+(function () {
+  var inp = $("hero-text"), term = $("hero-term"), msg = $("hero-msg");
+  $("hero-run").addEventListener("click", function () {
+    termClear(term);
+    var txt = inp.value;
+    if (txt.indexOf(''"'') !== -1) {
+      termAdd(term, ''SyntaxError: בתוך מרכאות כפולות אי אפשר לכתוב מרכאות כפולות'', "t-err");
+      msg.style.color = "var(--danger)";
+      msg.textContent = "נסי בלי סימן מרכאות בתוך הטקסט.";
+      return;
+    }
+    termAdd(term, txt);
+    msg.style.color = "";
+    msg.textContent = "🎉 זו התוכנית הראשונה שלכן! עכשיו נבין איך היא עובדת.";
+    window.lessonProgress.first = true;
+  });
+})();
+
+/* ---------- print chips ---------- */
+(function () {
+  var progs = [
+    { label: "טקסט", code: ''print("שלום עולם")'', out: "שלום עולם", why: "טקסט בין מרכאות מודפס בדיוק כמו שהוא." },
+    { label: "חישוב", code: "print(5 + 3)", out: "8", why: "בלי מרכאות פייתון מחשבת — ומדפיסה את התוצאה." },
+    { label: "בתוך מרכאות", code: ''print("5 + 3")'', out: "5 + 3", why: "בתוך מרכאות זה רק טקסט. פייתון לא מחשבת, פשוט מעתיקה." },
+    { label: "פסיק", code: ''print("גיל:", 15)'', out: "גיל: 15", why: "פסיק מפריד בין חלקים, ופייתון שמה ביניהם רווח לבד." },
+    { label: "בלי מרכאות", code: "print(hello)", err: "NameError: name ''hello'' is not defined", bad: true, why: "בלי מרכאות פייתון חושבת ש-hello הוא שם של משתנה — ולא מכירה אותו. זו שגיאה שתפגשו הרבה." }
+  ];
+  var chips = $("print-chips"), code = $("print-code"), term = $("print-term"), why = $("print-why");
+  var btns = [];
+  function pick(i) {
+    var p = progs[i];
+    btns.forEach(function (b, k) { b.classList.toggle("on", k === i); });
+    code.innerHTML = highlight(p.code);
+    termClear(term);
+    if (p.err) termAdd(term, p.err, "t-err"); else termAdd(term, p.out);
+    why.textContent = p.why;
+  }
+  progs.forEach(function (p, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip" + (p.bad ? " bad" : ""); b.textContent = p.label;
+    b.addEventListener("click", function () { pick(i); });
+    btns.push(b); chips.appendChild(b);
+  });
+  pick(0);
+})();
+
+/* ---------- variables ---------- */
+(function () {
+  var order = ["name", "age", "city"], vars = {}, history = [];
+  var sel = $("var-name"), val = $("var-val"), shelf = $("shelf"), codeEl = $("var-code");
+  var term = $("var-term"), note = $("var-note"), plus = $("var-plus");
+  var base = "לחצו על ״print(...)״ בתוך קופסה כדי להדפיס את מה שבפנים.";
+  var lastPop = null;
+
+  function isNum(s) { return /^-?\d+(\.\d+)?$/.test(s); }
+  function render() {
+    shelf.innerHTML = "";
+    var any = false;
+    order.forEach(function (n) {
+      if (!vars[n]) return;
+      any = true;
+      var v = vars[n];
+      var box = document.createElement("div");
+      box.className = "vbox" + (lastPop === n ? " pop" : "");
+      box.innerHTML = ''<div class="vname">'' + n + ''</div><div class="vval"></div><div class="vtype">'' + (v.num ? "מספר" : "טקסט") + ''</div><button type="button">print('' + n + ")</button>";
+      box.querySelector(".vval").textContent = v.value;
+      box.querySelector("button").addEventListener("click", function () { termAdd(term, String(v.value)); });
+      shelf.appendChild(box);
+    });
+    if (!any) { var e = document.createElement("span"); e.className = "empty-note"; e.textContent = "הקופסאות ריקות — שימו ערך."; shelf.appendChild(e); }
+    codeEl.innerHTML = history.length ? history.map(function (l) { return ''<div class="line">'' + highlight(l) + "</div>"; }).join("") : ''<div class="line" style="color:var(--ink-faint)"># עוד לא נכתב קוד</div>'';
+    plus.disabled = !(vars.age && vars.age.num);
+    lastPop = null;
+  }
+
+  $("var-set").addEventListener("click", function () {
+    var raw = val.value.trim(), n = sel.value;
+    if (!raw) { note.textContent = "כתבי ערך קודם."; return; }
+    if (raw.indexOf(''"'') !== -1) { note.textContent = "בלי סימן מרכאות בתוך הערך."; return; }
+    var num = isNum(raw), old = vars[n];
+    vars[n] = { value: num ? Number(raw) : raw, num: num };
+    history.push(n + " = " + (num ? raw : ''"'' + raw + ''"''));
+    note.textContent = old ? "הערך הישן (" + old.value + ") נמחק — בקופסה יש מקום לערך אחד בלבד." : base;
+    lastPop = n; val.value = ""; render();
+  });
+  val.addEventListener("keydown", function (e) { if (e.key === "Enter") $("var-set").click(); });
+  plus.addEventListener("click", function () {
+    var old = vars.age.value;
+    vars.age.value = old + 1;
+    history.push("age = age + 1");
+    note.textContent = "פייתון לקחה את " + old + ", הוסיפה 1, ושמה בחזרה באותה קופסה: " + vars.age.value + ".";
+    lastPop = "age"; render();
+  });
+  render();
+})();
+
+/* ---------- input program ---------- */
+(function () {
+  var term = $("in-term"), runBtn = $("in-run"), hint = $("in-hint");
+  var lines = document.querySelectorAll("#in-code .line");
+  function mark(k) { lines.forEach(function (l, i) { l.classList.toggle("active", i === k); }); }
+  runBtn.addEventListener("click", function () {
+    termClear(term); runBtn.disabled = true; mark(0);
+    var row = document.createElement("div");
+    row.className = "t-line";
+    var q = document.createElement("span"); q.className = "t-ask"; q.textContent = "איך קוראים לך? ";
+    var input = document.createElement("input"); input.type = "text"; input.className = "t-in"; input.maxLength = 20; input.setAttribute("aria-label", "התשובה שלך");
+    row.appendChild(q); row.appendChild(input); term.appendChild(row);
+    hint.textContent = "התוכנית עצרה וממתינה לך. כתבי תשובה ולחצי Enter.";
+    input.focus();
+    input.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      var typed = input.value;
+      var sp = document.createElement("span"); sp.className = "t-typed"; sp.textContent = typed;
+      row.replaceChild(sp, input);
+      mark(1);
+      termAdd(term, "שלום " + typed);
+      hint.textContent = "המשתנה name קיבל את מה שהקלדת (" + (typed || "ריק") + "), ו-print הדפיסה אותו.";
+      runBtn.disabled = false; runBtn.textContent = "▶ הריצי שוב";
+    });
+  });
+})();
+
+/* ---------- input trap (int) ---------- */
+(function () {
+  var a = $("t-a"), b = $("t-b"), codeEl = $("trap-code"), term = $("trap-term"), note = $("trap-note");
+  var btns = document.querySelectorAll(".seg button"), useInt = false;
+  function render() {
+    var code = useInt
+      ? ''a = int(input("מספר ראשון: "))\nb = int(input("שני: "))\nprint(a + b)''
+      : ''a = input("מספר ראשון: ")\nb = input("שני: ")\nprint(a + b)'';
+    codeEl.innerHTML = code.split("\n").map(function (l) { return ''<div class="line">'' + highlight(l) + "</div>"; }).join("");
+    termClear(term);
+    var x = a.value, y = b.value;
+    if (useInt) {
+      var okInt = /^-?\d+$/;
+      if (!okInt.test(x.trim()) || !okInt.test(y.trim())) {
+        termAdd(term, "ValueError: אי אפשר להפוך את מה שהקלדת למספר שלם", "t-err");
+        note.textContent = "int עובדת רק על טקסט שנראה כמו מספר שלם, כמו 5 או 12.";
+      } else {
+        termAdd(term, String(parseInt(x, 10) + parseInt(y, 10)));
+        note.textContent = "int הפכה את שני הטקסטים למספרים, אז + חיברה אותם כמו שצריך.";
+      }
+    } else {
+      termAdd(term, x + y);
+      note.textContent = ''input החזירה את "'' + x + ''" ו-"'' + y + ''" כטקסט, ו-+ בין טקסטים פשוט מדביקה אותם. לכן יצא '' + x + y + ", לא חיבור.";
+    }
+  }
+  btns.forEach(function (bt) {
+    bt.addEventListener("click", function () {
+      useInt = bt.dataset.int === "1";
+      btns.forEach(function (o) { o.classList.toggle("on", o === bt); });
+      render();
+    });
+  });
+  a.addEventListener("input", render); b.addEventListener("input", render);
+  render();
+})();
+
+/* ---------- exercises ---------- */
+(function () {
+  function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
+  $("ex1-check").addEventListener("click", function () {
+    var v = $("ex1-in").value.trim(), out = $("ex1-out");
+    if (!v) { fb("ex1-fb", false, "כתבי משהו."); return; }
+    var m = /^(["''])(.*)\1$/.exec(v);
+    if (!m) { out.textContent = "NameError"; fb("ex1-fb", false, "בלי מרכאות פייתון תחפש משתנה בשם הזה. טקסט כותבים בין מרכאות."); return; }
+    out.textContent = m[2];
+    if (m[2] === "שלום עולם") { fb("ex1-fb", true, "מדויק!"); window.lessonProgress.ex1 = true; }
+    else fb("ex1-fb", false, "יצא ״" + m[2] + "״. צריך בדיוק: שלום עולם.");
+  });
+  $("ex2-check").addEventListener("click", function () {
+    var v = $("ex2-in").value.trim();
+    if (!v) { fb("ex2-fb", false, "כתבי תשובה."); return; }
+    if (v === "8") { fb("ex2-fb", true, "נכון! x היה 5, ואז לקחו 5, הוסיפו 3 ושמו בחזרה: 8."); window.lessonProgress.ex2 = true; }
+    else if (v === "5") fb("ex2-fb", false, "5 זה הערך הראשון, אבל השורה השנייה שינתה אותו.");
+    else if (v === "3") fb("ex2-fb", false, "לא מחברים את המספרים הנפרדים — x = x + 3 לוקחת את הערך הנוכחי של x.");
+    else fb("ex2-fb", false, "לא בדיוק. עקבי: x הוא 5, ואז x + 3 נכנס בחזרה לתוך x.");
+  });
+  $("ex3-check").addEventListener("click", function () {
+    var v = $("ex3-in").value.trim();
+    if (!v) { fb("ex3-fb", false, "כתבי משהו."); return; }
+    if (v === "int") { fb("ex3-fb", true, "נכון! int הופכת את הטקסט שהוקלד למספר, אז age + 1 מחברת."); window.lessonProgress.ex3 = true; }
+    else if (v === "float") fb("ex3-fb", false, "float עובדת, אבל תיתן 16.0. לגיל מתאימה int — מספר שלם.");
+    else fb("ex3-fb", false, "input מחזירה טקסט. איזו פונקציה הופכת טקסט למספר שלם? (3 אותיות)");
+  });
+})();
+
+/* ---------- certificate download ---------- */
+(function () {
+  var nameInput = $("cert-name"), btn = $("cert-download"), statusEl = $("cert-status");
+  var fallbackBox = $("cert-fallback"), fallbackText = $("cert-fallback-text"), nameDisplay = $("cert-name-display");
+  function currentName() { return (nameInput.value || "").trim() || "תלמידה"; }
+  nameInput.addEventListener("input", function () { nameDisplay.textContent = currentName(); });
+  nameDisplay.textContent = currentName();
+
+  function row(label, done) {
+    return ''<div class="row"><span class="dot '' + (done ? "done" : "") + ''"></span><span class="label">'' + label + ''</span><span class="state '' + (done ? "ok" : "no") + ''">'' + (done ? "הושלם" : "לא הושלם") + "</span></div>";
+  }
+  function buildCertificateHtml(name) {
+    var p = window.lessonProgress;
+    var ex4 = esc($("ex4-answer").value.trim()) || "(לא הוזן קוד)";
+    var dateStr = new Date().toLocaleDateString("he-IL");
+    return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">'' +
+      "<title>תעודת תרגול — " + esc(name) + "</title>" +
+      ''<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'' +
+      ''<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">'' +
+      "<style>" +
+      ":root{--bg:#12102A;--panel:#1D1A3D;--ink:#F5F3FF;--dim:#B4AEDB;--main:#7CE38B;--ok:#5CE1A6;--no:#FF6B6B;--line:rgba(245,243,255,.12);}" +
+      "*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,sans-serif;font-size:16px;line-height:1.7;padding:50px 20px;}" +
+      ".wrap{max-width:640px;margin:0 auto;}h1{font-family:Rubik,sans-serif;font-weight:900;font-size:2rem;margin:0 0 6px;}" +
+      ".meta{color:var(--dim);margin-bottom:34px;font-size:15px;}h2{font-family:Rubik,sans-serif;font-weight:800;font-size:1.1rem;margin:0 0 14px;color:var(--main);}" +
+      ".card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:26px;}" +
+      ".row{display:flex;align-items:center;gap:10px;padding:6px 0;}.dot{width:10px;height:10px;border-radius:50%;background:var(--no);flex-shrink:0;}.dot.done{background:var(--ok);}" +
+      ".label{flex:1;font-size:15px;}.state{font-family:''JetBrains Mono'',monospace;font-size:13px;font-weight:600;}.state.ok{color:var(--ok);}.state.no{color:var(--no);}" +
+      "pre{direction:ltr;text-align:left;font-family:''JetBrains Mono'',monospace;font-size:13.5px;line-height:1.7;background:rgba(0,0,0,.28);border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--ink);margin:0;}" +
+      ".q{font-size:14.5px;color:var(--dim);margin:0 0 10px;}" +
+      ''</style></head><body><div class="wrap">'' +
+      "<h1>תעודת תרגול — שיעור ראשון בפייתון</h1>" +
+      ''<div class="meta">שם: '' + esc(name) + " · תאריך: " + dateStr + "</div>" +
+      ''<h2>מה עשיתן</h2><div class="card">'' +
+      row("הרצת התוכנית הראשונה", p.first) + row("תרגיל 1 (print)", p.ex1) + row("תרגיל 2 (משתנים)", p.ex2) + row("תרגיל 3 (input)", p.ex3) +
+      "</div>" +
+      ''<h2>תרגיל 4 · מכונת העתיד</h2><div class="card"><p class="q">תוכנית עם input, int ומשתנים.</p><pre>'' + ex4 + "</pre></div>" +
+      "</div></body></html>";
+  }
+  function blobDownload(filename, html) {
+    try {
+      var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+      return true;
+    } catch (e) { return false; }
+  }
+  btn.addEventListener("click", async function () {
+    var name = currentName();
+    var html = buildCertificateHtml(name);
+    var filename = name + " - תעודת תרגול שיעור 1.html";
+    if (typeof window.claude !== "undefined" && window.claude.use) {
+      var downloads = null;
+      try { downloads = await window.claude.use("downloads"); } catch (e) { downloads = null; }
+      if (downloads) {
+        try {
+          var res = await downloads.save({ filename: filename, data: html });
+          statusEl.textContent = res.status === "saved" ? "הקובץ נשמר! שלחו אותו אליי." : "הקובץ נשלח.";
+          statusEl.className = "cert-status correct";
+          return;
+        } catch (err) {
+          if (err && err.code === "declined") { statusEl.textContent = "ההורדה בוטלה."; statusEl.className = "cert-status wrong"; return; }
+        }
+      }
+    }
+    if (blobDownload(filename, html)) {
+      statusEl.textContent = "הקובץ ירד! שלחו אותו אליי.";
+      statusEl.className = "cert-status correct";
+      return;
+    }
+    statusEl.textContent = "ההורדה האוטומטית לא עבדה כאן — הטקסט מוכן להעתקה למטה.";
+    statusEl.className = "cert-status wrong";
+    fallbackText.value = html; fallbackBox.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
+' WHERE id='7cf0f1055052d7a82e54f80ae2bb24e2';

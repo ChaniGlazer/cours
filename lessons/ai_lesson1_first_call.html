@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 1 — הרעיון והמפתח שלכם</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-head: #2D2A72;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 62ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1.12; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin-top: 20px; font-size: clamp(18px, 1.6vw, 21px); max-width: 52ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+/* cards & shared */
+.card { background: var(--bg-panel); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(91,108,255,.07); }
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.code-card { background: var(--code-bg); border-radius: 20px; overflow: hidden; margin-top: 16px; box-shadow: 0 14px 34px -16px rgba(34,31,85,.55); }
+.code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 16px; background: var(--code-head); font-size: 13.5px; font-weight: 700; color: #B9B6E8; }
+.copy-btn { font-size: 13px; font-weight: 700; color: #fff; background: rgba(255,255,255,.14); border: none; border-radius: 100px; padding: 4px 14px; transition: background .15s; }
+.copy-btn:hover { background: rgba(255,255,255,.26); }
+.code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 20px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.8; color: var(--code-ink); }
+.tok-kw { color: #C4A7FF; } .tok-str { color: #9BE8B5; } .tok-fn { color: #8FB4FF; } .tok-num { color: #FFD08A; } .tok-cm { color: #8C89C4; font-style: italic; }
+.term .prompt { color: #7CE8B5; user-select: none; }
+.term .out, .out { color: #B9B6E8; }
+
+.link-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: 15px; color: #3F4FE0; background: var(--cyan-soft); border-radius: 100px; padding: 9px 20px; text-decoration: none; direction: ltr; transition: all .18s; }
+.link-btn:hover { background: var(--cyan); color: #fff; transform: translateY(-1px); box-shadow: 0 10px 22px -10px rgba(91,108,255,.7); }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: var(--shadow-sm); }
+.btn.green { background: linear-gradient(135deg, #34D6A0, #1FB985); box-shadow: 0 12px 26px -12px rgba(31,185,133,.8); }
+
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 16px; transition: all .15s; box-shadow: var(--shadow-sm); }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15.5px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+
+/* ===== lesson 1 ===== */
+.chat-demo { background: #fff; border-radius: 30px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(91,108,255,.08); }
+.chat-demo-head { padding: 14px 22px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--cyan-soft), #fff); }
+.chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
+.chat-body { padding: 22px; min-height: 230px; display: flex; flex-direction: column; gap: 14px; }
+.bubble { max-width: 88%; padding: 12px 18px; border-radius: 22px; font-size: 16.5px; line-height: 1.6; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
+.bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chat-empty { color: var(--ink-faint); font-size: 16px; text-align: center; margin: auto; }
+.chips { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.chip { font-size: 15px; font-weight: 600; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 9px 18px; transition: all .15s; }
+.chip:hover:not(:disabled) { background: var(--cyan); color: #fff; transform: translateY(-1px); }
+.chip:disabled { opacity: .45; cursor: default; }
+.demo-note { padding: 0 22px 18px; font-size: 13px; color: var(--ink-faint); }
+.demo-after { margin-top: 20px; font-size: 16.5px; color: var(--ink); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s; }
+.demo-after.show { opacity: 1; transform: none; }
+
+/* roadmap */
+.roadmap { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+.rm-item { display: flex; gap: 16px; align-items: flex-start; background: #fff; border-radius: 24px; padding: 20px 22px; box-shadow: var(--shadow-sm); border: 1px solid transparent; transition: transform .2s, box-shadow .2s; }
+.rm-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.rm-num { width: 46px; height: 46px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 18px; background: var(--bg-panel-2); color: var(--cyan); flex-shrink: 0; }
+.rm-item h4 { font-size: 17px; margin-bottom: 2px; }
+.rm-item p { font-size: 15px; line-height: 1.55; }
+.rm-item.current { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); box-shadow: 0 18px 40px -16px rgba(91,108,255,.7); }
+.rm-item.current h4, .rm-item.current p { color: #fff; }
+.rm-item.current .rm-num { background: rgba(255,255,255,.22); color: #fff; }
+.rm-item.final { background: linear-gradient(135deg, #FFF0EC, #FFE8E3); }
+.rm-item.final .rm-num { background: #fff; color: var(--violet); }
+
+/* idea */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 4vw, 72px); align-items: start; }
+@media (max-width: 980px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.trio { margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 700px) { .trio { grid-template-columns: minmax(0, 1fr); } }
+.tcard { background: #fff; border-radius: 22px; padding: 20px; box-shadow: var(--shadow-sm); }
+.tcard .em { font-size: 34px; line-height: 1.2; }
+.tcard h4 { font-size: 17px; margin: 8px 0 4px; }
+.tcard p { font-size: 15px; line-height: 1.6; }
+.journey-intro { margin-bottom: 14px; font-weight: 600; color: var(--ink-dim); }
+.journey { background: #fff; border-radius: var(--radius); padding: 30px 28px 26px; box-shadow: var(--shadow); }
+.nodes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.node { text-align: center; opacity: .5; transition: opacity .3s, transform .3s; }
+.node .badge { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 22px; background: var(--bg-panel-2); display: flex; align-items: center; justify-content: center; font-size: 28px; transition: all .3s; }
+.node .nl { font-size: 14.5px; font-weight: 700; color: var(--ink-dim); }
+.node.on { opacity: 1; }
+.node.active .badge { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); box-shadow: 0 14px 28px -10px rgba(91,108,255,.75); transform: translateY(-4px) scale(1.05); }
+.node.active .nl { color: #3F4FE0; }
+.journey-line { height: 6px; border-radius: 6px; background: var(--bg-panel-2); margin: 20px 0 22px; overflow: hidden; }
+.journey-line i { display: block; height: 100%; width: 0; background: linear-gradient(270deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 6px; transition: width .5s ease; margin-inline-end: auto; }
+.journey-text h4 { font-size: 20px; margin-bottom: 6px; }
+.journey-text p { font-size: 16.5px; }
+.payload { margin-top: 16px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14px; line-height: 1.7; background: var(--code-bg); border-radius: 16px; padding: 14px 18px; color: var(--code-ink); white-space: pre-wrap; }
+.journey-btns { margin-top: 18px; display: flex; gap: 12px; }
+
+/* setup */
+.setup-progress { margin-top: 30px; display: flex; align-items: center; gap: 14px; font-size: 15px; color: var(--ink-dim); font-weight: 700; max-width: 520px; }
+.bar { flex: 1; height: 10px; border-radius: 10px; background: #fff; box-shadow: inset 0 1px 3px rgba(60,50,150,.12); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #34D6A0, #1FB985); border-radius: 10px; transition: width .35s; }
+.steps { margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; align-items: start; }
+@media (max-width: 1000px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.step-card { background: #fff; border-radius: var(--radius); padding: 26px 28px; box-shadow: var(--shadow); border: 2px solid transparent; transition: border-color .25s, box-shadow .25s; min-width: 0; }
+.step-card.done { border-color: rgba(31,185,133,.55); }
+.steps > .step-card:nth-child(3) { grid-column: 1 / -1; }
+.step-head { display: flex; align-items: center; gap: 14px; }
+.step-head h3 { font-size: 20px; flex: 1; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); cursor: pointer; flex-shrink: 0; background: var(--bg-panel-2); border-radius: 100px; padding: 5px 14px 5px 12px; }
+.check input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+.step-body { margin-top: 16px; }
+.step-body > p { font-size: 16.5px; }
+.steps > .step-card:nth-child(3) .step-body { column-count: 2; column-gap: 56px; }
+.steps > .step-card:nth-child(3) .step-body > * { break-inside: avoid; margin-bottom: 26px; display: block; }
+@media (max-width: 1000px) { .steps > .step-card:nth-child(3) .step-body { column-count: 1; } }
+.sub { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line-strong); min-width: 0; }
+.sub:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+.steps > .step-card:nth-child(3) .sub { padding: 0; border: none; }
+.steps > .step-card:nth-child(3) .explain { margin-top: 0; }
+.sub h4 { font-size: 17.5px; color: #3F4FE0; margin-bottom: 8px; }
+.sub p, .sub li { font-size: 16.5px; }
+.sub ol, .sub ul { margin: 8px 0 0; padding-inline-start: 24px; color: var(--ink-dim); }
+.sub li { margin-bottom: 5px; }
+.explain { background: linear-gradient(135deg, #F3F0FF, #FFF3F0); border-radius: 22px; overflow: hidden; min-width: 0; }
+.explain summary { cursor: pointer; padding: 16px 22px; font-family: var(--display); font-weight: 600; font-size: 16.5px; color: #5A3FD8; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.explain summary::-webkit-details-marker { display: none; }
+.explain summary::after { content: "＋"; font-size: 20px; }
+.explain[open] summary::after { content: "－"; }
+.explain-body { padding: 2px 22px 22px; }
+.explain-body h4 { font-size: 17px; margin: 16px 0 4px; }
+.explain-body p { font-size: 16.5px; }
+.tok-demo { margin-top: 12px; }
+.tok-switch { display: flex; gap: 8px; margin-bottom: 12px; }
+.tok-sw { font-size: 14.5px; font-weight: 700; padding: 6px 16px; border-radius: 100px; border: none; background: #fff; color: var(--ink-dim); box-shadow: var(--shadow-sm); }
+.tok-sw.active { background: var(--cyan); color: #fff; }
+.tok-line { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; background: #fff; border-radius: 18px; direction: ltr; justify-content: flex-start; }
+.tok-chip { font-family: var(--mono); font-size: 16px; padding: 5px 11px; border-radius: 10px; white-space: pre; opacity: 0; transform: scale(.7); animation: tokpop .3s ease forwards; }
+@keyframes tokpop { to { opacity: 1; transform: scale(1); } }
+.tok-chip.c0 { background: #E8EBFF; color: #3F4FE0; }
+.tok-chip.c1 { background: #FFE8E3; color: #D9482F; }
+.tok-chip.c2 { background: #DDF7EC; color: #0F8F63; }
+.tok-count { margin-top: 12px; font-size: 15.5px; color: var(--ink); font-weight: 700; }
+.tok-note { margin-top: 6px; font-size: 13.5px; color: var(--ink-faint); }
+.price-row { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .price-row { grid-template-columns: 1fr; } }
+.price-box { background: #fff; border-radius: 16px; padding: 14px 16px; font-size: 15.5px; color: var(--ink); }
+.price-box b { color: #3F4FE0; }
+
+/* security */
+.dd { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 640px) { .dd { grid-template-columns: minmax(0, 1fr); } }
+.dd-col { border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.dd-col.yes { background: linear-gradient(160deg, #E6FAF1, #D3F4E5); }
+.dd-col.no { background: linear-gradient(160deg, #FFEBEF, #FFDDE4); }
+.dd-col h4 { font-size: 20px; margin-bottom: 12px; }
+.dd-col.yes h4 { color: #0F8F63; } .dd-col.no h4 { color: #C9304F; }
+.dd-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.dd-col li { font-size: 16.5px; color: var(--ink); padding-inline-start: 32px; position: relative; }
+.dd-col li::before { position: absolute; inset-inline-start: 0; top: 2px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff; line-height: 1; }
+.dd-col.yes li::before { content: "✓"; background: var(--success); }
+.dd-col.no li::before { content: "✕"; background: var(--danger); }
+
+/* quiz */
+#quiz-container { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 900px) { #quiz-container { grid-template-columns: minmax(0, 1fr); } }
+.quiz-card { background: #fff; border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow); }
+.quiz-card > p { color: var(--ink); font-weight: 700; font-size: 17.5px; margin-bottom: 14px; }
+.score-box { margin-top: 26px; font-family: var(--display); font-weight: 700; font-size: 22px; color: #3F4FE0; }
+
+/* mission */
+.mission-grid { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 980px) { .mission-grid { grid-template-columns: minmax(0, 1fr); } }
+.mission { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border-radius: var(--radius); padding: 32px 34px; box-shadow: 0 24px 50px -22px rgba(91,108,255,.75); }
+.mission h3 { font-size: 24px; color: #fff; }
+.mission ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 14px; }
+.mission li label { display: flex; gap: 14px; align-items: flex-start; color: #fff; font-size: 17.5px; cursor: pointer; }
+.mission li input { width: 22px; height: 22px; margin-top: 4px; accent-color: #1FB985; flex-shrink: 0; }
+.mission li input:checked + span { opacity: .65; text-decoration: line-through; }
+.mission li code { background: rgba(255,255,255,.2); color: #fff; }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: #fff; min-height: 26px; }
+.next-card { margin-top: 20px; background: #fff; border-radius: var(--radius); padding: 26px 30px; box-shadow: var(--shadow); }
+.next-card .eyebrow { margin-bottom: 8px; }
+.next-card h3 { font-size: 22px; }
+
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">בונים אפליקציית AI עם OpenAI ו-Python</span>
+    <span class="lesson-chip">שיעור 1</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+   <div class="hero-text">
+    <div class="eyebrow c">שיעור 1 · הרעיון והמפתח</div>
+    <h1>איך בונים אפליקציה<br>שמשתמשת ב-<span class="a1">AI</span><br>ומה צריך <span class="a2">כדי להתחיל</span></h1>
+    <p class="hero-sub">בשיעור הזה נבין את הרעיון, נכין את המחשב, ונקבל <strong style="color:var(--ink)">מפתח API</strong>: הכרטיס שמאפשר לקוד שלנו לדבר עם מודל ה-AI של OpenAI. נלמד גם איך לשמור אותו בצורה מאובטחת.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-30 דקות</span>
+      <span class="pill">🧠 בלי לכתוב קוד עדיין</span>
+      <span class="pill">💻 הכול ב-VS Code</span>
+    </div>
+   </div>
+   <div class="hero-visual">
+    <div class="chat-demo">
+      <div class="chat-demo-head"><span class="dot"></span> ניסוי קטן: בחרו שאלה</div>
+      <div class="chat-body" id="chat-body"><div class="chat-empty">לחצו על אחת השאלות למטה ותראו איך נראית תשובה של מודל</div></div>
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-i="0">רעיון לשם לחתול</button>
+        <button class="chip" type="button" data-i="1">מה זה API בשני משפטים?</button>
+        <button class="chip" type="button" data-i="2">הודעת תודה למורה</button>
+      </div>
+      <div class="demo-note">* הדגמה מוקלטת להמחשה בלבד.</div>
+    </div>
+    <p class="demo-after" id="demo-after">עד סוף הקורס, <strong>תוכנה שאתם כתבתם</strong> תנהל שיחות כאלה, ותהיה פתוחה לכל מי שתרצו.</p>
+   </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= ROADMAP ================= -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="eyebrow">המפה</div>
+      <h2 class="section-title">מה בונים בקורס הזה?</h2>
+      <p class="lede">בסוף הקורס תהיה לכם <strong style="color:var(--ink)">אפליקציית AI עם ממשק web</strong> שעובדת באמת. כל שיעור מוסיף חלק אחד.</p>
+
+      <div class="roadmap">
+        <div class="rm-item current"><div class="rm-num">1</div><div><h4>הרעיון והמפתח ← אתם כאן</h4><p>איך זה עובד, הכנת המחשב ויצירת מפתח API מאובטח</p></div></div>
+        <div class="rm-item"><div class="rm-num">2</div><div><h4>הקריאה הראשונה</h4><p>שבע שורות קוד ששולחות שאלה ומקבלות תשובה</p></div></div>
+        <div class="rm-item"><div class="rm-num">3</div><div><h4>שיחה עם זיכרון</h4><p>בוט צ'אט שזוכר מה נאמר קודם</p></div></div>
+        <div class="rm-item"><div class="rm-num">4</div><div><h4>אישיות ופלט מסודר</h4><p>הנחיות מערכת ותשובות במבנה JSON</p></div></div>
+        <div class="rm-item"><div class="rm-num">5</div><div><h4>כלים</h4><p>המודל מפעיל פונקציות שאתם כתבתם</p></div></div>
+        <div class="rm-item"><div class="rm-num">6</div><div><h4>ממשק web</h4><p>הופכים את הסקריפט לאתר עם Streamlit</p></div></div>
+        <div class="rm-item final"><div class="rm-num">7</div><div><h4>שיגור</h4><p>פרויקט סיום ופרסום, כך שכל אחד יוכל להשתמש בו</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THE IDEA ================= -->
+  <section id="idea">
+    <div class="wrap">
+      <div class="eyebrow c">הרעיון</div>
+      <h2 class="section-title">אפליקציית AI = קוד שלכם + מודל מוכן</h2>
+      <p class="lede">את ה"מוח" שמבין ומשיב לא בונים בעצמנו. חברות כמו OpenAI אימנו מודלים ענקיים, והן נותנות לנו להשתמש בהם דרך האינטרנט. התפקיד שלנו הוא לכתוב את הקוד שמחבר אותם למשהו שימושי.</p>
+
+      <div class="trio">
+        <div class="tcard"><div class="em">🧠</div><h4>המודל</h4><p>ה"מוח". חי בשרתים של OpenAI, ולא על המחשב שלכם.</p></div>
+        <div class="tcard"><div class="em">🚪</div><h4>ה-API</h4><p>הדלת. הדרך שבה תוכנה אחת שולחת בקשה לתוכנה אחרת ומקבלת תשובה.</p></div>
+        <div class="tcard"><div class="em">💻</div><h4>הקוד שלכם</h4><p>האפליקציה. מחליטה מה לשאול, ומה לעשות עם התשובה.</p></div>
+      </div>
+
+      <div class="callout info">
+        <span class="ico">🔑</span>
+        <p><strong>ולמה צריך מפתח?</strong> השימוש במודל עולה כסף, ולכן ה-API חייב לדעת מי שואל כדי לחייב את החשבון הנכון. המפתח הוא מחרוזת ארוכה שמזהה אתכם, ולכן השמירה עליו חשובה כמו שמירה על כרטיס אשראי.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SETUP ================= -->
+  <section id="setup">
+    <div class="wrap">
+      <div class="eyebrow c">הכנות</div>
+      <h2 class="section-title">מכינים את המחשב ומקבלים מפתח</h2>
+      <p class="lede">חמישה צעדים, פעם אחת בלבד. את כל הקורס נעשה בתוכנה אחת, <strong style="color:var(--ink)">Visual Studio Code</strong> (בקיצור VS Code). סמנו וי על כל צעד שסיימתם.</p>
+
+      <div class="setup-progress"><span id="setup-count" dir="ltr">0 / 5</span><div class="bar"><i id="setup-bar"></i></div></div>
+
+      <div class="steps">
+
+        <!-- 1 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><h3>1 · מתקינים את VS Code</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>VS Code היא תוכנה חינמית לכתיבת קוד, ובה נכתוב ונריץ את כל הפרויקט.</p>
+            <div class="sub" style="margin-top:14px;"><h4>א. הורדה והתקנה</h4>
+              <p>היכנסו לקישור, לחצו על <strong>Download for Windows</strong>, הריצו את הקובץ שירד ולחצו Next עד הסוף. בשלב <strong>Select Additional Tasks</strong> מומלץ לסמן את <strong>Add to PATH</strong>.</p>
+              <a class="link-btn" href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download ↗</a>
+            </div>
+            <div class="sub"><h4>ב. מתקינים את התוסף Python</h4>
+              <p>פתחו את VS Code ולחצו בסרגל הצד על סמל התוספים (ארבע קוביות, או <code>Ctrl + Shift + X</code>). חפשו <strong>Python</strong>, בחרו את התוסף של <strong>Microsoft</strong> ולחצו <strong>Install</strong>.</p>
+              <a class="link-btn" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noopener">התוסף Python בחנות ↗</a>
+            </div>
+            <div class="callout info">
+              <span class="ico">💡</span>
+              <p>ב-VS Code יש טרמינל מובנה (חלון פקודות). פותחים אותו מהתפריט: <strong>Terminal ← New Terminal</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><h3>2 · מתקינים פייתון</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>פתחו טרמינל ב-VS Code והריצו את הפקודה. אם מופיעה גרסה 3.9 ומעלה, פייתון כבר מותקן ואפשר לדלג לצעד הבא.</p>
+            <div class="code-card term">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre><span class="prompt">PS&gt; </span>python --version
+<span class="out">Python 3.12.4</span></pre>
+            </div>
+            <p style="margin-top:12px;">אם מופיעה שגיאה שהפקודה לא מוכרת, היכנסו לקישור ולחצו על <strong>Download Python</strong>. <strong>חשוב מאוד:</strong> במסך הראשון של ההתקנה סמנו את התיבה <code>Add python.exe to PATH</code> לפני שלוחצים Install. אחרי ההתקנה סגרו ופתחו מחדש את VS Code.</p>
+            <a class="link-btn" href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org/downloads/windows ↗</a>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><h3>3 · חשבון OpenAI והטענת סכום קטן</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <div class="sub"><h4>א. פותחים חשבון בפלטפורמה למפתחים</h4>
+              <p>זה לא האתר של ChatGPT, אלא פלטפורמה נפרדת שבה מקבלים גישה ל-API. אפשר להירשם עם אימייל או עם חשבון גוגל. ייתכן שתידרשו גם לאמת מספר טלפון.</p>
+              <a class="link-btn" href="https://platform.openai.com/signup" target="_blank" rel="noopener">platform.openai.com/signup ↗</a>
+            </div>
+
+            <div class="sub"><h4>ב. מטעינים סכום קטן</h4>
+              <div class="callout warn" style="margin-top:6px;">
+                <span class="ico">💳</span>
+                <p>מנוי ChatGPT (גם Plus) <strong>לא כולל</strong> שימוש ב-API. ה-API מחויב בנפרד, ולכן צריך להטעין קרדיט. בדרך כלל אפשר להתחיל מ-5 דולר, וזה מספיק להרבה מאוד.</p>
+              </div>
+              <ol style="margin-top:12px;">
+                <li>היכנסו לדף ה-Billing בקישור שלמטה.</li>
+                <li>הוסיפו אמצעי תשלום (כרטיס אשראי).</li>
+                <li>בחרו <strong>Add to credit balance</strong> והטעינו <strong>5 דולר</strong>.</li>
+                <li>השאירו את ההטענה האוטומטית (<strong>Auto recharge</strong>) <strong>כבויה</strong>.</li>
+              </ol>
+              <a class="link-btn" href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener">Billing: הטענת קרדיט ↗</a>
+              <p style="margin-top:12px; font-size:14px;">הקרדיט משולם מראש. כשהוא נגמר ה-API פשוט נעצר, ולא נוצר חוב.</p>
+            </div>
+
+            <details class="explain">
+              <summary>💡 רגע, על מה בדיוק משלמים? (מודלים וטוקנים, בפשטות)</summary>
+              <div class="explain-body">
+                <h4>מודל</h4>
+                <p>"המוח" שעונה. ל-OpenAI יש כמה מודלים: <strong>קטנים</strong> (בשמות כמו <code>mini</code>) שהם מהירים וזולים, ו<strong>גדולים</strong> שהם חכמים יותר ויקרים יותר. בקורס נעבוד עם מודל קטן, כי הוא מספיק לנו בהחלט.</p>
+
+                <h4>טוקן</h4>
+                <p>המודל לא קורא מילים שלמות. הוא מפרק כל טקסט לחתיכות קטנות שנקראות <strong>טוקנים</strong>. לחצו לראות איך משפט מתפרק:</p>
+                <div class="tok-demo">
+                  <div class="tok-switch">
+                    <button class="tok-sw active" type="button" data-lang="en">English</button>
+                    <button class="tok-sw" type="button" data-lang="he">עברית</button>
+                  </div>
+                  <div class="tok-line" id="tok-line"></div>
+                  <div class="tok-count" id="tok-count"></div>
+                  <div class="tok-note">* הפירוק להמחשה בלבד. כלל אצבע: באנגלית, טוקן הוא בערך 4 אותיות. בעברית יוצאים יותר טוקנים לאותו משפט.</div>
+                </div>
+
+                <h4>איך משלמים?</h4>
+                <p>לפי כמות הטוקנים: <strong>גם מה ששלחתם</strong> (השאלה) <strong>וגם מה שקיבלתם</strong> (התשובה). המחיר נקבע לכל מיליון טוקנים, והוא זעיר.</p>
+                <div class="price-row">
+                  <div class="price-box">📤 <b>שאלה ארוכה</b> של כמה פסקאות: <br>שברירי סנט</div>
+                  <div class="price-box">📥 <b>תשובה</b> של כמה פסקאות: <br>שברירי סנט, והיא קצת יקרה יותר מהשאלה</div>
+                </div>
+                <p style="margin-top:12px;">במילים פשוטות: <strong>סכום קטן, כמו 5 דולר, מספיק לאלפי שאלות</strong> עם מודל קטן. המחירים העדכניים נמצאים בדף המחירים של OpenAI, ואת הצריכה שלכם תוכלו לראות בכל רגע בחשבון.</p>
+                <a class="link-btn" href="https://openai.com/api/pricing/" target="_blank" rel="noopener">openai.com/api/pricing: מחירים ↗</a>
+              </div>
+            </details>
+
+            <div class="sub"><h4>ג. (מומלץ) קובעים תקרת הוצאה</h4>
+              <p>בדף ה-Limits אפשר להגביל כמה כסף ייצא מהחשבון בחודש, כדי להיות רגועים.</p>
+              <a class="link-btn" href="https://platform.openai.com/settings/organization/limits" target="_blank" rel="noopener">Limits: תקרת הוצאה ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><h3>4 · יוצרים מפתח API</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <ol style="margin:0; padding-inline-start:22px; color:var(--ink-dim); font-size:15.5px;">
+              <li>היכנסו לדף המפתחות בקישור שלמטה.</li>
+              <li>לחצו <strong>Create new secret key</strong>.</li>
+              <li>תנו לו שם שתזהו אותו (למשל <code>course</code>), והשאירו את שאר ההגדרות כברירת מחדל.</li>
+              <li>לחצו Create, ו<strong>העתיקו מיד את המפתח</strong>. הוא מתחיל ב-<code>sk-</code>.</li>
+            </ol>
+            <a class="link-btn" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys ↗</a>
+            <div class="callout warn">
+              <span class="ico">⚠️</span>
+              <p><strong>המפתח מוצג פעם אחת בלבד.</strong> אם סגרתם את החלון לפני שהעתקתם, אין בעיה: מוחקים אותו ויוצרים חדש.</p>
+            </div>
+            <p style="margin-top:14px; font-size:13.5px; color:var(--ink-faint);">שמות הכפתורים והתפריטים באתר של OpenAI משתנים מדי פעם. אם משהו נראה קצת אחרת, חפשו את הדבר הדומה ביותר.</p>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><h3>5 · שומרים את המפתח במקום בטוח במחשב</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>את המפתח <strong>לא כותבים בקוד</strong>. במקום זה שומרים אותו במחשב כ<strong>משתנה סביבה</strong> בשם <code>OPENAI_API_KEY</code>. זה "מקום" מוסתר במערכת ההפעלה, והספרייה של OpenAI יודעת לקרוא אותו משם בעצמה. כך הקוד נשאר נקי, וגם אם תשלחו אותו למישהו או תעלו אותו לאינטרנט, המפתח לא יעבור איתו.</p>
+
+            <div class="sub" style="margin-top:16px;"><h4>א. שמירה</h4>
+              <p>פתחו טרמינל ב-VS Code, הדביקו את הפקודה והחליפו את <code>sk-...</code> במפתח שהעתקתם. השאירו את המרכאות.</p>
+              <div class="code-card term">
+                <div class="code-card-head"><span>טרמינל ב-VS Code</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>setx OPENAI_API_KEY "sk-..."</pre>
+              </div>
+              <p style="margin-top:10px; font-size:14px;">אם הפקודה הצליחה, תופיע ההודעה <code>SUCCESS: Specified value was saved.</code></p>
+            </div>
+
+            <div class="sub"><h4>ב. סוגרים ופותחים מחדש</h4>
+              <p><strong>סגרו את VS Code לגמרי ופתחו אותו שוב.</strong> המשתנה נטען רק בתוכנות שנפתחו אחרי השמירה.</p>
+            </div>
+
+            <div class="sub"><h4>ג. בודקים שהכול נשמר</h4>
+              <p>פתחו טרמינל חדש והריצו את הפקודה. היא <strong>לא מדפיסה את המפתח</strong>, אלא רק בודקת אם הוא קיים.</p>
+              <div class="code-card term">
+                <div class="code-card-head"><span>טרמינל ב-VS Code</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>if ($env:OPENAI_API_KEY) { "KEY FOUND" } else { "KEY MISSING" }</pre>
+              </div>
+              <p style="margin-top:10px; font-size:14px;">מופיע <code>KEY FOUND</code>? מעולה, סיימתם. מופיע <code>KEY MISSING</code>? ודאו שסגרתם את VS Code לגמרי ופתחתם אותו מחדש, ושהדבקתם את הפקודה כולל המרכאות.</p>
+            </div>
+
+            <div class="callout ok">
+              <span class="ico">📝</span>
+              <p>מומלץ לשמור עותק של המפתח גם במקום פרטי ובטוח, כמו מנהל סיסמאות או הערה מוגנת בטלפון, למקרה שתצטרכו להגדיר אותו שוב. <strong>לא</strong> בקובץ שמסונכרן לאינטרנט בגלוי, ולא בקבוצת וואטסאפ.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECURITY ================= -->
+  <section id="security">
+    <div class="wrap">
+      <div class="split">
+        <div>
+<div class="eyebrow v">חשוב</div>
+      <h2 class="section-title">כללי הזהב לשמירה על המפתח</h2>
+      <p class="lede">כל מי שמחזיק את המפתח שלכם יכול להשתמש בו, והחשבון שלכם ישלם. בוטים סורקים את האינטרנט כל הזמן, בחיפוש אחר מפתחות שדלפו. ארבעה כללים שחוסכים את רוב הצרות:</p>
+
+      <div class="callout danger">
+        <span class="ico">🚨</span>
+        <p><strong>המפתח דלף? פעלו מיד:</strong> היכנסו לדף המפתחות, מחקו אותו (Revoke), ויצרו אחד חדש. אחרי המחיקה אי אפשר להשתמש בו יותר, גם אם מישהו הצליח להעתיק אותו.</p>
+      </div>
+      <a class="link-btn" href="https://platform.openai.com/usage" target="_blank" rel="noopener">platform.openai.com/usage: מעקב צריכה ↗</a>
+        </div>
+        <div>
+<div class="dd">
+        <div class="dd-col yes">
+          <h4>כן</h4>
+          <ul>
+            <li>שומרים במשתנה סביבה, מחוץ לקוד</li>
+            <li>יוצרים מפתח נפרד לכל פרויקט</li>
+            <li>בודקים מדי פעם את הצריכה בדף ה-Usage</li>
+            <li>מוחקים מפתח שלא בשימוש</li>
+          </ul>
+        </div>
+        <div class="dd-col no">
+          <h4>לא</h4>
+          <ul>
+            <li>לא כותבים את המפתח בתוך קובץ הקוד</li>
+            <li>לא מעלים אותו ל-GitHub או לשום אתר</li>
+            <li>לא שולחים בצ'אט, במייל או בצילום מסך</li>
+            <li>לא מעבירים לחברים. כל אחד יוצר מפתח משלו</li>
+          </ul>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="wrap">
+      <div class="eyebrow">בדיקה מהירה</div>
+      <h2 class="section-title">ארבע שאלות לסיום</h2>
+      <div id="quiz-container"></div>
+      <div class="score-box" id="score-box"></div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION ================= -->
+  <section id="mission">
+    <div class="wrap">
+<div class="eyebrow c">המשימה שלכם</div>
+      <h2 class="section-title">לפני שהשיעור הבא מתחיל</h2>
+
+      <div class="mission-grid">
+        <div>
+<div class="mission">
+        <h3>🎯 שלוש משימות</h3>
+        <ul id="mission-list">
+          <li><label><input type="checkbox"><span>VS Code ופייתון מותקנים אצלי, וגם התוסף Python</span></label></li>
+          <li><label><input type="checkbox"><span>יש לי חשבון OpenAI עם קרדיט קטן, ויצרתי מפתח API</span></label></li>
+          <li><label><input type="checkbox"><span>שמרתי את המפתח עם <code>setx</code>, ובדיקת <code>KEY FOUND</code> הצליחה</span></label></li>
+        </ul>
+        <div class="mission-done" id="mission-done"></div>
+      </div>
+        </div>
+        <div>
+<div class="next-card">
+        <div class="eyebrow">בשיעור הבא · שיעור 2</div>
+        <h3>הקריאה הראשונה</h3>
+        <p style="margin-top:6px;">נתקין את הספרייה של OpenAI, ונכתוב שבע שורות קוד שישלחו שאלה ויחזירו תשובה אמיתית מהמודל, מהתוכנה שאתם כתבתם.</p>
+      </div>
+<div class="callout info">
+        <span class="ico">💡</span>
+        <p><strong>תקועים?</strong> העתיקו את הודעת השגיאה כמו שהיא ושאלו עליה את ChatGPT או את המורה. זו דרך עבודה לגיטימית של כל מתכנת.</p>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">בונים אפליקציית AI עם OpenAI ו-Python · שיעור 1</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- copy buttons ---------- */
+(function () {
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pre = btn.closest(".code-card").querySelector("pre");
+      var text = pre.innerText.replace(/^PS> /gm, "").trim();
+      if (pre.querySelector(".out")) text = text.split("\n")[0];
+      var original = btn.textContent;
+      function done(ok) {
+        btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
+        setTimeout(function () { btn.textContent = original; }, 1600);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); }
+      catch (e) { done(false); }
+    });
+  });
+})();
+
+/* ---------- hero chat demo ---------- */
+(function () {
+  var answers = [
+    { q: "תן לי רעיון לשם לחתול", a: "מה דעתך על \"פלפל\"? שם קצר, מצחיק, ומתאים לחתול עם אופי. ועוד כמה רעיונות: נוגט, זיגזג, או פרופסור." },
+    { q: "מה זה API בשני משפטים?", a: "API הוא דרך שבה תוכנה אחת מבקשת מתוכנה אחרת לבצע פעולה או לתת מידע, לפי כללים מוגדרים מראש. כמו מלצר שמעביר הזמנה למטבח ומחזיר את האוכל." },
+    { q: "הודעת תודה למורה", a: "שלום המורה, רציתי להגיד תודה על השנה הזו. הסבלנות וההסברים שלך עזרו לי להבין דברים שחשבתי שלעולם לא אבין. תודה על הכול!" }
+  ];
+  var body = $("chat-body");
+  var chips = document.querySelectorAll("#chips .chip");
+  var after = $("demo-after");
+  var busy = false;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (busy) return;
+      busy = true;
+      chips.forEach(function (c) { c.disabled = true; });
+      var item = answers[parseInt(chip.dataset.i, 10)];
+      body.innerHTML = "";
+      var u = document.createElement("div"); u.className = "bubble user"; u.textContent = item.q; body.appendChild(u);
+      var ai = document.createElement("div"); ai.className = "bubble ai typing"; body.appendChild(ai);
+      var i = 0;
+      function finish() {
+        ai.classList.remove("typing");
+        chips.forEach(function (c) { c.disabled = false; });
+        busy = false;
+        after.classList.add("show");
+      }
+      if (reduceMotion) { ai.textContent = item.a; finish(); return; }
+      setTimeout(function tick() {
+        i += 2;
+        ai.textContent = item.a.slice(0, i);
+        if (i < item.a.length) setTimeout(tick, 28); else finish();
+      }, 500);
+    });
+  });
+})();
+
+/* ---------- setup checklist ---------- */
+(function () {
+  var checks = document.querySelectorAll(".step-check");
+  function upd() {
+    var n = 0;
+    checks.forEach(function (c) { c.closest(".step-card").classList.toggle("done", c.checked); if (c.checked) n++; });
+    $("setup-count").textContent = n + " / " + checks.length;
+    $("setup-bar").style.width = (n / checks.length * 100) + "%";
+  }
+  checks.forEach(function (c) { c.addEventListener("change", upd); });
+  upd();
+})();
+
+/* ---------- token demo ---------- */
+(function () {
+  var samples = {
+    en: { toks: ["Hello", ",", " how", " are", " you", "?"], label: "Hello, how are you?" },
+    he: { toks: ["של", "ום", ",", " מה", " של", "ומך", "?"], label: "שלום, מה שלומך?" }
+  };
+  var line = $("tok-line"), count = $("tok-count");
+  var btns = document.querySelectorAll(".tok-sw");
+  function show(lang) {
+    var s = samples[lang];
+    btns.forEach(function (b) { b.classList.toggle("active", b.dataset.lang === lang); });
+    line.innerHTML = "";
+    s.toks.forEach(function (t, i) {
+      var c = document.createElement("span");
+      c.className = "tok-chip c" + (i % 3);
+      c.textContent = t;
+      c.style.animationDelay = reduceMotion ? "0s" : (i * 0.09) + "s";
+      line.appendChild(c);
+    });
+    count.textContent = "המשפט \"" + s.label + "\" = " + s.toks.length + " טוקנים";
+  }
+  btns.forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.lang); }); });
+  show("en");
+})();
+
+/* ---------- quiz ---------- */
+(function () {
+  var qs = [
+    { q: "איפה המודל רץ בפועל?", opts: ["על המחשב שלכם", "בשרתים של OpenAI, והקוד פונה אליהם דרך ה-API", "בתוך VS Code"], ok: 1, why: "המודל גדול מדי למחשב רגיל. הקוד שולח אליו בקשה ומקבל תשובה." },
+    { q: "על מה משלמים כשמשתמשים ב-API?", opts: ["מחיר קבוע לכל שאלה, בלי קשר לאורכה", "לפי כמות הטוקנים: גם בשאלה וגם בתשובה", "מנוי חודשי קבוע, כמו ChatGPT"], ok: 1, why: "ככל שנשלח ונקבל יותר טקסט, יהיו יותר טוקנים והעלות תעלה. אבל המחירים זעירים, והמנוי של ChatGPT לא קשור ל-API." },
+    { q: "איפה נכון לשמור את מפתח ה-API?", opts: ["ישירות בתוך הקוד, כדי שיהיה נוח", "במשתנה סביבה במחשב, מחוץ לקוד", "בהודעה לחבר, כדי שיוכל לעזור"], ok: 1, why: "מפתח בתוך קוד עלול להגיע בטעות לאינטרנט, ובוטים מזהים אותו תוך דקות." },
+    { q: "גילית שהמפתח שלך נשלח בטעות בקבוצה. מה עושים?", opts: ["מוחקים את ההודעה, וזה מספיק", "מוחקים (Revoke) את המפתח בדף המפתחות ויוצרים חדש", "ממתינים לראות אם משהו קורה"], ok: 1, why: "גם אם מחקתם את ההודעה, מישהו כבר יכול היה להעתיק. רק מחיקת המפתח עצמו מנטרלת אותו." }
+  ];
+  var host = $("quiz-container");
+  var answered = 0, right = 0;
+  qs.forEach(function (item, i) {
+    var card = document.createElement("div");
+    card.className = "quiz-card";
+    card.innerHTML = '<p></p><div class="choices"></div><div class="fb"></div>';
+    card.querySelector("p").textContent = (i + 1) + ". " + item.q;
+    var choices = card.querySelector(".choices");
+    var fb = card.querySelector(".fb");
+    item.opts.forEach(function (o, j) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "choice"; b.textContent = o;
+      b.addEventListener("click", function () {
+        var all = choices.querySelectorAll(".choice");
+        all.forEach(function (x) { x.disabled = true; });
+        answered++;
+        if (j === item.ok) { right++; b.classList.add("right"); fb.textContent = "נכון! " + item.why; fb.className = "fb correct"; }
+        else { b.classList.add("wrong"); all[item.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + item.why; fb.className = "fb wrong"; }
+        if (answered === qs.length) {
+          $("score-box").textContent = right === qs.length ? "🏆 " + right + " מתוך " + qs.length + ". מושלם!" : right + " מתוך " + qs.length + ". כדאי לחזור לחלקים שלא היו ברורים.";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- mission ---------- */
+(function () {
+  var boxes = document.querySelectorAll("#mission-list input");
+  function upd() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    $("mission-done").textContent = n === boxes.length ? "🎉 הכול מוכן! נתראה בשיעור 2, ונכתוב את הקוד הראשון." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+})();
+</script>
+
+</body>
+</html>
