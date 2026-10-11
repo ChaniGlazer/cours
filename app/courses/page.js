@@ -81,7 +81,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
               מהשורה הראשונה <span className="cx-accent">ועד אפליקציה</span> שעובדת
             </h1>
             <p className="cx-hero__sub">
-              שיעורים אינטראקטיביים עם תרגילים ובדיקה אוטומטית, כדי שתראו מיד אם הקוד שלכם עובד. מלווה אתכם חני שטיינמץ, מורה למדעי המחשב.
+              שיעורים אינטראקטיביים עם תרגילים ובדיקה אוטומטית, כדי שתראו מיד אם הקוד שלכם עובד. מלווה אתכם חני שטיינמץ, מפתחת ומורה למדעי המחשב.
             </p>
             <div className="cx-hero__actions">
               <a href={startHref} className="cx-btn cx-btn--lg">
@@ -282,7 +282,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
         <div className="cx-wrap cx-instructor__inner">
           <div className="cx-instructor__text">
             <span className="cx-accent cx-strong">מי מלמדת אתכם</span>
-            <h2 className="cx-h2 cx-h2--sm">חני שטיינמץ, מורה למדעי המחשב</h2>
+            <h2 className="cx-h2 cx-h2--sm">חני שטיינמץ, מפתחת ומורה למדעי המחשב</h2>
             <p className="cx-instructor__p">
               מלמדת פייתון ופיתוח עם כלי AI, ובונה בעצמה מערכות שעובדות באמת. הקורסים כאן נבנו מתוך הכיתה: מה שמסביר טוב, נשאר.
             </p>
