@@ -1,5 +1,5 @@
 import { isAdmin } from "@/lib/admin-auth";
-import { getSettings, getLessons, getTestimonials } from "@/lib/settings";
+import { getSettings, getLessons, getAllTestimonialsForAdmin } from "@/lib/settings";
 import {
   adminLoginAction,
   adminLogoutAction,
@@ -9,7 +9,8 @@ import {
   deleteLessonAction,
   createTestimonialAction,
   updateTestimonialAction,
-  deleteTestimonialAction
+  deleteTestimonialAction,
+  setTestimonialStatusAction
 } from "@/app/actions/admin";
 
 export default async function AdminPage({ searchParams }) {
@@ -40,7 +41,7 @@ export default async function AdminPage({ searchParams }) {
 
   const settings = getSettings();
   const lessons = getLessons();
-  const testimonials = getTestimonials();
+  const testimonials = getAllTestimonialsForAdmin();
 
   return (
     <section className="section">
@@ -69,6 +70,12 @@ export default async function AdminPage({ searchParams }) {
         {params?.error === "testimonial_fields" && (
           <div className="alert alert-error">יש להזין שם וטקסט המלצה.</div>
         )}
+
+        <p>
+          <a className="btn btn-primary" href="/admin/analytics" style={{ padding: "8px 20px" }}>
+            📊 סטטיסטיקת כניסות לאתר
+          </a>
+        </p>
 
         <div className="admin-grid">
           <div className="card">
@@ -167,6 +174,13 @@ export default async function AdminPage({ searchParams }) {
               <div className="lesson-row" key={t.id}>
                 <form action={updateTestimonialAction}>
                   <input type="hidden" name="id" value={t.id} />
+                  <p style={{ margin: "0 0 8px" }}>
+                    <strong>
+                      {t.status === "pending" ? "⏳ ממתינה לאישור" : t.status === "rejected" ? "✖ נדחתה" : "✔ מפורסמת"}
+                    </strong>
+                    {t.verified ? " · תלמיד/ה מאומת/ת" : ""}
+                    {t.rating ? ` · דירוג ${t.rating}/5` : ""}
+                  </p>
                   <div className="field">
                     <label>שם</label>
                     <input name="name" defaultValue={t.name} required />
@@ -197,6 +211,26 @@ export default async function AdminPage({ searchParams }) {
                     </button>
                   </div>
                 </form>
+                <div className="row-actions">
+                  {t.status !== "approved" && (
+                    <form action={setTestimonialStatusAction}>
+                      <input type="hidden" name="id" value={t.id} />
+                      <input type="hidden" name="status" value="approved" />
+                      <button type="submit" className="btn btn-primary" style={{ padding: "8px 18px" }}>
+                        אישור ופרסום
+                      </button>
+                    </form>
+                  )}
+                  {t.status !== "rejected" && (
+                    <form action={setTestimonialStatusAction}>
+                      <input type="hidden" name="id" value={t.id} />
+                      <input type="hidden" name="status" value="rejected" />
+                      <button type="submit" className="btn btn-ghost" style={{ padding: "8px 18px" }}>
+                        דחייה / הסתרה
+                      </button>
+                    </form>
+                  )}
+                </div>
                 <form action={deleteTestimonialAction}>
                   <input type="hidden" name="id" value={t.id} />
                   <div className="row-actions">

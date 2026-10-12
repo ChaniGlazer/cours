@@ -2,6 +2,7 @@ import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
+import PageTracker from "@/app/components/PageTracker";
 
 export async function generateMetadata() {
   const settings = getSettings();
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body>
+        <PageTracker />
         <header className="site-header">
           <div className="container">
             <a className="brand" href="/">
