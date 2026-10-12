@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings, getLessons, getTestimonials } from "@/lib/settings";
 import { parseVideoEmbed } from "@/lib/video";
+import { submitTestimonialAction } from "@/app/actions/testimonial";
 import MobileStickyCta from "@/app/components/MobileStickyCta";
 
 function Stars() {
@@ -11,7 +12,8 @@ function Stars() {
   );
 }
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }) {
+  const params = await searchParams;
   const user = await getCurrentUser();
   const settings = getSettings();
   const lessons = getLessons();
@@ -168,11 +170,14 @@ export default async function HomePage() {
         </section>
       )}
 
-      {showTestimonials && (
-        <section className="section">
+      {(
+        <section className="section" id="testimonials">
           <div className="container">
             <span className="eyebrow">מה אומרים הבוגרים</span>
             <h2 style={{ marginTop: 10 }}>הוכחה חברתית</h2>
+            {!showTestimonials && (
+              <p className="text-soft">עדיין אין המלצות. אפשר להיות הראשונים לכתוב!</p>
+            )}
             <div className="testimonial-grid" style={{ marginTop: 28 }}>
               {testimonials.map((t) => (
                 <figure className="testimonial-card" key={t.id}>
@@ -188,13 +193,49 @@ export default async function HomePage() {
                   <figcaption>
                     <strong>{t.name}</strong>
                     {t.role && <span className="text-soft"> · {t.role}</span>}
-                    {t.verified ? <span className="verified-badge">✓ תלמיד/ה מאומת/ת</span> : null}
                     <span className="text-soft testimonial-date">
                       {new Date(t.created_at).toLocaleDateString("he-IL", { year: "numeric", month: "long" })}
                     </span>
                   </figcaption>
                 </figure>
               ))}
+            </div>
+
+            <div className="card" style={{ marginTop: 32, maxWidth: 560 }}>
+              <h3>השאירו המלצה</h3>
+              {params?.testimonial === "sent" && (
+                <div className="alert alert-success">תודה! ההמלצה התקבלה ותפורסם לאחר אישור.</div>
+              )}
+              {params?.testimonial === "invalid" && (
+                <div className="alert alert-error">יש למלא שם והמלצה (לפחות כמה מילים).</div>
+              )}
+              <form action={submitTestimonialAction}>
+                <div className="field">
+                  <label htmlFor="t_name">שם</label>
+                  <input id="t_name" name="name" maxLength={80} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="t_quote">ההמלצה</label>
+                  <textarea id="t_quote" name="quote" rows={4} maxLength={1200} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="t_rating">דירוג (אופציונלי)</label>
+                  <select id="t_rating" name="rating" defaultValue="">
+                    <option value="">ללא דירוג</option>
+                    {[5, 4, 3, 2, 1].map((n) => (
+                      <option key={n} value={n}>
+                        {"★".repeat(n)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
+                  <input name="website" tabIndex={-1} autoComplete="off" />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  שליחת המלצה
+                </button>
+              </form>
             </div>
           </div>
         </section>
