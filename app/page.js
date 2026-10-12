@@ -177,11 +177,21 @@ export default async function HomePage() {
               {testimonials.map((t) => (
                 <figure className="testimonial-card" key={t.id}>
                   {t.photo_url && <img src={t.photo_url} alt={t.name} className="testimonial-photo" />}
+                  {t.rating >= 1 && (
+                    <span aria-label={`${t.rating} מתוך 5`} style={{ color: "var(--gold)" }}>
+                      {"★".repeat(t.rating)}
+                      <span style={{ opacity: 0.25 }}>{"★".repeat(5 - t.rating)}</span>
+                    </span>
+                  )}
                   <blockquote>&laquo;{t.quote}&raquo;</blockquote>
                   {t.result && <p className="testimonial-result">{t.result}</p>}
                   <figcaption>
                     <strong>{t.name}</strong>
                     {t.role && <span className="text-soft"> · {t.role}</span>}
+                    {t.verified ? <span className="verified-badge">✓ תלמיד/ה מאומת/ת</span> : null}
+                    <span className="text-soft testimonial-date">
+                      {new Date(t.created_at).toLocaleDateString("he-IL", { year: "numeric", month: "long" })}
+                    </span>
                   </figcaption>
                 </figure>
               ))}

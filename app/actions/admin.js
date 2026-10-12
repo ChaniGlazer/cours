@@ -153,3 +153,13 @@ export async function deleteLessonAction(formData) {
   }
   redirect("/admin?saved=lesson");
 }
+
+export async function setTestimonialStatusAction(formData) {
+  if (!(await isAdmin())) redirect("/admin");
+  const id = (formData.get("id") || "").toString();
+  const status = (formData.get("status") || "").toString();
+  if (id && ["approved", "pending", "rejected"].includes(status)) {
+    db.prepare("UPDATE testimonials SET status = ? WHERE id = ?").run(status, id);
+  }
+  redirect("/admin?saved=testimonial");
+}
