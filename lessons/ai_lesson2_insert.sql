@@ -1,0 +1,739 @@
+DELETE FROM lessons WHERE course_id='ai-app-dev' AND slug='lesson-2-first-call';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('519d089f21d38cce065d3305036f7662', 'ai-app-dev', 'lesson-2-first-call', 'שיעור 2 - הקריאה הראשונה', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 2 — הקריאה הראשונה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-head: #2D2A72;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 62ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); text-align: center; }
+.hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1.12; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin: 20px auto 0; font-size: clamp(18px, 1.6vw, 21px); max-width: 52ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+.scene { direction: ltr; margin: 44px auto 0; max-width: 600px; display: grid; grid-template-columns: 96px 1fr 96px; align-items: center; gap: 8px; background: var(--bg-panel); border-radius: 30px; box-shadow: var(--shadow); border: 1px solid rgba(91,108,255,.08); padding: 28px 20px 20px; }
+.sc-node { text-align: center; }
+.sc-node .big { font-size: 46px; line-height: 1.1; display: block; }
+.sc-node span.lbl { font-size: 13px; font-weight: 700; color: var(--ink-dim); display: block; margin-top: 4px; direction: rtl; }
+.sc-brain { animation: think 6s infinite; }
+@keyframes think { 0%, 42% { transform: scale(1); filter: none; } 50% { transform: scale(1.18); filter: drop-shadow(0 0 14px rgba(139,107,255,.8)); } 58%, 100% { transform: scale(1); filter: none; } }
+.sc-track { position: relative; height: 60px; }
+.sc-track::before { content: ""; position: absolute; inset-inline: 0; top: 50%; border-top: 3px dotted var(--line-strong); }
+.mail { position: absolute; top: 50%; font-size: 30px; margin-top: -20px; opacity: 0; }
+.mail.go { animation: go 6s infinite; }
+.mail.back { animation: back 6s infinite; }
+@keyframes go { 0% { left: 0; opacity: 0; } 4% { opacity: 1; } 40% { left: calc(100% - 30px); opacity: 1; } 46%, 100% { left: calc(100% - 30px); opacity: 0; } }
+@keyframes back { 0%, 54% { left: calc(100% - 30px); opacity: 0; } 58% { opacity: 1; } 94% { left: 0; opacity: 1; } 100% { left: 0; opacity: 0; } }
+.scene-caption { grid-column: 1 / -1; direction: rtl; text-align: center; font-size: 15px; color: var(--ink-dim); margin-top: 14px; }
+
+/* today tiles */
+.tiles3 { margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 700px) { .tiles3 { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: #fff; border-radius: 22px; padding: 22px 20px; box-shadow: var(--shadow-sm); text-align: center; }
+.tile .em { font-size: 36px; line-height: 1.2; }
+.tile h4 { font-size: 17px; margin: 8px 0 4px; }
+.tile p { font-size: 15px; line-height: 1.6; }
+
+/* shared */
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.code-card { background: var(--code-bg); border-radius: 20px; overflow: hidden; margin-top: 16px; box-shadow: 0 14px 34px -16px rgba(34,31,85,.55); }
+.code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 16px; background: var(--code-head); font-size: 13.5px; font-weight: 700; color: #B9B6E8; }
+.copy-btn { font-size: 13px; font-weight: 700; color: #fff; background: rgba(255,255,255,.14); border: none; border-radius: 100px; padding: 4px 14px; transition: background .15s; }
+.copy-btn:hover { background: rgba(255,255,255,.26); }
+.code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 20px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.8; color: var(--code-ink); }
+.code-card pre.he-out { direction: rtl; text-align: right; font-family: var(--sans); font-size: 16.5px; line-height: 1.7; white-space: pre-wrap; }
+.term .out { color: #B9B6E8; }
+.he { direction: rtl; unicode-bidi: isolate; }
+.k { color: #C4A7FF; } .s { color: #9BE8B5; } .f { color: #8FB4FF; } .cm { color: #8C89C4; font-style: italic; }
+
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: var(--shadow-sm); }
+
+/* quest */
+.quest { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 26px 20px; }
+.quest-track { position: relative; height: 54px; margin: 0 22px; }
+.quest-line { position: absolute; top: 34px; inset-inline: 0; height: 6px; border-radius: 6px; background: var(--bg-panel-2); }
+.quest-line i { display: block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, #34D6A0, #1FB985); transition: width .5s ease; }
+.quest-stop { position: absolute; top: 24px; width: 26px; height: 26px; margin-right: -13px; border-radius: 50%; background: #fff; border: 3px solid var(--line-strong); transition: all .3s; }
+.quest-stop.on { background: var(--success); border-color: var(--success); }
+.rocket { position: absolute; top: -2px; font-size: 30px; margin-right: -16px; transition: right .5s ease; }
+.quest-labels { display: flex; justify-content: space-between; margin: 6px 0 0; font-size: 13.5px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+.quest-count { margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+
+.steps { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.step-card { background: #fff; border-radius: var(--radius); padding: 26px 28px; box-shadow: var(--shadow); border: 2px solid transparent; transition: border-color .25s; min-width: 0; }
+.step-card.done { border-color: rgba(31,185,133,.55); }
+.step-head { display: flex; align-items: center; gap: 14px; }
+.step-ico { width: 48px; height: 48px; border-radius: 16px; background: var(--bg-panel-2); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.step-head h3 { font-size: 20px; flex: 1; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); cursor: pointer; flex-shrink: 0; background: var(--bg-panel-2); border-radius: 100px; padding: 5px 14px 5px 12px; }
+.check input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+.step-body { margin-top: 16px; }
+.step-body > p { font-size: 16.5px; }
+.step-body ol.plain { margin: 8px 0 0; padding-inline-start: 24px; color: var(--ink-dim); font-size: 16.5px; }
+.step-body ol.plain li { margin-bottom: 5px; }
+
+/* anatomy */
+.anat { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px 22px; }
+.stations { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-bottom: 20px; }
+@media (max-width: 560px) { .stations { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.st { text-align: center; opacity: .5; transition: opacity .25s, transform .25s; }
+.st .bd { width: 58px; height: 58px; margin: 0 auto 6px; border-radius: 20px; background: var(--bg-panel-2); border: 2px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 26px; transition: all .25s; }
+.st .nl { font-size: 13px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+.st.on { opacity: 1; transform: translateY(-3px); }
+.st.on .bd { border-color: var(--stc); background: #fff; box-shadow: 0 12px 26px -10px var(--stc); }
+.st.on .nl { color: var(--stc); }
+.cl-list { direction: ltr; display: grid; gap: 5px; }
+.cl { text-align: left; background: var(--code-bg); border: 1px solid transparent; border-inline-start: 5px solid var(--stc); border-radius: 10px; padding: 5px 14px; font-family: var(--mono); font-size: 14px; line-height: 1.7; color: var(--code-ink); white-space: pre; overflow-x: auto; display: flex; gap: 14px; transition: all .15s; }
+.cl .ln { color: #8C89C4; user-select: none; min-width: 1ch; }
+.cl:hover { background: var(--code-head); }
+.cl.on { border-color: var(--stc); background: var(--code-head); box-shadow: 0 10px 22px -12px var(--stc); }
+.anat-text { margin-top: 18px; min-height: 100px; direction: rtl; }
+.anat-text h4 { font-size: 18px; margin-bottom: 4px; }
+.anat-text p { font-size: 16.5px; color: var(--ink); }
+
+/* gifts */
+.present { margin-top: 28px; text-align: center; }
+.present .top { font-size: 16px; color: var(--ink-dim); }
+.present .top code { font-size: 1em; }
+.gifts { margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; text-align: start; align-items: start; }
+@media (max-width: 700px) { .gifts { grid-template-columns: minmax(0, 1fr); } }
+.gift { background: #fff; border: 2px solid transparent; border-radius: 22px; box-shadow: var(--shadow-sm); padding: 0; color: var(--ink); text-align: center; overflow: hidden; display: block; width: 100%; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.gift:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.gift .front { padding: 24px 12px; }
+.gift .front .em { font-size: 42px; line-height: 1.2; display: block; }
+.gift .front b { font-family: var(--display); font-size: 17px; display: block; margin-top: 6px; }
+.gift .front small { font-size: 13.5px; color: var(--ink-faint); display: block; }
+.gift .back { display: none; padding: 16px 18px 20px; text-align: start; font-size: 15.5px; line-height: 1.6; color: var(--ink); border-top: 1px dashed var(--line-strong); }
+.gift.open { border-color: var(--cyan); background: linear-gradient(135deg, var(--cyan-soft), #fff); }
+.gift.open .back { display: block; }
+.gift code { direction: ltr; unicode-bidi: embed; font-family: var(--mono); font-size: .86em; color: #3F4FE0; background: var(--cyan-soft); border-radius: 8px; padding: 2px 8px; }
+.tokbar { direction: ltr; display: flex; height: 28px; border-radius: 10px; overflow: hidden; margin: 10px 0 6px; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: #fff; }
+.tokbar span { display: flex; align-items: center; justify-content: center; }
+.tokbar .tin { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); flex: 17; }
+.tokbar .tout { background: linear-gradient(135deg, #FF7B6B, #FFA06B); flex: 24; }
+
+/* experiments */
+.exps { margin-top: 26px; display: grid; gap: 16px; }
+.exp { background: #fff; border-radius: 24px; box-shadow: var(--shadow-sm); padding: 20px 24px; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start; }
+.exp .em { font-size: 36px; line-height: 1.3; }
+.exp h4 { font-size: 18px; }
+.exp > div > p { font-size: 16.5px; margin-top: 2px; }
+.exp .code-card { margin-top: 12px; }
+.exp .code-card pre { padding: 13px 18px; font-size: 14px; }
+
+/* quiz */
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 16px; transition: all .15s; box-shadow: var(--shadow-sm); }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15.5px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+#quiz-container { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 900px) { #quiz-container { grid-template-columns: minmax(0, 1fr); } }
+.quiz-card { background: #fff; border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow); }
+.quiz-card > p { color: var(--ink); font-weight: 700; font-size: 17.5px; margin-bottom: 14px; }
+.score-box { margin-top: 26px; font-family: var(--display); font-weight: 700; font-size: 22px; color: #3F4FE0; }
+
+/* mission */
+.mission { margin-top: 30px; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border-radius: var(--radius); padding: 32px 34px; box-shadow: 0 24px 50px -22px rgba(91,108,255,.75); }
+.mission h3 { font-size: 24px; color: #fff; }
+.mission ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 14px; }
+.mission li label { display: flex; gap: 14px; align-items: flex-start; color: #fff; font-size: 17.5px; cursor: pointer; }
+.mission li input { width: 22px; height: 22px; margin-top: 4px; accent-color: #1FB985; flex-shrink: 0; }
+.mission li input:checked + span { opacity: .65; text-decoration: line-through; }
+.mission li code { background: rgba(255,255,255,.2); color: #fff; padding: 2px 8px; border-radius: 8px; font-size: .86em; direction: ltr; unicode-bidi: embed; }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: #fff; min-height: 26px; }
+.next-card { margin-top: 24px; background: #fff; border-radius: var(--radius); padding: 26px 30px; box-shadow: var(--shadow); }
+.next-card .eyebrow { margin-bottom: 8px; }
+.next-card h3 { font-size: 22px; }
+
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">בונים אפליקציית AI עם OpenAI ו-Python</span>
+    <span class="lesson-chip">שיעור 2</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow c" style="text-align:center;">שיעור 2 · הקריאה הראשונה</div>
+    <h1>שבע שורות קוד,<br>ו<span class="a1">ה-AI</span> עונה <span class="a2">לכם</span></h1>
+    <p class="hero-sub">הכנו הכול בשיעור הקודם. היום מגיע החלק הכי כיף: כותבים תוכנה קטנה ושולחים את השאלה הראשונה שלנו אל המודל.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-30 דקות</span>
+      <span class="pill">✍️ קוד ראשון</span>
+      <span class="pill">🧪 וגם ניסויים</span>
+    </div>
+
+    <div class="scene" aria-hidden="true">
+      <div class="sc-node"><span class="big">💻</span><span class="lbl">התוכנה שלכם</span></div>
+      <div class="sc-track"><span class="mail go">💌</span><span class="mail back">💬</span></div>
+      <div class="sc-node"><span class="big sc-brain">🧠</span><span class="lbl">המודל של OpenAI</span></div>
+      <div class="scene-caption">מכתב יוצא עם שאלה, ותשובה חוזרת. זה כל הסיפור.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= TODAY ================= -->
+  <section id="today">
+    <div class="wrap">
+      <div class="eyebrow">התוכנית להיום</div>
+      <h2 class="section-title">שלוש תחנות, ובסוף יש תשובה</h2>
+      <div class="tiles3">
+        <div class="tile"><div class="em">📦</div><h4>מתקינים</h4><p>ארגז כלים מוכן שיודע לדבר עם OpenAI</p></div>
+        <div class="tile"><div class="em">✍️</div><h4>כותבים</h4><p>שבע שורות, ואפשר גם להבין כל אחת מהן</p></div>
+        <div class="tile"><div class="em">🚀</div><h4>מריצים</h4><p>לוחצים Enter ורואים את התשובה מגיעה</p></div>
+      </div>
+      <div class="callout info">
+        <span class="ico">🔑</span>
+        <p>המפתח שיצרתם בשיעור 1 עובד מאחורי הקלעים. לא נצטרך לגעת בו ולא להדביק אותו בקוד.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUEST ================= -->
+  <section id="setup">
+    <div class="wrap">
+      <div class="eyebrow c">יוצאים לדרך</div>
+      <h2 class="section-title">ארבעה צעדים עד התשובה הראשונה</h2>
+      <p class="lede">סמנו וי אחרי כל צעד, ותראו את הטיל מתקדם.</p>
+
+      <div class="quest" aria-label="התקדמות">
+        <div class="quest-track">
+          <div class="quest-line"><i id="quest-fill"></i></div>
+          <span class="quest-stop" style="right:0%"></span>
+          <span class="quest-stop" style="right:33.33%"></span>
+          <span class="quest-stop" style="right:66.66%"></span>
+          <span class="quest-stop" style="right:100%"></span>
+          <span class="rocket" id="rocket" style="right:0%">🚀</span>
+        </div>
+        <div class="quest-labels"><span>תיקייה</span><span>התקנה</span><span>קוד</span><span>הרצה</span></div>
+        <div class="quest-count" id="quest-count">0 מתוך 4 צעדים</div>
+      </div>
+
+      <div class="steps">
+
+        <!-- 1 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">📁</div><h3>1 · פותחים תיקייה לפרויקט</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>כל פרויקט גר בתיקייה משלו, כמו מחברת נפרדת לכל נושא.</p>
+            <ol class="plain">
+              <li>צרו במחשב תיקייה חדשה, למשל <code>ai-course</code>, במקום שקל למצוא (שולחן העבודה או Documents).</li>
+              <li>ב-VS Code בחרו <strong>File ← Open Folder</strong> ופתחו אותה. אם נשאלתם אם אתם סומכים על המחברים, אשרו.</li>
+              <li>פתחו את חלון הפקודות (הטרמינל): <strong>Terminal ← New Terminal</strong>.</li>
+            </ol>
+            <div class="callout info">
+              <span class="ico">💡</span>
+              <p>לא בטוחים שאתם בתיקייה הנכונה? הריצו <code>pwd</code> כדי לראות איפה אתם, או <code>ls</code> כדי לראות מה יש בפנים.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">📦</div><h3>2 · מתקינים את ארגז הכלים</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>את הדיבור עם OpenAI כבר מישהו כתב בשבילנו, בצורת <strong>ספרייה</strong>: ארגז כלים מוכן. מתקינים אותו בפקודה אחת בטרמינל:</p>
+            <div class="code-card term">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python -m pip install openai</pre>
+            </div>
+            <p style="margin-top:12px; font-size:15px;">כמה שניות של טקסט שרץ, ובסוף שורה שמתחילה ב-<code>Successfully installed</code>. מופיעות שם גם ספריות נוספות, וזה בסדר גמור: הן באות יחד איתה.</p>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">✍️</div><h3>3 · כותבים את התוכנית</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <ol class="plain">
+              <li>ב-VS Code לחצו על סמל הקובץ החדש (או <strong>File ← New File</strong>).</li>
+              <li>קראו לו <code>first_call.py</code>. הסיומת <code>.py</code> אומרת שזה קובץ פייתון.</li>
+              <li>הדביקו את הקוד ושמרו עם <code>Ctrl + S</code>.</li>
+            </ol>
+            <div class="code-card">
+              <div class="code-card-head"><span>first_call.py</span><button class="copy-btn" type="button">העתק</button></div>
+<pre><span class="k">from</span> openai <span class="k">import</span> OpenAI
+client = <span class="f">OpenAI</span>()
+response = client.responses.<span class="f">create</span>(
+    model=<span class="s">"gpt-4o-mini"</span>,
+    input=<span class="s">"<span class="he">מה זה API? ענה בעברית, בשני משפטים</span>"</span>,
+)
+<span class="f">print</span>(response.output_text)</pre>
+            </div>
+            <div class="callout warn">
+              <span class="ico">⚠️</span>
+              <p><strong>שימו לב לרווחים.</strong> בשורות 4 ו-5 יש ארבעה רווחים בתחילת השורה. בפייתון זה חלק מהקוד. אם הדבקתם ושמרתם, הכול במקום.</p>
+            </div>
+            <div class="callout danger">
+              <span class="ico">🚨</span>
+              <p><strong>אין כאן מפתח, וכך זה צריך להישאר.</strong> לא מוסיפים <code>api_key="sk-..."</code> לקוד, גם לא "רק לבדיקה".</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">🚀</div><h3>4 · מריצים</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>בטרמינל, באותה תיקייה שבה נמצא הקובץ:</p>
+            <div class="code-card term">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python first_call.py</pre>
+            </div>
+            <p style="margin-top:12px;">אחרי שנייה או שתיים תופיע תשובה בעברית, בערך כך. המילים שלכם יהיו קצת שונות, ובעוד רגע נבין למה:</p>
+            <div class="code-card term">
+              <div class="code-card-head"><span>הפלט</span></div>
+<pre class="he-out"><span class="out">API (ממשק תכנות יישומים) הוא סט כללים שמאפשר לתוכנה אחת לבקש מידע או פעולה מתוכנה אחרת. הוא פועל כמו מלצר שלוקח את ההזמנה למטבח ומחזיר את האוכל לשולחן.</span></pre>
+            </div>
+            <div class="callout warn">
+              <span class="ico">↔️</span>
+              <p>בטרמינל של VS Code עברית עלולה להופיע <strong>הפוכה</strong> או עם פיסוק במקום לא נכון. זו בעיית תצוגה של הטרמינל, לא טעות שלכם ולא של המודל. כשנבנה ממשק web זה ייפתר מעצמו. אם מופיעה שגיאה או סימני שאלה, גללו למטה לחלק "קיבלתם שגיאה".</p>
+            </div>
+            <div class="callout ok">
+              <span class="ico">🎉</span>
+              <p><strong>זהו!</strong> תוכנה שכתבתם שלחה שאלה לשרתים של OpenAI וקיבלה תשובה. כל מה שנבנה בהמשך הקורס מבוסס על זה.</p>
+            </div>
+            <div class="callout info">
+              <span class="ico">💰</span>
+              <p>כל הרצה עולה שברירי סנט. 5 הדולרים משיעור 1 מספיקים לאלפי הרצות כאלה.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ANATOMY ================= -->
+  <section id="anatomy">
+    <div class="wrap">
+      <div class="eyebrow v">מבינים</div>
+      <h2 class="section-title">הקוד הוא מכתב עם מסע</h2>
+      <p class="lede">זוכרים את המסע משיעור 1? הוא כתוב עכשיו בקוד. לחצו על כל שורה ותראו איזו תחנה במסע היא מפעילה.</p>
+
+      <div class="anat">
+        <div class="stations" id="stations"></div>
+        <div class="cl-list" id="cl-list"></div>
+        <div class="anat-text" id="anat-text"></div>
+      </div>
+
+      <div class="callout info">
+        <span class="ico">🧩</span>
+        <p>שורות 3 עד 6 הן <strong>פקודה אחת</strong> שנפרסה על כמה שורות כדי שתהיה קריאה. הסוגר שנפתח בשורה 3 נסגר רק בשורה 6.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESPONSE ================= -->
+  <section id="response">
+    <div class="wrap">
+      <div class="eyebrow c">התשובה</div>
+      <h2 class="section-title">חבילה חזרה, ויש בה יותר מטקסט</h2>
+      <p class="lede">המשתנה <code>response</code> הוא חבילה. הדפסנו ממנה רק את הטקסט, אבל יש בה עוד דברים. לחצו על כל מתנה כדי לפתוח אותה:</p>
+
+      <div class="present">
+        <div class="top">📦 <code>response</code></div>
+        <div class="gifts">
+          <button class="gift" type="button">
+            <div class="front"><span class="em">💬</span><b>הטקסט</b><small>לחצו לפתיחה</small></div>
+            <div class="back">התשובה עצמה. מוציאים אותה עם <code>response.output_text</code>, וזה מה שהדפסנו. זה הדבר שנציג בדרך כלל למשתמש.</div>
+          </button>
+          <button class="gift" type="button">
+            <div class="front"><span class="em">🪙</span><b>הטוקנים</b><small>לחצו לפתיחה</small></div>
+            <div class="back">כמה טוקנים (חתיכות טקסט) שלחנו וכמה קיבלנו, וממנה אפשר לחשב כמה זה עלה.
+              <div class="tokbar"><span class="tin">17</span><span class="tout">24</span></div>
+              <span style="font-size:12.5px;color:var(--ink-faint);">שלחנו 17, קיבלנו 24. אצלכם המספרים יהיו קצת אחרים. שולפים אותם עם <code>response.usage</code>.</span></div>
+          </button>
+          <button class="gift" type="button">
+            <div class="front"><span class="em">🏷️</span><b>המודל</b><small>לחצו לפתיחה</small></div>
+            <div class="back">איזה מודל ענה בפועל, ליתר ביטחון. שולפים עם <code>response.model</code>, ותקבלו שם כמו <code>gpt-4o-mini-...</code> עם סיומת של גרסה.</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="ico">🎲</span>
+        <p><strong>הריצו שוב, והתשובה תהיה קצת שונה.</strong> המודל לא שולף תשובה שמורה אלא בונה אותה מילה אחרי מילה, ובכל מילה יש כמה המשכים סבירים. לכן הניסוח משתנה, וזה תקין. בשיעור 4 נלמד איך לשלוט בזה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIMENTS ================= -->
+  <section id="experiments">
+    <div class="wrap">
+      <div class="eyebrow c">משחקים</div>
+      <h2 class="section-title">שלושה ניסויים</h2>
+      <p class="lede">הדרך הכי טובה להבין קוד היא לשבור אותו קצת. אחרי כל שינוי: שמרו (<code>Ctrl + S</code>) והריצו שוב.</p>
+
+      <div class="exps">
+        <div class="exp">
+          <div class="em">❓</div>
+          <div>
+            <h4>ניסוי 1 · שנו את השאלה</h4>
+            <p>החליפו את הטקסט שבתוך <code>input</code> בכל שאלה שתרצו:</p>
+            <div class="code-card"><pre>    input=<span class="s">"<span class="he">תן לי שלושה רעיונות לשם לחתול</span>"</span>,</pre></div>
+          </div>
+        </div>
+
+        <div class="exp">
+          <div class="em">🪙</div>
+          <div>
+            <h4>ניסוי 2 · בדקו כמה זה עלה</h4>
+            <p>הוסיפו שורה בסוף הקובץ שמדפיסה כמה טוקנים השתמשתם:</p>
+            <div class="code-card"><pre><span class="f">print</span>(response.usage.total_tokens)</pre></div>
+          </div>
+        </div>
+
+        <div class="exp">
+          <div class="em">🧒</div>
+          <div>
+            <h4>ניסוי 3 · שנו את הסגנון</h4>
+            <p>אפשר לבקש גם קהל וסגנון:</p>
+            <div class="code-card"><pre>    input=<span class="s">"<span class="he">הסבר מה זה API לילד בן 8, בעברית</span>"</span>,</pre></div>
+            <p style="margin-top:8px; font-size:14.5px;">אותה שאלה, וניסוח אחר לגמרי. בשיעור 4 נלמד לקבוע את הסגנון הזה בצורה מסודרת.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ERRORS ================= -->
+  <section id="errors">
+    <div class="wrap">
+      <div class="eyebrow v">כשמשהו נשבר</div>
+      <h2 class="section-title">קיבלתם שגיאה? שואלים את ה-AI</h2>
+      <p class="lede">שגיאה אדומה היא לא כישלון, אלא רמז. ואת הרמז הכי קל לפענח עם AI: מדביקים לו את השגיאה, והוא אומר מה צריך לתקן.</p>
+
+      <div class="tiles3">
+        <div class="tile"><div class="em">📋</div><h4>1 · מעתיקים</h4><p>את הודעת השגיאה, או לפחות את השורות האחרונות שלה</p></div>
+        <div class="tile"><div class="em">💬</div><h4>2 · שואלים</h4><p>מדביקים ב-ChatGPT וכותבים מה ניסיתם לעשות</p></div>
+        <div class="tile"><div class="em">🔧</div><h4>3 · מתקנים</h4><p>עושים מה שהוא אומר, ומריצים שוב</p></div>
+      </div>
+
+      <div class="code-card">
+        <div class="code-card-head"><span>נוסח לדוגמה לשאלה</span><button class="copy-btn" type="button">העתק</button></div>
+<pre class="he-out">הרצתי את הקובץ first_call.py ואני מקבל את השגיאה הבאה. מה צריך לתקן?
+
+(כאן מדביקים את השגיאה)
+
+(ואם צריך, מדביקים גם את הקוד)</pre>
+      </div>
+
+      <div class="callout danger">
+        <span class="ico">🚨</span>
+        <p><strong>לפני שמדביקים או מצלמים שגיאה:</strong> ודאו שהמפתח המלא לא מופיע בה. הודעות מסוימות מציגות חלק ממנו.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="wrap">
+      <div class="eyebrow">בדיקה מהירה</div>
+      <h2 class="section-title">ארבע שאלות לסיום</h2>
+      <div id="quiz-container"></div>
+      <div class="score-box" id="score-box"></div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION ================= -->
+  <section id="mission">
+    <div class="wrap">
+      <div class="eyebrow c">המשימה שלכם</div>
+      <h2 class="section-title">לפני שהשיעור הבא מתחיל</h2>
+
+      <div class="mission">
+        <h3>🎯 שלוש משימות</h3>
+        <ul id="mission-list">
+          <li><label><input type="checkbox"><span>הרצתי את <code>first_call.py</code> וקיבלתי תשובה אמיתית מהמודל</span></label></li>
+          <li><label><input type="checkbox"><span>שיניתי את השאלה, הרצתי שוב, וקיבלתי תשובה שונה</span></label></li>
+          <li><label><input type="checkbox"><span>הדפסתי את <code>response.usage.total_tokens</code> וראיתי כמה טוקנים השתמשתי</span></label></li>
+        </ul>
+        <div class="mission-done" id="mission-done"></div>
+      </div>
+
+      <div class="callout info">
+        <span class="ico">⭐</span>
+        <p><strong>אתגר בונוס:</strong> שלחו את אותה שאלה שלוש פעמים ברצף והשוו. כמה התשובות שונות? ומה קורה בשאלה עם תשובה אחת בלבד, כמו "כמה זה 2+2?"</p>
+      </div>
+
+      <div class="next-card">
+        <div class="eyebrow">בשיעור הבא · שיעור 3</div>
+        <h3>שיחה עם זיכרון</h3>
+        <p style="margin-top:6px;">התוכנית של היום שואלת שאלה אחת ושוכחת הכול. בשיעור הבא נבין למה המודל לא זוכר, ונהפוך אותה לבוט צ''אט שמנהל שיחה שלמה.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">בונים אפליקציית AI עם OpenAI ו-Python · שיעור 2</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- copy buttons ---------- */
+(function () {
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.closest(".code-card").querySelector("pre").textContent.trim();
+      var original = btn.textContent;
+      function done(ok) {
+        btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
+        setTimeout(function () { btn.textContent = original; }, 1600);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); }
+      catch (e) { done(false); }
+    });
+  });
+})();
+
+/* ---------- quest + checklist ---------- */
+(function () {
+  var checks = document.querySelectorAll(".step-check");
+  var stops = document.querySelectorAll(".quest-stop");
+  function upd() {
+    var n = 0;
+    checks.forEach(function (c) { c.closest(".step-card").classList.toggle("done", c.checked); if (c.checked) n++; });
+    var gaps = checks.length - 1;
+    var pos = n === 0 ? 0 : (n - 1) / gaps * 100;
+    $("quest-fill").style.width = pos + "%";
+    $("rocket").style.right = pos + "%";
+    stops.forEach(function (s, i) { s.classList.toggle("on", i < n); });
+    $("quest-count").textContent = n === checks.length ? "🎉 כל הצעדים הושלמו!" : n + " מתוך " + checks.length + " צעדים";
+  }
+  checks.forEach(function (c) { c.addEventListener("change", upd); });
+  upd();
+})();
+
+/* ---------- anatomy: code as a letter ---------- */
+(function () {
+  var stations = [
+    { e: "📦", n: "הספרייה", c: "#3F6FD9" },
+    { e: "🔑", n: "הלקוח והמפתח", c: "#D98A00" },
+    { e: "💌", n: "הבקשה", c: "#E0558A" },
+    { e: "🧠", n: "המודל", c: "#0F9F86" },
+    { e: "❓", n: "השאלה", c: "#2E9E3E" },
+    { e: "💬", n: "התשובה", c: "#E0553F" }
+  ];
+  var lines = [
+    { c: "from openai import OpenAI", s: 0, t: "פותחים את ארגז הכלים", x: "אומרים לפייתון: \"מתוך הספרייה openai שהתקנו, תביא לי את OpenAI\". זה ה\"שליח\" שיודע איך מדברים עם השרתים של OpenAI." },
+    { c: "client = OpenAI()", s: 1, t: "מזמינים שליח, והמפתח עולה איתו", x: "יוצרים את השליח וקוראים לו client. הסוגריים ריקים בכוונה: השליח מחפש בעצמו את OPENAI_API_KEY במחשב, זה שהגדרתם בשיעור 1. לכן המפתח לא מופיע בקוד." },
+    { c: "response = client.responses.create(", s: 2, t: "כותבים מכתב ושולחים", x: "create אומר \"צור בקשה ושלח\". כאן נפתח המכתב: עוד רגע נכתוב בו מה לשאול ומי יענה. מה שיחזור יישמר בתוך response. הסוגר נשאר פתוח, כי המכתב עוד לא גמור." },
+    { c: ''    model="gpt-4o-mini",'', s: 3, t: "בוחרים למי כותבים", x: "איזה \"מוח\" יענה. gpt-4o-mini הוא מודל קטן, מהיר וזול, ומספיק בהחלט בשבילנו. שמות מודלים מתעדכנים עם הזמן, ולכן אם יש שגיאה על המודל, בדקו את הרשימה העדכנית של OpenAI." },
+    { c: [''    input="'', { he: "מה זה API? ענה בעברית, בשני משפטים" }, ''",''], s: 4, t: "כותבים את השאלה", x: "הטקסט שנשלח למודל. זה החלק שתשנו הכי הרבה. הוא בתוך מרכאות, כי בפייתון כך מסמנים טקסט. ביקשנו במפורש \"ענה בעברית\": המודל בדרך כלל עונה בשפת השאלה, אבל בקשה מפורשת מבטיחה את זה." },
+    { c: ")", s: 2, t: "סוגרים את המעטפה", x: "הסוגר הזה סוגר את create. שורות 3 עד 6 יחד הן פקודה אחת: \"שלח למודל הזה את השאלה הזו, ושמור את התשובה ב-response\"." },
+    { c: "print(response.output_text)", s: 5, t: "קוראים את התשובה", x: "response הוא החבילה שחזרה, ו-output_text הוא הטקסט שבתוכה. print מציג אותו בטרמינל." }
+  ];
+  var stBox = $("stations"), list = $("cl-list"), txt = $("anat-text");
+  var stEls = [], btns = [];
+  stations.forEach(function (s) {
+    var d = el("div", "st"); d.style.setProperty("--stc", s.c);
+    d.appendChild(el("div", "bd", s.e)); d.appendChild(el("div", "nl", s.n));
+    stBox.appendChild(d); stEls.push(d);
+  });
+  function pick(i) {
+    var l = lines[i];
+    btns.forEach(function (b, j) { b.classList.toggle("on", j === i); });
+    stEls.forEach(function (d, j) { d.classList.toggle("on", j === l.s); });
+    txt.innerHTML = "";
+    var h = el("h4", "", "שורה " + (i + 1) + " · " + l.t);
+    h.style.color = stations[l.s].c;
+    txt.appendChild(h); txt.appendChild(el("p", "", l.x));
+  }
+  lines.forEach(function (l, i) {
+    var b = el("button", "cl"); b.type = "button";
+    b.style.setProperty("--stc", stations[l.s].c);
+    b.appendChild(el("span", "ln", String(i + 1)));
+    var code = el("span", "");
+    (Array.isArray(l.c) ? l.c : [l.c]).forEach(function (part) {
+      if (typeof part === "string") code.appendChild(document.createTextNode(part));
+      else code.appendChild(el("span", "he", part.he));
+    });
+    b.appendChild(code);
+    b.addEventListener("click", function () { pick(i); });
+    list.appendChild(b); btns.push(b);
+  });
+  pick(0);
+})();
+
+/* ---------- gifts ---------- */
+(function () {
+  document.querySelectorAll(".gift").forEach(function (g) {
+    g.addEventListener("click", function () {
+      var open = g.classList.toggle("open");
+      g.querySelector(".front small").textContent = open ? "לחצו לסגירה" : "לחצו לפתיחה";
+    });
+  });
+})();
+
+/* ---------- quiz ---------- */
+(function () {
+  var qs = [
+    { q: "הקוד שלנו הוא client = OpenAI(), בלי שום מפתח. איך הספרייה יודעת באיזה מפתח להשתמש?", opts: ["היא מנחשת", "היא קוראת אותו ממשתנה הסביבה OPENAI_API_KEY במחשב", "המפתח מוטבע בספרייה בהתקנה"], ok: 1, why: "זו בדיוק הסיבה שהגדרנו את המשתנה בשיעור 1: הקוד נשאר נקי, והמפתח נשאר אצלנו במחשב." },
+    { q: "הרצתם את אותה תוכנית פעמיים וקיבלתם שתי תשובות עם ניסוח שונה. מה קרה?", opts: ["יש באג בקוד", "המודל בונה את התשובה בכל פעם מחדש, ובכל מילה בוחר מתוך כמה אפשרויות", "OpenAI שינתה את המודל באמצע"], ok: 1, why: "בכל מילה יש כמה המשכים סבירים, והמודל בוחר אחד מהם. זו התנהגות רגילה ולא תקלה." },
+    { q: "איזה חלק מהחבילה response מכיל את טקסט התשובה?", opts: ["response.usage", "response.output_text", "response.model"], ok: 1, why: "usage מדווח על הטוקנים, ו-model אומר איזה מודל ענה. הטקסט נמצא ב-output_text." },
+    { q: "הרצתם והופיעה השגיאה ModuleNotFoundError: No module named ''openai''. מה עושים?", opts: ["יוצרים מפתח API חדש", "מריצים בטרמינל python -m pip install openai", "מוחקים את הקובץ וכותבים אותו מחדש"], ok: 1, why: "השגיאה אומרת שהספרייה לא מותקנת. התקנה פותרת את זה, ואין קשר למפתח או לקוד." }
+  ];
+  var host = $("quiz-container");
+  var answered = 0, right = 0;
+  qs.forEach(function (item, i) {
+    var card = el("div", "quiz-card");
+    card.appendChild(el("p", "", (i + 1) + ". " + item.q));
+    var choices = el("div", "choices"); var fb = el("div", "fb");
+    card.appendChild(choices); card.appendChild(fb);
+    item.opts.forEach(function (o, j) {
+      var b = el("button", "choice", o); b.type = "button";
+      b.addEventListener("click", function () {
+        var all = choices.querySelectorAll(".choice");
+        all.forEach(function (x) { x.disabled = true; });
+        answered++;
+        if (j === item.ok) { right++; b.classList.add("right"); fb.textContent = "נכון! " + item.why; fb.className = "fb correct"; }
+        else { b.classList.add("wrong"); all[item.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + item.why; fb.className = "fb wrong"; }
+        if (answered === qs.length) {
+          $("score-box").textContent = right === qs.length ? "🏆 " + right + " מתוך " + qs.length + ". מושלם!" : right + " מתוך " + qs.length + ". כדאי לחזור לחלקים שלא היו ברורים.";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- mission ---------- */
+(function () {
+  var boxes = document.querySelectorAll("#mission-list input");
+  function upd() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 3, ונלמד את הבוט לזכור." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+})();
+</script>
+
+</body>
+</html>
+', 2, '2026-10-13T00:00:00.000Z');
