@@ -324,28 +324,6 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">ספרייה אחת, ויש אתר</h2>
       <p class="lede"><strong style="color:var(--ink)">Streamlit</strong> היא ספרייה שהופכת סקריפט פייתון לאתר, בלי HTML ובלי עיצוב. כותבים <code>st.title(...)</code> ומופיעה כותרת, כותבים <code>st.chat_input(...)</code> ומופיעה תיבת הקלדה.</p>
 
-      <div class="callout warn">
-        <span class="ico">🔄</span>
-        <p>יש דבר אחד מוזר שחייבים להבין: <strong>בכל לחיצה, Streamlit מריץ את כל הסקריפט מההתחלה</strong>. לכן משתנה רגיל מתאפס, ואם רוצים לזכור משהו צריך מקום מיוחד לזה. נראה:</p>
-      </div>
-
-      <div class="demo">
-        <div class="flow" id="flow"></div>
-        <div class="boxes">
-          <div class="mem plain">
-            <h4>🗑️ משתנה רגיל</h4><small><code style="font-size:.9em">history = []</code></small>
-            <div id="plain-box"></div>
-          </div>
-          <div class="mem keep">
-            <h4>🧠 session_state</h4><small><code style="font-size:.9em">st.session_state.history</code></small>
-            <div id="keep-box"></div>
-          </div>
-        </div>
-        <div class="demo-actions">
-          <button class="btn" id="send" type="button">שלח הודעה ▸</button>
-          <button class="btn ghost" id="reset" type="button">מההתחלה</button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -599,45 +577,6 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   document.querySelectorAll(".step-check").forEach(function (c) {
     c.addEventListener("change", function () { c.closest(".step-card").classList.toggle("done", c.checked); });
   });
-})();
-
-/* ---------- rerun demo ---------- */
-(function () {
-  var steps = ["הסקריפט מתחיל מההתחלה", "טוענים את ההיסטוריה", "מציגים את ההודעות הקודמות", "מחכים להודעה חדשה", "שולחים למודל ומציגים תשובה"];
-  var stepEls = [];
-  var flow = $("flow"), plainBox = $("plain-box"), keepBox = $("keep-box");
-  var sent = 0, busy = false, timers = [];
-  steps.forEach(function (s, i) {
-    var r = el("div", "step-line"); r.appendChild(el("span", "n", String(i + 1))); r.appendChild(el("span", "", s));
-    flow.appendChild(r); stepEls.push(r);
-  });
-  function renderBoxes() {
-    plainBox.innerHTML = ""; keepBox.innerHTML = "";
-    plainBox.appendChild(el("div", "empty", sent ? "ריק, התאפס בכל הרצה 😬" : "ריק"));
-    if (!sent) { keepBox.appendChild(el("div", "empty", "ריק")); return; }
-    var c = el("div", "chips");
-    for (var i = 1; i <= sent; i++) { c.appendChild(el("span", "chip", "🧑 הודעה " + i)); c.appendChild(el("span", "chip", "🤖 תשובה " + i)); }
-    keepBox.appendChild(c);
-  }
-  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-  $("send").addEventListener("click", function () {
-    if (busy) return; busy = true; $("send").disabled = true;
-    stepEls.forEach(function (r) { r.classList.remove("on"); });
-    stepEls.forEach(function (r, i) {
-      timers.push(setTimeout(function () {
-        stepEls.forEach(function (x, j) { x.classList.toggle("on", j === i); });
-      }, i * 380));
-    });
-    timers.push(setTimeout(function () {
-      sent++; renderBoxes(); busy = false; $("send").disabled = false;
-    }, steps.length * 380));
-  });
-  $("reset").addEventListener("click", function () {
-    clearTimers(); sent = 0; busy = false; $("send").disabled = false;
-    stepEls.forEach(function (r) { r.classList.remove("on"); });
-    renderBoxes();
-  });
-  renderBoxes();
 })();
 
 /* ---------- quiz ---------- */
