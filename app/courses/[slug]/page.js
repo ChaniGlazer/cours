@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
+import { isAdmin } from "@/lib/admin-auth";
 import { getApprovedTestimonials, getUserTestimonial } from "@/lib/testimonials";
 import TestimonialForm from "./TestimonialForm";
 import { CourseBadge } from "@/app/components/ui";
@@ -31,12 +32,14 @@ export default async function CoursePage({ params, searchParams }) {
 
   const user = await getCurrentUser();
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
-  const hasAccess = !course.is_paid || purchased;
+  const ownsCourse = !course.is_paid || purchased;
+  // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום
+  const hasAccess = ownsCourse || (await isAdmin());
 
   const lessons = await getLessonsForCourse(course.id);
   const openSlugs = lessons.filter((_, i) => !(course.is_paid && !hasAccess && i > 0)).map((l) => l.slug);
   const testimonials = await getApprovedTestimonials(course.id);
-  const canReview = Boolean(user) && hasAccess && !course.coming_soon;
+  const canReview = Boolean(user) && ownsCourse && !course.coming_soon;
   const myTestimonial = canReview ? await getUserTestimonial(user.id, course.id) : null;
 
   const jsonLd = {

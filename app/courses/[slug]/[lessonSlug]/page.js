@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
+import { isAdmin } from "@/lib/admin-auth";
 import { parseVideoEmbed } from "@/lib/video";
 import LessonHtmlFrame from "@/app/components/LessonHtmlFrame";
 import LessonLayout from "@/app/components/LessonLayout";
@@ -36,7 +37,8 @@ export default async function LessonPage({ params }) {
 
   const user = await getCurrentUser();
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
-  const hasAccess = !course.is_paid || purchased;
+  // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום
+  const hasAccess = !course.is_paid || purchased || (await isAdmin());
 
   const lessons = await getLessonsForCourse(course.id);
   const idx = lessons.findIndex((l) => l.slug === lessonSlug);
