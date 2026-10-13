@@ -13,7 +13,8 @@ export const metadata = {
 const COVER_SNIPPETS = {
   "python-ai-era": "for i in range(8):\n    learn(i)",
   "vibe-coding": "> build me a quiz game\nok: 3 files created",
-  "ai-app-dev":"app = build(idea)\napp.ship()"
+  "ai-app-dev":"app = build(idea)\napp.ship()",
+  "prompts": "prompt = role + task\nai.ask(prompt)"
 };
 
 function lessonsLabel(n) {
