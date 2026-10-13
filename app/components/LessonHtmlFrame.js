@@ -49,7 +49,7 @@ export default function LessonHtmlFrame({ html }) {
       className="lesson-html-frame"
       scrolling="no"
       style={{ height }}
-      sandbox="allow-scripts allow-downloads allow-popups"
+      sandbox="allow-scripts allow-downloads allow-popups allow-top-navigation-by-user-activation"
     />
   );
 }

@@ -244,6 +244,10 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 
 footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
 [hidden] { display: none !important; }
+
+/* link to the prompts course */
+.plink { color: #E0553F; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.plink:hover { text-decoration-thickness: 2px; }
 </style>
 </head>
 <body>
@@ -499,6 +503,7 @@ response = client.responses.<span class="f">create</span>(
             <p>אפשר לבקש גם קהל וסגנון:</p>
             <div class="code-card"><pre>    input=<span class="s">"<span class="he">הסבר מה זה API לילד בן 8, בעברית</span>"</span>,</pre></div>
             <p style="margin-top:8px; font-size:14.5px;">אותה שאלה, וניסוח אחר לגמרי. בשיעור 4 נלמד לקבוע את הסגנון הזה בצורה מסודרת.</p>
+            <p style="margin-top:8px; font-size:14.5px;">💡 רוצים לדייק את הפרומפטים? ב<a class="plink" href="/courses/prompts" target="_top">קורס פרומפטים</a> שעובדים תמצאו איך.</p>
           </div>
         </div>
       </div>
