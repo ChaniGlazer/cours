@@ -1,0 +1,689 @@
+DELETE FROM lessons WHERE course_id='ai-app-dev' AND slug='lesson-6-web-interface';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('4b63df053d8c36292e14ed373d6f9124', 'ai-app-dev', 'lesson-6-web-interface', 'שיעור 6 - ממשק web', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 6 — ממשק web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-head: #2D2A72;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 62ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); text-align: center; }
+.hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); line-height: 1.12; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin: 20px auto 0; font-size: clamp(18px, 1.6vw, 21px); max-width: 52ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+.scene { direction: ltr; margin: 44px auto 0; max-width: 600px; display: grid; grid-template-columns: 96px 1fr 96px; align-items: center; gap: 8px; background: var(--bg-panel); border-radius: 30px; box-shadow: var(--shadow); border: 1px solid rgba(91,108,255,.08); padding: 28px 20px 20px; }
+.sc-node { text-align: center; }
+.sc-node .big { font-size: 46px; line-height: 1.1; display: block; }
+.sc-node span.lbl { font-size: 13px; font-weight: 700; color: var(--ink-dim); display: block; margin-top: 4px; direction: rtl; }
+.sc-brain { animation: think 6s infinite; }
+@keyframes think { 0%, 42% { transform: scale(1); filter: none; } 50% { transform: scale(1.18); filter: drop-shadow(0 0 14px rgba(139,107,255,.8)); } 58%, 100% { transform: scale(1); filter: none; } }
+.sc-track { position: relative; height: 60px; }
+.sc-track::before { content: ""; position: absolute; inset-inline: 0; top: 50%; border-top: 3px dotted var(--line-strong); }
+.mail { position: absolute; top: 50%; font-size: 30px; margin-top: -20px; opacity: 0; }
+.mail.go { animation: go 6s infinite; }
+.mail.back { animation: back 6s infinite; }
+@keyframes go { 0% { left: 0; opacity: 0; } 4% { opacity: 1; } 40% { left: calc(100% - 30px); opacity: 1; } 46%, 100% { left: calc(100% - 30px); opacity: 0; } }
+@keyframes back { 0%, 54% { left: calc(100% - 30px); opacity: 0; } 58% { opacity: 1; } 94% { left: 0; opacity: 1; } 100% { left: 0; opacity: 0; } }
+.scene-caption { grid-column: 1 / -1; direction: rtl; text-align: center; font-size: 15px; color: var(--ink-dim); margin-top: 14px; }
+
+/* today tiles */
+.tiles3 { margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 700px) { .tiles3 { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: #fff; border-radius: 22px; padding: 22px 20px; box-shadow: var(--shadow-sm); text-align: center; }
+.tile .em { font-size: 36px; line-height: 1.2; }
+.tile h4 { font-size: 17px; margin: 8px 0 4px; }
+.tile p { font-size: 15px; line-height: 1.6; }
+
+/* shared */
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.code-card { background: var(--code-bg); border-radius: 20px; overflow: hidden; margin-top: 16px; box-shadow: 0 14px 34px -16px rgba(34,31,85,.55); }
+.code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 16px; background: var(--code-head); font-size: 13.5px; font-weight: 700; color: #B9B6E8; }
+.copy-btn { font-size: 13px; font-weight: 700; color: #fff; background: rgba(255,255,255,.14); border: none; border-radius: 100px; padding: 4px 14px; transition: background .15s; }
+.copy-btn:hover { background: rgba(255,255,255,.26); }
+.code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 20px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.8; color: var(--code-ink); }
+.code-card pre.he-out { direction: rtl; text-align: right; font-family: var(--sans); font-size: 16.5px; line-height: 1.7; white-space: pre-wrap; }
+.term .out { color: #B9B6E8; }
+.he { direction: rtl; unicode-bidi: isolate; }
+.k { color: #C4A7FF; } .s { color: #9BE8B5; } .f { color: #8FB4FF; } .cm { color: #8C89C4; font-style: italic; }
+
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: var(--shadow-sm); }
+
+/* quest */
+.quest { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 26px 20px; }
+.quest-track { position: relative; height: 54px; margin: 0 22px; }
+.quest-line { position: absolute; top: 34px; inset-inline: 0; height: 6px; border-radius: 6px; background: var(--bg-panel-2); }
+.quest-line i { display: block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, #34D6A0, #1FB985); transition: width .5s ease; }
+.quest-stop { position: absolute; top: 24px; width: 26px; height: 26px; margin-right: -13px; border-radius: 50%; background: #fff; border: 3px solid var(--line-strong); transition: all .3s; }
+.quest-stop.on { background: var(--success); border-color: var(--success); }
+.rocket { position: absolute; top: -2px; font-size: 30px; margin-right: -16px; transition: right .5s ease; }
+.quest-labels { display: flex; justify-content: space-between; margin: 6px 0 0; font-size: 13.5px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+.quest-count { margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+
+.steps { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.step-card { background: #fff; border-radius: var(--radius); padding: 26px 28px; box-shadow: var(--shadow); border: 2px solid transparent; transition: border-color .25s; min-width: 0; }
+.step-card.done { border-color: rgba(31,185,133,.55); }
+.step-head { display: flex; align-items: center; gap: 14px; }
+.step-ico { width: 48px; height: 48px; border-radius: 16px; background: var(--bg-panel-2); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.step-head h3 { font-size: 20px; flex: 1; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); cursor: pointer; flex-shrink: 0; background: var(--bg-panel-2); border-radius: 100px; padding: 5px 14px 5px 12px; }
+.check input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+.step-body { margin-top: 16px; }
+.step-body > p { font-size: 16.5px; }
+.step-body ol.plain { margin: 8px 0 0; padding-inline-start: 24px; color: var(--ink-dim); font-size: 16.5px; }
+.step-body ol.plain li { margin-bottom: 5px; }
+
+/* anatomy */
+.anat { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px 22px; }
+.stations { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-bottom: 20px; }
+@media (max-width: 560px) { .stations { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.st { text-align: center; opacity: .5; transition: opacity .25s, transform .25s; }
+.st .bd { width: 58px; height: 58px; margin: 0 auto 6px; border-radius: 20px; background: var(--bg-panel-2); border: 2px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 26px; transition: all .25s; }
+.st .nl { font-size: 13px; font-weight: 700; color: var(--ink-dim); direction: rtl; }
+.st.on { opacity: 1; transform: translateY(-3px); }
+.st.on .bd { border-color: var(--stc); background: #fff; box-shadow: 0 12px 26px -10px var(--stc); }
+.st.on .nl { color: var(--stc); }
+.cl-list { direction: ltr; display: grid; gap: 5px; }
+.cl { text-align: left; background: var(--code-bg); border: 1px solid transparent; border-inline-start: 5px solid var(--stc); border-radius: 10px; padding: 5px 14px; font-family: var(--mono); font-size: 14px; line-height: 1.7; color: var(--code-ink); white-space: pre; overflow-x: auto; display: flex; gap: 14px; transition: all .15s; }
+.cl .ln { color: #8C89C4; user-select: none; min-width: 1ch; }
+.cl:hover { background: var(--code-head); }
+.cl.on { border-color: var(--stc); background: var(--code-head); box-shadow: 0 10px 22px -12px var(--stc); }
+.anat-text { margin-top: 18px; min-height: 100px; direction: rtl; }
+.anat-text h4 { font-size: 18px; margin-bottom: 4px; }
+.anat-text p { font-size: 16.5px; color: var(--ink); }
+
+/* gifts */
+.present { margin-top: 28px; text-align: center; }
+.present .top { font-size: 16px; color: var(--ink-dim); }
+.present .top code { font-size: 1em; }
+.gifts { margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; text-align: start; align-items: start; }
+@media (max-width: 700px) { .gifts { grid-template-columns: minmax(0, 1fr); } }
+.gift { background: #fff; border: 2px solid transparent; border-radius: 22px; box-shadow: var(--shadow-sm); padding: 0; color: var(--ink); text-align: center; overflow: hidden; display: block; width: 100%; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.gift:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.gift .front { padding: 24px 12px; }
+.gift .front .em { font-size: 42px; line-height: 1.2; display: block; }
+.gift .front b { font-family: var(--display); font-size: 17px; display: block; margin-top: 6px; }
+.gift .front small { font-size: 13.5px; color: var(--ink-faint); display: block; }
+.gift .back { display: none; padding: 16px 18px 20px; text-align: start; font-size: 15.5px; line-height: 1.6; color: var(--ink); border-top: 1px dashed var(--line-strong); }
+.gift.open { border-color: var(--cyan); background: linear-gradient(135deg, var(--cyan-soft), #fff); }
+.gift.open .back { display: block; }
+.gift code { direction: ltr; unicode-bidi: embed; font-family: var(--mono); font-size: .86em; color: #3F4FE0; background: var(--cyan-soft); border-radius: 8px; padding: 2px 8px; }
+.tokbar { direction: ltr; display: flex; height: 28px; border-radius: 10px; overflow: hidden; margin: 10px 0 6px; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: #fff; }
+.tokbar span { display: flex; align-items: center; justify-content: center; }
+.tokbar .tin { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); flex: 17; }
+.tokbar .tout { background: linear-gradient(135deg, #FF7B6B, #FFA06B); flex: 24; }
+
+/* experiments */
+.exps { margin-top: 26px; display: grid; gap: 16px; }
+.exp { background: #fff; border-radius: 24px; box-shadow: var(--shadow-sm); padding: 20px 24px; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start; }
+.exp .em { font-size: 36px; line-height: 1.3; }
+.exp h4 { font-size: 18px; }
+.exp > div > p { font-size: 16.5px; margin-top: 2px; }
+.exp .code-card { margin-top: 12px; }
+.exp .code-card pre { padding: 13px 18px; font-size: 14px; }
+
+/* quiz */
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 16px; transition: all .15s; box-shadow: var(--shadow-sm); }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15.5px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+#quiz-container { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+@media (max-width: 900px) { #quiz-container { grid-template-columns: minmax(0, 1fr); } }
+.quiz-card { background: #fff; border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow); }
+.quiz-card > p { color: var(--ink); font-weight: 700; font-size: 17.5px; margin-bottom: 14px; }
+.score-box { margin-top: 26px; font-family: var(--display); font-weight: 700; font-size: 22px; color: #3F4FE0; }
+
+/* mission */
+.mission { margin-top: 30px; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border-radius: var(--radius); padding: 32px 34px; box-shadow: 0 24px 50px -22px rgba(91,108,255,.75); }
+.mission h3 { font-size: 24px; color: #fff; }
+.mission ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 14px; }
+.mission li label { display: flex; gap: 14px; align-items: flex-start; color: #fff; font-size: 17.5px; cursor: pointer; }
+.mission li input { width: 22px; height: 22px; margin-top: 4px; accent-color: #1FB985; flex-shrink: 0; }
+.mission li input:checked + span { opacity: .65; text-decoration: line-through; }
+.mission li code { background: rgba(255,255,255,.2); color: #fff; padding: 2px 8px; border-radius: 8px; font-size: .86em; direction: ltr; unicode-bidi: embed; }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: #fff; min-height: 26px; }
+.next-card { margin-top: 24px; background: #fff; border-radius: var(--radius); padding: 26px 30px; box-shadow: var(--shadow); }
+.next-card .eyebrow { margin-bottom: 8px; }
+.next-card h3 { font-size: 22px; }
+
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+
+.demo { margin-top: 28px; background: #fff; border-radius: 30px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(91,108,255,.08); }
+.demo-actions { padding: 12px 22px 20px; display: flex; gap: 10px; background: var(--bg-panel-2); }
+.parts { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 560px) { .parts { grid-template-columns: minmax(0, 1fr); } }
+.part { background: #fff; border-radius: 22px; padding: 20px 22px; box-shadow: var(--shadow-sm); }
+.part .em { font-size: 32px; line-height: 1.2; }
+.part h4 { font-size: 17px; margin: 6px 0 2px; }
+.part p { font-size: 15.5px; line-height: 1.6; }
+.part code { font-size: .85em; }
+
+/* ===== lesson 6 ===== */
+.morph { margin-top: 30px; font-size: 38px; letter-spacing: 8px; }
+.plink { color: #E0553F; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.plink:hover { text-decoration-thickness: 2px; }
+.demo { padding: 22px 22px 20px; }
+.flow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.step-line { display: flex; gap: 12px; align-items: center; background: var(--bg-panel-2); border: 2px solid transparent; border-radius: 14px; padding: 8px 16px; font-size: 15.5px; color: var(--ink-dim); transition: all .2s; }
+.step-line .n { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--ink-faint); width: 18px; }
+.step-line.on { border-color: var(--cyan); background: var(--cyan-soft); color: var(--ink); }
+.boxes { margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 560px) { .boxes { grid-template-columns: minmax(0, 1fr); } }
+.mem { border-radius: 20px; padding: 14px 18px; min-height: 120px; border: 1px solid var(--line-strong); }
+.mem h4 { font-size: 15.5px; margin-bottom: 2px; }
+.mem small { display: block; font-size: 12.5px; color: var(--ink-faint); margin-bottom: 8px; }
+.mem.plain { background: var(--danger-soft); border-color: rgba(229,72,106,.3); }
+.mem.plain h4 { color: var(--danger); }
+.mem.keep { background: var(--success-soft); border-color: rgba(31,185,133,.35); }
+.mem.keep h4 { color: #0F8F63; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 13.5px; background: rgba(255,255,255,.75); border-radius: 100px; padding: 2px 12px; color: var(--ink); animation: pop .25s ease; }
+.empty { font-size: 14.5px; color: var(--ink-faint); }
+@keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.demo-actions { margin-top: 18px; padding: 0; background: none; display: flex; gap: 10px; flex-wrap: wrap; }
+.ai-opts { margin-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 560px) { .ai-opts { grid-template-columns: minmax(0, 1fr); } }
+.ai-opt { display: block; text-decoration: none; text-align: center; background: #fff; border: 2px solid transparent; border-radius: 22px; box-shadow: var(--shadow-sm); padding: 16px 10px; color: var(--ink); transition: transform .2s, box-shadow .2s, border-color .2s; }
+.ai-opt:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--cyan); }
+.ai-opt .em { font-size: 30px; line-height: 1.2; display: block; }
+.ai-opt b { font-family: var(--display); font-size: 17px; display: block; margin-top: 4px; }
+.ai-opt small { display: block; direction: ltr; font-size: 13px; color: #3F4FE0; }
+.part h4 code { font-family: var(--mono); color: #3F4FE0; background: var(--cyan-soft); border-radius: 8px; padding: 2px 8px; direction: ltr; unicode-bidi: embed; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">בונים אפליקציית AI עם OpenAI ו-Python</span>
+    <span class="lesson-chip">שיעור 6</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow c" style="text-align:center;">שיעור 6 · ממשק web</div>
+    <h1>מהטרמינל <span class="a1">לאתר אמיתי</span>,<br>בלי לדעת <span class="a2">HTML</span></h1>
+    <p class="hero-sub">הבוט שלנו חכם, אבל הוא חי בחלון שחור. היום נעטוף אותו באתר עם חלון צ''אט, שאפשר להראות לכל אחד.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-30 דקות</span>
+      <span class="pill">🌐 Streamlit</span>
+      <span class="pill">💬 חלון צ''אט</span>
+    </div>
+    <div class="morph" aria-hidden="true">⬛ → 🌐</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= IDEA ================= -->
+  <section id="idea">
+    <div class="wrap">
+      <div class="eyebrow">הרעיון</div>
+      <h2 class="section-title">ספרייה אחת, ויש אתר</h2>
+      <p class="lede"><strong style="color:var(--ink)">Streamlit</strong> היא ספרייה שהופכת סקריפט פייתון לאתר, בלי HTML ובלי עיצוב. כותבים <code>st.title(...)</code> ומופיעה כותרת, כותבים <code>st.chat_input(...)</code> ומופיעה תיבת הקלדה.</p>
+
+      <div class="callout warn">
+        <span class="ico">🔄</span>
+        <p>יש דבר אחד מוזר שחייבים להבין: <strong>בכל לחיצה, Streamlit מריץ את כל הסקריפט מההתחלה</strong>. לכן משתנה רגיל מתאפס, ואם רוצים לזכור משהו צריך מקום מיוחד לזה. נראה:</p>
+      </div>
+
+      <div class="demo">
+        <div class="flow" id="flow"></div>
+        <div class="boxes">
+          <div class="mem plain">
+            <h4>🗑️ משתנה רגיל</h4><small><code style="font-size:.9em">history = []</code></small>
+            <div id="plain-box"></div>
+          </div>
+          <div class="mem keep">
+            <h4>🧠 session_state</h4><small><code style="font-size:.9em">st.session_state.history</code></small>
+            <div id="keep-box"></div>
+          </div>
+        </div>
+        <div class="demo-actions">
+          <button class="btn" id="send" type="button">שלח הודעה ▸</button>
+          <button class="btn ghost" id="reset" type="button">מההתחלה</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUILD ================= -->
+  <section id="build">
+    <div class="wrap">
+      <div class="eyebrow c">בונים</div>
+      <h2 class="section-title">הבוט עולה לאוויר</h2>
+
+      <div class="steps">
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">📦</div><h3>1 · מתקינים Streamlit</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <div class="code-card">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python -m pip install streamlit</pre>
+            </div>
+            <p style="margin-top:12px; font-size:15px;">ההתקנה ארוכה יותר מהקודמות, כי Streamlit מביאה איתה הרבה ספריות. חכו להודעת <code>Successfully installed</code>.</p>
+          </div>
+        </div>
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">✍️</div><h3>2 · קובץ חדש ומדביקים</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>צרו קובץ חדש בשם <code>app.py</code> והדביקו:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>app.py</span><button class="copy-btn" type="button">העתק</button></div>
+<pre><span class="k">import</span> streamlit <span class="k">as</span> st
+<span class="k">from</span> openai <span class="k">import</span> OpenAI
+
+client = <span class="f">OpenAI</span>()
+st.<span class="f">title</span>(<span class="s">"<span class="he">מאמן הכושר שלי 💪</span>"</span>)
+
+<span class="k">if</span> <span class="s">"history"</span> <span class="k">not in</span> st.session_state:
+    st.session_state.history = []
+
+<span class="k">for</span> msg <span class="k">in</span> st.session_state.history:
+    <span class="k">with</span> st.<span class="f">chat_message</span>(msg[<span class="s">"role"</span>]):
+        st.<span class="f">write</span>(msg[<span class="s">"content"</span>])
+
+text = st.<span class="f">chat_input</span>(<span class="s">"<span class="he">כתבו הודעה...</span>"</span>)
+<span class="k">if</span> text:
+    st.session_state.history.<span class="f">append</span>({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: text})
+    <span class="k">with</span> st.<span class="f">chat_message</span>(<span class="s">"user"</span>):
+        st.<span class="f">write</span>(text)
+    response = client.responses.<span class="f">create</span>(
+        model=<span class="s">"gpt-4o-mini"</span>,
+        instructions=<span class="s">"<span class="he">אתה מאמן כושר אנרגטי ומעודד. ענה בעברית, בקצרה.</span>"</span>,
+        input=st.session_state.history,
+    )
+    answer = response.output_text
+    st.session_state.history.<span class="f">append</span>({<span class="s">"role"</span>: <span class="s">"assistant"</span>, <span class="s">"content"</span>: answer})
+    <span class="k">with</span> st.<span class="f">chat_message</span>(<span class="s">"assistant"</span>):
+        st.<span class="f">write</span>(answer)</pre>
+            </div>
+            <div class="callout warn">
+              <span class="ico">⚠️</span>
+              <p>רווחים בתחילת שורה הם חלק מהקוד. אחרי ההדבקה שמרו (<code>Ctrl + S</code>).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">🚀</div><h3>3 · מעלים לאוויר</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <div class="code-card">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python -m streamlit run app.py</pre>
+            </div>
+            <p style="margin-top:12px;">אחרי כמה שניות ייפתח דפדפן עם האתר שלכם (בכתובת <code>localhost:8501</code>). כתבו הודעה ותראו את הבוט עונה בחלון צ''אט.</p>
+            <div class="callout ok">
+              <span class="ico">🎉</span>
+              <p>זה אתר אמיתי, והוא רץ אצלכם במחשב. כדי לעצור אותו חזרו לטרמינל ולחצו <code>Ctrl + C</code>.</p>
+            </div>
+            <div class="callout info">
+              <span class="ico">💡</span>
+              <p>בהרצה הראשונה Streamlit עשוי לבקש כתובת אימייל בטרמינל. אפשר פשוט ללחוץ Enter כדי לדלג.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout info">
+        <span class="ico">🛠️</span>
+        <p>קיבלתם שגיאה? העתיקו אותה ושאלו את ChatGPT מה לתקן (בלי המפתח!).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTS ================= -->
+  <section id="parts">
+    <div class="wrap">
+      <div class="eyebrow v">מבינים</div>
+      <h2 class="section-title">ארבעה חלקים באתר</h2>
+      <div class="parts">
+        <div class="part"><div class="em">🖼️</div><h4><code style="font-size:.85em">st.title</code> ו-<code style="font-size:.85em">st.write</code></h4><p>מציגים כותרת וטקסט על המסך.</p></div>
+        <div class="part"><div class="em">⌨️</div><h4><code style="font-size:.85em">st.chat_input</code></h4><p>תיבת ההקלדה בתחתית. מחזירה את מה שהמשתמש כתב.</p></div>
+        <div class="part"><div class="em">💬</div><h4><code style="font-size:.85em">st.chat_message</code></h4><p>בועת צ''אט, עם תפקיד: <code>user</code> או <code>assistant</code>.</p></div>
+        <div class="part"><div class="em">🧠</div><h4><code style="font-size:.85em">st.session_state</code></h4><p>הזיכרון של האתר. כאן שומרים את <code>history</code> בין ההרצות.</p></div>
+      </div>
+      <div class="callout info">
+        <span class="ico">💡</span>
+        <p>הלולאה <code>while True</code> משיעור 3 נעלמה. Streamlit עצמו חוזר ומריץ את הקוד בכל הודעה חדשה, ולכן לא צריך אותה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AI DESIGN ================= -->
+  <section id="ai-design">
+    <div class="wrap">
+      <div class="eyebrow v">טיפ זהב</div>
+      <h2 class="section-title">ביקשו מ-AI לעצב לכם את האתר</h2>
+      <p class="lede">לא צריך לדעת עיצוב. יש לכם AI, אז תנו לו לעשות את העבודה: אתם מעתיקים אליו את הקוד שעובד, והוא מחזיר גרסה יפה יותר.</p>
+
+      <div class="ai-opts">
+        <a class="ai-opt" href="https://chatgpt.com" target="_blank" rel="noopener"><span class="em">💬</span><b>ChatGPT</b><small>chatgpt.com</small></a>
+        <a class="ai-opt" href="https://claude.ai" target="_blank" rel="noopener"><span class="em">🟠</span><b>Claude</b><small>claude.ai</small></a>
+        <a class="ai-opt" href="https://gemini.google.com" target="_blank" rel="noopener"><span class="em">🔷</span><b>Gemini</b><small>gemini.google.com</small></a>
+      </div>
+      <p style="margin-top:12px; font-size:14.5px;">כל אחד מהם מתאים. בחרו את זה שאתם כבר מכירים, ולרובם יש גרסה חינמית מוגבלת.</p>
+
+      <div class="parts">
+        <div class="part"><div class="em">💾</div><h4>1 · שומרים גיבוי</h4><p>מעתיקים את <code>app.py</code> לקובץ <code>app_backup.py</code>, כדי שתמיד יהיה לאן לחזור.</p></div>
+        <div class="part"><div class="em">📋</div><h4>2 · מעתיקים ל-AI</h4><p>מדביקים באחד מה-AI שלמעלה את ההוראה למטה, ואת הקוד שלכם.</p></div>
+        <div class="part"><div class="em">📥</div><h4>3 · מדביקים ומריצים</h4><p>מחליפים את התוכן של <code>app.py</code> בקוד שחזר, שומרים ומרעננים את האתר.</p></div>
+        <div class="part"><div class="em">🔁</div><h4>4 · משפרים בצעדים קטנים</h4><p>מבקשים שינוי אחד בכל פעם, כמו "תגדיל את הכותרת" או "תשנה את הצבעים".</p></div>
+      </div>
+
+      <div class="code-card">
+        <div class="code-card-head"><span>הוראה מוכנה ל-AI</span><button class="copy-btn" type="button">העתק</button></div>
+<pre class="he-out">הנה קוד של אפליקציית Streamlit שעובדת (בוט צ''אט). שפר את העיצוב שלה: יישור מימין לשמאל לעברית, פלטת צבעים נעימה, כותרת יפה עם אייקון ועיצוב לבועות הצ''אט. אל תשנה את הלוגיקה ואל תוסיף מפתח API לקוד. החזר לי את הקוד המלא בקובץ אחד.
+
+(כאן מדביקים את הקוד של app.py)</pre>
+      </div>
+
+      <div class="callout danger">
+        <span class="ico">🚨</span>
+        <p><strong>גם כאן:</strong> אם ה-AI הוסיף לקוד שורה עם <code>api_key="sk-..."</code>, מחקו אותה. המפתח נשאר במחשב ולא בקוד.</p>
+      </div>
+      <div class="callout info">
+        <span class="ico">💡</span>
+        <p>אם משהו נשבר אחרי השינוי, הדביקו ל-AI את השגיאה והוא יתקן. ואם הכול התקלקל, חוזרים ל-<code>app_backup.py</code>.</p>
+      </div>
+      <div class="callout ok">
+        <span class="ico">📚</span>
+        <p><strong>רוצים בקשות מדויקות יותר ל-AI?</strong> יש באתר <a class="plink" href="/courses/prompts" target="_top">קורס פרומפטים</a> נפרד, שמוקדש לנושא הזה בלבד.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIMENTS ================= -->
+  <section id="experiments">
+    <div class="wrap">
+      <div class="eyebrow c">משחקים</div>
+      <h2 class="section-title">שני ניסויים</h2>
+      <div class="exps">
+        <div class="exp">
+          <div class="em">🎨</div>
+          <div>
+            <h4>שנו את הכותרת והדמות</h4>
+            <p>שנו את <code>st.title</code> ואת ההנחיה בתוך <code>instructions</code> לדמות אחרת (שף, בלש). שמרו, וב-Streamlit לחצו <strong>Rerun</strong> או רענו את הדף.</p>
+          </div>
+        </div>
+        <div class="exp">
+          <div class="em">↔️</div>
+          <div>
+            <h4>עברית מימין לשמאל</h4>
+            <p>הוסיפו מתחת ל-<code>st.title</code> שורה שמיישרת את הדף לימין, ובדקו איך זה נראה:</p>
+            <div class="code-card"><pre>st.<span class="f">markdown</span>(<span class="s">"&lt;style&gt;.stApp {direction: rtl;}&lt;/style&gt;"</span>, unsafe_allow_html=<span class="k">True</span>)</pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="wrap">
+      <div class="eyebrow">בדיקה מהירה</div>
+      <h2 class="section-title">שלוש שאלות</h2>
+      <div id="quiz-container"></div>
+      <div class="score-box" id="score-box"></div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION ================= -->
+  <section id="mission">
+    <div class="wrap">
+      <div class="eyebrow c">המשימה שלכם</div>
+      <h2 class="section-title">לפני שהשיעור הבא מתחיל</h2>
+
+      <div class="mission">
+        <h3>🎯 ארבע משימות</h3>
+        <ul id="mission-list">
+          <li><label><input type="checkbox"><span>הרצתי את <code>app.py</code> ושוחחתי עם הבוט בדפדפן</span></label></li>
+          <li><label><input type="checkbox"><span>החלפתי את הדמות והכותרת וראיתי את השינוי באתר</span></label></li>
+          <li><label><input type="checkbox"><span>ביקשתי מ-AI לשפר את העיצוב, והאתר נראה טוב יותר</span></label></li>
+          <li><label><input type="checkbox"><span>הראיתי את האתר לאדם אחד בבית, כדי לראות את התגובה 🙂</span></label></li>
+        </ul>
+        <div class="mission-done" id="mission-done"></div>
+      </div>
+
+      <div class="next-card">
+        <div class="eyebrow">בשיעור הבא · שיעור 7</div>
+        <h3>כלים</h3>
+        <p style="margin-top:6px;">עד עכשיו המודל רק דיבר. בשיעור הבא נלמד אותו להפעיל פונקציות שאנחנו כותבים, ונהפוך אותו מבוט שמדבר לבוט שעושה.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">בונים אפליקציית AI עם OpenAI ו-Python · שיעור 6</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- copy buttons ---------- */
+(function () {
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.closest(".code-card").querySelector("pre").textContent.trim();
+      var original = btn.textContent;
+      function done(ok) {
+        btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
+        setTimeout(function () { btn.textContent = original; }, 1600);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); }
+      catch (e) { done(false); }
+    });
+  });
+})();
+
+/* ---------- step checklist ---------- */
+(function () {
+  document.querySelectorAll(".step-check").forEach(function (c) {
+    c.addEventListener("change", function () { c.closest(".step-card").classList.toggle("done", c.checked); });
+  });
+})();
+
+/* ---------- rerun demo ---------- */
+(function () {
+  var steps = ["הסקריפט מתחיל מההתחלה", "טוענים את ההיסטוריה", "מציגים את ההודעות הקודמות", "מחכים להודעה חדשה", "שולחים למודל ומציגים תשובה"];
+  var stepEls = [];
+  var flow = $("flow"), plainBox = $("plain-box"), keepBox = $("keep-box");
+  var sent = 0, busy = false, timers = [];
+  steps.forEach(function (s, i) {
+    var r = el("div", "step-line"); r.appendChild(el("span", "n", String(i + 1))); r.appendChild(el("span", "", s));
+    flow.appendChild(r); stepEls.push(r);
+  });
+  function renderBoxes() {
+    plainBox.innerHTML = ""; keepBox.innerHTML = "";
+    plainBox.appendChild(el("div", "empty", sent ? "ריק, התאפס בכל הרצה 😬" : "ריק"));
+    if (!sent) { keepBox.appendChild(el("div", "empty", "ריק")); return; }
+    var c = el("div", "chips");
+    for (var i = 1; i <= sent; i++) { c.appendChild(el("span", "chip", "🧑 הודעה " + i)); c.appendChild(el("span", "chip", "🤖 תשובה " + i)); }
+    keepBox.appendChild(c);
+  }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  $("send").addEventListener("click", function () {
+    if (busy) return; busy = true; $("send").disabled = true;
+    stepEls.forEach(function (r) { r.classList.remove("on"); });
+    stepEls.forEach(function (r, i) {
+      timers.push(setTimeout(function () {
+        stepEls.forEach(function (x, j) { x.classList.toggle("on", j === i); });
+      }, i * 380));
+    });
+    timers.push(setTimeout(function () {
+      sent++; renderBoxes(); busy = false; $("send").disabled = false;
+    }, steps.length * 380));
+  });
+  $("reset").addEventListener("click", function () {
+    clearTimers(); sent = 0; busy = false; $("send").disabled = false;
+    stepEls.forEach(function (r) { r.classList.remove("on"); });
+    renderBoxes();
+  });
+  renderBoxes();
+})();
+
+/* ---------- quiz ---------- */
+(function () {
+  var qs = [
+    { q: "מה עושה Streamlit?", opts: ["הופך סקריפט פייתון לאתר, בלי HTML ובלי עיצוב", "מחליף את OpenAI", "משפר את התשובות של המודל"], ok: 0, why: "Streamlit עוטפת את הקוד שלנו בממשק web: כותרות, תיבות הקלדה, בועות צ''אט ועוד." },
+    { q: "למה צריך st.session_state?", opts: ["כי Streamlit מריץ את כל הסקריפט מחדש בכל לחיצה, ומשתנה רגיל מתאפס", "כדי לחבר ל-OpenAI", "כדי להסתיר את המפתח"], ok: 0, why: "כל מה שצריך לזכור בין הרצות, כמו היסטוריית השיחה, נשמר ב-session_state." },
+    { q: "איך עוצרים את האתר שרץ במחשב?", opts: ["סוגרים את הדפדפן", "חוזרים לטרמינל ולוחצים Ctrl + C", "מוחקים את הקובץ app.py"], ok: 1, why: "האתר רץ מתוך הטרמינל. סגירת הדפדפן לא עוצרת אותו, ו-Ctrl + C עוצר." }
+  ];
+  var host = $("quiz-container");
+  var answered = 0, right = 0;
+  qs.forEach(function (item, i) {
+    var card = el("div", "quiz-card");
+    card.appendChild(el("p", "", (i + 1) + ". " + item.q));
+    var choices = el("div", "choices"); var fb = el("div", "fb");
+    card.appendChild(choices); card.appendChild(fb);
+    item.opts.forEach(function (o, j) {
+      var b = el("button", "choice", o); b.type = "button";
+      b.addEventListener("click", function () {
+        var all = choices.querySelectorAll(".choice");
+        all.forEach(function (x) { x.disabled = true; });
+        answered++;
+        if (j === item.ok) { right++; b.classList.add("right"); fb.textContent = "נכון! " + item.why; fb.className = "fb correct"; }
+        else { b.classList.add("wrong"); all[item.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + item.why; fb.className = "fb wrong"; }
+        if (answered === qs.length) {
+          $("score-box").textContent = right === qs.length ? "🏆 " + right + " מתוך " + qs.length + ". מושלם!" : right + " מתוך " + qs.length + ". כדאי לחזור לחלקים שלא היו ברורים.";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- mission ---------- */
+(function () {
+  var boxes = document.querySelectorAll("#mission-list input");
+  function upd() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 7, ונלמד את הבוט להפעיל כלים." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+})();
+</script>
+
+</body>
+</html>
+', 6, '2026-10-13T00:00:00.000Z');
