@@ -1,0 +1,553 @@
+DELETE FROM lessons WHERE course_id='ai-app-dev' AND slug='lesson-4-persona';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('e528c24e95c54c41705e657fe2785591', 'ai-app-dev', 'lesson-4-persona', 'שיעור 4 - אישיות והנחיות', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 4 — אישיות והנחיות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07191B;
+    --bg-panel: #0E2A2D;
+    --bg-panel-2: #14393D;
+    --ink: #F2FBF8;
+    --ink-dim: #A8C7C3;
+    --ink-faint: #6B8F8C;
+    --cyan: #FFB547;
+    --cyan-soft: #3B2B0E;
+    --violet: #5EEAD4;
+    --violet-soft: #0F3A36;
+    --success: #9BE564;
+    --success-soft: #1E3A12;
+    --danger: #FF6B6B;
+    --danger-soft: #3E1D22;
+    --warn: #FF9F6B;
+    --warn-soft: #3F2316;
+    --line: rgba(242,251,248,0.10);
+    --line-strong: rgba(242,251,248,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif;
+    --sans: "Assistant", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(700px 420px at 12% -5%, rgba(255,181,71,0.12), transparent 60%),
+      radial-gradient(700px 420px at 100% 18%, rgba(94,234,212,0.12), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--cyan); color: #1c1203; }
+
+  .wrap { max-width: 740px; margin: 0 auto; padding: 0 22px; }
+  p { color: var(--ink-dim); margin: 0; }
+  p strong, li strong { color: var(--ink); }
+  h1, h2, h3, h4 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  code { font-family: var(--mono); }
+  p code, li code {
+    font-size: 0.88em; background: var(--bg-panel-2); border: 1px solid var(--line);
+    border-radius: 6px; padding: 1px 7px; color: var(--cyan); direction: ltr; unicode-bidi: embed;
+  }
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  section { padding: 60px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; direction: rtl; }
+  .eyebrow.c { color: var(--cyan); }
+  .eyebrow.v { color: var(--violet); }
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); line-height: 1.25; }
+  .lede { font-size: 18px; margin-top: 14px; }
+
+  .scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+  .scroll-progress i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+  .topbar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 12px 0; }
+  .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; }
+  .topbar .course { font-family: var(--display); font-weight: 700; color: var(--ink); }
+  .topbar .lesson-chip { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); border: 1px solid var(--cyan); border-radius: 100px; padding: 3px 12px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 52px; text-align: center; }
+  .hero h1 { font-size: clamp(2.1rem, 7vw, 3.3rem); line-height: 1.18; }
+  .hero h1 .a1 { color: var(--cyan); }
+  .hero h1 .a2 { color: var(--violet); }
+  .hero-sub { max-width: 46ch; margin: 18px auto 0; font-size: 18.5px; }
+  .time-row { margin-top: 22px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .pill { font-size: 13.5px; font-weight: 600; color: var(--ink-dim); border: 1px solid var(--line-strong); border-radius: 100px; padding: 4px 14px; }
+  .masks { margin-top: 30px; font-size: 40px; letter-spacing: 10px; }
+
+  /* ---------- shared bits ---------- */
+  .callout { margin-top: 20px; border-radius: 14px; padding: 14px 18px; font-size: 15.5px; display: flex; gap: 12px; align-items: flex-start; border: 1px solid; }
+  .callout .ico { font-size: 20px; line-height: 1.5; }
+  .callout p { color: var(--ink); }
+  .callout.warn { background: var(--warn-soft); border-color: rgba(255,159,107,.45); }
+  .callout.danger { background: var(--danger-soft); border-color: rgba(255,107,107,.5); }
+  .callout.info { background: var(--cyan-soft); border-color: rgba(255,181,71,.4); }
+  .callout.ok { background: var(--success-soft); border-color: rgba(155,229,100,.45); }
+
+  .code-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 18px; }
+  .code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 13.5px; font-weight: 700; color: var(--ink-faint); }
+  .copy-btn { font-size: 12.5px; font-weight: 700; color: var(--cyan); background: transparent; border: 1px solid var(--line-strong); border-radius: 100px; padding: 4px 12px; }
+  .copy-btn:hover { border-color: var(--cyan); }
+  .code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 18px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.75; color: #E0F5F0; }
+  .he { direction: rtl; unicode-bidi: isolate; }
+  .hl-line { display: inline-block; background: rgba(255,181,71,.16); border-radius: 4px; margin: 0 -4px; padding: 0 4px; }
+  .k { color: #FF9F6B; } .s { color: var(--success); } .f { color: var(--violet); } .cm { color: var(--ink-faint); }
+
+  .btn { font-family: var(--display); font-weight: 800; font-size: 15px; color: #1c1203; background: var(--cyan); border: none; border-radius: 100px; padding: 10px 22px; }
+
+  /* ---------- persona demo ---------- */
+  .demo { margin-top: 28px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .personas { display: flex; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .persona-btn { font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 100px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink-dim); }
+  .persona-btn.active { background: var(--violet-soft); color: var(--violet); border-color: var(--violet); }
+  .demo-body { padding: 18px 16px 20px; display: grid; gap: 12px; }
+  .note { background: #3B2F0E; border: 1px solid rgba(255,181,71,.45); border-radius: 12px; padding: 10px 14px; font-size: 15px; color: var(--ink); }
+  .note b { display: block; font-size: 12.5px; color: var(--cyan); margin-bottom: 2px; font-family: var(--display); }
+  .bubble { max-width: 90%; padding: 9px 14px; border-radius: 14px; font-size: 15.5px; line-height: 1.55; }
+  .bubble.user { align-self: flex-start; background: var(--violet-soft); color: var(--ink); border-end-start-radius: 4px; justify-self: start; }
+  .bubble.bot { background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 4px; justify-self: end; animation: pop .3s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .demo-note { padding: 0 16px 14px; font-size: 13px; color: var(--ink-faint); }
+
+  /* ---------- steps ---------- */
+  .steps { margin-top: 24px; display: grid; gap: 14px; }
+  .step-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; transition: border-color .2s; }
+  .step-card.done { border-color: var(--success); }
+  .step-head { display: flex; align-items: center; gap: 12px; }
+  .step-ico { width: 44px; height: 44px; border-radius: 14px; background: var(--bg-panel-2); display: flex; align-items: center; justify-content: center; font-size: 23px; flex-shrink: 0; }
+  .step-head h3 { font-size: 17.5px; flex: 1; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--ink-dim); cursor: pointer; flex-shrink: 0; }
+  .check input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+  .step-body { margin-top: 12px; }
+  .step-body > p { font-size: 15.5px; }
+
+  /* ---------- recipe cards ---------- */
+  .tiles3 { margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .tiles3 { grid-template-columns: 1fr; } }
+  .tile { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; text-align: center; }
+  .tile .em { font-size: 32px; line-height: 1.2; }
+  .tile h4 { font-size: 16px; margin: 4px 0 2px; }
+  .tile p { font-size: 14.5px; }
+  .tile .eg { margin-top: 6px; font-size: 13.5px; color: var(--cyan); }
+
+  /* ---------- temperature ---------- */
+  .temp { margin-top: 26px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px; }
+  .temp-q { text-align: center; font-size: 15px; color: var(--ink-dim); }
+  .temp-q b { color: var(--ink); }
+  .thermo { direction: ltr; margin: 18px 0 6px; display: grid; grid-template-columns: 34px 1fr 34px; gap: 10px; align-items: center; font-size: 26px; text-align: center; }
+  .thermo input { width: 100%; height: 12px; border-radius: 8px; -webkit-appearance: none; appearance: none; background: linear-gradient(90deg, #5EC8FF, #FFB547, #FF5E5E); outline-offset: 6px; }
+  .thermo input::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #F2FBF8; border: 3px solid #07191B; cursor: pointer; }
+  .thermo input::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #F2FBF8; border: 3px solid #07191B; cursor: pointer; }
+  .temp-val { text-align: center; font-family: var(--mono); font-size: 15px; color: var(--cyan); direction: ltr; }
+  .runs { margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .run { background: var(--bg-panel-2); border-radius: 12px; padding: 10px 6px; text-align: center; }
+  .run small { display: block; font-size: 12px; color: var(--ink-faint); }
+  .run b { font-family: var(--display); font-size: 17px; color: var(--ink); }
+  .temp-desc { margin-top: 14px; text-align: center; font-size: 15.5px; color: var(--ink); min-height: 48px; }
+  .temp-note { margin-top: 8px; font-size: 13px; color: var(--ink-faint); text-align: center; }
+
+  /* ---------- experiments ---------- */
+  .exps { margin-top: 24px; display: grid; gap: 12px; }
+  .exp { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .exp .em { font-size: 30px; line-height: 1.3; }
+  .exp h4 { font-size: 16px; }
+  .exp p { font-size: 15px; margin-top: 2px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-card { margin-top: 16px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .quiz-card > p { color: var(--ink); font-weight: 600; font-size: 16px; margin-bottom: 12px; }
+  .choices { display: grid; gap: 8px; }
+  .choice { text-align: start; background: var(--bg-panel-2); border: 1px solid var(--line-strong); color: var(--ink); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+  .choice:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .choice.right { border-color: var(--success); background: var(--success-soft); }
+  .choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+  .choice:disabled { cursor: default; }
+  .fb { margin-top: 10px; font-size: 14.5px; font-weight: 700; min-height: 22px; }
+  .fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+  .score-box { margin-top: 22px; text-align: center; font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--cyan); }
+
+  /* ---------- mission ---------- */
+  .mission { margin-top: 24px; background: linear-gradient(135deg, var(--cyan-soft), var(--violet-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px 20px; }
+  .mission h3 { font-size: 20px; }
+  .mission ul { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+  .mission li label { display: flex; gap: 12px; align-items: flex-start; color: var(--ink); font-size: 16px; cursor: pointer; }
+  .mission li input { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--success); flex-shrink: 0; }
+  .mission li input:checked + span { color: var(--ink-faint); text-decoration: line-through; }
+  .mission-done { margin-top: 16px; font-weight: 800; font-family: var(--display); color: var(--success); min-height: 26px; }
+  .next-card { margin-top: 26px; border: 1px dashed var(--line-strong); border-radius: var(--radius); padding: 18px 24px; }
+  .next-card .eyebrow { margin-bottom: 4px; }
+  .next-card h3 { font-size: 19px; }
+
+  footer { padding: 44px 0 70px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">בונים אפליקציית AI עם OpenAI ו-Python</span>
+    <span class="lesson-chip">שיעור 4</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow c" style="text-align:center;">שיעור 4 · אישיות והנחיות</div>
+    <h1>הבוט שלכם יכול להיות <span class="a1">כל מי</span><br>שתרצו, ו<span class="a2">גם לשלוט</span> בו</h1>
+    <p class="hero-sub">בשיעור 3 הבוט למד לזכור. היום נלמד אותו מי הוא, ואיך לשלוט בכמה הוא יצירתי.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-25 דקות</span>
+      <span class="pill">🎭 אישיות</span>
+      <span class="pill">🌡️ יצירתיות</span>
+    </div>
+    <div class="masks" aria-hidden="true">💪 👨‍🍳 🕵️ 👽</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= PERSONA ================= -->
+  <section id="persona">
+    <div class="wrap">
+      <div class="eyebrow">הרעיון</div>
+      <h2 class="section-title">פתק אחד משנה את הבוט כולו</h2>
+      <p class="lede">לפני השיחה אפשר לתת למודל <strong style="color:var(--ink)">הנחיות</strong>: פתק קצר שאומר לו מי הוא ואיך לענות. אותה שאלה, והנחיות שונות. בחרו דמות:</p>
+
+      <div class="demo">
+        <div class="personas" id="personas"></div>
+        <div class="demo-body">
+          <div class="note" id="note"></div>
+          <div class="bubble user">מה כדאי לי לאכול לארוחת בוקר?</div>
+          <div class="bubble bot" id="answer"></div>
+        </div>
+        <div class="demo-note">* המחשה בלבד. התשובות האמיתיות יהיו קצת שונות.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUILD ================= -->
+  <section id="build">
+    <div class="wrap">
+      <div class="eyebrow c">בונים</div>
+      <h2 class="section-title">שורה אחת, ואישיות חדשה</h2>
+
+      <div class="steps">
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">✍️</div><h3>1 · מוסיפים הנחיות וטמפרטורה</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>פתחו את <code>chat.py</code> משיעור 3 והחליפו את כל התוכן בקוד הבא. השורות החדשות מסומנות, והן בתוך הפנייה למודל, עם שמונה רווחים בהתחלה:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>chat.py</span><button class="copy-btn" type="button">העתק</button></div>
+<pre><span class="k">from</span> openai <span class="k">import</span> OpenAI
+client = <span class="f">OpenAI</span>()
+history = []
+<span class="k">while</span> <span class="k">True</span>:
+    text = <span class="f">input</span>(<span class="s">"You: "</span>)
+    <span class="k">if</span> text == <span class="s">"exit"</span>:
+        <span class="k">break</span>
+    history.<span class="f">append</span>({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: text})
+    response = client.responses.<span class="f">create</span>(
+        model=<span class="s">"gpt-4o-mini"</span>,
+<span class="hl-line">        instructions=<span class="s">"<span class="he">אתה מאמן כושר אנרגטי ומעודד. ענה בעברית, בקצרה.</span>"</span>,</span>
+<span class="hl-line">        temperature=<span class="s">0.7</span>,</span>
+        input=history,
+    )
+    answer = response.output_text
+    history.<span class="f">append</span>({<span class="s">"role"</span>: <span class="s">"assistant"</span>, <span class="s">"content"</span>: answer})
+    <span class="f">print</span>(<span class="s">"Bot:"</span>, answer)</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">🎭</div><h3>2 · מריצים ומחליפים דמות</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <div class="code-card">
+              <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python chat.py</pre>
+            </div>
+            <p style="margin-top:12px;">שאלו משהו ושימו לב איך הוא עונה. אחר כך עצרו (<code>exit</code>), החליפו את הטקסט שבתוך <code>instructions</code> לדמות אחרת, והריצו שוב.</p>
+            <div class="callout ok">
+              <span class="ico">🎉</span>
+              <p>ההנחיות לא נשמרות ברשימה <code>history</code>. הן נשלחות מחדש בכל פנייה, ולכן הבוט לא "שוכח" מי הוא.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout info">
+        <span class="ico">💡</span>
+        <p>קיבלתם שגיאה? העתיקו אותה ושאלו את ChatGPT מה לתקן (בלי המפתח!).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECIPE ================= -->
+  <section id="recipe">
+    <div class="wrap">
+      <div class="eyebrow v">איך כותבים</div>
+      <h2 class="section-title">שלושה דברים בהנחיה טובה</h2>
+      <div class="tiles3">
+        <div class="tile"><div class="em">🎭</div><h4>מי אתה</h4><p>התפקיד והאישיות</p><div class="eg">"אתה מאמן כושר"</div></div>
+        <div class="tile"><div class="em">✏️</div><h4>איך לענות</h4><p>סגנון, אורך ושפה</p><div class="eg">"בקצרה, בעברית"</div></div>
+        <div class="tile"><div class="em">🚫</div><h4>מה לא</h4><p>גבולות ברורים</p><div class="eg">"אל תמציא עובדות"</div></div>
+      </div>
+      <div class="callout info">
+        <span class="ico">💡</span>
+        <p>הנחיה ברורה וקצרה עובדת יותר טוב מהנחיה ארוכה ומבולבלת.</p>
+      </div>
+      <div class="callout ok">
+        <span class="ico">📚</span>
+        <p><strong>רוצים ללמוד לכתוב פרומפטים בצורה מדויקת, טובה ומקצועית יותר?</strong> יש באתר קורס פרומפטים נפרד, שמוקדש לנושא הזה בלבד.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TEMPERATURE ================= -->
+  <section id="temperature">
+    <div class="wrap">
+      <div class="eyebrow c">יצירתיות</div>
+      <h2 class="section-title">מד חום: כמה הוא מעז?</h2>
+      <p class="lede">זוכרים שכל תשובה יוצאת קצת שונה? הפרמטר <code>temperature</code> שולט בזה. הזיזו את המחוג:</p>
+
+      <div class="temp">
+        <div class="temp-q">השאלה: <b>"תן לי שם אחד לחתול"</b>, שלוש הרצות</div>
+        <div class="thermo">
+          <span>🧊</span>
+          <input id="temp-range" type="range" min="0" max="20" step="1" value="7" aria-label="temperature">
+          <span>🔥</span>
+        </div>
+        <div class="temp-val" id="temp-val"></div>
+        <div class="runs" id="runs"></div>
+        <div class="temp-desc" id="temp-desc"></div>
+        <div class="temp-note">* המחשה מפושטת. הערכים נעים בין 0 ל-2.</div>
+      </div>
+
+      <div class="callout warn">
+        <span class="ico">⚠️</span>
+        <p>חלק מהמודלים החדשים לא תומכים בפרמטר <code>temperature</code>, ואז תקבלו שגיאה. אם זה קרה, פשוט מחקו את השורה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIMENTS ================= -->
+  <section id="experiments">
+    <div class="wrap">
+      <div class="eyebrow v">משחקים</div>
+      <h2 class="section-title">שני ניסויים</h2>
+      <div class="exps">
+        <div class="exp">
+          <div class="em">🏴‍☠️</div>
+          <div>
+            <h4>המציאו דמות</h4>
+            <p>כתבו ב-<code>instructions</code> דמות משלכם: שף, פיראט, סבתא, בלש. שאלו אותה את אותה שאלה כמה פעמים.</p>
+          </div>
+        </div>
+        <div class="exp">
+          <div class="em">🌡️</div>
+          <div>
+            <h4>קרח מול אש</h4>
+            <p>שאלו "תן לי שם אחד לחתול" עם <code>temperature=0</code>, ואז עם <code>temperature=1.8</code>. הריצו כל אחד כמה פעמים והשוו.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="wrap">
+      <div class="eyebrow">בדיקה מהירה</div>
+      <h2 class="section-title">שלוש שאלות</h2>
+      <div id="quiz-container"></div>
+      <div class="score-box" id="score-box"></div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION ================= -->
+  <section id="mission">
+    <div class="wrap">
+      <div class="eyebrow c">המשימה שלכם</div>
+      <h2 class="section-title">לפני שהשיעור הבא מתחיל</h2>
+
+      <div class="mission">
+        <h3>🎯 שלוש משימות</h3>
+        <ul id="mission-list">
+          <li><label><input type="checkbox"><span>הרצתי את <code>chat.py</code> והבוט ענה בדמות שהגדרתי</span></label></li>
+          <li><label><input type="checkbox"><span>המצאתי דמות חדשה והשוויתי את הסגנון</span></label></li>
+          <li><label><input type="checkbox"><span>ניסיתי <code>temperature</code> נמוך וגבוה וראיתי את ההבדל</span></label></li>
+        </ul>
+        <div class="mission-done" id="mission-done"></div>
+      </div>
+
+      <div class="next-card">
+        <div class="eyebrow">בשיעור הבא · שיעור 5</div>
+        <h3>פלט מסודר</h3>
+        <p style="margin-top:6px;">עד עכשיו הבוט החזיר טקסט חופשי. בשיעור הבא נבקש ממנו תשובה במבנה קבוע (JSON), כדי שהקוד שלנו יוכל להשתמש בה.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">בונים אפליקציית AI עם OpenAI ו-Python · שיעור 4</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- copy buttons ---------- */
+(function () {
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.closest(".code-card").querySelector("pre").textContent.trim();
+      var original = btn.textContent;
+      function done(ok) {
+        btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
+        setTimeout(function () { btn.textContent = original; }, 1600);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); }
+      catch (e) { done(false); }
+    });
+  });
+})();
+
+/* ---------- step checklist ---------- */
+(function () {
+  document.querySelectorAll(".step-check").forEach(function (c) {
+    c.addEventListener("change", function () { c.closest(".step-card").classList.toggle("done", c.checked); });
+  });
+})();
+
+/* ---------- persona demo ---------- */
+(function () {
+  var people = [
+    { e: "💪", n: "מאמן כושר", i: "אתה מאמן כושר אנרגטי ומעודד. ענה בעברית, בקצרה, עם דגש על אנרגיה ובריאות.", a: "קדימה, אלוף! 💪 ביצים, פרוסת לחם מלא וקערת פירות. חלבון ופחמימות לבוקר חזק. ואחרי זה? הולכים להזיע!" },
+    { e: "👨‍🍳", n: "שף איטלקי", i: "אתה שף איטלקי נלהב ודרמטי. ענה בעברית, בקצרה, עם קצת איטלקית.", a: "מאמה מיה! 🍝 קפוצ''ינו וקורנטו חמאתי, כך מתחילים יום! ואם יש זמן, ביצה עם עגבניות ובזיליקום. בון אפטיטו!" },
+    { e: "🕵️", n: "בלש", i: "אתה בלש ממולח. ענה בעברית, בקצרה, כאילו אתה חוקר תעלומה.", a: "אה, תעלומת ארוחת הבוקר... 🕵️ הרמזים ברורים: ביצה, קפה וטוסט. המסקנה אחת: אל תדלג על הארוחה הזו, חבר." },
+    { e: "👽", n: "חייזר", i: "אתה חייזר שהגיע לכדור הארץ הבוקר. ענה בעברית, בקצרה, ותהה על מנהגי בני האדם.", a: "מעניין! 👽 אצלנו אוכלים אור כוכבים. אצלכם, כך הבנתי, מקובל ביצים ולחם. נסה, ותספר לי אם זה מתאים גם לגוף חייזרי." }
+  ];
+  var box = $("personas"), note = $("note"), ans = $("answer");
+  var btns = [];
+  function pick(k) {
+    var p = people[k];
+    btns.forEach(function (b, j) { b.classList.toggle("active", j === k); });
+    note.innerHTML = "";
+    note.appendChild(el("b", "", "📝 ההנחיה (instructions)"));
+    note.appendChild(document.createTextNode(p.i));
+    var a = ans.cloneNode(false); a.textContent = p.a;
+    ans.parentNode.replaceChild(a, ans); ans = a;
+  }
+  people.forEach(function (p, k) {
+    var b = el("button", "persona-btn", p.e + " " + p.n); b.type = "button";
+    b.addEventListener("click", function () { pick(k); });
+    box.appendChild(b); btns.push(b);
+  });
+  pick(0);
+})();
+
+/* ---------- temperature ---------- */
+(function () {
+  var pools = [
+    { max: 3, names: ["מיצי", "מיצי", "מיצי"], d: "כמעט אותה תשובה בכל פעם. מתאים כשצריך דיוק ויציבות." },
+    { max: 10, names: ["מיצי", "פלפל", "מיצי"], d: "קצת גיוון, אבל עדיין צפוי. זו ברירת המחדל הרגילה." },
+    { max: 15, names: ["זיגזג", "נוגט", "פרופסור"], d: "יותר הפתעות ורעיונות. מתאים לשמות, סיפורים ופיתוח רעיונות." },
+    { max: 20, names: ["בלובלוב", "קרקרון", "זאזא"], d: "פרוע ויצירתי. לפעמים יוצא משהו מוזר, ולפעמים אפילו חסר היגיון." }
+  ];
+  var range = $("temp-range");
+  function upd() {
+    var v = parseInt(range.value, 10);
+    var p = pools.filter(function (x) { return v <= x.max; })[0];
+    $("temp-val").textContent = "temperature = " + (v / 10).toFixed(1);
+    var runs = $("runs"); runs.innerHTML = "";
+    p.names.forEach(function (n, i) {
+      var r = el("div", "run"); r.appendChild(el("small", "", "הרצה " + (i + 1))); r.appendChild(el("b", "", n));
+      runs.appendChild(r);
+    });
+    $("temp-desc").textContent = p.d;
+  }
+  range.addEventListener("input", upd);
+  upd();
+})();
+
+/* ---------- quiz ---------- */
+(function () {
+  var qs = [
+    { q: "איך נותנים לבוט אישיות?", opts: ["כותבים בפרמטר instructions מי הוא ואיך לענות", "מתקינים ספרייה מיוחדת", "מוחקים את ההיסטוריה"], ok: 0, why: "ההנחיות הן פתק קצר שנשלח למודל בכל פנייה ומגדיר את התפקיד והסגנון." },
+    { q: "מה עושה temperature נמוך (קרוב ל-0)?", opts: ["תשובות יציבות וצפויות, כמעט אותו דבר בכל פעם", "תשובות פרועות ויצירתיות", "תשובות קצרות יותר"], ok: 0, why: "טמפרטורה נמוכה אומרת פחות הפתעות. טמפרטורה גבוהה אומרת יותר יצירתיות." },
+    { q: "אתם בונים בוט שנותן רעיונות יצירתיים לשמות. איזו טמפרטורה מתאימה?", opts: ["נמוכה, כמו 0", "גבוהה יחסית, כמו 1.3", "אין קשר"], ok: 1, why: "כשרוצים גיוון ורעיונות חדשים, טמפרטורה גבוהה יותר עובדת טוב. לתשובות עובדתיות עדיף נמוך." }
+  ];
+  var host = $("quiz-container");
+  var answered = 0, right = 0;
+  qs.forEach(function (item, i) {
+    var card = el("div", "quiz-card");
+    card.appendChild(el("p", "", (i + 1) + ". " + item.q));
+    var choices = el("div", "choices"); var fb = el("div", "fb");
+    card.appendChild(choices); card.appendChild(fb);
+    item.opts.forEach(function (o, j) {
+      var b = el("button", "choice", o); b.type = "button";
+      b.addEventListener("click", function () {
+        var all = choices.querySelectorAll(".choice");
+        all.forEach(function (x) { x.disabled = true; });
+        answered++;
+        if (j === item.ok) { right++; b.classList.add("right"); fb.textContent = "נכון! " + item.why; fb.className = "fb correct"; }
+        else { b.classList.add("wrong"); all[item.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + item.why; fb.className = "fb wrong"; }
+        if (answered === qs.length) {
+          $("score-box").textContent = right === qs.length ? "🏆 " + right + " מתוך " + qs.length + ". מושלם!" : right + " מתוך " + qs.length + ". כדאי לחזור לחלקים שלא היו ברורים.";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- mission ---------- */
+(function () {
+  var boxes = document.querySelectorAll("#mission-list input");
+  function upd() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 5, ונלמד את הבוט לענות במבנה קבוע." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+})();
+</script>
+
+</body>
+</html>
+', 4, '2026-10-13T00:00:00.000Z');
