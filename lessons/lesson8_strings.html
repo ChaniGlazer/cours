@@ -1,10 +1,9 @@
-DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='modules';
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('66cbd72566c4596f352f06acf6088889', 'python-ai-era', 'modules', 'שיעור 8 - מודולים (import)', '', '', '<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מודולים (import) בפייתון — ארגז הכלים</title>
+<title>מחרוזות (str) בפייתון — רכבת של אותיות</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -352,153 +351,151 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 .ek-why.good{color:var(--success,#6fe0a0)}
 .ek-why.bad{color:var(--danger,#ff7f96)}
 @media (max-width:600px){.ek-hud{right:8px;bottom:8px;font-size:13px;padding:6px 12px}.ek-insight{flex-direction:column;gap:8px}.ek-cell{min-width:62px}}
+.log .row span{white-space:pre-wrap}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow" style="justify-content:center; display:flex;">שיעור שמיני · פייתון · מגמת מחשבים</div>
-    <h1>ארגז הכלים:<br><span class="accent-for">מודולים</span> <span class="accent-while">(import)</span></h1>
-    <p class="hero-sub">כתבתן פונקציות משלכן. עכשיו נלמד להשתמש בפונקציות ש<strong>מישהו אחר כבר כתב</strong>: להטיל קובייה, לחשב שורש ולדעת מה התאריך, בשורה אחת.</p>
+    <div class="eyebrow" style="justify-content:center; display:flex;">שיעור פייתון · מגמת מחשבים</div>
+    <h1>רכבת של אותיות:<br><span class="accent-for">מחרוזות</span> <span class="accent-while">(str)</span></h1>
+    <p class="hero-sub">כל הודעה, שם וסיסמה שכתבתן בתוכנית הם <strong>מחרוזת</strong>. היום נלמד לחתוך אותן, לשנות אותן ולהרכיב מהן משפטים.</p>
     <div class="code-card for-accent solo-code" style="margin:36px auto 0; text-align:left;">
       <div class="code-card-label">Python</div>
-      <pre class="hl"><code>import random
-print(random.randint(1, 6))
-# 4</code></pre>
+      <pre class="hl">word = "python"
+print(word[0].upper() + word[1:])
+# Python</pre>
     </div>
   </div>
 </header>
 
 <main>
 
-  <section id="toolbox">
+  <section id="letters">
     <div class="wrap">
-      <div class="eyebrow for-c">import</div>
-      <h2 class="section-title">מודול הוא ארגז כלים</h2>
-      <p class="lede">מודול הוא קובץ פייתון מלא בפונקציות מוכנות. כותבים <span class="mono">import</span> כדי להביא את הארגז, ואז נקודה כדי לבחור כלי: <span class="mono">math.sqrt(49)</span>.</p>
+      <div class="eyebrow for-c">str</div>
+      <h2 class="section-title">מחרוזת היא שרשרת של תווים</h2>
+      <p class="lede">מחרוזת בנויה מתווים בשורה, וכל תו יושב בתא עם מספר, בדיוק כמו ברשימה. הראשון הוא <span class="mono">0</span>, והאחרון הוא <span class="mono">-1</span>. כתבי מילה וגררי את המחוון.</p>
 
       <div class="playground">
         <div class="playground-controls">
-          <label>בחרי ארגז:</label>
-          <div class="pill-row" id="tb-tabs"></div>
+          <label for="lt-word">המילה:</label>
+          <input type="text" id="lt-word" value="python" maxlength="10" class="num-in" style="width:150px;direction:ltr">
+          <div class="slider-row"><input type="range" id="lt-slider" min="-7" max="6" value="2" aria-label="אינדקס"><span class="slider-val" id="lt-val">2</span></div>
         </div>
-        <div class="playground-code" id="tb-code" style="border-top:0;margin-top:0"></div>
-        <div class="field-row"><span style="font-size:14.5px;font-weight:600">לחצי על כלי כדי להריץ אותו:</span><div class="pill-row" id="tb-pills"></div></div>
-        <div class="log" id="tb-log" aria-live="polite"><div class="empty">עוד לא הרצת כלום.</div></div>
+        <div class="playground-stage"><div class="shelf" id="lt-boxes"></div></div>
+        <div class="playground-code" id="lt-code" aria-live="polite"></div>
+        <div class="playground-note" id="lt-note"></div>
         <div class="guess-row">
-          <span style="font-size:14.5px;font-weight:600;">נחשי לפני שמריצות: מה יודפס עבור <span class="mono">math.sqrt(49)</span>?</span>
+          <span style="font-size:14.5px;font-weight:600;">נחשי: אם <span class="mono">word = "python"</span>, מה יודפס עבור <span class="mono">word[-2]</span>?</span>
           <input type="text" id="g1-input" autocomplete="off" aria-label="הניחוש שלי">
           <button class="guess-btn" id="g1-btn" type="button">בדקי</button>
           <span class="guess-feedback" id="g1-fb" role="status" aria-live="polite"></span>
         </div>
       </div>
 
-      <div class="ek-insight"><span class="ek-ic">🧰</span><div><b class="ek-tag">איך זוכרים</b><p><span class="m">import</span> מוציא ארגז מהמחסן, והנקודה בוחרת כלי מתוכו. בלי <span class="m">import</span> הארגז נשאר במחסן.</p></div></div>
+      <div class="ek-insight"><span class="ek-ic">🚂</span><div><b class="ek-tag">איך זוכרים</b><p>מחרוזת היא רכבת, וכל תו הוא קרון עם מספר. הקרון הראשון הוא מספר <span class="m">0</span>, והאחרון הוא <span class="m">-1</span>.</p></div></div>
     </div>
   </section>
 
-  <section id="dice">
+  <section id="tools">
     <div class="wrap">
-      <div class="eyebrow while-c">random</div>
-      <h2 class="section-title">random: מקריות בשורה אחת</h2>
-      <p class="lede"><span class="mono">random.randint(1, 6)</span> מחזירה מספר שלם אקראי בין 1 ל-6, וגם 1 וגם 6 כלולים. <span class="mono">random.choice(רשימה)</span> בוחרת פריט אקראי מתוך רשימה.</p>
+      <div class="eyebrow while-c">פעולות</div>
+      <h2 class="section-title">מה אפשר לעשות עם מחרוזת</h2>
+      <p class="lede"><span class="mono">len</span> סופרת תווים, <span class="mono">+</span> מדביקה מחרוזות, <span class="mono">*</span> משכפלת, ו-<span class="mono">in</span> בודקת אם משהו נמצא בתוכה. כתבי מילה והריצי.</p>
 
       <div class="playground">
-        <div class="playground-controls"><label>🎲 הקובייה</label><span class="mono" style="color:var(--for)">random.randint(1, 6)</span></div>
-        <div class="playground-stage" style="text-align:center">
-          <div id="die" style="font-size:96px;line-height:1.1;transition:transform .2s" aria-live="polite">⚀</div>
-          <div class="pill-row" style="justify-content:center;margin:14px 0 6px"><button class="run-btn" id="roll" type="button">הטילי</button></div>
-          <div class="diff-remaining" id="roll-stat">עוד לא הוטלה קובייה</div>
-        </div>
-        <div class="log" id="roll-log"><div class="empty">ההטלות יופיעו כאן.</div></div>
-        <div class="field-row">
-          <label for="ch-in" style="font-weight:700;font-size:15px">מה לאכול?</label>
-          <input type="text" id="ch-in" value="פיצה, סושי, פסטה, שווארמה" style="width:260px;direction:rtl">
-          <button class="guess-btn" id="ch-btn" type="button">בחרי בשבילי</button>
-          <span class="mono" id="ch-out" style="color:var(--for);font-weight:700;direction:rtl"></span>
-        </div>
-        <div class="playground-code" style="padding-top:8px"><div class="line" id="ch-code">random.choice(["פיצה", "סושי", "פסטה", "שווארמה"])</div></div>
+        <div class="playground-controls"><label for="ops-word"><bdi dir="ltr">word =</bdi></label><input type="text" id="ops-word" value="python" maxlength="14" class="num-in" style="width:170px;direction:ltr"></div>
+        <div class="field-row"><div class="pill-row" id="ops-pills"></div></div>
+        <div class="log" id="ops-log" aria-live="polite"><div class="empty">לחצי על פעולה כדי להריץ אותה.</div></div>
       </div>
-
-      <div class="ek-insight"><span class="ek-ic">🎯</span><div><b class="ek-tag">איך זוכרים</b><p><span class="m">randint</span> בוחרת <b>מספר</b> מתוך טווח, ו-<span class="m">choice</span> בוחרת <b>פריט</b> מתוך רשימה.</p></div></div>
     </div>
   </section>
 
-  <section id="styles">
+  <section id="methods">
     <div class="wrap">
-      <div class="eyebrow for-c">3 דרכים</div>
-      <h2 class="section-title">שלוש דרכים להביא כלים</h2>
-      <p class="lede">אפשר להביא את כל הארגז, כלי אחד בלבד, או לתת לארגז כינוי קצר. לכל דרך יש דרך קריאה אחרת. בחרי דרך ונסי להריץ את שלוש הקריאות.</p>
+      <div class="eyebrow for-c">שיטות</div>
+      <h2 class="section-title">שיטות: כפתורים של מחרוזת</h2>
+      <p class="lede">לכל מחרוזת יש כפתורים מובנים. כותבים נקודה ושם של פעולה אחרי המחרוזת: <span class="mono">text.upper()</span>. נסי אותם על הטקסט, וגם שני רווחים בתחילתו ובסופו לא יטעו אותך.</p>
 
       <div class="playground">
-        <div class="playground-controls"><label>בחרי דרך:</label><div class="pill-row" id="st-tabs"></div></div>
-        <div class="playground-code" id="st-code" style="border-top:0;margin-top:0"></div>
-        <div class="field-row"><span style="font-size:14.5px;font-weight:600">נסי לקרוא לכלי:</span><div class="pill-row" id="st-pills"></div></div>
-        <div class="log" id="st-log" aria-live="polite"><div class="empty">בחרי קריאה כדי לראות מה קורה.</div></div>
+        <div class="playground-controls"><label for="m-text"><bdi dir="ltr">text =</bdi></label><input type="text" id="m-text" value="  hello Python class  " class="num-in" style="width:min(300px,100%);direction:ltr"></div>
+        <div class="field-row"><div class="pill-row" id="m-pills"></div></div>
+        <div class="log" id="m-log" aria-live="polite"><div class="empty">לחצי על שיטה כדי להריץ אותה.</div></div>
       </div>
 
-      <div class="ek-insight"><span class="ek-ic">🏷️</span><div><b class="ek-tag">איך זוכרים</b><p>מה שכתבת אחרי <span class="m">import</span> או <span class="m">as</span> הוא השם שחייבים להשתמש בו בקוד. כל שם אחר ייתן <span class="m">NameError</span>.</p></div></div>
-    </div>
-  </section>
+      <div class="ek-insight"><span class="ek-ic">📸</span><div><b class="ek-tag">איך זוכרים</b><p>מחרוזת לא משתנה לעולם. כל שיטה מחזירה מחרוזת <b>חדשה</b>, כמו צילום עם פילטר, והמקור נשאר כמו שהיה. כדי לשמור אותה, כותבים <span class="m">text = text.upper()</span>.</p></div></div>
 
-  <section id="bughunt">
-    <div class="wrap">
-      <div class="eyebrow while-c">תרגול</div>
-      <h2 class="section-title">מצאי את הטעות</h2>
-      <p class="lede">הקוד הזה קורס. מה מתקנים?</p>
       <div class="rescue" id="rescue1">
-        <div class="rescue-head"><span class="rescue-mark">✗</span><h4>NameError: name ''randint'' is not defined</h4></div>
-<pre class="hl">import random
-print(randint(1, 6))</pre>
+        <div class="rescue-head"><span class="rescue-mark">✗</span><h4>התוכנית מדפיסה dana במקום DANA. מה מתקנים?</h4></div>
+<pre class="hl">name = "dana"
+name.upper()
+print(name)</pre>
         <div class="rescue-choices">
-          <button class="rescue-choice" type="button" data-ok="0">להוסיף שורה <span class="mono">import randint</span></button>
-          <button class="rescue-choice" type="button" data-ok="1">לכתוב <span class="mono">random.randint(1, 6)</span></button>
-          <button class="rescue-choice" type="button" data-ok="0">לכתוב <span class="mono">random(1, 6)</span></button>
+          <button class="rescue-choice" type="button" data-ok="0">לכתוב <span class="mono">name.upper(name)</span></button>
+          <button class="rescue-choice" type="button" data-ok="1">לכתוב <span class="mono">name = name.upper()</span></button>
+          <button class="rescue-choice" type="button" data-ok="0">לכתוב <span class="mono">print(upper)</span></button>
         </div>
         <div class="rescue-feedback" id="rescue1-fb" role="status" aria-live="polite"></div>
       </div>
     </div>
   </section>
 
-  <section id="ownmod">
+  <section id="slices">
     <div class="wrap">
-      <div class="eyebrow for-c">מודול משלך</div>
-      <h2 class="section-title">גם קובץ שלך הוא מודול</h2>
-      <p class="lede">כל קובץ <span class="mono">.py</span> שכתבת יכול להיות ארגז כלים לקובץ אחר, ולכן אפשר לחלק תוכנית גדולה לכמה קבצים קטנים. שם הקובץ בלי <span class="mono">.py</span> הוא שם המודול.</p>
-
-      <div class="playground">
-        <div class="playground-stage" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px;padding-bottom:18px">
-          <div class="code-card for-accent"><div class="code-card-label">helpers.py</div><pre class="hl">def greet(name):
-    return "Hello, " + name</pre></div>
-          <div class="code-card while-accent"><div class="code-card-label">main.py</div><pre class="hl">from helpers import greet
-print(greet("Dana"))</pre></div>
-        </div>
-        <div class="field-row"><label style="font-weight:700;font-size:15px"><input type="checkbox" id="om-same" checked> שני הקבצים באותה תיקייה</label></div>
-        <div class="log" id="om-log" aria-live="polite"></div>
-      </div>
-
-      <div class="callout java"><strong>זהירות:</strong> לא קוראים לקובץ שלך בשם של מודול קיים, כמו <span class="mono">random.py</span> או <span class="mono">math.py</span>. אחרת פייתון תביא את הקובץ שלך במקום הארגז האמיתי, והכל יתבלבל.</div>
-    </div>
-  </section>
-
-  <section id="pwgen">
-    <div class="wrap">
-      <div class="eyebrow while-c">מיני־פרויקט</div>
-      <h2 class="section-title">מחולל סיסמאות</h2>
-      <p class="lede">נחבר שני מודולים: <span class="mono">string</span> מביא מוכנים את כל האותיות והספרות, ו-<span class="mono">random</span> בוחר מהם. שחקי עם ההגדרות וראי איך הקוד משתנה.</p>
+      <div class="eyebrow while-c">פרוסות</div>
+      <h2 class="section-title">פרוסות: לחתוך חלק מהמילה</h2>
+      <p class="lede"><span class="mono">word[התחלה:עצירה]</span>. כמו ברשימות, ההתחלה כלולה והעצירה לא. אפשר להשאיר אחד מהם ריק, ולהפוך את כל המילה עם <span class="mono">[::-1]</span>.</p>
 
       <div class="playground">
         <div class="playground-controls">
-          <label for="pw-len">אורך:</label>
-          <div class="slider-row"><input type="range" id="pw-len" min="6" max="20" value="12"><span class="slider-val" id="pw-len-v">12</span></div>
+          <span class="mono">word = "programming"</span>
+          <label for="sl-a">התחלה</label><input type="number" id="sl-a" class="num-in" value="2">
+          <label for="sl-b">עצירה</label><input type="number" id="sl-b" class="num-in" value="5">
+          <button class="pill reset" id="sl-rev" type="button">הפוך [::-1]</button>
         </div>
-        <div class="field-row">
-          <label><input type="checkbox" id="pw-dig" checked> ספרות</label>
-          <label><input type="checkbox" id="pw-sym"> סימנים</label>
-          <button class="run-btn" id="pw-go" type="button">צרי סיסמה</button>
+        <div class="playground-stage"><div class="shelf" id="sl-boxes"></div></div>
+        <div class="playground-code" id="sl-code" aria-live="polite"></div>
+      </div>
+
+      <div class="ek-insight"><span class="ek-ic">✂️</span><div><b class="ek-tag">איך זוכרים</b><p>חותכים <b>לפני</b> התא של העצירה. לכן <span class="m">[2:5]</span> לוקחת את תאים 2, 3 ו-4 בלבד.</p></div></div>
+    </div>
+  </section>
+
+  <section id="fstr">
+    <div class="wrap">
+      <div class="eyebrow for-c">f-string</div>
+      <h2 class="section-title">להרכיב משפט עם f-string</h2>
+      <p class="lede">כדי לשלב משתנים בתוך משפט, כותבים <span class="mono">f</span> לפני המרכאות ושמים כל משתנה בסוגריים מסולסלים. נסי את שלוש הדרכים, ושימי לב מה קורה עם <span class="mono">+</span> כשיש מספר.</p>
+
+      <div class="playground">
+        <div class="playground-controls">
+          <label for="fs-name"><bdi dir="ltr">name =</bdi></label><input type="text" id="fs-name" value="Dana" maxlength="12" class="num-in" style="width:120px;direction:ltr">
+          <label for="fs-age"><bdi dir="ltr">age =</bdi></label><input type="number" id="fs-age" value="15" class="num-in">
         </div>
-        <div class="log" id="pw-out" style="font-size:20px;text-align:center;letter-spacing:.06em;color:var(--for)" aria-live="polite">&nbsp;</div>
-        <pre class="code-static hl" id="pw-code" style="margin:0;border-radius:0"></pre>
+        <div class="field-row"><div class="pill-row" id="fs-pills"></div></div>
+        <div class="playground-code" id="fs-code"></div>
+        <div class="log" id="fs-out" aria-live="polite"></div>
+      </div>
+
+      <div class="ek-insight"><span class="ek-ic">🧩</span><div><b class="ek-tag">איך זוכרים</b><p>האות <span class="m">f</span> הופכת את המחרוזת לתבנית: כל מה שבתוך <span class="m">{ }</span> מוחלף בערך, וגם מספרים נכנסים בלי <span class="m">str()</span>.</p></div></div>
+    </div>
+  </section>
+
+  <section id="vowels">
+    <div class="wrap">
+      <div class="eyebrow while-c">מיני־פרויקט</div>
+      <h2 class="section-title">לעבור על מחרוזת אות אחר אות</h2>
+      <p class="lede">אפשר לרוץ על מחרוזת עם <span class="mono">for</span>, והלולאה מקבלת בכל פעם תו אחד. כתבי משפט באנגלית ונראה כמה תנועות יש בו.</p>
+
+      <div class="playground">
+        <div class="playground-controls"><label for="vw-in"><bdi dir="ltr">text =</bdi></label><input type="text" id="vw-in" value="Hello Python Class" class="num-in" style="width:min(300px,100%);direction:ltr"></div>
+        <div class="playground-stage"><div class="shelf" id="vw-boxes" style="gap:5px"></div><div class="diff-remaining" id="vw-count" style="text-align:center;margin-top:14px"></div></div>
+        <pre class="code-static hl" style="margin:0;border-radius:0">count = 0
+for ch in text:
+    if ch.lower() in "aeiou":
+        count += 1
+print(count)</pre>
       </div>
     </div>
   </section>
@@ -522,33 +519,32 @@ print(greet("Dana"))</pre></div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 1</div>
-        <div class="exercise-task">השלימי את החסר.</div>
-        <div class="exercise-code"><span>___ random</span>
-<span>number = random.</span><input type="text" id="ex1-b" class="wide" autocomplete="off" aria-label="השלמה 2"><span>(1, 10)</span>
-<span>print(number)</span></div>
-        <div class="exercise-controls"><span class="mono" style="color:var(--ink-faint)">שורה 1:</span><input type="text" id="ex1-a" autocomplete="off" style="width:96px" aria-label="השלמה 1"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
+        <div class="exercise-task">השלימי כך שיודפס <span class="mono">PYTHON</span> באותיות גדולות.</div>
+        <div class="exercise-code"><span>word = "python"
+print(word.</span><input type="text" id="ex1-a" class="wide" autocomplete="off" aria-label="השלמה"><span>())</span></div>
+        <div class="exercise-controls"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 2</div>
-        <div class="exercise-task">מה יודפס?</div>
-        <div class="exercise-code"><span>from math import sqrt, pi
-print(sqrt(16) + 1)</span></div>
-        <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" aria-label="התשובה"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
+        <div class="exercise-task">מה יודפס? כתבי בדיוק כמו ש-Python מדפיסה.</div>
+        <div class="exercise-code"><span>print("a-b-c".split("-"))</span></div>
+        <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" style="width:140px;direction:ltr" aria-label="התשובה"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
       </div>
 
       <div class="exercise-divider">ב-VS Code</div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 3</div>
-        <div class="exercise-task">נחשי את המספר: התוכנית בוחרת מספר בין 1 ל-20 עם <span class="mono">randint</span>, ואת מנחשת עד שתצליחי. אחרי כל ניחוש היא מדפיסה "גבוה מדי" או "נמוך מדי".</div>
-        <p class="exercise-note">רמז: לולאת <span class="mono">while</span> ו-<span class="mono">input</span>, ואל תשכחי <span class="mono">int()</span>.</p>
+        <div class="exercise-task">כרטיס ביקור: בקשי עם <span class="mono">input</span> שם מלא, והדפיסי אותו באותיות גדולות, את אורכו, ואת האות הראשונה שלו. השתמשי ב-f-string.</div>
+        <p class="exercise-note">רמז: <span class="mono">name.upper()</span>, <span class="mono">len(name)</span>, <span class="mono">name[0]</span>.</p>
         <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 3" placeholder="הדביקי כאן את הקוד שלך"></textarea>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 4 · אתגר</div>
-        <div class="exercise-task">מגרילת שמות: צרי רשימה עם שמות של בנות הכיתה, והגרילי באמצעות <span class="mono">random.choice</span> מי תנהל את השיעור הבא. הוסיפי קובץ נפרד <span class="mono">names.py</span> שמחזיק את הרשימה, והביאי אותה עם <span class="mono">import</span>.</div>
+        <div class="exercise-task">בודקת פלינדרום: מילה שנקראת אותו דבר מימין לשמאל ומשמאל לימין, כמו <span class="mono">level</span>. בקשי מילה, והדפיסי אם היא פלינדרום.</div>
+        <p class="exercise-note">רמז: <span class="mono">word[::-1]</span>. אפשר להשתמש גם ב-<span class="mono">lower()</span> כדי שאותיות גדולות לא יפריעו.</p>
         <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 4" placeholder="הדביקי כאן את הקוד שלך"></textarea>
       </div>
     </div>
@@ -559,195 +555,203 @@ print(sqrt(16) + 1)</span></div>
       <div class="eyebrow">לסיכום</div>
       <h2 class="section-title">מה למדנו</h2>
       <ul class="recap">
-        <li><span class="mono">import</span> מביא ארגז כלים מוכן, והנקודה בוחרת כלי ממנו.</li>
-        <li><span class="mono">random.randint</span> בוחרת מספר, ו-<span class="mono">random.choice</span> בוחרת פריט מרשימה.</li>
-        <li>שלוש דרכים: <span class="mono">import math</span>, <span class="mono">from math import sqrt</span>, <span class="mono">import math as m</span>.</li>
-        <li>כל קובץ שלך הוא מודול, ואסור לקרוא לו בשם של מודול קיים.</li>
+        <li>מחרוזת היא שרשרת תווים: אינדקס מתחיל ב-<span class="mono">0</span>, ו-<span class="mono">-1</span> הוא האחרון.</li>
+        <li><span class="mono">len</span>, <span class="mono">+</span>, <span class="mono">*</span>, <span class="mono">in</span>.</li>
+        <li>שיטות כמו <span class="mono">upper</span>, <span class="mono">strip</span>, <span class="mono">replace</span>, <span class="mono">split</span>, והן מחזירות מחרוזת חדשה במקום לשנות את המקור.</li>
+        <li>פרוסות <span class="mono">[התחלה:עצירה]</span>, והעצירה לא כלולה.</li>
+        <li>f-string: <span class="mono">f"Hi {name}"</span>.</li>
       </ul>
     </div>
   </section>
 </main>
 
-<footer><div class="wrap">שיעור פייתון · מודולים</div></footer>
+<footer><div class="wrap">שיעור פייתון · מחרוזות</div></footer>
 
-<script>window.EK_CFG={"quiz": [{"t": "מה יודפס?", "code": "import math\nprint(math.floor(3.9))", "opts": ["3", "4", "3.9", "שגיאה"], "ans": 0, "why": "floor מעגלת כלפי מטה לשלם הקרוב, ולכן 3.", "hint": "floor היא הרצפה: יורדים למטה."}, {"t": "מה יודפס?", "code": "from random import randint\nprint(random.randint(1, 2))", "opts": ["1 או 2", "NameError", "None", "SyntaxError"], "ans": 1, "why": "ה-from הביא רק את randint, ואת השם random אף אחד לא הביא, לכן NameError.", "hint": "איזה שם הובא בפועל בשורת ה-import?"}, {"t": "מה יודפס?", "code": "import math as m\nprint(m.pi > 3)", "opts": ["True", "False", "NameError", "3.14"], "ans": 0, "why": "m הוא כינוי ל-math, ו-pi הוא בערך 3.14, שגדול מ-3.", "hint": "כינוי הוא סתם שם קצר לאותו ארגז."}]};
+<script>window.EK_CFG={"strip": {"cells": [["word[0]", "p"], ["word[1]", "y"], ["word[2]", "t"], ["word[3]", "h"], ["word[4]", "o"], ["word[5]", "n"]], "hint": "לחצי על תא כדי לראות איזה תו הוא מכיל", "cap": function(i,c){return "word["+i+"]  →  '"+c[1]+"'"}}, "quiz": [{"t": "מה יודפס?", "code": "s = \"hello\"\nprint(s[1:4])", "opts": ["hel", "ell", "ello", "hell"], "ans": 1, "why": "מתחילים באינדקס 1 (e) ועוצרים לפני 4, ולכן ell.", "hint": "העצירה לא כלולה."}, {"t": "מה יודפס?", "code": "s = \"hi\"\nprint(s * 2 + \"!\")", "opts": ["hihi!", "hi2!", "hi!hi!", "שגיאה"], "ans": 0, "why": "כפל משכפל קודם: hihi, ואז מדביקים סימן קריאה.", "hint": "כפל קודם לחיבור."}, {"t": "מה יודפס?", "code": "name = \"dana\"\nname.upper()\nprint(name)", "opts": ["DANA", "dana", "None", "שגיאה"], "ans": 1, "why": "upper() מחזירה מחרוזת חדשה ולא שומרת אותה, אז name נשאר dana.", "hint": "האם משהו שמר את התוצאה?"}]};
 (function(){
 var $=function(i){return document.getElementById(i)};
-function esc(s){return s.replace(/&/g,''&amp;'').replace(/</g,''&lt;'').replace(/>/g,''&gt;'')}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function highlight(code){
   return esc(code).replace(/(#.*$)|("[^"]*")|\b(import|from|as|for|in|def|return|while)\b|\b(print|range)\b|\b(\d+\.?\d*)\b/gm,function(m,c,s,k,f,n){
-    if(c)return ''<span class="tok-cmt">''+c+''</span>'';
-    if(s)return ''<span class="tok-str">''+s+''</span>'';
-    if(k)return ''<span class="tok-kw">''+k+''</span>'';
-    if(f)return ''<span class="tok-fn">''+f+''</span>'';
-    return ''<span class="tok-num">''+n+''</span>''});
+    if(c)return '<span class="tok-cmt">'+c+'</span>';
+    if(s)return '<span class="tok-str">'+s+'</span>';
+    if(k)return '<span class="tok-kw">'+k+'</span>';
+    if(f)return '<span class="tok-fn">'+f+'</span>';
+    return '<span class="tok-num">'+n+'</span>'});
 }
-function hlAll(){document.querySelectorAll(''pre.hl'').forEach(function(p){var t=p.textContent;p.innerHTML=''<code>''+highlight(t)+''</code>''})}
+function hlAll(){document.querySelectorAll('pre.hl').forEach(function(p){var t=p.textContent;p.innerHTML='<code>'+highlight(t)+'</code>'})}
 hlAll();
 function row(el,code,res,bad){
-  var e=el.querySelector(''.empty'');if(e)e.remove();
-  var d=document.createElement(''div'');d.className=''row'';
-  d.innerHTML=''<span>''+esc(code)+''</span><span class="arrow">→</span><span class="''+(bad?''bad'':''res'')+''">''+esc(res)+''</span>'';
+  var e=el.querySelector('.empty');if(e)e.remove();
+  var d=document.createElement('div');d.className='row';
+  d.innerHTML='<span>'+esc(code)+'</span><span class="arrow">→</span><span class="'+(bad?'bad':'res')+'">'+esc(res)+'</span>';
   el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
-function pillRow(host,items,onclick){host.innerHTML='''';items.forEach(function(it,i){var b=document.createElement(''button'');b.type=''button'';b.className=''pill'';b.textContent=it;b.onclick=function(){onclick(i,b)};host.appendChild(b)})}
-function activate(host,i){host.querySelectorAll(''.pill'').forEach(function(p,j){p.classList.toggle(''active'',i===j)})}
+function pillRow(host,items,onclick){host.innerHTML='';items.forEach(function(it,i){var b=document.createElement('button');b.type='button';b.className='pill';b.textContent=it;b.onclick=function(){onclick(i,b)};host.appendChild(b)})}
+function activate(host,i){host.querySelectorAll('.pill').forEach(function(p,j){p.classList.toggle('active',i===j)})}
 
-// ---- toolbox ----
-var rnd=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
-var now=new Date(),pad=function(n){return String(n).padStart(2,''0'')};
-var MODS={
- math:[[''math.sqrt(49)'',function(){return ''7.0''}],[''math.pi'',function(){return ''3.141592653589793''}],[''math.floor(3.9)'',function(){return ''3''}],[''math.ceil(3.1)'',function(){return ''4''}],[''math.pow(2, 10)'',function(){return ''1024.0''}]],
- random:[[''random.randint(1, 6)'',function(){return String(rnd(1,6))}],[''random.choice(["🍕", "🍔", "🥗"])'',function(){return [''🍕'',''🍔'',''🥗''][rnd(0,2)]}],[''random.random()'',function(){return ''0.''+String(Math.random()).slice(2,18)}]],
- datetime:[[''datetime.date.today()'',function(){return now.getFullYear()+''-''+pad(now.getMonth()+1)+''-''+pad(now.getDate())}],[''datetime.datetime.now().year'',function(){return String(now.getFullYear())}],[''datetime.datetime.now().hour'',function(){return String(new Date().getHours())}]]
-};
-var names=Object.keys(MODS),tbHost=$(''tb-tabs''),tbPills=$(''tb-pills''),tbCode=$(''tb-code''),tbLog=$(''tb-log'');
-function pickMod(i){
-  var n=names[i];activate(tbHost,i);
-  tbCode.innerHTML=''<div class="line">''+highlight(''import ''+n)+''</div>'';
-  pillRow(tbPills,MODS[n].map(function(x){return x[0]}),function(j){var it=MODS[n][j];row(tbLog,''print(''+it[0]+'')'',it[1]())});
+function rep(s){return "'"+s+"'"}
+function boxes(host,word,on,withNeg){
+  host.innerHTML='';
+  Array.from(word).forEach(function(ch,i){
+    var s=document.createElement('div');s.className='slot';
+    var a=document.createElement('div');a.className='slot-idx';a.textContent=i;
+    var b=document.createElement('div');b.className='box num'+(on.indexOf(i)>-1?' on':'');b.textContent=ch===' '?'␣':ch;
+    s.appendChild(a);s.appendChild(b);
+    if(withNeg){var c=document.createElement('div');c.className='slot-neg';c.textContent=i-word.length;s.appendChild(c)}
+    host.appendChild(s)});
 }
-pillRow(tbHost,names,pickMod);pickMod(0);
-$(''g1-btn'').onclick=function(){var v=$(''g1-input'').value.trim(),fb=$(''g1-fb'');
-  if(v===''7.0''||v===''7''){fb.className=''guess-feedback correct'';fb.textContent=v===''7.0''?''נכון! התוצאה היא 7.0.'':''כמעט: זה 7.0, כי sqrt מחזירה מספר עשרוני.''}
-  else{fb.className=''guess-feedback wrong'';fb.textContent=''לא בדיוק. נסי להריץ את הכלי למעלה.''}};
 
-// ---- dice ----
-var FACES=[''⚀'',''⚁'',''⚂'',''⚃'',''⚄'',''⚅''],RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches,rolls=[],busy=false;
-$(''roll'').onclick=function(){
-  if(busy)return;busy=true;var fin=rnd(1,6),n=0,die=$(''die'');
-  function step(){
-    if(n<(RM?0:8)){die.textContent=FACES[rnd(0,5)];n++;setTimeout(step,70)}
-    else{die.textContent=FACES[fin-1];rolls.push(fin);busy=false;
-      row($(''roll-log''),''random.randint(1, 6)'',String(fin));
-      var sixes=rolls.filter(function(x){return x===6}).length;
-      $(''roll-stat'').textContent=''הוטלו ''+rolls.length+'' פעמים, ויצא 6 ''+sixes+'' פעמים''}
-  }step();
-};
-function chooseFood(){
-  var items=$(''ch-in'').value.split('','').map(function(s){return s.trim()}).filter(Boolean);
-  if(!items.length){$(''ch-out'').textContent=''כתבי כמה אפשרויות עם פסיקים ביניהן'';return}
-  $(''ch-code'').textContent=''random.choice([''+items.map(function(s){return ''"''+s+''"''}).join('', '')+''])'';
-  $(''ch-out'').textContent=''← ''+items[rnd(0,items.length-1)];
+// ---- letters ----
+function letters(){
+  var w=$('lt-word').value,n=w.length,sl=$('lt-slider');
+  sl.min=-(n+1);sl.max=n;var i=+sl.value;if(i<-(n+1))i=sl.value=-(n+1);if(i>n)i=sl.value=n;
+  $('lt-val').textContent=i;
+  var idx=i<0?i+n:i,ok=idx>=0&&idx<n;
+  boxes($('lt-boxes'),w,ok?[idx]:[],true);
+  var code='word = "'+w+'"\nprint(word['+i+'])';
+  $('lt-code').innerHTML=highlight(code).split('\n').map(function(l){return '<div class="line">'+l+'</div>'}).join('')+'<div class="line '+(ok?'out':'err')+'">'+esc(ok?w[idx]:'IndexError: string index out of range')+'</div>';
+  $('lt-note').textContent=n?(ok?'התו במקום '+idx+' הוא '+w[idx]+'.':'אין תא כזה: המחרוזת קצרה מדי.'):'כתבי מילה כדי להתחיל.';
+  $('lt-note').className='playground-note'+(ok?'':' err');
 }
-$(''ch-btn'').onclick=chooseFood;
+$('lt-word').oninput=letters;$('lt-slider').oninput=letters;letters();
+$('g1-btn').onclick=function(){var v=$('g1-input').value.trim().replace(/["']/g,''),fb=$('g1-fb');
+  if(v==='o'){fb.className='guess-feedback correct';fb.textContent='נכון! -1 הוא n ו-2- הוא o.'}
+  else{fb.className='guess-feedback wrong';fb.textContent='לא בדיוק. ספרי מהסוף: -1 הוא האחרון.'}};
 
-// ---- 3 styles ----
-var ST=[
- {n:''import math'',ok:''math.sqrt(9)'',name:''math''},
- {n:''from math import sqrt'',ok:''sqrt(9)'',name:''sqrt''},
- {n:''import math as m'',ok:''m.sqrt(9)'',name:''m''}];
-var CALLS=[''math.sqrt(9)'',''sqrt(9)'',''m.sqrt(9)''],NAMEOF={''math.sqrt(9)'':''math'',''sqrt(9)'':''sqrt'',''m.sqrt(9)'':''m''},stCur=0;
-function pickStyle(i){stCur=i;activate($(''st-tabs''),i);$(''st-code'').innerHTML=''<div class="line">''+highlight(ST[i].n)+''</div>'';$(''st-log'').innerHTML=''<div class="empty">בחרי קריאה כדי לראות מה קורה.</div>''}
-pillRow($(''st-tabs''),ST.map(function(s){return s.n}),pickStyle);
-pillRow($(''st-pills''),CALLS,function(j){var c=CALLS[j];
-  if(c===ST[stCur].ok)row($(''st-log''),''print(''+c+'')'',''3.0'');
-  else row($(''st-log''),''print(''+c+'')'',"NameError: name ''"+NAMEOF[c]+"'' is not defined",true)});
-pickStyle(0);
+// ---- ops ----
+var OPS=[['len(word)',function(w){return String(w.length)}],['word + "!"',function(w){return rep(w+'!')}],['word * 3',function(w){return rep(w+w+w)}],['"py" in word',function(w){return w.indexOf('py')>-1?'True':'False'}],['word[0]',function(w){return w.length?rep(w[0]):'IndexError: string index out of range'}]];
+pillRow($('ops-pills'),OPS.map(function(o){return o[0]}),function(j){var w=$('ops-word').value;row($('ops-log'),'>>> '+OPS[j][0].replace('word',"word"),OPS[j][1](w),/Error/.test(OPS[j][1](w)))});
 
-// ---- bug hunt ----
-var rs=$(''rescue1'');
-rs.querySelectorAll(''.rescue-choice'').forEach(function(b){b.onclick=function(){
-  var fb=$(''rescue1-fb'');
-  if(b.dataset.ok===''1''){b.classList.add(''right'');rs.classList.add(''fixed'');rs.querySelector(''.rescue-mark'').textContent=''✓'';
-    rs.querySelectorAll(''.rescue-choice'').forEach(function(x){x.disabled=true});
-    fb.className=''rescue-feedback correct'';fb.textContent=''נכון! אחרי import random הכלי נמצא בתוך random, לכן כותבים random.randint.''}
-  else{b.classList.add(''wrong'');b.disabled=true;fb.className=''rescue-feedback wrong'';fb.textContent=''לא בדיוק. ל-randint אין ארגז משלה, היא נמצאת בתוך random.''}
+// ---- methods ----
+function title(s){return s.replace(/[A-Za-z]+/g,function(x){return x[0].toUpperCase()+x.slice(1).toLowerCase()})}
+function cnt(s,c){return s.split(c).length-1}
+var MS=[['text.upper()',function(t){return rep(t.toUpperCase())}],['text.lower()',function(t){return rep(t.toLowerCase())}],['text.title()',function(t){return rep(title(t))}],['text.strip()',function(t){return rep(t.trim())}],['text.replace("l", "L")',function(t){return rep(t.split('l').join('L'))}],['text.split()',function(t){return '['+t.split(/\s+/).filter(Boolean).map(rep).join(', ')+']'}],['text.count("l")',function(t){return String(cnt(t,'l'))}]];
+pillRow($('m-pills'),MS.map(function(o){return o[0]}),function(j){row($('m-log'),'>>> '+MS[j][0],MS[j][1]($('m-text').value))});
+
+// ---- rescue ----
+var rs=$('rescue1');
+rs.querySelectorAll('.rescue-choice').forEach(function(b){b.onclick=function(){
+  var fb=$('rescue1-fb');
+  if(b.dataset.ok==='1'){b.classList.add('right');rs.classList.add('fixed');rs.querySelector('.rescue-mark').textContent='✓';
+    rs.querySelectorAll('.rescue-choice').forEach(function(x){x.disabled=true});
+    fb.className='rescue-feedback correct';fb.textContent='נכון! upper() מחזירה מחרוזת חדשה, וצריך לשמור אותה במשתנה.'}
+  else{b.classList.add('wrong');b.disabled=true;fb.className='rescue-feedback wrong';fb.textContent='לא בדיוק. השיטה מחזירה ערך חדש, ולכן צריך להשים אותו במשתנה.'}
 }});
 
-// ---- own module ----
-function om(){var ok=$(''om-same'').checked,l=$(''om-log'');l.innerHTML='''';
-  row(l,''python main.py'',ok?''Hello, Dana'':"ModuleNotFoundError: No module named ''helpers''",!ok)}
-$(''om-same'').onchange=om;om();
+// ---- slices ----
+var PW='programming',rev=false;
+function slices(){
+  var a=$('sl-a').value,b=$('sl-b').value,n=PW.length,idx=[],res,code;
+  if(rev){idx=PW.split('').map(function(_,i){return i});res=PW.split('').reverse().join('');code='word[::-1]'}
+  else{var A=a===''?undefined:+a,B=b===''?undefined:+b;idx=PW.split('').map(function(_,i){return i}).slice(A,B);res=PW.slice(A,B);code='word['+a+':'+b+']'}
+  boxes($('sl-boxes'),PW,idx,false);
+  $('sl-code').innerHTML='<div class="line">'+highlight('print('+code+')')+'</div><div class="line out">'+esc(res===''?"'' (מחרוזת ריקה)":res)+'</div>';
+  $('sl-rev').classList.toggle('active',rev);
+}
+$('sl-a').oninput=function(){rev=false;slices()};$('sl-b').oninput=function(){rev=false;slices()};
+$('sl-rev').onclick=function(){rev=!rev;slices()};slices();
 
-// ---- password generator ----
-function pwCode(){var len=$(''pw-len'').value,d=$(''pw-dig'').checked,s=$(''pw-sym'').checked;
-  var c=''string.ascii_letters''+(d?'' + string.digits'':'''')+(s?'' + string.punctuation'':'''');
-  $(''pw-len-v'').textContent=len;
-  $(''pw-code'').innerHTML=highlight(''import random\nimport string\n\nchars = ''+c+''\npassword = ""\nfor i in range(''+len+''):\n    password += random.choice(chars)\nprint(password)'')}
-function pwMake(){var l=+$(''pw-len'').value,chars=''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'';
-  if($(''pw-dig'').checked)chars+=''0123456789'';if($(''pw-sym'').checked)chars+=''!#$%&*+-?@'';
-  var out='''';for(var i=0;i<l;i++)out+=chars[rnd(0,chars.length-1)];$(''pw-out'').textContent=out}
-[''pw-len'',''pw-dig'',''pw-sym''].forEach(function(i){$(i).addEventListener(''input'',pwCode)});
-$(''pw-go'').onclick=pwMake;pwCode();
+// ---- f-string ----
+var FS=['"Hi " + name + ", you are " + age','"Hi " + name + ", you are " + str(age)','f"Hi {name}, you are {age}"'],fsCur=0;
+function fstr(){
+  var nm=$('fs-name').value,ag=$('fs-age').value||'0';
+  activate($('fs-pills'),fsCur);
+  $('fs-code').innerHTML='<div class="line">'+highlight('name = "'+nm+'"\nage = '+ag+'\nprint('+FS[fsCur]+')').split('\n').join('</div><div class="line">')+'</div>';
+  var o=$('fs-out');o.innerHTML='';
+  if(fsCur===0)row(o,'','TypeError: can only concatenate str (not "int") to str',true);
+  else row(o,'','Hi '+nm+', you are '+ag);
+}
+pillRow($('fs-pills'),['שרשור עם +','שרשור עם str()','f-string'],function(j){fsCur=j;fstr()});
+$('fs-name').oninput=fstr;$('fs-age').oninput=fstr;fstr();
+
+// ---- vowels ----
+function vw(){
+  var t=$('vw-in').value,h=$('vw-boxes'),c=0;h.innerHTML='';
+  Array.from(t).forEach(function(ch){
+    var b=document.createElement('div'),v='aeiou'.indexOf(ch.toLowerCase())>-1&&ch.trim()!=='';
+    b.className='box num'+(v?' on':'');b.style.cssText='min-width:30px;height:38px;padding:0 6px';b.textContent=ch===' '?'␣':ch;if(v)c++;h.appendChild(b)});
+  $('vw-count').textContent='נמצאו '+c+' תנועות';
+}
+$('vw-in').oninput=vw;vw();
 
 // ---- exercises ----
-function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
-chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim()===''import''&&$(''ex1-b'').value.trim()===''randint''},''ex1-feedback'',''נכון! import random ואז random.randint.'',''כמעט. מה מביאים בשורה הראשונה, ואיזה כלי מחזיר מספר שלם אקראי?'');
-chk(''ex2-btn'',function(){var v=$(''ex2-in'').value.trim();return v===''5.0''},''ex2-feedback'',''נכון! sqrt(16) היא 4.0, ועוד 1 זה 5.0.'',''לא בדיוק. שימי לב ש-sqrt מחזירה מספר עשרוני.'');
+function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className='exercise-feedback correct';f.textContent=okMsg}else{f.className='exercise-feedback wrong';f.textContent=badMsg}}}
+chk('ex1-btn',function(){return $('ex1-a').value.trim().replace(/[()]/g,'')==='upper'},'ex1-feedback','נכון! upper() הופכת את כל האותיות לגדולות.','כמעט. איזו שיטה הופכת לאותיות גדולות? נסי בארגז השיטות למעלה.');
+chk('ex2-btn',function(){return $('ex2-in').value.replace(/\s+/g,'').replace(/"/g,"'")==="['a','b','c']"},'ex2-feedback','נכון! split מחזירה רשימה של מחרוזות.','לא בדיוק. split מחזירה רשימה, ולכן יש סוגריים מרובעים ומרכאות סביב כל איבר.');
 })();
 
 (function(){
   var C=window.EK_CFG||{},doc=document,stars=0;
-  var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
-  doc.documentElement.classList.add(''ek-js'');
+  var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  doc.documentElement.classList.add('ek-js');
   // progress
-  var pr=doc.createElement(''div'');pr.className=''ek-progress'';pr.innerHTML=''<i></i>'';doc.body.appendChild(pr);
-  function onScroll(){var h=doc.documentElement.scrollHeight-innerHeight;pr.firstChild.style.width=(h>0?Math.min(100,scrollY/h*100):0)+''%''}
-  addEventListener(''scroll'',onScroll,{passive:true});onScroll();
+  var pr=doc.createElement('div');pr.className='ek-progress';pr.innerHTML='<i></i>';doc.body.appendChild(pr);
+  function onScroll(){var h=doc.documentElement.scrollHeight-innerHeight;pr.firstChild.style.width=(h>0?Math.min(100,scrollY/h*100):0)+'%'}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
   // hud
-  var hud=doc.createElement(''div'');hud.className=''ek-hud'';hud.setAttribute(''aria-live'',''polite'');
-  hud.innerHTML=''<span class="ek-star">⭐</span><span id="ek-n">0</span><span class="ek-lvl" id="ek-l"></span>'';doc.body.appendChild(hud);
-  var LV=[[0,''מתחילה''],[3,''חוקרת''],[6,''מפתחת''],[10,''מומחית'']];
-  function lvl(){var t='''';LV.forEach(function(l){if(stars>=l[0])t=l[1]});return t}
-  doc.getElementById(''ek-l'').textContent=lvl();
-  var toast=doc.createElement(''div'');toast.className=''ek-toast'';doc.body.appendChild(toast);
-  var PR=[''יפה מאוד! 🎉'',''בול! 👏'',''את על זה! 🚀'',''מדויק! ✨'',''כל הכבוד! 💪'',''וואו, מצוין! 🌟''],pi=0,tt;
+  var hud=doc.createElement('div');hud.className='ek-hud';hud.setAttribute('aria-live','polite');
+  hud.innerHTML='<span class="ek-star">⭐</span><span id="ek-n">0</span><span class="ek-lvl" id="ek-l"></span>';doc.body.appendChild(hud);
+  var LV=[[0,'מתחילה'],[3,'חוקרת'],[6,'מפתחת'],[10,'מומחית']];
+  function lvl(){var t='';LV.forEach(function(l){if(stars>=l[0])t=l[1]});return t}
+  doc.getElementById('ek-l').textContent=lvl();
+  var toast=doc.createElement('div');toast.className='ek-toast';doc.body.appendChild(toast);
+  var PR=['יפה מאוד! 🎉','בול! 👏','את על זה! 🚀','מדויק! ✨','כל הכבוד! 💪','וואו, מצוין! 🌟'],pi=0,tt;
   function burst(x,y){
-    if(RM)return;var cols=[''#ffd27a'',''#ff7f96'',''#6fe0a0'',''#8b6bff'',''#5bd1ff''];
-    for(var i=0;i<22;i++){var b=doc.createElement(''i'');b.className=''ek-bit'';
+    if(RM)return;var cols=['#ffd27a','#ff7f96','#6fe0a0','#8b6bff','#5bd1ff'];
+    for(var i=0;i<22;i++){var b=doc.createElement('i');b.className='ek-bit';
       var a=Math.random()*6.28,d=60+Math.random()*110;
-      b.style.cssText=''left:''+x+''px;top:''+y+''px;background:''+cols[i%5]+'';--dx:''+Math.cos(a)*d+''px;--dy:''+(Math.sin(a)*d-40)+''px;--rot:''+Math.random()*540+''deg'';
+      b.style.cssText='left:'+x+'px;top:'+y+'px;background:'+cols[i%5]+';--dx:'+Math.cos(a)*d+'px;--dy:'+(Math.sin(a)*d-40)+'px;--rot:'+Math.random()*540+'deg';
       doc.body.appendChild(b);setTimeout(function(e){e.remove()},1100,b)}
   }
   function award(el){
-    stars++;doc.getElementById(''ek-n'').textContent=stars;doc.getElementById(''ek-l'').textContent=lvl();
-    hud.classList.remove(''pop'');void hud.offsetWidth;hud.classList.add(''pop'');
-    toast.textContent=PR[pi++%PR.length]+'' ⭐ ''+stars;toast.classList.add(''show'');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove(''show'')},1800);
+    stars++;doc.getElementById('ek-n').textContent=stars;doc.getElementById('ek-l').textContent=lvl();
+    hud.classList.remove('pop');void hud.offsetWidth;hud.classList.add('pop');
+    toast.textContent=PR[pi++%PR.length]+' ⭐ '+stars;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show')},1800);
     var r=(el||hud).getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);
   }
   window.EK_award=award;
   // watch feedback elements
   var seen={},auto=0;
-  var SEL=''.guess-feedback,.exercise-feedback,.rescue-feedback,.gv-fb'';
+  var SEL='.guess-feedback,.exercise-feedback,.rescue-feedback,.gv-fb';
   function check(el){
     if(!el.matches||!el.matches(SEL))return;
-    if(!(el.classList.contains(''correct'')||el.classList.contains(''good'')))return;
-    var k=el.id||el.dataset.ek||(el.dataset.ek=''a''+(auto++));
+    if(!(el.classList.contains('correct')||el.classList.contains('good')))return;
+    var k=el.id||el.dataset.ek||(el.dataset.ek='a'+(auto++));
     if(seen[k])return;seen[k]=1;award(el);
   }
-  new MutationObserver(function(ms){ms.forEach(function(m){check(m.target)})}).observe(doc.body,{attributes:true,attributeFilter:[''class''],subtree:true});
+  new MutationObserver(function(ms){ms.forEach(function(m){check(m.target)})}).observe(doc.body,{attributes:true,attributeFilter:['class'],subtree:true});
   // reveal
-  var targets=doc.querySelectorAll(''section .wrap > *, .hero .wrap > *'');
-  if(''IntersectionObserver'' in window&&!RM){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add(''in'');io.unobserve(e.target)}})},{threshold:.08});
-    targets.forEach(function(t){t.classList.add(''ek-reveal'');io.observe(t)});
-    setTimeout(function(){targets.forEach(function(t){t.classList.add(''in'')})},6000);
+  var targets=doc.querySelectorAll('section .wrap > *, .hero .wrap > *');
+  if('IntersectionObserver' in window&&!RM){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08});
+    targets.forEach(function(t){t.classList.add('ek-reveal');io.observe(t)});
+    setTimeout(function(){targets.forEach(function(t){t.classList.add('in')})},6000);
   }
   // hero strip
   if(C.strip){
-    var s=C.strip,host=doc.querySelector(''.hero .wrap''),box=doc.createElement(''div'');box.className=''ek-strip'';
-    box.innerHTML=''<div class="ek-cells">''+s.cells.map(function(c,i){return ''<div class="ek-cell" tabindex="0" data-i="''+i+''"><small>''+c[0]+''</small><strong>''+c[1]+''</strong></div>''}).join('''')+''</div><div class="ek-cap" aria-live="polite"></div><div class="ek-hint">''+s.hint+''</div>'';
+    var s=C.strip,host=doc.querySelector('.hero .wrap'),box=doc.createElement('div');box.className='ek-strip';
+    box.innerHTML='<div class="ek-cells">'+s.cells.map(function(c,i){return '<div class="ek-cell" tabindex="0" data-i="'+i+'"><small>'+c[0]+'</small><strong>'+c[1]+'</strong></div>'}).join('')+'</div><div class="ek-cap" aria-live="polite"></div><div class="ek-hint">'+s.hint+'</div>';
     host.appendChild(box);
-    var cells=box.querySelectorAll(''.ek-cell''),cap=box.querySelector(''.ek-cap''),cur=0,timer;
-    function show(i){cells.forEach(function(c,j){c.classList.toggle(''on'',i===j)});cap.textContent=s.cap(i,s.cells[i])}
+    var cells=box.querySelectorAll('.ek-cell'),cap=box.querySelector('.ek-cap'),cur=0,timer;
+    function show(i){cells.forEach(function(c,j){c.classList.toggle('on',i===j)});cap.textContent=s.cap(i,s.cells[i])}
     function loop(){clearInterval(timer);timer=setInterval(function(){cur=(cur+1)%cells.length;show(cur)},1600)}
-    cells.forEach(function(c,i){var f=function(){cur=i;show(i);loop()};c.addEventListener(''click'',f);c.addEventListener(''keydown'',function(e){if(e.key===''Enter''||e.key==='' ''){e.preventDefault();f()}})});
+    cells.forEach(function(c,i){var f=function(){cur=i;show(i);loop()};c.addEventListener('click',f);c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();f()}})});
     show(0);if(!RM)loop();
   }
   // quiz
-  var qz=doc.querySelector(''#ek-quiz-host'');
+  var qz=doc.querySelector('#ek-quiz-host');
   if(qz&&C.quiz){
     var done=0;
     C.quiz.forEach(function(q,qi){
-      var d=doc.createElement(''div'');d.className=''ek-q'';
-      d.innerHTML=''<h3>''+(qi+1)+''. ''+q.t+''</h3><pre>''+q.code.replace(/&/g,''&amp;'').replace(/</g,''&lt;'')+''</pre><div class="ek-opts"></div><div class="ek-why" role="status" aria-live="polite"></div>'';
-      var o=d.querySelector(''.ek-opts''),why=d.querySelector(''.ek-why''),solved=false;
-      q.opts.forEach(function(t,oi){var b=doc.createElement(''button'');b.type=''button'';b.className=''ek-opt'';b.textContent=t;
+      var d=doc.createElement('div');d.className='ek-q';
+      d.innerHTML='<h3>'+(qi+1)+'. '+q.t+'</h3><pre>'+q.code.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre><div class="ek-opts"></div><div class="ek-why" role="status" aria-live="polite"></div>';
+      var o=d.querySelector('.ek-opts'),why=d.querySelector('.ek-why'),solved=false;
+      q.opts.forEach(function(t,oi){var b=doc.createElement('button');b.type='button';b.className='ek-opt';b.textContent=t;
         b.onclick=function(){
           if(solved)return;
-          if(oi===q.ans){solved=true;b.classList.add(''good'');why.className=''ek-why good'';why.textContent=''✔ ''+q.why;o.querySelectorAll(''button'').forEach(function(x){x.disabled=true});award(b);done++}
-          else{b.classList.add(''bad'');b.disabled=true;why.className=''ek-why bad'';why.textContent=''לא בדיוק. ''+(q.hint||''נסי שוב.'')}
+          if(oi===q.ans){solved=true;b.classList.add('good');why.className='ek-why good';why.textContent='✔ '+q.why;o.querySelectorAll('button').forEach(function(x){x.disabled=true});award(b);done++}
+          else{b.classList.add('bad');b.disabled=true;why.className='ek-why bad';why.textContent='לא בדיוק. '+(q.hint||'נסי שוב.')}
         };o.appendChild(b)});
       qz.appendChild(d);
     });
@@ -756,4 +760,3 @@ chk(''ex2-btn'',function(){var v=$(''ex2-in'').value.trim();return v===''5.0''},
 </script>
 </body>
 </html>
-', 8, '2026-10-13T00:00:00.000Z');
