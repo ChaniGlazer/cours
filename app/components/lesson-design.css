@@ -58,7 +58,10 @@ a.lx-item:hover { background: var(--paper-2); }
 .lx-content .video-wrap { max-width: 900px; margin-inline: auto; }
 
 .lx-complete { max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 28px; border-top: 1px solid var(--border); }
+.lx-complete__info { display: flex; flex-direction: column; gap: 4px; }
 .lx-complete__q { color: var(--text-soft); font-size: 18px; }
+.lx-complete__status { color: var(--text-soft); font-size: 15px; }
+.lx-complete__status.is-auto { color: var(--moss); }
 .lx-complete__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .lx-ghost { display: inline-flex; align-items: center; min-height: 56px; padding: 0 22px; border-radius: 999px; border: 2px solid var(--border); color: var(--ink); font-size: 17px; font-weight: 700; }
 .lx-ghost:hover { border-color: var(--gold); }

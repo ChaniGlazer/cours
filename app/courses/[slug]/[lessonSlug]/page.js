@@ -4,7 +4,6 @@ import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
 import { isAdmin } from "@/lib/admin-auth";
 import { parseVideoEmbed } from "@/lib/video";
-import LessonHtmlFrame from "@/app/components/LessonHtmlFrame";
 import LessonLayout from "@/app/components/LessonLayout";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
 
@@ -89,10 +88,9 @@ export default async function LessonPage({ params }) {
         next={nextLesson ? { slug: nextLesson.slug, title: nextLesson.title } : null}
         heading={heading}
         hero={hero}
+        html={lesson.html_content || null}
       >
-        {lesson.html_content ? (
-          <LessonHtmlFrame html={lesson.html_content} />
-        ) : embed ? (
+        {embed ? (
           <div className="video-wrap">
             {embed.type === "video" ? (
               <video controls src={embed.src} />

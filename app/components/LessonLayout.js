@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { countDone, lessonStatus, markSeen, setDone, useProgress } from "./progress";
+import { useEffect, useRef, useState } from "react";
+import LessonHtmlFrame from "./LessonHtmlFrame";
+import { countDone, isAuto, lessonStatus, markSeen, setDone, useProgress } from "./progress";
 import "./lesson-design.css";
 
 // מעטפת עמוד השיעור (תבנית אחת לכל השיעורים בכל הקורסים), לפי design-reference/lesson-page.html:
 // כרטיס צד (שם הקורס, טבעת התקדמות, רשימת שיעורים, "המשך לשיעור הבא") ולצדו התוכן: נתיב ניווט,
 // הירו (רק לשיעורים בלי HTML משלהם), תוכן השיעור, וכפתור "סמן כהושלם".
 // lessons: [{ slug, title, locked }]. prev/next: { slug, title } או null.
+// html: תוכן שיעור HTML. הוא מוצג כאן (ולא כ-child) כדי שהמעטפת תקבל מה-iframe את ההודעות
+// lesson-progress ו-lesson-complete, ותסמן את השיעור כהושלם אוטומטית כשכל תרגילי החובה נפתרו.
 const RING_C = 2 * Math.PI * 31; // היקף הטבעת (r = 31)
 
 function Check({ size = 18, stroke = 3 }) {
@@ -31,19 +34,36 @@ function ringTexts(done, total) {
   return [done === 1 ? "התחלה טובה!" : "ממשיכים יפה!", note];
 }
 
-export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, children }) {
+export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, children }) {
   const progress = useProgress();
   const slugs = lessons.map((l) => l.slug);
   const idx = slugs.indexOf(currentSlug);
   const total = slugs.length;
   const done = countDone(progress, course.id, slugs);
   const isDone = lessonStatus(progress, course.id, currentSlug) === "done";
+  const isAutoDone = isDone && isAuto(progress, course.id, currentSlug);
+  // תרגילי החובה בשיעור הנוכחי, כפי שהשיעור דיווח. נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
+  const [exercises, setExercises] = useState(null);
+  const exerciseProgress = exercises?.slug === currentSlug ? exercises : null;
   const ringOffset = total > 0 ? RING_C * (1 - done / total) : RING_C;
   const [ringLabel, ringNote] = ringTexts(done, total);
 
   useEffect(() => {
     markSeen(course.id, currentSlug);
   }, [course.id, currentSlug]);
+
+  // הודעות מהשיעור (כבר אומתו ב-LessonHtmlFrame לפי event.source). ה-slug נלקח מהעמוד ולא מההודעה.
+  function handleLessonMessage(data) {
+    if (data.type === "lesson-progress") {
+      const { done, total } = data;
+      if (Number.isInteger(done) && Number.isInteger(total) && total > 0 && done >= 0 && done <= total) {
+        setExercises({ slug: currentSlug, done, total });
+      }
+    } else if (data.type === "lesson-complete") {
+      // שיעור שכבר סומן (ידנית או אוטומטית) נשאר כמו שהוא.
+      if (!isDone) setDone(course.id, currentSlug, true, true);
+    }
+  }
 
   // בטעינה: גוללים את רשימת השיעורים (ורק אותה) כך שהשיעור הנוכחי יהיה במרכז.
   const listRef = useRef(null);
@@ -190,11 +210,25 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           )}
 
           <section id="lesson" className="lx-content">
-            {children}
+            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} /> : children}
           </section>
 
           <section className="lx-complete">
-            <span className="lx-complete__q">סיימתם את השיעור?</span>
+            <div className="lx-complete__info">
+              <span className="lx-complete__q">סיימתם את השיעור?</span>
+              {isAutoDone ? (
+                <span className="lx-complete__status is-auto" role="status">
+                  כל תרגילי החובה נפתרו, והשיעור סומן כהושלם אוטומטית.
+                </span>
+              ) : (
+                exerciseProgress &&
+                !isDone && (
+                  <span className="lx-complete__status" role="status">
+                    תרגילי חובה שנפתרו: {exerciseProgress.done} מתוך {exerciseProgress.total}
+                  </span>
+                )
+              )}
+            </div>
             <div className="lx-complete__actions">
               {prev && (
                 <a href={`/courses/${course.id}/${prev.slug}`} className="lx-ghost">
@@ -208,7 +242,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
                 onClick={() => setDone(course.id, currentSlug, !isDone)}
               >
                 <Check size={20} stroke={2.6} />
-                <span>{isDone ? "הושלם" : "סמן כהושלם"}</span>
+                <span>{isDone ? (isAutoDone ? "הושלם אוטומטית" : "הושלם") : "סמן כהושלם"}</span>
               </button>
             </div>
           </section>

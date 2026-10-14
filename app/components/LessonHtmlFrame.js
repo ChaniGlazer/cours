@@ -24,21 +24,35 @@ const LAYOUT_RESET =
   "<style>html,body{width:100%;max-width:none!important;margin-left:0!important;margin-right:0!important;overflow-y:hidden!important}" +
   "body>*{max-width:none!important}" + HIDE_INNER_CHROME + "</style>";
 
+// הודעות נוספות מהשיעור (למשל lesson-progress ו-lesson-complete) מועברות להורה ב-prop onMessage.
+// ה-origin של ה-iframe הוא "null" (sandbox בלי allow-same-origin), ולכן הזהות נבדקת לפי event.source בלבד.
 // כל השיעורים (בכל הקורסים) מוצגים בעיצוב הכהה האחיד של האתר: הצבעים מוחלפים בזמן ההצגה בלבד.
-export default function LessonHtmlFrame({ html }) {
+export default function LessonHtmlFrame({ html, onMessage }) {
   const iframeRef = useRef(null);
+  const onMessageRef = useRef(onMessage);
   const [height, setHeight] = useState(600);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
   const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT, [html]);
 
+  // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {
-    function onMessage(e) {
+    onMessageRef.current = onMessage;
+  }, [onMessage]);
+
+  useEffect(() => {
+    function handleMessage(e) {
       if (e.source !== iframeRef.current?.contentWindow) return;
-      if (e.data?.type === "lesson-height" && e.data.h > 0) setHeight(e.data.h);
+      const data = e.data;
+      if (!data || typeof data !== "object") return;
+      if (data.type === "lesson-height") {
+        if (data.h > 0) setHeight(data.h);
+        return;
+      }
+      onMessageRef.current?.(data);
     }
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   return (

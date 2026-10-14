@@ -3,7 +3,8 @@
 import { useMemo, useSyncExternalStore } from "react";
 
 // התקדמות בקורסים נשמרת ב-localStorage של הדפדפן (אין עדיין טבלת התקדמות במסד):
-// { [courseId]: { done: [lessonSlug], seen: [lessonSlug] } }
+// { [courseId]: { done: [lessonSlug], seen: [lessonSlug], auto: [lessonSlug] } }
+// auto = שיעורים שסומנו כהושלמו אוטומטית (השיעור עצמו דיווח שכל תרגילי החובה הושלמו).
 const KEY = "course-progress-v1";
 const EVT = "course-progress-change";
 
@@ -44,7 +45,8 @@ function write(next) {
   }
 }
 
-function update(courseId, slug, field, on) {
+// changes: { [field]: boolean } - כל השדות נכתבים יחד, בכתיבה אחת ובאירוע אחד.
+function update(courseId, slug, changes) {
   let all = {};
   try {
     all = JSON.parse(read()) || {};
@@ -52,19 +54,28 @@ function update(courseId, slug, field, on) {
     all = {};
   }
   const entry = all[courseId] || { done: [], seen: [] };
-  const list = new Set(entry[field] || []);
-  if (on) list.add(slug);
-  else list.delete(slug);
-  all[courseId] = { ...entry, [field]: [...list] };
+  const next = { ...entry };
+  for (const [field, on] of Object.entries(changes)) {
+    const list = new Set(entry[field] || []);
+    if (on) list.add(slug);
+    else list.delete(slug);
+    next[field] = [...list];
+  }
+  all[courseId] = next;
   write(all);
 }
 
 export function markSeen(courseId, slug) {
-  update(courseId, slug, "seen", true);
+  update(courseId, slug, { seen: true });
 }
 
-export function setDone(courseId, slug, on) {
-  update(courseId, slug, "done", on);
+// auto = true רק כשהשיעור עצמו דיווח שכל תרגילי החובה הושלמו. סימון או ביטול ידני תמיד מאפס אותו.
+export function setDone(courseId, slug, on, auto = false) {
+  update(courseId, slug, { done: on, auto: on && auto });
+}
+
+export function isAuto(progress, courseId, slug) {
+  return !!progress[courseId]?.auto?.includes(slug) && !!progress[courseId]?.done?.includes(slug);
 }
 
 // "done" | "seen" | "new"
