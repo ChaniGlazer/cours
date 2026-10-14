@@ -20,6 +20,17 @@ const HEIGHT_SCRIPT =
   "addEventListener('load',send);addEventListener('resize',send);" +
   "if(window.ResizeObserver){new ResizeObserver(send).observe(document.documentElement);}" +
   "setInterval(send,700);})();</script>";
+// reportProgress(done, total, complete) - הפונקציה המשותפת שכל שיעור קורא לה בנקודות שבהן תרגיל חובה הושלם.
+// כותבים אותה כאן (ולא בכל שיעור) כדי שיהיה מקור אחד: שיעור רק קורא לה, והיא שולחת להורה lesson-progress
+// כשההתקדמות משתנה, ו-lesson-complete פעם אחת בלבד (כש-done >= total, או כש-complete === true).
+// ה-slug לא נשלח, כי ההורה כבר יודע איזה שיעור הוא מציג. השיעורים קוראים לה רק אם היא קיימת, כך שקובץ שנפתח לבד לא נשבר.
+const REPORT_SCRIPT =
+  "<script>(function(){var last=-1,sent=false;" +
+  "window.reportProgress=function(done,total,complete){" +
+  "done=Number(done);total=Number(total);if(!(total>0)||!(done>=0))return;if(done>total)done=total;" +
+  "if(done!==last){last=done;parent.postMessage({type:'lesson-progress',done:done,total:total},'*');}" +
+  "if(!sent&&(complete===undefined?done>=total:complete===true)){sent=true;parent.postMessage({type:'lesson-complete'},'*');}" +
+  "};})();</script>";
 const LAYOUT_RESET =
   "<style>html,body{width:100%;max-width:none!important;margin-left:0!important;margin-right:0!important;overflow-y:hidden!important}" +
   "body>*{max-width:none!important}" + HIDE_INNER_CHROME + "</style>";
@@ -33,7 +44,7 @@ export default function LessonHtmlFrame({ html, onMessage }) {
   const [height, setHeight] = useState(600);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
-  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT, [html]);
+  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT, [html]);
 
   // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {

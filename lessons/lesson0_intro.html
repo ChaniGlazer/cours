@@ -309,6 +309,16 @@ forward()</div>
 <script>
 window.lessonProgress = { levels: {}, bestL3: false, pred: false };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: שלוש רמות הרובוט ושאלת החיזוי. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, done = p.pred ? 1 : 0;
+  for (var i = 0; i < 3; i++) { if (p.levels[i]) done++; }
+  window.reportProgress(done, 4);
+}
+reportLessonProgress();
+
 function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -420,6 +430,7 @@ function simulate(level, cmds) {
       running = false; renderProg(-1);
       if (res.status === "win") {
         window.lessonProgress.levels[lvl] = true;
+        reportLessonProgress();
         var shortest = cmds.length <= L.best;
         if (lvl === 2 && shortest) window.lessonProgress.bestL3 = true;
         setMsg("🎉 הגיע לכוכב! התוכנית שלך: " + cmds.length + " הוראות" + (shortest ? " — הכי קצר שאפשר!" : ". אפשר לנסות בפחות הוראות?"), "ok");
@@ -488,12 +499,14 @@ function simulate(level, cmds) {
     var b = document.createElement("button");
     b.type = "button"; b.className = "q-opt"; b.textContent = o.t;
     b.addEventListener("click", function () {
-      btns.forEach(function (x) { x.disabled = true; });
-      if (o.ok) { b.classList.add("right"); fb.className = "q-fb ok"; fb.textContent = "נכון! שני צעדים קדימה (למעלה), פנייה ימינה, וצעד אחד — לכיוון ימין."; window.lessonProgress.pred = true; }
-      else {
-        b.classList.add("wrong");
-        btns.forEach(function (x) { if (x.textContent === "שתי משבצות למעלה ומשבצת אחת ימינה") x.classList.add("right"); });
-        fb.className = "q-fb no"; fb.textContent = "לא בדיוק. עקבי אחרי ההוראות לפי הסדר: שני צעדים למעלה, ואז פנייה ימינה, ואז צעד אחד.";
+      if (o.ok) {
+        btns.forEach(function (x) { x.disabled = true; });
+        b.classList.add("right"); fb.className = "q-fb ok"; fb.textContent = "נכון! שני צעדים קדימה (למעלה), פנייה ימינה, וצעד אחד — לכיוון ימין."; window.lessonProgress.pred = true;
+        reportLessonProgress();
+      } else {
+        /* תשובה שגויה נסגרת, והשאר נשארות פתוחות כדי לנסות שוב */
+        b.disabled = true; b.classList.add("wrong");
+        fb.className = "q-fb no"; fb.textContent = "לא בדיוק. עקבי אחרי ההוראות לפי הסדר: שני צעדים למעלה, ואז פנייה ימינה, ואז צעד אחד. נסי שוב.";
       }
     });
     btns.push(b); box.appendChild(b);

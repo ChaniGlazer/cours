@@ -45,6 +45,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   // תרגילי החובה בשיעור הנוכחי, כפי שהשיעור דיווח. נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
   const [exercises, setExercises] = useState(null);
   const exerciseProgress = exercises?.slug === currentSlug ? exercises : null;
+  // lesson-complete מטופל פעם אחת בלבד לכל שיעור.
+  const completeHandledRef = useRef(null);
   const ringOffset = total > 0 ? RING_C * (1 - done / total) : RING_C;
   const [ringLabel, ringNote] = ringTexts(done, total);
 
@@ -60,6 +62,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
         setExercises({ slug: currentSlug, done, total });
       }
     } else if (data.type === "lesson-complete") {
+      if (completeHandledRef.current === currentSlug) return;
+      completeHandledRef.current = currentSlug;
       // שיעור שכבר סומן (ידנית או אוטומטית) נשאר כמו שהוא.
       if (!isDone) setDone(course.id, currentSlug, true, true);
     }

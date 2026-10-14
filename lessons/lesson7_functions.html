@@ -570,6 +570,16 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 var progress = { machine: false, pizza: false, pr: false, puzzle: {}, scope: {}, det: { right: 0, done: 0, total: 5 } };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: שלושת פאזלי ההרכבה. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var done = 0;
+  for (var k = 0; k < 3; k++) { if (progress.puzzle[k]) done++; }
+  window.reportProgress(done, 3);
+}
+reportLessonProgress();
+
 /* ---------- scroll progress ---------- */
 (function () {
   var bar = $("scroll-bar");
@@ -752,7 +762,7 @@ var progress = { machine: false, pizza: false, pr: false, puzzle: {}, scope: {},
     if (chosen.length < p.lines.length) { fb.textContent = "עדיין חסרות שורות."; fb.className = "fb wrong"; return; }
     var good = p.ok.some(function (o) { return o.join(",") === chosen.join(","); });
     if (good) {
-      fb.textContent = "מושלם! התוכנית עובדת."; fb.className = "fb correct"; progress.puzzle[cur] = true;
+      fb.textContent = "מושלם! התוכנית עובדת."; fb.className = "fb correct"; progress.puzzle[cur] = true; reportLessonProgress();
       var o = $("puz-out"); o.hidden = false; o.innerHTML = '<span class="dim">$ python main.py</span>\n<span class="ok">' + esc(p.out) + '</span>';
     } else {
       fb.textContent = "הסדר עדיין לא נכון. רמז: קודם מגדירים, ורק אחר כך קוראים לפונקציה."; fb.className = "fb wrong";

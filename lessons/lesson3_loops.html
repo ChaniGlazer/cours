@@ -1021,6 +1021,16 @@ while air &lt; 10:
 <script>
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 0, quizCorrect: 0, quizTotal: 0 };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
+}
+reportLessonProgress();
+
 /* ---------- diff comparison tabs ---------- */
 (function () {
   var tabs = document.querySelectorAll(".diff-tab");
@@ -1411,7 +1421,7 @@ window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: fal
     var total = 0;
     for (var i = 0; i < n; i++) total += i;
     outEl.textContent = "total = " + total;
-    if (total === 45) { setFeedback(fbEl, true, "בדיוק 45!"); window.lessonProgress.ex1 = true; }
+    if (total === 45) { setFeedback(fbEl, true, "בדיוק 45!"); window.lessonProgress.ex1 = true; reportLessonProgress(); }
     else setFeedback(fbEl, false, "עם N = " + n + ", total יוצא " + total + ". רוצות 45.");
   });
 
@@ -1429,7 +1439,7 @@ window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: fal
     var target = [5, 9, 13, 17, 21];
     if (result.length === target.length && result.every(function (v, idx) { return v === target[idx]; })) {
       setFeedback(fbEl, true, "מדויק!");
-      window.lessonProgress.ex2 = true;
+      window.lessonProgress.ex2 = true; reportLessonProgress();
     } else {
       setFeedback(fbEl, false, "זה נותן: " + (result.join(" ") || "כלום") + ". רוצות: 5 9 13 17 21.");
     }
@@ -1448,7 +1458,7 @@ window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: fal
     var target = [1, 2, 4, 8, 16];
     if (result.length === target.length && result.every(function (v, idx) { return v === target[idx]; })) {
       setFeedback(fbEl, true, "יפה! כל סף בין 16 ל-31 עובד.");
-      window.lessonProgress.ex3 = true;
+      window.lessonProgress.ex3 = true; reportLessonProgress();
     } else {
       setFeedback(fbEl, false, "זה נותן: " + (result.join(" ") || "כלום") + ". רוצות: 1 2 4 8 16.");
     }
@@ -1466,7 +1476,7 @@ window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: fal
     outEl.textContent = result.join(" ");
     if (guess === result.length) {
       setFeedback(fbEl, true, "נכון! " + result.length + " פעמים.");
-      window.lessonProgress.ex4 = true;
+      window.lessonProgress.ex4 = true; reportLessonProgress();
     } else {
       setFeedback(fbEl, false, "לא בדיוק — זה רץ " + result.length + " פעמים.");
     }

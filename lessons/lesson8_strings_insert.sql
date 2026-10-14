@@ -1,5 +1,4 @@
 DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='strings';
-UPDATE lessons SET position = 9, title = 'שיעור 9 - מודולים (import)' WHERE course_id='python-ai-era' AND slug='modules';
 INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('17063e3b94814268b8263564c907f06f', 'python-ai-era', 'strings', 'שיעור 8 - מחרוזות (str)', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -678,7 +677,11 @@ function vw(){
 $(''vw-in'').oninput=vw;vw();
 
 // ---- exercises ----
-function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
+// דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
+var exSolved={};
+function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
+reportEx();
+function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
 chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim().replace(/[()]/g,'''')===''upper''},''ex1-feedback'',''נכון! upper() הופכת את כל האותיות לגדולות.'',''כמעט. איזו שיטה הופכת לאותיות גדולות? נסי בארגז השיטות למעלה.'');
 chk(''ex2-btn'',function(){return $(''ex2-in'').value.replace(/\s+/g,'''').replace(/"/g,"''")==="[''a'',''b'',''c'']"},''ex2-feedback'',''נכון! split מחזירה רשימה של מחרוזות.'',''לא בדיוק. split מחזירה רשימה, ולכן יש סוגריים מרובעים ומרכאות סביב כל איבר.'');
 })();

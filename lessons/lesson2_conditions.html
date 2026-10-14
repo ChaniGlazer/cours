@@ -322,6 +322,16 @@ else:
 <script>
 window.lessonProgress = { ex1: false, ex2: false, ex3: false };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-3. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
+}
+reportLessonProgress();
+
 /*PURE-START*/
 function evalPy(src, vars) {
   var s = String(src == null ? "" : src).trim();
@@ -542,11 +552,11 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
   function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "ex-fb " + (ok ? "ok" : "bad"); }
   $("ex1-check").addEventListener("click", function () {
     var r = checkCond($("ex1-in").value, "height", [[140, true], [150, true], [185, true], [139, false], [120, false], [100, false]]);
-    if (r.ok) { fb("ex1-fb", true, "נכון! התנאי עובד גם ב-140 בדיוק וגם מתחתיו ומעליו."); window.lessonProgress.ex1 = true; } else fb("ex1-fb", false, r.error);
+    if (r.ok) { fb("ex1-fb", true, "נכון! התנאי עובד גם ב-140 בדיוק וגם מתחתיו ומעליו."); window.lessonProgress.ex1 = true; reportLessonProgress(); } else fb("ex1-fb", false, r.error);
   });
   $("ex3-check").addEventListener("click", function () {
     var r = checkCond($("ex3-in").value, "num", [[10, true], [15, true], [20, true], [9, false], [21, false], [0, false], [100, false]]);
-    if (r.ok) { fb("ex3-fb", true, "מדויק! התנאי נכון בדיוק מ-10 עד 20."); window.lessonProgress.ex3 = true; } else fb("ex3-fb", false, r.error);
+    if (r.ok) { fb("ex3-fb", true, "מדויק! התנאי נכון בדיוק מ-10 עד 20."); window.lessonProgress.ex3 = true; reportLessonProgress(); } else fb("ex3-fb", false, r.error);
   });
   var opts = [
     { t: "A", ok: true }, { t: "B", ok: false }, { t: "A ו-B", ok: false }, { t: "C", ok: false }
@@ -557,12 +567,11 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
     var b = document.createElement("button");
     b.type = "button"; b.className = "q-opt"; b.textContent = o.t;
     b.addEventListener("click", function () {
-      btns.forEach(function (x) { x.disabled = true; });
-      if (o.ok) { b.classList.add("right"); fb("ex2-fb", true, "נכון! 7 גדול מ-5, אז נבחר A — ו-elif כבר לא נבדק."); window.lessonProgress.ex2 = true; }
+      if (o.ok) { btns.forEach(function (x) { x.disabled = true; }); b.classList.add("right"); fb("ex2-fb", true, "נכון! 7 גדול מ-5, אז נבחר A — ו-elif כבר לא נבדק."); window.lessonProgress.ex2 = true; reportLessonProgress(); }
       else {
-        b.classList.add("wrong");
-        btns.forEach(function (x) { if (x.textContent === "A") x.classList.add("right"); });
-        fb("ex2-fb", false, "לא בדיוק. התנאי הראשון (x > 5) נכון, אז נבחר A ופייתון עוצרת — היא לא בודקת את ה-elif.");
+        /* תשובה שגויה נסגרת, והשאר נשארות פתוחות כדי לנסות שוב */
+        b.disabled = true; b.classList.add("wrong");
+        fb("ex2-fb", false, "לא בדיוק. התנאי הראשון (x > 5) נכון, אז נבחר A ופייתון עוצרת — היא לא בודקת את ה-elif. נסי שוב.");
       }
     });
     btns.push(b); box.appendChild(b);

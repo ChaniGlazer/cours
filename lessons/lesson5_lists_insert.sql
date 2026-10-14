@@ -615,6 +615,16 @@ print(len(a))</div>
 <script>
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 2 };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
+}
+reportLessonProgress();
+
 /*PURE-START*/
 /* לוגיקת הבדיקה של התרגילים 1-4. פונקציות טהורות ללא DOM, מוכנות לעבור לשרת. */
 function pyRepr(v) {
@@ -955,7 +965,7 @@ function makeGuess(btnId, inputId, fbId, test, okText, badText) {
   function setFeedback(el, ok, text) { el.textContent = text; el.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
   function run(n, r, okText) {
     $("ex" + n + "-output").textContent = r.shown || "";
-    if (r.ok) { setFeedback($("ex" + n + "-feedback"), true, okText); window.lessonProgress["ex" + n] = true; }
+    if (r.ok) { setFeedback($("ex" + n + "-feedback"), true, okText); window.lessonProgress["ex" + n] = true; reportLessonProgress(); }
     else setFeedback($("ex" + n + "-feedback"), false, r.error);
   }
   $("ex1-check").addEventListener("click", function () { run(1, checkEx1($("ex1-i").value), "נכון! אפשר גם 2 וגם -1."); });

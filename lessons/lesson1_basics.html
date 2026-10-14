@@ -337,6 +337,16 @@ print(age + 1)</div>
 <script>
 window.lessonProgress = { first: false, ex1: false, ex2: false, ex3: false };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-3. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
+}
+reportLessonProgress();
+
 function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 function highlight(code) {
@@ -529,13 +539,13 @@ $("jump-to-exercises").addEventListener("click", function () {
     var m = /^(["'])(.*)\1$/.exec(v);
     if (!m) { out.textContent = "NameError"; fb("ex1-fb", false, "בלי מרכאות פייתון תחפש משתנה בשם הזה. טקסט כותבים בין מרכאות."); return; }
     out.textContent = m[2];
-    if (m[2] === "שלום עולם") { fb("ex1-fb", true, "מדויק!"); window.lessonProgress.ex1 = true; }
+    if (m[2] === "שלום עולם") { fb("ex1-fb", true, "מדויק!"); window.lessonProgress.ex1 = true; reportLessonProgress(); }
     else fb("ex1-fb", false, "יצא ״" + m[2] + "״. צריך בדיוק: שלום עולם.");
   });
   $("ex2-check").addEventListener("click", function () {
     var v = $("ex2-in").value.trim();
     if (!v) { fb("ex2-fb", false, "כתבי תשובה."); return; }
-    if (v === "8") { fb("ex2-fb", true, "נכון! x היה 5, ואז לקחו 5, הוסיפו 3 ושמו בחזרה: 8."); window.lessonProgress.ex2 = true; }
+    if (v === "8") { fb("ex2-fb", true, "נכון! x היה 5, ואז לקחו 5, הוסיפו 3 ושמו בחזרה: 8."); window.lessonProgress.ex2 = true; reportLessonProgress(); }
     else if (v === "5") fb("ex2-fb", false, "5 זה הערך הראשון, אבל השורה השנייה שינתה אותו.");
     else if (v === "3") fb("ex2-fb", false, "לא מחברים את המספרים הנפרדים — x = x + 3 לוקחת את הערך הנוכחי של x.");
     else fb("ex2-fb", false, "לא בדיוק. עקבי: x הוא 5, ואז x + 3 נכנס בחזרה לתוך x.");
@@ -543,7 +553,7 @@ $("jump-to-exercises").addEventListener("click", function () {
   $("ex3-check").addEventListener("click", function () {
     var v = $("ex3-in").value.trim();
     if (!v) { fb("ex3-fb", false, "כתבי משהו."); return; }
-    if (v === "int") { fb("ex3-fb", true, "נכון! int הופכת את הטקסט שהוקלד למספר, אז age + 1 מחברת."); window.lessonProgress.ex3 = true; }
+    if (v === "int") { fb("ex3-fb", true, "נכון! int הופכת את הטקסט שהוקלד למספר, אז age + 1 מחברת."); window.lessonProgress.ex3 = true; reportLessonProgress(); }
     else if (v === "float") fb("ex3-fb", false, "float עובדת, אבל תיתן 16.0. לגיל מתאימה int — מספר שלם.");
     else fb("ex3-fb", false, "input מחזירה טקסט. איזו פונקציה הופכת טקסט למספר שלם? (3 אותיות)");
   });

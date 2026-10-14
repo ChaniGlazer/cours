@@ -884,25 +884,15 @@ print(total)</div>
 <script>
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 2 };
 
-/* דיווח התקדמות לאתר שמציג את השיעור (ההורה של ה-iframe): lesson-progress בכל התקדמות,
-   ו-lesson-complete פעם אחת כשכל תרגילי החובה (1-4) הושלמו. תרגיל 5 ב-VS Code ולכן לא חובה.
-   כשהשיעור נפתח לבד (בלי הורה) לא נשלח כלום. */
-var LESSON_SLUG = "dicts";
-var REQUIRED_EXERCISES = ["ex1", "ex2", "ex3", "ex4"];
-var lessonCompleteSent = false;
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4 (תרגיל 5 ב-VS Code). */
 function reportLessonProgress() {
-  try {
-    if (window.parent === window) return;
-    var p = window.lessonProgress, done = 0;
-    for (var i = 0; i < REQUIRED_EXERCISES.length; i++) { if (p[REQUIRED_EXERCISES[i]]) done++; }
-    var total = REQUIRED_EXERCISES.length;
-    window.parent.postMessage({ type: "lesson-progress", slug: LESSON_SLUG, done: done, total: total }, "*");
-    if (done === total && !lessonCompleteSent) {
-      lessonCompleteSent = true;
-      window.parent.postMessage({ type: "lesson-complete", slug: LESSON_SLUG }, "*");
-    }
-  } catch (e) { /* ההורה לא זמין - ממשיכים בלי דיווח */ }
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
 }
+reportLessonProgress();
 
 /*PURE-START*/
 /* לוגיקת הבדיקה של תרגילים 1-4. פונקציות טהורות ללא DOM, מוכנות לעבור לשרת. */
@@ -1157,7 +1147,6 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
   $("ex2-check").addEventListener("click", function () { run(2, checkEx2($("ex2-guess").value), "נכון! שלושה מפתחות, ו-b הוא 5."); });
   $("ex3-check").addEventListener("click", function () { run(3, checkEx3($("ex3-m").value), "מדויק! get לא קורסת, והיא מחזירה את ברירת המחדל."); });
   $("ex4-check").addEventListener("click", function () { run(4, checkEx4($("ex4-m").value), "יפה! values נותנת רק את המחירים: 20."); });
-  reportLessonProgress();
 })();
 
 /* ---------- certificate download ---------- */

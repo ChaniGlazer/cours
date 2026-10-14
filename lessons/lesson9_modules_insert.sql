@@ -672,7 +672,11 @@ function pwMake(){var l=+$(''pw-len'').value,chars=''abcdefghijklmnopqrstuvwxyzA
 $(''pw-go'').onclick=pwMake;pwCode();
 
 // ---- exercises ----
-function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
+// דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
+var exSolved={};
+function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
+reportEx();
+function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
 chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim()===''import''&&$(''ex1-b'').value.trim()===''randint''},''ex1-feedback'',''נכון! import random ואז random.randint.'',''כמעט. מה מביאים בשורה הראשונה, ואיזה כלי מחזיר מספר שלם אקראי?'');
 chk(''ex2-btn'',function(){var v=$(''ex2-in'').value.trim();return v===''5.0''},''ex2-feedback'',''נכון! sqrt(16) היא 4.0, ועוד 1 זה 5.0.'',''לא בדיוק. שימי לב ש-sqrt מחזירה מספר עשרוני.'');
 })();

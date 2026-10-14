@@ -587,6 +587,16 @@ for i in range(5):
 <script>
 window.lessonProgress = { ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 0, quizCorrect: 0, quizTotal: 0, labGoals: 0, labGoalsTotal: 5 };
 
+/* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4. */
+function reportLessonProgress() {
+  if (!window.reportProgress) return;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4"], done = 0;
+  for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
+  window.reportProgress(done, keys.length);
+}
+reportLessonProgress();
+
 /*PURE-START*/
 function evalPy(src, vars) {
   var s = String(src == null ? "" : src).trim();
@@ -1011,7 +1021,7 @@ function renderCells(container, arr, opts) {
   function judge(prefix, res, target, key, okText) {
     if (!res.ok) { fb(prefix + "-fb", false, res.error); $(prefix + "-out").textContent = ""; return; }
     show(prefix + "-out", res.out);
-    if (sameArr(res.out, target)) { fb(prefix + "-fb", true, okText); window.lessonProgress[key] = true; }
+    if (sameArr(res.out, target)) { fb(prefix + "-fb", true, okText); window.lessonProgress[key] = true; reportLessonProgress(); }
     else fb(prefix + "-fb", false, "יצא " + fmt(res.out) + ". רוצות " + fmt(target) + ".");
   }
 
