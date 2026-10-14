@@ -1,9 +1,10 @@
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('33d54c53e381471aa2d56a927f6e2f66','python-ai-era','short-for-loops','שיעור 3 - for מקוצר בשורה אחת','','','<!DOCTYPE html>
+DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='short-for-loops';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('33d54c53e381471aa2d56a927f6e2f66', 'python-ai-era', 'short-for-loops', 'שיעור 4 - for מקוצר בשורה אחת', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>for מקוצר בפייתון — שיעור שני</title>
+<title>for מקוצר בפייתון — שיעור רביעי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -255,7 +256,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">שיעור שני · פייתון · מסלול מחשבים</div>
+    <div class="eyebrow">שיעור רביעי · פייתון · מסלול מחשבים</div>
     <h1>אותה לולאה,<br><span class="accent-short">בשורה אחת</span></h1>
     <p class="hero-sub">בשיעור הקודם למדתן for ו-while. עכשיו נלמד לכתוב לולאה קצרה — בדיוק הסגנון שתפגשו כשה-AI כותב לכן קוד בפייתון, ושמתכנתות מנוסות כותבות כל הזמן.</p>
 
@@ -1197,4 +1198,4 @@ function renderCells(container, arr, opts) {
 </script>
 </body>
 </html>
-',3,'2026-10-05T16:51:14.916Z');
+', 4, '2026-10-05T16:51:14.916Z');

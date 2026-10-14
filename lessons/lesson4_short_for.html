@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for מקוצר בפייתון — שיעור רביעי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12102A;
+    --bg-panel: #1D1A3D;
+    --bg-panel-2: #262148;
+    --ink: #F5F3FF;
+    --ink-dim: #B4AEDB;
+    --ink-faint: #6F699E;
+    --for: #FFB84D;
+    --for-soft: #4A3A1C;
+    --short: #4DD4F0;
+    --short-soft: #14394A;
+    --pink: #FF5C8A;
+    --pink-soft: #4A1F30;
+    --success: #5CE1A6;
+    --success-soft: #163B30;
+    --danger: #FF6B6B;
+    --danger-soft: #3E1D22;
+    --line: rgba(245,243,255,0.10);
+    --line-strong: rgba(245,243,255,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif;
+    --sans: "Assistant", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(620px 420px at 12% -5%, rgba(77,212,240,0.11), transparent 60%),
+      radial-gradient(620px 420px at 100% 22%, rgba(255,184,77,0.09), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--short); color: #04202a; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+  p { color: var(--ink-dim); margin: 0; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  code, .mono { font-family: var(--mono); }
+  .mono { direction: ltr; unicode-bidi: isolate; }
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  section { padding: 66px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; }
+  .eyebrow.short-c { color: var(--short); }
+  .eyebrow.for-c { color: var(--for); }
+  .eyebrow.pink-c { color: var(--pink); }
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
+  .lede { font-size: 18px; margin-top: 14px; }
+
+  /* ---------- name bar ---------- */
+  .name-bar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .name-bar-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .name-bar-inner label { font-size: 13.5px; color: var(--ink-dim); flex-shrink: 0; }
+  .name-bar-input {
+    flex: 1; min-width: 160px; max-width: 260px; font-family: var(--sans); font-size: 15px;
+    background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink); padding: 9px 12px;
+  }
+  .name-bar-input:focus { outline: none; border-color: var(--short); }
+  .name-bar-jump {
+    margin-inline-start: auto; font-family: var(--display); font-weight: 700; font-size: 13.5px;
+    color: var(--short); background: transparent; border: 1px solid var(--short); border-radius: 100px; padding: 8px 16px; white-space: nowrap;
+  }
+  .name-bar-jump:hover { background: var(--short-soft); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 74px 0 56px; text-align: center; }
+  .hero .eyebrow { display: flex; justify-content: center; }
+  .hero h1 { font-size: clamp(2.2rem, 7vw, 3.3rem); line-height: 1.16; }
+  .accent-short { color: var(--short); }
+  .hero-sub { max-width: 48ch; margin: 18px auto 0; font-size: 18.5px; }
+
+  .race { margin-top: 38px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: right; }
+  @media (max-width: 640px) { .race { grid-template-columns: 1fr; } }
+  .race .cells { margin-top: 14px; }
+  .big-btn {
+    margin-top: 26px; font-family: var(--display); font-weight: 800; font-size: 18px; color: #04202a; background: var(--short);
+    border: none; border-radius: 100px; padding: 15px 38px; box-shadow: 0 8px 0 #1f8aa3, 0 10px 24px rgba(77,212,240,0.22);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .big-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #1f8aa3, 0 4px 10px rgba(77,212,240,0.2); }
+  .big-btn:disabled { opacity: 0.6; }
+  .race-status { margin-top: 18px; min-height: 26px; color: var(--ink); font-size: 16px; font-weight: 600; }
+
+  /* ---------- cards / code ---------- */
+  .code-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .code-card-label { font-size: 13.5px; font-weight: 700; color: var(--ink-faint); padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .code-card-label.amber { color: var(--for); }
+  .code-card-label.cyan { color: var(--short); }
+  .code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 18px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14.5px; line-height: 1.75; }
+  .tok-kw { color: #C792EA; } .tok-str { color: #A8D48A; } .tok-num { color: #F5C97B; } .tok-fn { color: #7EC1F5; }
+
+  .panel { margin-top: 32px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .panel-pad { padding: 22px 24px; }
+  .panel-bar { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .panel-bar label { font-weight: 700; font-size: 15px; }
+  .panel-foot { padding: 14px 24px 18px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-dim); min-height: 52px; }
+
+  .codeblock { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2; padding: 14px 0; background: rgba(0,0,0,0.2); }
+  .codeblock .line { padding: 1px 22px; white-space: pre; border-radius: 6px; transition: background 0.15s ease; }
+  .codeblock .line.active { background: var(--for-soft); box-shadow: inset 3px 0 0 var(--for); }
+  .codeblock.single { padding: 16px 22px; white-space: pre-wrap; word-break: break-word; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    font-family: var(--sans); font-weight: 700; font-size: 14px; color: var(--ink); background: var(--bg-panel-2);
+    border: 1px solid var(--line-strong); border-radius: 100px; padding: 9px 18px; transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+  .btn:hover { border-color: var(--ink-dim); }
+  .btn:active { transform: scale(0.96); }
+  .btn.primary { background: var(--short); border-color: var(--short); color: #04202a; }
+  .btn.amber { background: var(--for); border-color: var(--for); color: #1a1204; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  input[type="number"], input[type="text"], select, textarea {
+    font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong);
+    border-radius: 8px; color: var(--ink); padding: 8px 10px;
+  }
+  input[type="range"] { accent-color: var(--short); flex: 1; min-width: 140px; }
+  .val-badge { font-family: var(--mono); font-weight: 700; font-size: 18px; color: var(--short); min-width: 26px; text-align: center; }
+
+  /* ---------- list cells ---------- */
+  .cells { display: flex; flex-wrap: wrap; gap: 8px; direction: ltr; min-height: 58px; align-items: flex-start; }
+  .cellw { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .cell {
+    min-width: 46px; height: 46px; padding: 0 9px; border-radius: 12px; background: var(--short-soft); border: 1px solid var(--short); color: var(--short);
+    display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; font-size: 15px;
+  }
+  .cell.amber { background: var(--for-soft); border-color: var(--for); color: var(--for); }
+  .cell.pink { background: var(--pink-soft); border-color: var(--pink); color: var(--pink); }
+  .cell.neutral { background: var(--bg-panel-2); border-color: var(--line-strong); color: var(--ink-dim); }
+  .cell.fail { background: transparent; border: 1px dashed var(--line-strong); color: var(--ink-faint); text-decoration: line-through; opacity: 0.6; }
+  .cell.pop { animation: pop 0.32s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes pop { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .cell-idx { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+  .empty-note { color: var(--ink-faint); font-style: italic; font-size: 14px; align-self: center; direction: rtl; }
+  .mini-label { font-size: 13px; font-weight: 700; color: var(--ink-faint); margin: 16px 0 8px; }
+
+  .var-line { font-family: var(--mono); font-size: 15px; direction: ltr; text-align: left; margin-bottom: 14px; color: var(--ink-faint); }
+  .var-line b { color: var(--for); }
+
+  /* ---------- anatomy ---------- */
+  .anat .p1 { color: var(--pink); } .anat .p2 { color: var(--for); } .anat .p3 { color: var(--short); }
+  .anat [data-p] { cursor: pointer; border-radius: 4px; transition: opacity 0.2s ease, background 0.2s ease; }
+  .anat[data-active="1"] .p2, .anat[data-active="1"] .p3 { opacity: 0.35; }
+  .anat[data-active="2"] .p1, .anat[data-active="2"] .p3 { opacity: 0.35; }
+  .anat[data-active="3"] .p1, .anat[data-active="3"] .p2 { opacity: 0.35; }
+  .anat[data-active="1"] .p1 { background: var(--pink-soft); outline: 1px solid var(--pink); }
+  .anat[data-active="2"] .p2 { background: var(--for-soft); outline: 1px solid var(--for); }
+  .anat[data-active="3"] .p3 { background: var(--short-soft); outline: 1px solid var(--short); }
+  .anat-chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 24px 0; }
+  .chip { font-weight: 700; font-size: 13.5px; border-radius: 100px; padding: 8px 15px; background: transparent; border: 2px solid; }
+  .chip.c1 { color: var(--pink); border-color: var(--pink); } .chip.c1.on { background: var(--pink-soft); }
+  .chip.c2 { color: var(--for); border-color: var(--for); } .chip.c2.on { background: var(--for-soft); }
+  .chip.c3 { color: var(--short); border-color: var(--short); } .chip.c3.on { background: var(--short-soft); }
+  .anat-read { margin-top: 22px; background: var(--short-soft); border-inline-start: 3px solid var(--short); border-radius: 12px; padding: 16px 20px; font-size: 16px; color: var(--ink); }
+
+  /* ---------- segmented ---------- */
+  .seg { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+  .seg button { font-family: var(--display); font-weight: 800; font-size: 14px; padding: 9px 20px; border-radius: 100px; border: 2px solid var(--line-strong); background: transparent; color: var(--ink-dim); }
+  .seg button.on.a { border-color: var(--short); color: var(--short); background: var(--short-soft); }
+  .seg button.on.b { border-color: var(--pink); color: var(--pink); background: var(--pink-soft); }
+  .hl-short { color: var(--short); background: var(--short-soft); border-radius: 4px; padding: 0 3px; }
+  .hl-pink { color: var(--pink); background: var(--pink-soft); border-radius: 4px; padding: 0 3px; }
+
+  .callout { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--for); border-radius: 14px; padding: 16px 20px; font-size: 15px; }
+  .callout strong { color: var(--ink); }
+  .goal-box { margin-top: 18px; background: var(--for-soft); border: 1px dashed var(--for); border-radius: 14px; padding: 14px 18px; }
+  .goal-box .mini-label { margin-top: 0; color: var(--for); }
+  .status-ok { color: var(--success); font-weight: 700; }
+  .status-no { color: var(--danger); font-weight: 700; }
+
+  /* ---------- quiz ---------- */
+  .q-card { margin-top: 20px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+  .q-title { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); margin-bottom: 10px; }
+  .q-card pre { direction: ltr; text-align: left; margin: 0 0 14px; background: rgba(0,0,0,0.25); border-radius: 10px; padding: 14px 16px; font-family: var(--mono); font-size: 14.5px; line-height: 1.7; overflow-x: auto; }
+  .q-opts { display: grid; gap: 10px; }
+  .q-opt { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14px; background: var(--bg-panel-2); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 12px; padding: 12px 14px; }
+  .q-opt:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .q-opt.right { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+  .q-opt.wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
+  .q-opt:disabled { cursor: default; }
+  .q-fb { margin-top: 12px; font-size: 14.5px; min-height: 22px; }
+
+  /* ---------- exercises ---------- */
+  .exercises-banner { margin-bottom: 8px; background: linear-gradient(135deg, var(--short-soft), var(--for-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px; }
+  .exercises-banner .badge { display: inline-block; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--bg); background: var(--short); border-radius: 100px; padding: 4px 12px; margin-bottom: 10px; }
+  .exercises-banner h2 { font-size: clamp(1.7rem, 4.5vw, 2.3rem); }
+  .exercises-banner p { margin-top: 10px; font-size: 16px; color: var(--ink); }
+  .exercise-card { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--short); border-radius: 16px; padding: 22px 24px; }
+  .exercise-num { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+  .exercise-task { margin: 8px 0 14px; font-weight: 600; color: var(--ink); font-size: 15.5px; }
+  .exercise-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2.1; background: rgba(0,0,0,0.22); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; overflow-x: auto; }
+  .code-in { direction: ltr; text-align: left; width: 150px; padding: 4px 8px; font-size: 14px; color: var(--short); }
+  .code-in.num { width: 56px; text-align: center; }
+  .exercise-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .exercise-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .exercise-feedback.correct { color: var(--success); }
+  .exercise-feedback.wrong { color: var(--danger); }
+  .exercise-output { margin-top: 12px; font-family: var(--mono); font-size: 13.5px; direction: ltr; text-align: left; background: rgba(0,0,0,0.18); border-radius: 8px; padding: 10px 12px; color: var(--ink-dim); min-height: 20px; }
+  .exercise-hint { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13px; color: var(--ink-dim); background: rgba(0,0,0,0.18); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.7; }
+  .exercise-note { font-size: 13.5px; color: var(--ink-faint); font-style: italic; margin: 0 0 10px; }
+  .exercise-answer { width: 100%; direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; line-height: 1.7; background: rgba(0,0,0,0.22); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 12px 14px; resize: vertical; }
+  .exercise-divider { margin-top: 40px; display: flex; align-items: center; gap: 14px; color: var(--ink-faint); font-family: var(--mono); font-size: 13px; }
+  .exercise-divider::before, .exercise-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .detective-head { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; }
+  .detective-out { direction: ltr; text-align: left; font-family: var(--mono); font-size: 15px; color: var(--for); background: rgba(0,0,0,0.25); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+
+  /* ---------- certificate ---------- */
+  .certificate-box { margin-top: 30px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 26px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cert-name-display { font-size: 15px; color: var(--ink-dim); }
+  .cert-name-display strong { color: var(--short); }
+  .cert-status { width: 100%; margin: 0; font-size: 14.5px; color: var(--ink-dim); min-height: 22px; }
+  .cert-status.correct { color: var(--success); }
+  .cert-status.wrong { color: var(--danger); }
+  .cert-fallback { margin-top: 16px; }
+  .cert-fallback-note { font-size: 13.5px; color: var(--ink-faint); margin: 0 0 10px; }
+  .cert-fallback-text { width: 100%; direction: ltr; text-align: left; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+
+  footer { padding: 48px 0 76px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="name-bar">
+  <div class="wrap name-bar-inner">
+    <label for="cert-name">מי כותבת? רשמו את השם כאן — הוא יופיע בקובץ שתורידו בסוף:</label>
+    <input type="text" id="cert-name" class="name-bar-input" placeholder="השם שלך">
+    <button type="button" id="jump-to-exercises" class="name-bar-jump">לתרגילים ⬇</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">שיעור רביעי · פייתון · מסלול מחשבים</div>
+    <h1>אותה לולאה,<br><span class="accent-short">בשורה אחת</span></h1>
+    <p class="hero-sub">בשיעור הקודם למדתן for ו-while. עכשיו נלמד לכתוב לולאה קצרה — בדיוק הסגנון שתפגשו כשה-AI כותב לכן קוד בפייתון, ושמתכנתות מנוסות כותבות כל הזמן.</p>
+
+    <div class="race">
+      <div>
+        <div class="code-card">
+          <div class="code-card-label amber">הדרך הארוכה · 3 שורות</div>
+          <pre><code class="hl">squares = []
+for i in range(5):
+    squares.append(i * i)</code></pre>
+        </div>
+        <div class="cells" id="race-long-out"></div>
+      </div>
+      <div>
+        <div class="code-card">
+          <div class="code-card-label cyan">הדרך הקצרה · שורה אחת</div>
+          <pre><code class="hl">squares = [i * i for i in range(5)]</code></pre>
+        </div>
+        <div class="cells" id="race-short-out"></div>
+      </div>
+    </div>
+    <button class="big-btn" id="race-btn" type="button">🏁 הריצי את שניהם</button>
+    <div class="race-status" id="race-status"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== PRIMER: LISTS ========== -->
+  <section id="primer">
+    <div class="wrap">
+      <div class="eyebrow">קודם כל</div>
+      <h2 class="section-title">רשימה — שורה של קופסאות</h2>
+      <p class="lede">כדי ללמוד for מקוצר צריך להכיר רשימה: כמה ערכים בתוך סוגריים מרובעים <span class="mono">[ ]</span>. לכל קופסה יש מספר סידורי שמתחיל ב-0 — בדיוק כמו ב-range. נסו להוסיף כמה מספרים.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="pl-input">הוסיפי מספר:</label>
+          <input type="number" id="pl-input" style="width:90px">
+          <button class="btn primary" id="pl-add" type="button">append</button>
+          <button class="btn" id="pl-reset" type="button">אפסי</button>
+        </div>
+        <div class="codeblock single" id="pl-code"></div>
+        <div class="panel-pad"><div class="cells" id="pl-cells"></div></div>
+        <div class="panel-foot" id="pl-note">המספר הקטן מתחת לכל קופסה הוא האינדקס שלה. הקופסה הראשונה היא תמיד 0.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LONG WAY ========== -->
+  <section id="long-way">
+    <div class="wrap">
+      <div class="eyebrow for-c">הדרך הארוכה</div>
+      <h2 class="section-title">בונות רשימה עם for + append</h2>
+      <p class="lede">רוצות רשימה של ריבועים? מתחילות עם רשימה ריקה, ובכל סיבוב של הלולאה מוסיפות לה איבר עם <span class="mono">append</span>. לחצו על ״צעד״ וראו את זה קורה, צעד אחרי צעד.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="lw-n">כמה מספרים?</label>
+          <input type="range" id="lw-n" min="1" max="8" value="5">
+          <span class="val-badge" id="lw-n-val">5</span>
+        </div>
+        <div class="codeblock" id="lw-code">
+          <div class="line">squares = []</div>
+          <div class="line">for i in range(<span id="lw-n-code">5</span>):</div>
+          <div class="line">    squares.append(i * i)</div>
+        </div>
+        <div class="panel-pad">
+          <div class="var-line">i = <b id="lw-i">—</b></div>
+          <div class="cells" id="lw-cells"></div>
+        </div>
+        <div class="panel-bar" style="border-top:1px solid var(--line); border-bottom:none;">
+          <button class="btn primary" id="lw-next" type="button">צעד ▸</button>
+          <button class="btn" id="lw-auto" type="button">הריצי הכול</button>
+          <button class="btn" id="lw-reset" type="button">מההתחלה</button>
+          <span class="mono" style="color:var(--ink-faint); font-size:13px;" id="lw-step"></span>
+        </div>
+        <div class="panel-foot" id="lw-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SHORT WAY ========== -->
+  <section id="short-way">
+    <div class="wrap">
+      <div class="eyebrow short-c">הדרך הקצרה</div>
+      <h2 class="section-title">כל זה — בתוך שורה אחת</h2>
+      <p class="lede">אותן שלוש שורות, כתובות מחדש בצורה צפופה. לחצו על אחד מהחלקים הצבעוניים — ותראו איזה חלק מהקוד הארוך הוא מחליף.</p>
+
+      <div class="panel anat" id="anat" data-active="">
+        <div class="anat-chips">
+          <button class="chip c1" data-p="1" type="button">מה נכנס לרשימה</button>
+          <button class="chip c2" data-p="2" type="button">מי רץ ועל מה</button>
+          <button class="chip c3" data-p="3" type="button">הסוגריים [ ]</button>
+        </div>
+        <div class="panel-pad" style="padding-bottom:6px;">
+          <div class="mini-label" style="margin-top:0;">הארוך</div>
+          <div class="codeblock" style="border-radius:12px;">
+            <div class="line">squares = <span class="p3" data-p="3">[]</span></div>
+            <div class="line"><span class="p2" data-p="2">for i in range(5):</span></div>
+            <div class="line">    squares.append(<span class="p1" data-p="1">i * i</span>)</div>
+          </div>
+          <div class="mini-label">הקצר</div>
+          <div class="codeblock single" style="border-radius:12px; font-size:16px;">squares = <span class="p3" data-p="3">[</span><span class="p1" data-p="1">i * i</span> <span class="p2" data-p="2">for i in range(5)</span><span class="p3" data-p="3">]</span></div>
+        </div>
+        <div class="panel-foot" id="anat-info">לחצו על חלק כדי לראות מה הוא מחליף.</div>
+      </div>
+
+      <div class="anat-read"><strong>איך קוראים את זה בקול:</strong> ״תני לי <span class="mono">i * i</span>, לכל <span class="mono">i</span> בטווח <span class="mono">range(5)</span>״ — ומקבלות רשימה. קודם כותבים <strong>מה</strong> נכנס, ואחר כך <strong>מאיפה</strong> לוקחים.</div>
+    </div>
+  </section>
+
+  <!-- ========== LAB ========== -->
+  <section id="lab">
+    <div class="wrap">
+      <div class="eyebrow short-c">מעבדת ההרכבה</div>
+      <h2 class="section-title">הרכיבו רשימה בעצמכן</h2>
+      <p class="lede">בחרו ביטוי וטווח, וראו איזו רשימה נוצרת. ואז — נסו להגיע בדיוק למטרה.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="lab-expr">מה נכנס?</label>
+          <select id="lab-expr">
+            <option>i</option><option>i * 2</option><option>i * i</option><option>i + 10</option><option>i * 3 + 1</option>
+          </select>
+          <span class="mono" style="color:var(--ink-faint)">range(</span>
+          <input type="number" id="lab-a" min="0" max="10" value="0" style="width:64px">
+          <span class="mono" style="color:var(--ink-faint)">,</span>
+          <input type="number" id="lab-b" min="0" max="14" value="5" style="width:64px">
+          <span class="mono" style="color:var(--ink-faint)">)</span>
+        </div>
+        <div class="codeblock single" id="lab-code"></div>
+        <div class="panel-pad">
+          <div class="mini-label" style="margin-top:0;">התוצאה שלך</div>
+          <div class="cells" id="lab-out"></div>
+          <div class="goal-box">
+            <div class="mini-label">🎯 המטרה — תגיעו בדיוק לרשימה הזאת</div>
+            <div class="cells" id="lab-goal" style="min-height:46px;"></div>
+          </div>
+        </div>
+        <div class="panel-bar" style="border-top:1px solid var(--line); border-bottom:none;">
+          <button class="btn amber" id="lab-goal-btn" type="button">מטרה חדשה</button>
+          <span id="lab-status" style="font-size:15px;"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FILTER ========== -->
+  <section id="filter">
+    <div class="wrap">
+      <div class="eyebrow short-c">מוסיפות if</div>
+      <h2 class="section-title">לא כולם נכנסים — מסננים</h2>
+      <p class="lede">אפשר להוסיף <span class="mono">if</span> בסוף השורה: רק מי שעובר את התנאי נכנס לרשימה. בחרו תנאי ולחצו ״הריצי בדיקה״ — וראו כל מספר עובר ליד השומר.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <label for="flt-n">כמה מספרים?</label>
+          <input type="range" id="flt-n" min="5" max="14" value="10">
+          <span class="val-badge" id="flt-n-val">10</span>
+        </div>
+        <div class="panel-bar">
+          <label for="flt-cond">התנאי:</label>
+          <select id="flt-cond">
+            <option>i &gt; 5</option><option>i &lt; 4</option><option>i != 3</option><option>i % 2 == 0</option><option>i % 2 == 1</option>
+          </select>
+          <button class="btn primary" id="flt-scan" type="button">▸ הריצי בדיקה</button>
+        </div>
+        <div class="codeblock single" id="flt-code"></div>
+        <div class="panel-pad">
+          <div class="mini-label" style="margin-top:0;">כל המספרים ב-range</div>
+          <div class="cells" id="flt-row"></div>
+          <div class="mini-label">מי נכנס לרשימה</div>
+          <div class="cells" id="flt-out"></div>
+        </div>
+        <div class="panel-foot" id="flt-status"></div>
+      </div>
+
+      <div class="callout"><strong>מה זה <span class="mono">%</span>?</strong> שארית החילוק — בדיוק כמו ב-Java. <span class="mono">7 % 2</span> הוא 1, ו-<span class="mono">8 % 2</span> הוא 0. לכן <span class="mono">i % 2 == 0</span> אומר ״i זוגי״.</div>
+    </div>
+  </section>
+
+  <!-- ========== IF / ELSE ========== -->
+  <section id="ifelse">
+    <div class="wrap">
+      <div class="eyebrow pink-c">שימו לב</div>
+      <h2 class="section-title">ל-if יש שני מקומות — והם עושים דברים שונים</h2>
+      <p class="lede">אותו תנאי בדיוק, <span class="mono">i &gt; 2</span>. מתי הוא <strong>מסנן</strong>, ומתי הוא <strong>בוחר ערך</strong>? עברו בין שתי הצורות והשוו את התוצאה.</p>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <div class="seg">
+            <button class="ie-btn on a" data-mode="a" type="button">if בסוף</button>
+            <button class="ie-btn b" data-mode="b" type="button">if ... else בהתחלה</button>
+          </div>
+        </div>
+        <div class="codeblock single" id="ie-code"></div>
+        <div class="panel-pad">
+          <div class="mini-label" style="margin-top:0;">התוצאה</div>
+          <div class="cells" id="ie-out"></div>
+        </div>
+        <div class="panel-foot" id="ie-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TRANSLATE QUIZ ========== -->
+  <section id="translate">
+    <div class="wrap">
+      <div class="eyebrow">משחק</div>
+      <h2 class="section-title">תרגמי, וחזי את הפלט</h2>
+      <p class="lede">שתי שאלות תרגום משורות ארוכות לקצרות, ושתי שאלות ״מה יודפס״. סדר התשובות מתערבב בכל פעם.</p>
+      <div id="quiz-container"></div>
+    </div>
+  </section>
+
+  <!-- ========== EXERCISES ========== -->
+  <section id="exercises">
+    <div class="wrap">
+      <div class="exercises-banner">
+        <span class="badge">👇 מפה זה עלייך</span>
+        <h2 class="section-title">התרגילים שלכן</h2>
+        <p>ארבעה תרגילים עם בדיקה מיידית, אתגר ״בלש הקוד״, ושני תרגילים שכותבים בעורך הפייתון ומדביקים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
+      </div>
+      <p class="lede" style="margin-top:22px;">כאן כותבים ביטויים אמיתיים. הבדיקה מריצה בדיוק את מה שכתבתן. בפייתון כותבים <span class="mono">and</span> / <span class="mono">or</span> (לא <span class="mono">&amp;&amp;</span> כמו ב-Java).</p>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 1 · ביטוי</div>
+        <p class="exercise-task">כתבו ביטוי שיגרום לרשימה להיות בדיוק: 1, 4, 7, 10, 13</p>
+        <div class="exercise-code">result = [ <input type="text" class="code-in" id="ex1-expr" placeholder="?" autocomplete="off"> for i in range(5) ]</div>
+        <div class="exercise-controls">
+          <button class="btn primary" id="ex1-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex1-fb"></span>
+        </div>
+        <div class="exercise-output" id="ex1-out"></div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 2 · תנאי</div>
+        <p class="exercise-task">כתבו תנאי כך שבסוף תתקבל בדיוק הרשימה: 3, 4, 5, 6</p>
+        <div class="exercise-code">result = [ i for i in range(10) if <input type="text" class="code-in" id="ex2-cond" style="width:210px" placeholder="?" autocomplete="off"> ]</div>
+        <div class="exercise-controls">
+          <button class="btn primary" id="ex2-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex2-fb"></span>
+        </div>
+        <div class="exercise-output" id="ex2-out"></div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 3 · טווח</div>
+        <p class="exercise-task">השלימו את ההתחלה והסוף של ה-range כדי לקבל: 9, 16, 25, 36</p>
+        <div class="exercise-code">result = [ i * i for i in range(<input type="number" class="code-in num" id="ex3-a">, <input type="number" class="code-in num" id="ex3-b">) ]</div>
+        <div class="exercise-controls">
+          <button class="btn primary" id="ex3-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex3-fb"></span>
+        </div>
+        <div class="exercise-output" id="ex3-out"></div>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 4 · תרגום מלא</div>
+        <p class="exercise-task">כתבו את הקוד הארוך הזה בשורה אחת, והשלימו את כל החלקים החסרים:</p>
+        <div class="exercise-hint">result = []<br>for n in range(1, 11):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n &gt; 6:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(n * 2)</div>
+        <div class="exercise-code">result = [ <input type="text" class="code-in" style="width:100px" id="ex4-expr" placeholder="?" autocomplete="off"> for n in range(<input type="number" class="code-in num" id="ex4-a">, <input type="number" class="code-in num" id="ex4-b">) if <input type="text" class="code-in" style="width:130px" id="ex4-cond" placeholder="?" autocomplete="off"> ]</div>
+        <div class="exercise-controls">
+          <button class="btn primary" id="ex4-check" type="button">בדקי</button>
+          <span class="exercise-feedback" id="ex4-fb"></span>
+        </div>
+        <div class="exercise-output" id="ex4-out"></div>
+      </div>
+
+      <div class="exercise-divider"><span>אתגר — בלש הקוד</span></div>
+
+      <div class="exercise-card" id="detective">
+        <div class="detective-head" id="det-progress"></div>
+        <p class="exercise-task" id="det-task"></p>
+        <div class="detective-out" id="det-out"></div>
+        <div class="exercise-code" id="det-code"></div>
+        <div class="exercise-controls">
+          <button class="btn primary" id="det-check" type="button">בדקי</button>
+          <button class="btn amber" id="det-next" type="button" style="display:none;">הסיבוב הבא ▸</button>
+          <span class="exercise-feedback" id="det-fb"></span>
+        </div>
+      </div>
+
+      <div class="exercise-divider"><span>כתיבה אישית — פותרות בעורך הפייתון שלכן, ומדביקות כאן</span></div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 5 · סעודת החג</div>
+        <p class="exercise-task">בסעודת החג יש 8 שולחנות, ממוספרים 0 עד 7. בשולחן מספר i יושבים i + 2 אנשים. כתבו בשורה אחת רשימה שמראה כמה אנשים יושבים בכל שולחן. אחר כך כתבו עוד שורה אחת — רשימה של מספרי השולחנות שיושבים בהם יותר מ-5 אנשים. הדפיסו את שתי הרשימות.</p>
+        <div class="exercise-hint">tables = [ ... for i in range(8) ]<br>full_tables = [ ... ]</div>
+        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
+        <textarea class="exercise-answer" id="ex5-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+      </div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">תרגיל 6 · המספר שלי</div>
+        <p class="exercise-task">בחרי מספר שקשור לחג שאת אוהבת (למשל 8 — נרות חנוכה, 7 — ימי סוכות). צרי רשימה של 10 הכפולות הראשונות שלו, ואחר כך רשימה נוספת — רק הכפולות שגדולות מ-30. הדפיסי את שתיהן.</p>
+        <div class="exercise-hint">my_number = 8<br>multiples = [ ... ]<br>big_multiples = [ ... ]</div>
+        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
+        <textarea class="exercise-answer" id="ex6-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CERTIFICATE ========== -->
+  <section id="certificate">
+    <div class="wrap">
+      <div class="eyebrow">לסיום</div>
+      <h2 class="section-title">שלחו לי את התוצאות</h2>
+      <p class="lede">לוחצות על הכפתור — יורד קובץ HTML מעוצב עם סיכום מה שפתרתן, כולל הקוד שהדבקתן בתרגילים 5-6, כדי שאוכל לבדוק.</p>
+      <div class="certificate-box">
+        <span class="cert-name-display">מורידה עבור: <strong id="cert-name-display">—</strong></span>
+        <button class="btn primary" id="cert-download" type="button">⬇️ הורידי קובץ תוצאות</button>
+        <p class="cert-status" id="cert-status"></p>
+      </div>
+      <div class="cert-fallback" id="cert-fallback" hidden>
+        <p class="cert-fallback-note">ההורדה האוטומטית לא זמינה כאן. סמנו הכול בתיבה למטה (Ctrl+A / Cmd+A), העתיקו, הדביקו לקובץ טקסט חדש ושמרו אותו בסיומת .html:</p>
+        <textarea class="cert-fallback-text" id="cert-fallback-text" readonly rows="8"></textarea>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">שיעור פייתון · for מקוצר</div></footer>
+
+<script>
+window.lessonProgress = { ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 0, quizCorrect: 0, quizTotal: 0, labGoals: 0, labGoalsTotal: 5 };
+
+/*PURE-START*/
+function evalPy(src, vars) {
+  var s = String(src == null ? "" : src).trim();
+  if (!s) return { ok: false, error: "השדה ריק." };
+  if (/&&|\|\||!(?!=)/.test(s)) return { ok: false, error: "בפייתון כותבים and / or / not — לא && ו-||." };
+  var re = /\s*(\d+(?:\.\d+)?|[A-Za-z_]\w*|\*\*|\/\/|==|!=|<=|>=|[-+*\/%()<>])/g;
+  var tokens = [], last = 0, m;
+  while ((m = re.exec(s)) !== null) {
+    if (m.index !== last) return { ok: false, error: "יש תו שלא מוכר בביטוי." };
+    tokens.push(m[1]);
+    last = re.lastIndex;
+  }
+  if (s.slice(last).trim() !== "") return { ok: false, error: "יש תו שלא מוכר בביטוי." };
+  var pos = 0;
+  function peek() { return tokens[pos]; }
+  function next() { return tokens[pos++]; }
+  function fail(msg) { throw new Error(msg); }
+  function orExpr() { var v = andExpr(); while (peek() === "or") { next(); var r = andExpr(); v = !!(v || r); } return v; }
+  function andExpr() { var v = notExpr(); while (peek() === "and") { next(); var r = notExpr(); v = !!(v && r); } return v; }
+  function notExpr() { if (peek() === "not") { next(); return !notExpr(); } return cmpExpr(); }
+  function cmpExpr() {
+    var left = addExpr(), ops = ["<", ">", "<=", ">=", "==", "!="], result = true, chained = false;
+    while (ops.indexOf(peek()) !== -1) {
+      var op = next(), right = addExpr(), ok;
+      if (op === "<") ok = left < right;
+      else if (op === ">") ok = left > right;
+      else if (op === "<=") ok = left <= right;
+      else if (op === ">=") ok = left >= right;
+      else if (op === "==") ok = left === right;
+      else ok = left !== right;
+      result = result && ok; left = right; chained = true;
+    }
+    return chained ? result : left;
+  }
+  function addExpr() { var v = mulExpr(); while (peek() === "+" || peek() === "-") { var op = next(), r = mulExpr(); v = op === "+" ? v + r : v - r; } return v; }
+  function mulExpr() {
+    var v = unary();
+    while (["*", "/", "//", "%"].indexOf(peek()) !== -1) {
+      var op = next(), r = unary();
+      if (op !== "*" && r === 0) fail("אי אפשר לחלק באפס.");
+      if (op === "*") v = v * r;
+      else if (op === "/") v = v / r;
+      else if (op === "//") v = Math.floor(v / r);
+      else v = ((v % r) + r) % r;
+    }
+    return v;
+  }
+  function unary() { if (peek() === "-") { next(); return -unary(); } if (peek() === "+") { next(); return unary(); } return power(); }
+  function power() { var b = atom(); if (peek() === "**") { next(); var e = unary(); return Math.pow(b, e); } return b; }
+  function atom() {
+    var t = next();
+    if (t === undefined) fail("הביטוי נגמר באמצע.");
+    if (t === "(") { var v = orExpr(); if (next() !== ")") fail("חסר סוגר )."); return v; }
+    if (/^\d/.test(t)) return parseFloat(t);
+    if (t === "True") return true;
+    if (t === "False") return false;
+    if (Object.prototype.hasOwnProperty.call(vars, t)) return vars[t];
+    return fail("אני לא מכירה את '" + t + "'. השתמשי ב-" + Object.keys(vars).join(", ") + ".");
+  }
+  try {
+    var value = orExpr();
+    if (pos < tokens.length) fail("יש משהו מיותר בסוף: '" + tokens[pos] + "'.");
+    return { ok: true, value: value };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+function rng(a, b, step) {
+  var r = [];
+  step = step || 1;
+  if (step > 0) { for (var x = a; x < b && r.length < 300; x += step) r.push(x); }
+  else { for (var y = a; y > b && r.length < 300; y += step) r.push(y); }
+  return r;
+}
+
+function runComp(exprSrc, varName, items, condSrc) {
+  var out = [];
+  for (var k = 0; k < items.length; k++) {
+    var vars = {}; vars[varName] = items[k];
+    if (condSrc != null && String(condSrc).trim() !== "") {
+      var c = evalPy(condSrc, vars);
+      if (!c.ok) return { ok: false, error: c.error };
+      if (!c.value) continue;
+    }
+    var e = evalPy(exprSrc, vars);
+    if (!e.ok) return { ok: false, error: e.error };
+    out.push(typeof e.value === "boolean" ? (e.value ? "True" : "False") : e.value);
+  }
+  return { ok: true, out: out };
+}
+
+function fmt(arr) { return "[" + arr.join(", ") + "]"; }
+function sameArr(a, b) {
+  if (!a || !b || a.length !== b.length) return false;
+  for (var k = 0; k < a.length; k++) if (a[k] !== b[k]) return false;
+  return true;
+}
+/*PURE-END*/
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+function highlight(code) {
+  return esc(code).replace(/("[^"]*")|\b(for|in|if|else|and|or|not|while)\b|\b(range|print|len)\b|\b(\d+)\b/g, function (m, str, kw, fn, num) {
+    if (str) return '<span class="tok-str">' + str + "</span>";
+    if (kw) return '<span class="tok-kw">' + kw + "</span>";
+    if (fn) return '<span class="tok-fn">' + fn + "</span>";
+    return '<span class="tok-num">' + num + "</span>";
+  });
+}
+document.querySelectorAll("code.hl").forEach(function (c) { c.innerHTML = highlight(c.textContent); });
+
+function makeCell(val, cls, idx, pop) {
+  var w = document.createElement("div");
+  w.className = "cellw";
+  var c = document.createElement("div");
+  c.className = "cell" + (cls ? " " + cls : "") + (pop ? " pop" : "");
+  c.textContent = val;
+  w.appendChild(c);
+  if (idx !== undefined && idx !== null) {
+    var ix = document.createElement("div");
+    ix.className = "cell-idx";
+    ix.textContent = idx;
+    w.appendChild(ix);
+  }
+  return w;
+}
+function renderCells(container, arr, opts) {
+  opts = opts || {};
+  container.innerHTML = "";
+  if (!arr.length) {
+    var n = document.createElement("span");
+    n.className = "empty-note";
+    n.textContent = "רשימה ריקה []";
+    container.appendChild(n);
+    return;
+  }
+  arr.forEach(function (v, k) {
+    var pop = opts.pop === "all" || (opts.pop === "last" && k === arr.length - 1);
+    container.appendChild(makeCell(v, opts.cls, opts.idx ? k : null, pop));
+  });
+}
+
+/* ---------- jump to exercises ---------- */
+(function () {
+  var btn = $("jump-to-exercises"), target = $("exercises");
+  btn.addEventListener("click", function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); });
+})();
+
+/* ---------- hero race ---------- */
+(function () {
+  var btn = $("race-btn"), longOut = $("race-long-out"), shortOut = $("race-short-out"), status = $("race-status");
+  var data = [0, 1, 4, 9, 16], running = false;
+  btn.addEventListener("click", function () {
+    if (running) return;
+    running = true; btn.disabled = true; status.textContent = "";
+    longOut.innerHTML = ""; shortOut.innerHTML = "";
+    renderCells(shortOut, data, { pop: "all" });
+    var k = 0;
+    (function step() {
+      if (k >= data.length) {
+        status.textContent = "אותה תוצאה בדיוק — אבל 3 שורות מול שורה אחת.";
+        running = false; btn.disabled = false; return;
+      }
+      longOut.appendChild(makeCell(data[k], "", null, true));
+      k++;
+      setTimeout(step, 380);
+    })();
+  });
+})();
+
+/* ---------- primer: list builder ---------- */
+(function () {
+  var nums = [3, 7, 9];
+  var codeEl = $("pl-code"), cellsEl = $("pl-cells"), input = $("pl-input"), note = $("pl-note");
+  var base = "המספר הקטן מתחת לכל קופסה הוא האינדקס שלה. הקופסה הראשונה היא תמיד 0.";
+  function render(pop) {
+    codeEl.innerHTML = highlight("nums = [" + nums.join(", ") + "]");
+    renderCells(cellsEl, nums, { idx: true, pop: pop ? "last" : "" });
+  }
+  function add() {
+    var v = parseInt(input.value, 10);
+    if (isNaN(v)) return;
+    if (nums.length >= 10) { note.textContent = "הרשימה מלאה (10 קופסאות). לחצו ״אפסי״ כדי להתחיל מחדש."; return; }
+    nums.push(v); input.value = ""; note.textContent = base; render(true); input.focus();
+  }
+  $("pl-add").addEventListener("click", add);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") add(); });
+  $("pl-reset").addEventListener("click", function () { nums = [3, 7, 9]; note.textContent = base; render(false); });
+  render(false);
+})();
+
+/* ---------- long way: step tracer ---------- */
+(function () {
+  var slider = $("lw-n"), valEl = $("lw-n-val"), codeN = $("lw-n-code");
+  var lines = document.querySelectorAll("#lw-code .line");
+  var iEl = $("lw-i"), cells = $("lw-cells"), stepLbl = $("lw-step"), note = $("lw-note");
+  var nextBtn = $("lw-next"), autoBtn = $("lw-auto"), resetBtn = $("lw-reset");
+  var steps = [], idx = 0, timer = null;
+
+  function build() {
+    var n = parseInt(slider.value, 10), list = [];
+    steps = [{ line: 0, i: "—", list: [], note: "מתחילות עם רשימה ריקה." }];
+    for (var k = 0; k < n; k++) {
+      steps.push({ line: 1, i: k, list: list.slice(), note: "הלולאה מתחילה סיבוב חדש: i מקבל את הערך " + k + "." });
+      list = list.concat([k * k]);
+      steps.push({ line: 2, i: k, list: list.slice(), note: "append(" + k + " * " + k + ") — מוסיפות את " + (k * k) + " לסוף הרשימה." });
+    }
+    steps.push({ line: -1, i: n - 1, list: list.slice(), note: "אין עוד מספרים ב-range, אז הלולאה נגמרת. הרשימה מוכנה!" });
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } autoBtn.disabled = false; }
+  function render() {
+    var s = steps[idx], prev = idx > 0 ? steps[idx - 1].list.length : -1;
+    lines.forEach(function (l) { l.classList.remove("active"); });
+    if (s.line >= 0) lines[s.line].classList.add("active");
+    iEl.textContent = s.i;
+    renderCells(cells, s.list, { pop: s.list.length > prev && idx > 0 ? "last" : "" });
+    stepLbl.textContent = "שלב " + (idx + 1) + " מתוך " + steps.length;
+    note.textContent = s.note;
+    nextBtn.disabled = idx >= steps.length - 1;
+  }
+  function reset() { stop(); idx = 0; build(); render(); }
+  slider.addEventListener("input", function () { valEl.textContent = slider.value; codeN.textContent = slider.value; reset(); });
+  nextBtn.addEventListener("click", function () { if (idx < steps.length - 1) { idx++; render(); } });
+  resetBtn.addEventListener("click", reset);
+  autoBtn.addEventListener("click", function () {
+    if (timer) return;
+    if (idx >= steps.length - 1) { idx = 0; render(); }
+    autoBtn.disabled = true;
+    timer = setInterval(function () {
+      if (idx >= steps.length - 1) { stop(); return; }
+      idx++; render();
+      if (idx >= steps.length - 1) stop();
+    }, 520);
+  });
+  reset();
+})();
+
+/* ---------- anatomy ---------- */
+(function () {
+  var box = $("anat"), info = $("anat-info");
+  var chips = document.querySelectorAll(".chip");
+  var base = "לחצו על חלק כדי לראות מה הוא מחליף.";
+  var texts = {
+    "1": "מה נכנס לרשימה — זה בדיוק מה שהיה בתוך append(...) בגרסה הארוכה.",
+    "2": "מי רץ ועל מה — אותה שורת for, פשוט בלי הנקודתיים ובלי ההזחה.",
+    "3": "הסוגריים המרובעים — הם מחליפים את הרשימה הריקה [] ואת כל ה-append."
+  };
+  function activate(p) {
+    var cur = box.getAttribute("data-active");
+    var next = cur === p ? "" : p;
+    box.setAttribute("data-active", next);
+    chips.forEach(function (c) { c.classList.toggle("on", c.dataset.p === next); });
+    info.textContent = next ? texts[next] : base;
+  }
+  document.querySelectorAll("#anat [data-p]").forEach(function (el) {
+    el.addEventListener("click", function () { activate(el.dataset.p); });
+  });
+})();
+
+/* ---------- lab ---------- */
+(function () {
+  var exprSel = $("lab-expr"), aIn = $("lab-a"), bIn = $("lab-b"), codeEl = $("lab-code");
+  var outEl = $("lab-out"), goalEl = $("lab-goal"), statusEl = $("lab-status"), goalBtn = $("lab-goal-btn");
+  var goals = [[3, 4, 5, 6, 7], [0, 2, 4, 6, 8], [1, 4, 9, 16], [10, 11, 12, 13], [1, 4, 7, 10, 13]];
+  var gi = 0, solved = {};
+  function render() {
+    var a = parseInt(aIn.value, 10), b = parseInt(bIn.value, 10);
+    if (isNaN(a)) a = 0; if (isNaN(b)) b = 0;
+    var expr = exprSel.value;
+    var r = runComp(expr, "i", rng(a, b));
+    var out = r.ok ? r.out : [];
+    codeEl.innerHTML = highlight("result = [" + expr + " for i in range(" + a + ", " + b + ")]");
+    renderCells(outEl, out);
+    renderCells(goalEl, goals[gi], { cls: "amber" });
+    if (sameArr(out, goals[gi])) {
+      statusEl.className = "status-ok"; statusEl.textContent = "🎯 הגעתן בדיוק למטרה!";
+      if (!solved[gi]) { solved[gi] = true; window.lessonProgress.labGoals = Object.keys(solved).length; }
+    } else { statusEl.className = ""; statusEl.textContent = ""; }
+  }
+  [exprSel, aIn, bIn].forEach(function (e) { e.addEventListener("input", render); });
+  goalBtn.addEventListener("click", function () { gi = (gi + 1) % goals.length; render(); });
+  render();
+})();
+
+/* ---------- filter ---------- */
+(function () {
+  var nSl = $("flt-n"), nVal = $("flt-n-val"), condSel = $("flt-cond"), codeEl = $("flt-code");
+  var rowEl = $("flt-row"), outEl = $("flt-out"), scanBtn = $("flt-scan"), status = $("flt-status");
+  var timer = null;
+  function items() { return rng(0, parseInt(nSl.value, 10)); }
+  function passes(v) { var r = evalPy(condSel.value, { i: v }); return r.ok && !!r.value; }
+  function renderCode() {
+    codeEl.innerHTML = highlight("result = [i for i in range(" + nSl.value + ") if " + condSel.value + "]");
+  }
+  function stopScan() { if (timer) { clearTimeout(timer); timer = null; } scanBtn.disabled = false; }
+  function showAll() {
+    stopScan(); renderCode();
+    var its = items(), passed = [];
+    rowEl.innerHTML = "";
+    its.forEach(function (v) {
+      var ok = passes(v); if (ok) passed.push(v);
+      rowEl.appendChild(makeCell(v, ok ? "" : "fail"));
+    });
+    renderCells(outEl, passed);
+    status.textContent = "נכנסו " + passed.length + " מתוך " + its.length + ". לחצו ״הריצי בדיקה״ כדי לראות את זה קורה מספר אחרי מספר.";
+  }
+  function scan() {
+    stopScan(); renderCode(); scanBtn.disabled = true;
+    var its = items(), passed = [], k = 0;
+    rowEl.innerHTML = "";
+    its.forEach(function (v) { rowEl.appendChild(makeCell(v, "neutral")); });
+    outEl.innerHTML = ""; renderCells(outEl, []);
+    status.textContent = "";
+    (function step() {
+      if (k >= its.length) {
+        status.textContent = "סיימנו: נכנסו " + passed.length + " מתוך " + its.length + ".";
+        scanBtn.disabled = false; timer = null; return;
+      }
+      var v = its[k], ok = passes(v);
+      var cell = rowEl.children[k].firstChild;
+      cell.className = "cell pop" + (ok ? "" : " fail");
+      if (ok) { passed.push(v); renderCells(outEl, passed, { pop: "last" }); }
+      status.textContent = "בודקות: " + condSel.value.replace(/i/g, v) + " ← " + (ok ? "כן ✓" : "לא ✗");
+      k++;
+      timer = setTimeout(step, 420);
+    })();
+  }
+  nSl.addEventListener("input", function () { nVal.textContent = nSl.value; showAll(); });
+  condSel.addEventListener("input", showAll);
+  scanBtn.addEventListener("click", scan);
+  showAll();
+})();
+
+/* ---------- if / else positions ---------- */
+(function () {
+  var btns = document.querySelectorAll(".ie-btn");
+  var codeEl = $("ie-code"), outEl = $("ie-out"), note = $("ie-note");
+  var modes = {
+    a: {
+      html: 'result = [i for i in range(6) <span class="hl-short">if i &gt; 2</span>]',
+      out: [3, 4, 5], cls: "",
+      note: "if בסוף = מי נכנס. מי שלא עובר את התנאי פשוט לא נכנס — לכן הרשימה קצרה יותר (3 איברים)."
+    },
+    b: {
+      html: 'result = [<span class="hl-pink">i if i &gt; 2 else 0</span> for i in range(6)]',
+      out: [0, 0, 0, 3, 4, 5], cls: "pink",
+      note: "if...else בהתחלה = מה נכנס. כולם נכנסים, ולכל אחד נבחר ערך: i אם עבר את התנאי, אחרת 0. הרשימה באורך 6, כמו ה-range."
+    }
+  };
+  function set(mode) {
+    btns.forEach(function (b) { b.classList.toggle("on", b.dataset.mode === mode); });
+    codeEl.innerHTML = modes[mode].html;
+    renderCells(outEl, modes[mode].out, { cls: modes[mode].cls, pop: "all" });
+    note.textContent = modes[mode].note;
+  }
+  btns.forEach(function (b) {
+    b.classList.add(b.dataset.mode);
+    b.addEventListener("click", function () { set(b.dataset.mode); });
+  });
+  set("a");
+})();
+
+/* ---------- translate / predict quiz ---------- */
+(function () {
+  var rounds = [
+    { kind: "תרגום", code: "doubles = []\nfor n in range(4):\n    doubles.append(n * 2)",
+      opts: ["doubles = [n * 2 for n in range(4)]", "doubles = [for n in range(4) n * 2]", "doubles = [n for n in range(4) * 2]"],
+      why: "קודם כותבים מה נכנס (n * 2), ואחר כך for n in range(4) — הכול בתוך [ ]." },
+    { kind: "תרגום", code: "big = []\nfor x in range(10):\n    if x > 6:\n        big.append(x)",
+      opts: ["big = [x for x in range(10) if x > 6]", "big = [x if x > 6 for x in range(10)]", "big = [if x > 6 x for x in range(10)]"],
+      why: "ה-if של הסינון נכתב בסוף, אחרי ה-for." },
+    { kind: "מה יודפס?", code: "[n + 1 for n in range(3)]",
+      opts: ["[1, 2, 3]", "[0, 1, 2]", "[1, 2, 3, 4]"],
+      why: "n הוא 0, 1, 2 — ומוסיפים 1 לכל אחד." },
+    { kind: "מה יודפס?", code: "[i for i in range(8) if i > 4]",
+      opts: ["[5, 6, 7]", "[5, 6, 7, 8]", "[4, 5, 6, 7]"],
+      why: "range(8) נגמר ב-7, ורק מספרים גדולים מ-4 עוברים את התנאי." }
+  ];
+  var container = $("quiz-container");
+  window.lessonProgress.quizTotal = rounds.length;
+
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  rounds.forEach(function (r, qi) {
+    var card = document.createElement("div");
+    card.className = "q-card";
+    var title = document.createElement("div"); title.className = "q-title"; title.textContent = "שאלה " + (qi + 1) + " · " + r.kind;
+    var pre = document.createElement("pre"); pre.innerHTML = highlight(r.code);
+    var optsEl = document.createElement("div"); optsEl.className = "q-opts";
+    var fb = document.createElement("div"); fb.className = "q-fb";
+    card.appendChild(title); card.appendChild(pre); card.appendChild(optsEl); card.appendChild(fb);
+    container.appendChild(card);
+
+    var list = shuffle(r.opts.map(function (t, k) { return { t: t, ok: k === 0 }; }));
+    var btns = [];
+    list.forEach(function (o) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "q-opt"; b.textContent = o.t;
+      b.addEventListener("click", function () {
+        btns.forEach(function (x) { x.disabled = true; });
+        if (o.ok) {
+          b.classList.add("right"); fb.className = "q-fb status-ok"; fb.textContent = "נכון! " + r.why;
+          window.lessonProgress.quizCorrect++;
+        } else {
+          b.classList.add("wrong");
+          btns.forEach(function (x) { if (x.textContent === r.opts[0]) x.classList.add("right"); });
+          fb.className = "q-fb status-no"; fb.textContent = "לא בדיוק. " + r.why;
+        }
+      });
+      btns.push(b); optsEl.appendChild(b);
+    });
+  });
+})();
+
+/* ---------- exercises ---------- */
+(function () {
+  function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
+  function show(id, arr) { $(id).textContent = fmt(arr); }
+
+  function judge(prefix, res, target, key, okText) {
+    if (!res.ok) { fb(prefix + "-fb", false, res.error); $(prefix + "-out").textContent = ""; return; }
+    show(prefix + "-out", res.out);
+    if (sameArr(res.out, target)) { fb(prefix + "-fb", true, okText); window.lessonProgress[key] = true; }
+    else fb(prefix + "-fb", false, "יצא " + fmt(res.out) + ". רוצות " + fmt(target) + ".");
+  }
+
+  $("ex1-check").addEventListener("click", function () {
+    judge("ex1", runComp($("ex1-expr").value, "i", rng(0, 5)), [1, 4, 7, 10, 13], "ex1", "מדויק! כל איבר גדול ב-3 מהקודם, והתחלה ב-1.");
+  });
+
+  $("ex2-check").addEventListener("click", function () {
+    var c = $("ex2-cond").value;
+    if (!c.trim()) { fb("ex2-fb", false, "כתבי תנאי."); return; }
+    judge("ex2", runComp("i", "i", rng(0, 10), c), [3, 4, 5, 6], "ex2", "יפה! התנאי מסנן בדיוק את 3 עד 6.");
+  });
+
+  $("ex3-check").addEventListener("click", function () {
+    var a = parseInt($("ex3-a").value, 10), b = parseInt($("ex3-b").value, 10);
+    if (isNaN(a) || isNaN(b)) { fb("ex3-fb", false, "מלאי את שני המספרים."); return; }
+    judge("ex3", runComp("i * i", "i", rng(a, b)), [9, 16, 25, 36], "ex3", "נכון! range(3, 7) נותן 3, 4, 5, 6 — והריבועים שלהם.");
+  });
+
+  $("ex4-check").addEventListener("click", function () {
+    var a = parseInt($("ex4-a").value, 10), b = parseInt($("ex4-b").value, 10);
+    if (isNaN(a) || isNaN(b)) { fb("ex4-fb", false, "מלאי את שני המספרים ב-range."); return; }
+    judge("ex4", runComp($("ex4-expr").value, "n", rng(a, b), $("ex4-cond").value), [14, 16, 18, 20], "ex4", "בדיוק! קיצרתן ארבע שורות לשורה אחת.");
+  });
+})();
+
+/* ---------- detective ---------- */
+(function () {
+  function num(v) { var n = parseInt(v, 10); return isNaN(n) ? null : n; }
+  var T = '<input type="text" class="code-in" id="d-%" placeholder="?" autocomplete="off">';
+  var N = '<input type="number" class="code-in num" id="d-%">';
+  function field(tpl, k) { return tpl.replace("%", k); }
+  var rounds = [
+    { task: "איזה ביטוי חסר כדי לקבל את הרשימה הזאת?", out: [0, 2, 4, 6, 8], ids: ["d-0"],
+      html: "result = [ " + field(T, 0) + " for i in range(5) ]",
+      sim: function (v) { return runComp(v[0], "i", rng(0, 5)); } },
+    { task: "עכשיו גם הטווח חסר. מה הביטוי, ומה ההתחלה והסוף?", out: [1, 4, 9, 16, 25], ids: ["d-0", "d-1", "d-2"],
+      html: "result = [ " + field(T, 0) + " for i in range(" + field(N, 1) + ", " + field(N, 2) + ") ]",
+      sim: function (v) { var a = num(v[1]), b = num(v[2]); if (a === null || b === null) return { ok: false, error: "מלאי את שני המספרים." }; return runComp(v[0], "i", rng(a, b)); } },
+    { task: "כאן חסרים ההתחלה, הסוף והצעד.", out: [10, 20, 30], ids: ["d-0", "d-1", "d-2"],
+      html: "result = [ i for i in range(" + field(N, 0) + ", " + field(N, 1) + ", " + field(N, 2) + ") ]",
+      sim: function (v) { var a = num(v[0]), b = num(v[1]), s = num(v[2]); if (a === null || b === null || s === null || s <= 0) return { ok: false, error: "מלאי שלושה מספרים (הצעד חייב להיות חיובי)." }; return runComp("i", "i", rng(a, b, s)); } },
+    { task: "הפעם ה-if חסר. כתבי תנאי שמסנן נכון.", out: [4, 5, 6, 7], ids: ["d-0"],
+      html: "result = [ i for i in range(10) if " + field(T, 0).replace('class="code-in"', 'class="code-in" style="width:210px"') + " ]",
+      sim: function (v) { if (!v[0].trim()) return { ok: false, error: "כתבי תנאי." }; return runComp("i", "i", rng(0, 10), v[0]); } },
+    { task: "אתגר בונוס: חסרים גם הביטוי וגם התנאי.", out: [5, 7, 9], ids: ["d-0", "d-1"],
+      html: "result = [ " + field(T, 0) + " for i in range(10) if " + field(T, 1).replace('class="code-in"', 'class="code-in" style="width:210px"') + " ]",
+      sim: function (v) { if (!v[1].trim()) return { ok: false, error: "כתבי גם תנאי." }; return runComp(v[0], "i", rng(0, 10), v[1]); } }
+  ];
+  var idx = 0;
+  window.lessonProgress.detectiveTotal = rounds.length;
+  var progressEl = $("det-progress"), taskEl = $("det-task"), outEl = $("det-out"), codeEl = $("det-code");
+  var checkBtn = $("det-check"), nextBtn = $("det-next"), fbEl = $("det-fb");
+
+  function render() {
+    var r = rounds[idx];
+    progressEl.textContent = "סיבוב " + (idx + 1) + " מתוך " + rounds.length;
+    taskEl.textContent = r.task;
+    outEl.textContent = fmt(r.out);
+    codeEl.innerHTML = r.html;
+    fbEl.textContent = ""; fbEl.className = "exercise-feedback";
+    checkBtn.style.display = ""; nextBtn.style.display = "none";
+  }
+  checkBtn.addEventListener("click", function () {
+    var r = rounds[idx];
+    var vals = r.ids.map(function (id) { return $(id).value; });
+    var res = r.sim(vals);
+    if (!res.ok) { fbEl.textContent = res.error; fbEl.className = "exercise-feedback wrong"; return; }
+    if (sameArr(res.out, r.out)) {
+      fbEl.className = "exercise-feedback correct";
+      fbEl.textContent = idx === rounds.length - 1 ? "פתרתן את כל הבלש! 🕵️" : "פתרתן! ✓";
+      checkBtn.style.display = "none";
+      window.lessonProgress.detectiveSolved = Math.max(window.lessonProgress.detectiveSolved, idx + 1);
+      if (idx < rounds.length - 1) nextBtn.style.display = "";
+    } else {
+      fbEl.className = "exercise-feedback wrong";
+      fbEl.textContent = "יצא " + fmt(res.out) + " — נסי שוב.";
+    }
+  });
+  nextBtn.addEventListener("click", function () { idx++; render(); });
+  render();
+})();
+
+/* ---------- certificate download ---------- */
+(function () {
+  var nameInput = $("cert-name"), btn = $("cert-download"), statusEl = $("cert-status");
+  var fallbackBox = $("cert-fallback"), fallbackText = $("cert-fallback-text"), nameDisplay = $("cert-name-display");
+
+  function currentName() { return (nameInput.value || "").trim() || "תלמידה"; }
+  function syncName() { nameDisplay.textContent = currentName(); }
+  nameInput.addEventListener("input", syncName);
+  syncName();
+
+  function showFallback(html) { fallbackText.value = html; fallbackBox.hidden = false; }
+
+  function row(label, done) {
+    return '<div class="row"><span class="dot ' + (done ? "done" : "") + '"></span><span class="label">' + label + '</span><span class="state ' + (done ? "ok" : "no") + '">' + (done ? "הושלם" : "לא הושלם") + "</span></div>";
+  }
+
+  function buildCertificateHtml(name) {
+    var p = window.lessonProgress;
+    var ex5 = esc($("ex5-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex6 = esc($("ex6-answer").value.trim()) || "(לא הוזן קוד)";
+    var dateStr = new Date().toLocaleDateString("he-IL");
+    return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +
+      "<title>תעודת תרגול — " + esc(name) + "</title>" +
+      '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+      '<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">' +
+      "<style>" +
+      ":root{--bg:#12102A;--panel:#1D1A3D;--ink:#F5F3FF;--dim:#B4AEDB;--faint:#6F699E;--short:#4DD4F0;--for:#FFB84D;--ok:#5CE1A6;--no:#FF6B6B;--line:rgba(245,243,255,.12);}" +
+      "*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,sans-serif;font-size:16px;line-height:1.7;padding:50px 20px;}" +
+      ".wrap{max-width:640px;margin:0 auto;}h1{font-family:Rubik,sans-serif;font-weight:900;font-size:2rem;margin:0 0 6px;}" +
+      ".meta{color:var(--dim);margin-bottom:34px;font-size:15px;}h2{font-family:Rubik,sans-serif;font-weight:800;font-size:1.1rem;margin:0 0 14px;color:var(--short);}" +
+      ".card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:26px;}" +
+      ".row{display:flex;align-items:center;gap:10px;padding:6px 0;}.dot{width:10px;height:10px;border-radius:50%;background:var(--no);flex-shrink:0;}.dot.done{background:var(--ok);}" +
+      ".label{flex:1;font-size:15px;}.state{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;}.state.ok{color:var(--ok);}.state.no{color:var(--no);}" +
+      ".score{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--dim);padding:6px 0;}.score strong{color:var(--ink);}" +
+      "pre{direction:ltr;text-align:left;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;background:rgba(0,0,0,.28);border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--ink);margin:0;}" +
+      ".q{font-size:14.5px;color:var(--dim);margin:0 0 10px;}" +
+      '</style></head><body><div class="wrap">' +
+      "<h1>תעודת תרגול — for מקוצר בפייתון</h1>" +
+      '<div class="meta">שם: ' + esc(name) + " · תאריך: " + dateStr + "</div>" +
+      '<h2>תרגילים עם בדיקה</h2><div class="card">' +
+      row("תרגיל 1 (ביטוי)", p.ex1) + row("תרגיל 2 (תנאי)", p.ex2) + row("תרגיל 3 (טווח)", p.ex3) + row("תרגיל 4 (תרגום מלא)", p.ex4) +
+      "</div>" +
+      '<h2>משחקים וחידונים</h2><div class="card">' +
+      '<div class="score">בלש הקוד: <strong>' + p.detectiveSolved + "</strong> מתוך " + p.detectiveTotal + " סיבובים נפתרו</div>" +
+      '<div class="score">מעבדת ההרכבה: <strong>' + p.labGoals + "</strong> מתוך " + p.labGoalsTotal + " מטרות הושגו</div>" +
+      '<div class="score">תרגם וחזי: <strong>' + p.quizCorrect + "</strong> תשובות נכונות מתוך " + p.quizTotal + "</div>" +
+      "</div>" +
+      '<h2>תרגיל 5 · סעודת החג</h2><div class="card"><p class="q">רשימות עם for מקוצר ועם if.</p><pre>' + ex5 + "</pre></div>" +
+      '<h2>תרגיל 6 · המספר שלי</h2><div class="card"><p class="q">הכפולות של מספר החג האהוב.</p><pre>' + ex6 + "</pre></div>" +
+      "</div></body></html>";
+  }
+
+  function blobDownload(filename, html) {
+    try {
+      var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  btn.addEventListener("click", async function () {
+    var name = currentName();
+    var html = buildCertificateHtml(name);
+    var filename = name + " - תעודת תרגול for מקוצר.html";
+
+    // Path 1: Claude's download capability (inside a claude.ai artifact page)
+    if (typeof window.claude !== "undefined" && window.claude.use) {
+      var downloads = null;
+      try { downloads = await window.claude.use("downloads"); } catch (e) { downloads = null; }
+      if (downloads) {
+        try {
+          var res = await downloads.save({ filename: filename, data: html });
+          statusEl.textContent = res.status === "saved" ? "הקובץ נשמר! שלחו אותו אליי." : "הקובץ נשלח.";
+          statusEl.className = "cert-status correct";
+          return;
+        } catch (err) {
+          if (err && err.code === "declined") {
+            statusEl.textContent = "ההורדה בוטלה.";
+            statusEl.className = "cert-status wrong";
+            return;
+          }
+        }
+      }
+    }
+    // Path 2: normal browser download (when the HTML file is opened directly)
+    if (blobDownload(filename, html)) {
+      statusEl.textContent = "הקובץ ירד! שלחו אותו אליי.";
+      statusEl.className = "cert-status correct";
+      return;
+    }
+    // Path 3: copyable text
+    statusEl.textContent = "ההורדה האוטומטית לא עבדה כאן — הטקסט מוכן להעתקה למטה.";
+    statusEl.className = "cert-status wrong";
+    showFallback(html);
+  });
+})();
+</script>
+</body>
+</html>

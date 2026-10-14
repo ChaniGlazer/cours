@@ -117,7 +117,8 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   }
   pre.code-static { background: rgba(0,0,0,0.22); border-radius: 12px; margin-top: 18px; }
   .tok-kw { color: #C792EA; }
-  .tok-str { color: #A8D48A; }
+  .tok-str { color: #A8D48A; unicode-bidi: isolate; }
+  .iso { unicode-bidi: isolate; }
   .tok-num { color: #F5C97B; }
   .tok-fn { color: #7EC1F5; }
   .tok-cmt { color: var(--ink-faint); }
@@ -713,6 +714,19 @@ function checkEx3(n1, n2, n3) {
 
 function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+/* מחרוזת בעברית בתוך קוד (LTR) נעטפת ב-isolate, כדי שהמירכאות והפסיקים לא יתהפכו */
+var HEB_STR = /("[^"\n]*[\u0590-\u05FF][^"\n]*"|''[^''\n]*[\u0590-\u05FF][^''\n]*'')/g;
+function iso(s) { return esc(s).replace(HEB_STR, ''<span class="iso">$1</span>''); }
+function isolateCodeText(el) {
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [], n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(function (t) {
+    var h = iso(t.nodeValue);
+    if (h.indexOf(''class="iso"'') < 0) return;
+    var span = document.createElement("span"); span.innerHTML = h;
+    t.parentNode.replaceChild(span, t);
+  });
+}
 
 function highlight(code) {
   return esc(code).replace(/(#.*$)|("[^"]*")|\b(for|in|if|else|and|or|not|while)\b|\b(print|len|sorted|sum|max|min|append|insert|remove|pop|copy|sort|range)\b|(-?\b\d+(?:\.\d+)?\b)/gm, function (m, cmt, str, kw, fn, num) {
@@ -724,6 +738,7 @@ function highlight(code) {
   });
 }
 document.querySelectorAll("pre.hl, .code-card pre code, .rescue pre").forEach(function (el) { el.innerHTML = highlight(el.textContent); });
+document.querySelectorAll(".exercise-code").forEach(isolateCodeText);
 
 function renderShelf(container, items, opts) {
   opts = opts || {};
@@ -816,7 +831,7 @@ function makeGuess(btnId, inputId, fbId, test, okText, badText) {
     popAt = -1;
     if (!log.length) { logEl.innerHTML = ''<div class="empty">לחצי על כפתור, והפעולה תירשם כאן.</div>''; return; }
     logEl.innerHTML = log.map(function (r) {
-      return ''<div class="row"><span>'' + esc(r.code) + ''</span><span class="arrow">→</span><span class="'' + (r.bad ? "bad" : "res") + ''">'' + esc(r.res) + "</span></div>";
+      return ''<div class="row"><span>'' + iso(r.code) + ''</span><span class="arrow">→</span><span class="'' + (r.bad ? "bad" : "res") + ''">'' + iso(r.res) + "</span></div>";
     }).join("");
     logEl.scrollTop = logEl.scrollHeight;
   }

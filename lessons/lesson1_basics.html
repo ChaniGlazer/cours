@@ -1,4 +1,4 @@
-UPDATE lessons SET title='שיעור 1 - פלט, משתנים וקלט', slug='python-basics', html_content='<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -341,10 +341,10 @@ function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 function highlight(code) {
   return esc(code).replace(/("[^"]*")|\b(for|in|if|else|and|or|not|while)\b|\b(print|input|int|range|len)\b|\b(\d+)\b/g, function (m, str, kw, fn, num) {
-    if (str) return ''<span class="tok-str">'' + str + "</span>";
-    if (kw) return ''<span class="tok-kw">'' + kw + "</span>";
-    if (fn) return ''<span class="tok-fn">'' + fn + "</span>";
-    return ''<span class="tok-num">'' + num + "</span>";
+    if (str) return '<span class="tok-str">' + str + "</span>";
+    if (kw) return '<span class="tok-kw">' + kw + "</span>";
+    if (fn) return '<span class="tok-fn">' + fn + "</span>";
+    return '<span class="tok-num">' + num + "</span>";
   });
 }
 function termClear(t) { t.innerHTML = ""; }
@@ -366,8 +366,8 @@ $("jump-to-exercises").addEventListener("click", function () {
   $("hero-run").addEventListener("click", function () {
     termClear(term);
     var txt = inp.value;
-    if (txt.indexOf(''"'') !== -1) {
-      termAdd(term, ''SyntaxError: בתוך מרכאות כפולות אי אפשר לכתוב מרכאות כפולות'', "t-err");
+    if (txt.indexOf('"') !== -1) {
+      termAdd(term, 'SyntaxError: בתוך מרכאות כפולות אי אפשר לכתוב מרכאות כפולות', "t-err");
       msg.style.color = "var(--danger)";
       msg.textContent = "נסי בלי סימן מרכאות בתוך הטקסט.";
       return;
@@ -382,11 +382,11 @@ $("jump-to-exercises").addEventListener("click", function () {
 /* ---------- print chips ---------- */
 (function () {
   var progs = [
-    { label: "טקסט", code: ''print("שלום עולם")'', out: "שלום עולם", why: "טקסט בין מרכאות מודפס בדיוק כמו שהוא." },
+    { label: "טקסט", code: 'print("שלום עולם")', out: "שלום עולם", why: "טקסט בין מרכאות מודפס בדיוק כמו שהוא." },
     { label: "חישוב", code: "print(5 + 3)", out: "8", why: "בלי מרכאות פייתון מחשבת — ומדפיסה את התוצאה." },
-    { label: "בתוך מרכאות", code: ''print("5 + 3")'', out: "5 + 3", why: "בתוך מרכאות זה רק טקסט. פייתון לא מחשבת, פשוט מעתיקה." },
-    { label: "פסיק", code: ''print("גיל:", 15)'', out: "גיל: 15", why: "פסיק מפריד בין חלקים, ופייתון שמה ביניהם רווח לבד." },
-    { label: "בלי מרכאות", code: "print(hello)", err: "NameError: name ''hello'' is not defined", bad: true, why: "בלי מרכאות פייתון חושבת ש-hello הוא שם של משתנה — ולא מכירה אותו. זו שגיאה שתפגשו הרבה." }
+    { label: "בתוך מרכאות", code: 'print("5 + 3")', out: "5 + 3", why: "בתוך מרכאות זה רק טקסט. פייתון לא מחשבת, פשוט מעתיקה." },
+    { label: "פסיק", code: 'print("גיל:", 15)', out: "גיל: 15", why: "פסיק מפריד בין חלקים, ופייתון שמה ביניהם רווח לבד." },
+    { label: "בלי מרכאות", code: "print(hello)", err: "NameError: name 'hello' is not defined", bad: true, why: "בלי מרכאות פייתון חושבת ש-hello הוא שם של משתנה — ולא מכירה אותו. זו שגיאה שתפגשו הרבה." }
   ];
   var chips = $("print-chips"), code = $("print-code"), term = $("print-term"), why = $("print-why");
   var btns = [];
@@ -425,13 +425,13 @@ $("jump-to-exercises").addEventListener("click", function () {
       var v = vars[n];
       var box = document.createElement("div");
       box.className = "vbox" + (lastPop === n ? " pop" : "");
-      box.innerHTML = ''<div class="vname">'' + n + ''</div><div class="vval"></div><div class="vtype">'' + (v.num ? "מספר" : "טקסט") + ''</div><button type="button">print('' + n + ")</button>";
+      box.innerHTML = '<div class="vname">' + n + '</div><div class="vval"></div><div class="vtype">' + (v.num ? "מספר" : "טקסט") + '</div><button type="button">print(' + n + ")</button>";
       box.querySelector(".vval").textContent = v.value;
       box.querySelector("button").addEventListener("click", function () { termAdd(term, String(v.value)); });
       shelf.appendChild(box);
     });
     if (!any) { var e = document.createElement("span"); e.className = "empty-note"; e.textContent = "הקופסאות ריקות — שימו ערך."; shelf.appendChild(e); }
-    codeEl.innerHTML = history.length ? history.map(function (l) { return ''<div class="line">'' + highlight(l) + "</div>"; }).join("") : ''<div class="line" style="color:var(--ink-faint)"># עוד לא נכתב קוד</div>'';
+    codeEl.innerHTML = history.length ? history.map(function (l) { return '<div class="line">' + highlight(l) + "</div>"; }).join("") : '<div class="line" style="color:var(--ink-faint)"># עוד לא נכתב קוד</div>';
     plus.disabled = !(vars.age && vars.age.num);
     lastPop = null;
   }
@@ -439,10 +439,10 @@ $("jump-to-exercises").addEventListener("click", function () {
   $("var-set").addEventListener("click", function () {
     var raw = val.value.trim(), n = sel.value;
     if (!raw) { note.textContent = "כתבי ערך קודם."; return; }
-    if (raw.indexOf(''"'') !== -1) { note.textContent = "בלי סימן מרכאות בתוך הערך."; return; }
+    if (raw.indexOf('"') !== -1) { note.textContent = "בלי סימן מרכאות בתוך הערך."; return; }
     var num = isNum(raw), old = vars[n];
     vars[n] = { value: num ? Number(raw) : raw, num: num };
-    history.push(n + " = " + (num ? raw : ''"'' + raw + ''"''));
+    history.push(n + " = " + (num ? raw : '"' + raw + '"'));
     note.textContent = old ? "הערך הישן (" + old.value + ") נמחק — בקופסה יש מקום לערך אחד בלבד." : base;
     lastPop = n; val.value = ""; render();
   });
@@ -490,9 +490,9 @@ $("jump-to-exercises").addEventListener("click", function () {
   var btns = document.querySelectorAll(".seg button"), useInt = false;
   function render() {
     var code = useInt
-      ? ''a = int(input("מספר ראשון: "))\nb = int(input("שני: "))\nprint(a + b)''
-      : ''a = input("מספר ראשון: ")\nb = input("שני: ")\nprint(a + b)'';
-    codeEl.innerHTML = code.split("\n").map(function (l) { return ''<div class="line">'' + highlight(l) + "</div>"; }).join("");
+      ? 'a = int(input("מספר ראשון: "))\nb = int(input("שני: "))\nprint(a + b)'
+      : 'a = input("מספר ראשון: ")\nb = input("שני: ")\nprint(a + b)';
+    codeEl.innerHTML = code.split("\n").map(function (l) { return '<div class="line">' + highlight(l) + "</div>"; }).join("");
     termClear(term);
     var x = a.value, y = b.value;
     if (useInt) {
@@ -506,7 +506,7 @@ $("jump-to-exercises").addEventListener("click", function () {
       }
     } else {
       termAdd(term, x + y);
-      note.textContent = ''input החזירה את "'' + x + ''" ו-"'' + y + ''" כטקסט, ו-+ בין טקסטים פשוט מדביקה אותם. לכן יצא '' + x + y + ", לא חיבור.";
+      note.textContent = 'input החזירה את "' + x + '" ו-"' + y + '" כטקסט, ו-+ בין טקסטים פשוט מדביקה אותם. לכן יצא ' + x + y + ", לא חיבור.";
     }
   }
   btns.forEach(function (bt) {
@@ -526,7 +526,7 @@ $("jump-to-exercises").addEventListener("click", function () {
   $("ex1-check").addEventListener("click", function () {
     var v = $("ex1-in").value.trim(), out = $("ex1-out");
     if (!v) { fb("ex1-fb", false, "כתבי משהו."); return; }
-    var m = /^(["''])(.*)\1$/.exec(v);
+    var m = /^(["'])(.*)\1$/.exec(v);
     if (!m) { out.textContent = "NameError"; fb("ex1-fb", false, "בלי מרכאות פייתון תחפש משתנה בשם הזה. טקסט כותבים בין מרכאות."); return; }
     out.textContent = m[2];
     if (m[2] === "שלום עולם") { fb("ex1-fb", true, "מדויק!"); window.lessonProgress.ex1 = true; }
@@ -558,16 +558,16 @@ $("jump-to-exercises").addEventListener("click", function () {
   nameDisplay.textContent = currentName();
 
   function row(label, done) {
-    return ''<div class="row"><span class="dot '' + (done ? "done" : "") + ''"></span><span class="label">'' + label + ''</span><span class="state '' + (done ? "ok" : "no") + ''">'' + (done ? "הושלם" : "לא הושלם") + "</span></div>";
+    return '<div class="row"><span class="dot ' + (done ? "done" : "") + '"></span><span class="label">' + label + '</span><span class="state ' + (done ? "ok" : "no") + '">' + (done ? "הושלם" : "לא הושלם") + "</span></div>";
   }
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
     var ex4 = esc($("ex4-answer").value.trim()) || "(לא הוזן קוד)";
     var dateStr = new Date().toLocaleDateString("he-IL");
-    return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">'' +
+    return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +
       "<title>תעודת תרגול — " + esc(name) + "</title>" +
-      ''<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'' +
-      ''<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">'' +
+      '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+      '<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">' +
       "<style>" +
       ":root{--bg:#12102A;--panel:#1D1A3D;--ink:#F5F3FF;--dim:#B4AEDB;--main:#7CE38B;--ok:#5CE1A6;--no:#FF6B6B;--line:rgba(245,243,255,.12);}" +
       "*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,sans-serif;font-size:16px;line-height:1.7;padding:50px 20px;}" +
@@ -575,16 +575,16 @@ $("jump-to-exercises").addEventListener("click", function () {
       ".meta{color:var(--dim);margin-bottom:34px;font-size:15px;}h2{font-family:Rubik,sans-serif;font-weight:800;font-size:1.1rem;margin:0 0 14px;color:var(--main);}" +
       ".card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:26px;}" +
       ".row{display:flex;align-items:center;gap:10px;padding:6px 0;}.dot{width:10px;height:10px;border-radius:50%;background:var(--no);flex-shrink:0;}.dot.done{background:var(--ok);}" +
-      ".label{flex:1;font-size:15px;}.state{font-family:''JetBrains Mono'',monospace;font-size:13px;font-weight:600;}.state.ok{color:var(--ok);}.state.no{color:var(--no);}" +
-      "pre{direction:ltr;text-align:left;font-family:''JetBrains Mono'',monospace;font-size:13.5px;line-height:1.7;background:rgba(0,0,0,.28);border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--ink);margin:0;}" +
+      ".label{flex:1;font-size:15px;}.state{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;}.state.ok{color:var(--ok);}.state.no{color:var(--no);}" +
+      "pre{direction:ltr;text-align:left;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.7;background:rgba(0,0,0,.28);border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--ink);margin:0;}" +
       ".q{font-size:14.5px;color:var(--dim);margin:0 0 10px;}" +
-      ''</style></head><body><div class="wrap">'' +
+      '</style></head><body><div class="wrap">' +
       "<h1>תעודת תרגול — שיעור ראשון בפייתון</h1>" +
-      ''<div class="meta">שם: '' + esc(name) + " · תאריך: " + dateStr + "</div>" +
-      ''<h2>מה עשיתן</h2><div class="card">'' +
+      '<div class="meta">שם: ' + esc(name) + " · תאריך: " + dateStr + "</div>" +
+      '<h2>מה עשיתן</h2><div class="card">' +
       row("הרצת התוכנית הראשונה", p.first) + row("תרגיל 1 (print)", p.ex1) + row("תרגיל 2 (משתנים)", p.ex2) + row("תרגיל 3 (input)", p.ex3) +
       "</div>" +
-      ''<h2>תרגיל 4 · מכונת העתיד</h2><div class="card"><p class="q">תוכנית עם input, int ומשתנים.</p><pre>'' + ex4 + "</pre></div>" +
+      '<h2>תרגיל 4 · מכונת העתיד</h2><div class="card"><p class="q">תוכנית עם input, int ומשתנים.</p><pre>' + ex4 + "</pre></div>" +
       "</div></body></html>";
   }
   function blobDownload(filename, html) {
@@ -629,4 +629,3 @@ $("jump-to-exercises").addEventListener("click", function () {
 </script>
 </body>
 </html>
-' WHERE id='7cf0f1055052d7a82e54f80ae2bb24e2';

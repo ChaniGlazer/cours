@@ -1,4 +1,5 @@
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('c70af80d256f466a88416bde47fa82cb','python-ai-era','intro','שיעור פתיחה - מה זה פייתון?','','','<!DOCTYPE html>
+DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='intro';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('c70af80d256f466a88416bde47fa82cb', 'python-ai-era', 'intro', 'שיעור פתיחה - מה זה פייתון?', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -565,4 +566,4 @@ function hlCode(code) {
 </script>
 </body>
 </html>
-',0,'2026-10-06T06:53:02.322Z');
+', 0, '2026-10-06T06:53:02.322Z');

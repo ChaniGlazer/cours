@@ -1,6 +1,5 @@
-UPDATE lessons SET position=4, title='שיעור 4 - for מקוצר בשורה אחת' WHERE course_id='python-ai-era' AND slug='short-for-loops';
-UPDATE lessons SET position=3, title='שיעור 3 - לולאות for ו-while' WHERE course_id='python-ai-era' AND slug='for-while-loops';
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('534b4a71406247ddb3153d95faf6f784','python-ai-era','conditions','שיעור 2 - תנאים (if)','','','<!DOCTYPE html>
+DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='conditions';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('534b4a71406247ddb3153d95faf6f784', 'python-ai-era', 'conditions', 'שיעור 2 - תנאים (if)', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -651,4 +650,4 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
 </script>
 </body>
 </html>
-',2,'2026-10-06T07:05:30.675Z');
+', 2, '2026-10-06T07:05:30.675Z');
