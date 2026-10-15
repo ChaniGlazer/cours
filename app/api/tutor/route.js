@@ -8,7 +8,7 @@ import { validateTutorBody } from "@/lib/tutorInput";
 import { TUTOR_COURSES, lessonContext } from "@/lib/tutorLessons";
 import { buildTutorInstructions, hintLevel, wrapHistoryTurn, wrapLearnerTurn } from "@/lib/tutorPrompt";
 import { callTutorModel, DEFAULT_API_BASE, TutorProviderError } from "@/lib/tutorOpenAI";
-import { bumpAttempt, consumeRateLimit, lessonExists, logUsage, rollbackAttempt } from "@/lib/tutorStore";
+import { bumpAttempt, consumeRateLimit, lessonExists, logUsage, refundRateLimit, rollbackAttempt } from "@/lib/tutorStore";
 
 // ברירת מחדל מתוך התיעוד של OpenAI (developers.openai.com/api/docs/models, 2026-10): מודל בינוני וחסכוני.
 // ההחלטה הסופית לפי scripts/tutor-eval.mjs, ונקבעת במשתנה הסביבה TUTOR_MODEL.
@@ -26,7 +26,7 @@ const MSG = {
   badRequest: "הבקשה לא תקינה. בדקי את ההודעה והקוד ונסי שוב.",
   notAvailable: "החונכת לא זמינה בקורס הזה.",
   unavailable: "החונכת לא זמינה כרגע. נסי שוב בעוד כמה דקות.",
-  failed: "משהו השתבש אצל החונכת. נסי שוב בעוד רגע. הניסיון הזה לא נספר.",
+  failed: "משהו השתבש אצל החונכת. נסי שוב בעוד רגע. ההודעה הזאת לא נספרת.",
   rate: "שלחת הרבה הודעות. אפשר לחזור לחונכת בעוד קצת."
 };
 
@@ -121,9 +121,10 @@ export async function POST(request) {
         timeoutMs: Number.parseInt(process.env.TUTOR_TIMEOUT_MS, 10) || 20000
       });
     } catch (e) {
-      // רושמים רק את סוג הכשל (בלי תוכן שיחה ובלי טקסט גולמי של הספק), ומחזירים את הניסיון.
+      // רושמים רק את סוג הכשל (בלי תוכן שיחה ובלי טקסט גולמי של הספק), ומחזירים גם את הניסיון וגם את המכסה שנצרכה.
       console.error("tutor provider failure:", e instanceof TutorProviderError ? `${e.kind} ${e.status || ""}` : "unknown");
       await rollbackAttempt(user.id, lessonSlug, topicKey).catch(() => {});
+      await refundRateLimit(user.id, limit.buckets).catch(() => {});
       return json({ error: MSG.failed }, 502);
     }
 
