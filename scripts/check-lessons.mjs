@@ -12,6 +12,7 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { outlinesAreCurrent } from "./build-lesson-outlines.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dir = join(root, "lessons");
@@ -135,5 +136,9 @@ for (const sqlName of sqlFiles) {
   if (problems.length) bad++;
   console.log(`${problems.length ? "FAIL" : "OK  "} ${sqlName} (${slug})${problems.map((p) => "\n       - " + p).join("")}${notes.map((n) => "\n       · " + n).join("")}`);
 }
+// lib/lessonOutlines.json (הטקסט שמוצג בעמוד השיעור לצורכי SEO) נגזר מקובצי ה-HTML: אם הם השתנו והקובץ לא נבנה מחדש, מתריעים.
+const outlinesOk = outlinesAreCurrent();
+if (!outlinesOk) bad++;
+console.log(outlinesOk ? "OK   lib/lessonOutlines.json" : "FAIL lib/lessonOutlines.json לא עדכני: להריץ node scripts/build-lesson-outlines.mjs");
 console.log(bad ? `\n${bad} שיעורים לא תקינים` : `\nכל ${sqlFiles.length} השיעורים תואמים${remote ? " (כולל D1)" : ""}`);
 process.exit(bad ? 1 : 0);

@@ -77,3 +77,18 @@ a.lx-item:hover { background: var(--paper-2); }
   .lx-page { gap: 32px; padding-bottom: 64px; }
 }
 @media (prefers-reduced-motion: reduce) { .lx * { transition: none !important; } }
+
+/* "מה לומדים בשיעור": טקסט אמיתי מתחת ל-iframe של השיעור (SEO), בעיצוב שקט שלא מתחרה בשיעור */
+.lx-seo { max-width: 760px; width: 100%; align-self: center; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px; padding-top: 40px; border-top: 1px solid var(--border); }
+.lx-seo__h { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3vw, 32px); line-height: 1.2; }
+.lx-seo__part h3 { margin: 0 0 6px; font-family: var(--font-body); font-weight: 700; font-size: 20px; line-height: 1.35; color: var(--ink); }
+.lx-seo__part p { margin: 0; color: var(--text-soft); font-size: 18px; line-height: 1.7; }
+.lx-seo__part ul { margin: 8px 0 0; padding-inline-start: 22px; color: var(--text-soft); font-size: 17px; line-height: 1.65; }
+.lx-seo__part li + li { margin-top: 6px; }
+.lx-seo__part strong { color: var(--ink); }
+.lx-seo__code { margin: 12px 0 0; padding: 14px 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); color: var(--ink); font-family: var(--font-mono); font-size: 15px; line-height: 1.7; text-align: left; overflow-x: auto; }
+.lx-seo__faq { display: flex; flex-direction: column; gap: 18px; padding-top: 12px; }
+.lx-seo__nav { display: flex; flex-direction: column; gap: 6px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-soft); font-size: 17px; }
+.lx-seo__nav p { margin: 0; }
+.lx-seo__nav a { color: var(--ink); font-weight: 700; border-bottom: 1px solid var(--border); }
+.lx-seo__nav a:hover { border-bottom-color: var(--gold); }

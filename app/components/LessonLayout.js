@@ -36,7 +36,7 @@ function ringTexts(done, total) {
   return [done === 1 ? "התחלה טובה!" : "ממשיכים יפה!", note];
 }
 
-export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, tutorEnabled = false, children }) {
+export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, tutorEnabled = false, seoContent = null, children }) {
   const progress = useProgress();
   const slugs = lessons.map((l) => l.slug);
   const idx = slugs.indexOf(currentSlug);
@@ -262,6 +262,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
               </button>
             </div>
           </section>
+
+          {seoContent}
         </main>
       </div>
       {hasTutor && <TutorWidget key={currentSlug} courseId={course.id} lessonSlug={currentSlug} loggedIn={loggedIn} context={tutorContext} />}

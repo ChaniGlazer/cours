@@ -5,6 +5,9 @@ import { hasPurchasedCourse } from "@/lib/purchases";
 import { isAdmin } from "@/lib/admin-auth";
 import { parseVideoEmbed } from "@/lib/video";
 import LessonLayout from "@/app/components/LessonLayout";
+import LessonSeoSection from "@/app/components/LessonSeoSection";
+import OUTLINES from "@/lib/lessonOutlines.json";
+import { getLessonSeo } from "@/lib/lessonSeo";
 import { tutorVisibleFor } from "@/lib/tutorAccess";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
 
@@ -16,8 +19,10 @@ export async function generateMetadata({ params }) {
   const idx = lessons.findIndex((l) => l.slug === lessonSlug);
   if (idx === -1) return { title: "השיעור לא נמצא", robots: { index: false } };
   const lesson = lessons[idx];
-  const title = `${lesson.title} - ${course.title}`;
-  const description = toDescription(lesson.description, `${lesson.title} - שיעור מתוך הקורס ${course.title}`);
+  // לשיעורים עם טקסטי SEO (lib/lessonSeo.js): title ו-description ייחודיים. לשאר: הנוסח הקודם.
+  const seo = getLessonSeo(course.id, lesson.slug);
+  const title = seo?.title || `${lesson.title} - ${course.title}`;
+  const description = seo?.description || toDescription(lesson.description, `${lesson.title} - שיעור מתוך הקורס ${course.title}`);
   const path = `/courses/${course.id}/${lesson.slug}`;
   // שיעורים נעולים (בקורס בתשלום, אחרי הראשון) מפנים להרשמה - לא לאנדקס.
   const locked = course.is_paid && idx > 0;
@@ -54,17 +59,31 @@ export default async function LessonPage({ params }) {
   const prevLesson = idx > 0 ? lessons[idx - 1] : null;
   const nextLesson = idx < lessons.length - 1 ? lessons[idx + 1] : null;
 
+  const seo = getLessonSeo(course.id, lesson.slug);
+  const outline = OUTLINES[`${course.id}/${lesson.slug}`] || null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LearningResource",
     name: lesson.title,
-    description: toDescription(lesson.description, lesson.title),
+    description: seo?.description || toDescription(lesson.description, lesson.title),
     url: absoluteUrl(`/courses/${course.id}/${lesson.slug}`),
     inLanguage: "he",
+    ...(seo?.teaches ? { teaches: seo.teaches } : {}),
     learningResourceType: "שיעור אינטראקטיבי",
     isAccessibleForFree: !course.is_paid || idx === 0,
     author: { "@type": "Person", name: AUTHOR_NAME },
     isPartOf: { "@type": "Course", name: course.title, url: absoluteUrl(`/courses/${course.id}`) }
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "קטלוג קורסים", item: absoluteUrl("/courses") },
+      { "@type": "ListItem", position: 2, name: course.title, item: absoluteUrl(`/courses/${course.id}`) },
+      { "@type": "ListItem", position: 3, name: lesson.title, item: absoluteUrl(`/courses/${course.id}/${lesson.slug}`) }
+    ]
   };
 
   const lessonItems = lessons.map((l, i) => ({
@@ -81,6 +100,7 @@ export default async function LessonPage({ params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumbLd) }} />
       <LessonLayout
         course={{ id: course.id, title: course.title }}
         lessons={lessonItems}
@@ -92,6 +112,17 @@ export default async function LessonPage({ params }) {
         html={lesson.html_content || null}
         loggedIn={Boolean(user)}
         tutorEnabled={tutorVisibleFor(user)}
+        seoContent={
+          outline || seo ? (
+            <LessonSeoSection
+              outline={outline}
+              seo={seo}
+              course={{ id: course.id }}
+              prev={prevLesson ? { slug: prevLesson.slug, title: prevLesson.title } : null}
+              next={nextLesson ? { slug: nextLesson.slug, title: nextLesson.title } : null}
+            />
+          ) : null
+        }
       >
         {embed ? (
           <div className="video-wrap">
