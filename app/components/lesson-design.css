@@ -93,3 +93,7 @@ a.lx-item:hover { background: var(--paper-2); }
 .lx-seo__nav a { color: var(--ink); font-weight: 700; border-bottom: 1px solid var(--border); }
 .lx-seo__nav a:hover { border-bottom-color: var(--gold); }
 .lx-seo__file { font-family: var(--font-mono); font-size: 0.92em; direction: ltr; unicode-bidi: isolate; padding: 1px 6px; border-radius: 6px; background: var(--white); border: 1px solid var(--border); color: var(--ink); }
+.lx-seo__topics { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; }
+.lx-seo__topics ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.lx-seo__topics a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: 700; font-size: 18px; border-bottom: 1px solid var(--border); }
+.lx-seo__topics a:hover { border-bottom-color: var(--gold); }

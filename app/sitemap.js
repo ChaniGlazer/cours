@@ -1,10 +1,15 @@
 import { getCourses, getLessonsForCourse } from "@/lib/courses";
 import { absoluteUrl } from "@/lib/seo";
+import { TOPICS } from "@/lib/topics";
 
 export const dynamic = "force-dynamic";
 
 export default async function sitemap() {
-  const entries = [{ url: absoluteUrl("/courses"), changeFrequency: "weekly", priority: 1 }];
+  const entries = [
+    { url: absoluteUrl("/courses"), changeFrequency: "weekly", priority: 1 },
+    { url: absoluteUrl("/topics"), changeFrequency: "monthly", priority: 0.8 },
+    ...TOPICS.map((t) => ({ url: absoluteUrl(`/topics/${t.slug}`), changeFrequency: "monthly", priority: 0.7 }))
+  ];
 
   const courses = await getCourses();
   for (const course of courses) {

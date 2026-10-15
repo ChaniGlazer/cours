@@ -83,6 +83,7 @@ export default async function RootLayout({ children }) {
             <span>[אימייל ליצירת קשר]</span>
             <nav aria-label="קישורי תחתית">
               <a href="/courses">קטלוג קורסים</a>
+              <a href="/topics">נושאים</a>
               {user ? (
                 <a href="/my-courses">האזור שלי</a>
               ) : (

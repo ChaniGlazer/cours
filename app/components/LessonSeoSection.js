@@ -19,7 +19,7 @@ function Inline({ text }) {
   );
 }
 
-export default function LessonSeoSection({ outline, seo, course, prev, next }) {
+export default function LessonSeoSection({ outline, seo, course, prev, next, topics = [] }) {
   const sections = outline?.sections || [];
   const faq = seo?.faq || [];
   if (sections.length === 0 && faq.length === 0) return null;
@@ -79,6 +79,19 @@ export default function LessonSeoSection({ outline, seo, course, prev, next }) {
               </p>
             </div>
           ))}
+        </div>
+      )}
+
+      {topics.length > 0 && (
+        <div className="lx-seo__topics">
+          <h2 className="lx-seo__h">נושאים קשורים</h2>
+          <ul>
+            {topics.map((t) => (
+              <li key={t.slug}>
+                <a href={`/topics/${t.slug}`}>{t.h1}</a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

@@ -8,6 +8,7 @@ import LessonLayout from "@/app/components/LessonLayout";
 import LessonSeoSection from "@/app/components/LessonSeoSection";
 import OUTLINES from "@/lib/lessonOutlines.json";
 import { getLessonSeo } from "@/lib/lessonSeo";
+import { getTopicsForLesson } from "@/lib/topics";
 import { tutorVisibleFor } from "@/lib/tutorAccess";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
 
@@ -118,6 +119,7 @@ export default async function LessonPage({ params }) {
         seoContent={
           outline || seo ? (
             <LessonSeoSection
+              topics={course.id === "python-ai-era" ? getTopicsForLesson(lesson.slug) : []}
               outline={outline}
               seo={seo}
               course={{ id: course.id }}
