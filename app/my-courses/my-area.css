@@ -1,0 +1,110 @@
+/* "האזור שלי" (/my-courses). כל הצבעים והגופנים מהטוקנים ב-globals.css (--paper, --white, --paper-2, --border, --ink, --text-soft,
+   --gold = ורוד לפעולה ראשית, --moss = מנטה להשלמה, --mono-yellow = צהוב לדגשים). כל הכללים בקידומת ma- כדי לא לדלוף לדפים אחרים. */
+
+.ma { padding: 48px 0 72px; }
+.ma-wrap { display: flex; flex-direction: column; gap: 40px; }
+
+/* ---------- פתיחה ---------- */
+.ma-hero { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.ma-hero__h1 { margin: 6px 0 0; }
+.ma-hero__sum { margin: 0; color: var(--text-soft); font-size: 1.15rem; min-height: 1.65em; display: flex; align-items: center; }
+
+/* ---------- כרטיס "המשך מהמקום שעצרת" ---------- */
+.ma-spot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr);
+  gap: 24px 48px;
+  align-items: center;
+  min-height: 260px;
+  padding: 32px 36px;
+  background: var(--white);
+  border: 1.5px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 4px rgba(255, 127, 150, 0.14), var(--shadow);
+}
+.ma-spot--all { border-color: var(--moss); box-shadow: 0 0 0 4px rgba(111, 224, 160, 0.14), var(--shadow); }
+.ma-spot--loading { border-color: var(--border); box-shadow: var(--shadow); }
+.ma-spot__main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ma-spot__eyebrow { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.95rem; color: var(--mono-yellow); }
+.ma-spot__eyebrow::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--mono-yellow); }
+.ma-spot--all .ma-spot__eyebrow { color: var(--moss); }
+.ma-spot--all .ma-spot__eyebrow::before { background: var(--moss); }
+.ma-spot__t { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ma-spot__lesson { margin: 0; color: var(--text-soft); font-size: 1.05rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ma-spot__side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ma-spot__count { margin: 0; font-size: 0.92rem; color: var(--text-soft); }
+.ma-spot .ui-progress { height: 10px; }
+.ma-spot .ui-progress > i { background: var(--gold); }
+.ma-spot--all .ui-progress > i { background: var(--moss); }
+.ma-spot__cta { min-height: 56px; font-size: 1.15rem; width: 100%; }
+
+/* ---------- אזורים ---------- */
+.ma-section { display: flex; flex-direction: column; gap: 18px; }
+.ma-section__h { margin: 0; font-size: clamp(1.4rem, 2.4vw, 1.9rem); }
+
+.ma-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ma-li { display: flex; min-width: 0; }
+
+/* ---------- כרטיס קורס ---------- */
+.ma-card {
+  display: flex; flex-direction: column; gap: 12px; width: 100%;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px;
+}
+.ma-card.is-done { border-color: var(--moss); }
+.ma-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ma-card__count { font-size: 0.85rem; color: var(--text-soft); font-weight: 600; }
+.ma-card__title { margin: 0; font-size: 1.3rem; line-height: 1.3; display: flex; align-items: flex-start; gap: 10px; }
+.ma-card__sub { margin: 0; color: var(--text-soft); font-size: 0.95rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ma-check {
+  flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; margin-top: 2px;
+  border-radius: 50%; background: var(--moss); color: var(--on-accent); font-family: var(--font-body); font-weight: 800; font-size: 0.9rem;
+}
+.ma-card__progress { margin-top: auto; padding-top: 6px; display: flex; flex-direction: column; gap: 8px; }
+.ma-card .ui-progress > i { background: var(--gold); }
+.ma-card.is-done .ui-progress > i { background: var(--moss); }
+.ma-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.88rem; min-height: 1.4em; color: var(--text-soft); font-weight: 600; }
+.ma-card__soon { margin: 0; min-height: 37px; display: flex; align-items: center; font-size: 0.9rem; font-weight: 600; color: var(--text-soft); }
+.ma-state { font-weight: 700; }
+.ma-state--progress { color: var(--mono-yellow); }
+.ma-state--done { color: var(--moss); }
+.ma-card__cta { width: 100%; min-height: 48px; box-shadow: none; }
+.ma-card__cta:hover { transform: none; }
+
+/* ---------- עוד קורסים (קטנים) ---------- */
+.ma-grid--small { gap: 16px; }
+.ma-mini { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; background: var(--paper); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; }
+.ma-mini__title { margin: 0; font-size: 1.1rem; line-height: 1.3; }
+.ma-mini__sub { margin: 0; color: var(--text-soft); font-size: 0.9rem; line-height: 1.5; }
+.ma-mini__link { margin-top: auto; padding-top: 6px; font-weight: 700; color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--border); min-height: 24px; }
+.ma-mini__link:hover { border-bottom-color: var(--gold); }
+
+/* ---------- מצב ריק ---------- */
+.ma-empty { padding: 40px 28px; border: 2px dashed var(--border); border-radius: var(--radius); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ma-empty h2 { margin: 0; font-size: 1.6rem; }
+.ma-empty p { margin: 0 0 12px; color: var(--text-soft); }
+
+/* ---------- תחתית ---------- */
+.ma-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+.ma-foot__link { font-weight: 700; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.ma-foot__link:hover { text-decoration: underline; }
+.ma-foot__hint { margin: 0; color: var(--text-soft); font-size: 0.95rem; }
+
+/* ---------- שלד טעינה (גובה קבוע, בלי קפיצה) ---------- */
+.ma-skel { display: block; border-radius: 8px; background: linear-gradient(90deg, var(--paper-2) 25%, var(--border) 50%, var(--paper-2) 75%); background-size: 200% 100%; animation: ma-shimmer 1.4s ease-in-out infinite; }
+.ma-skel--pill { border-radius: 999px; }
+.ma-skel--inline { display: inline-block; }
+@keyframes ma-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .ma-skel { animation: none; } }
+
+/* ---------- רספונסיבי ---------- */
+@media (max-width: 960px) {
+  .ma-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .ma { padding: 32px 0 48px; }
+  .ma-wrap { gap: 32px; }
+  .ma-spot { grid-template-columns: minmax(0, 1fr); min-height: 340px; padding: 24px 20px; gap: 20px; }
+  .ma-grid { grid-template-columns: minmax(0, 1fr); }
+  .ma-card__cta, .ma-spot__cta { min-height: 52px; }
+  .ma-foot { flex-direction: column; align-items: flex-start; }
+}
