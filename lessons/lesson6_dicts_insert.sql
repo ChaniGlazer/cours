@@ -791,19 +791,13 @@ for w in words:
       <div class="exercises-banner">
         <span class="badge">👇 מפה זה עלייך</span>
         <h2 class="section-title">תרגילים לכל הכיתה</h2>
-        <p>חמישה תרגילים: ארבעה עם בדיקה מיידית, ואחד שכותבים בעורך הפייתון ומדביקים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
+        <p>חמישה תרגילים: ארבעה עם בדיקה מיידית, ואחד שכותבים ומריצים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 1 · קריאה לפי מפתח</div>
-        <p class="exercise-task">השלימי כך שיודפס <span class="mono">25</span>.</p>
-        <div class="exercise-code">ages = {"דנה": 30, "רונית": 25, "מיכל": 41}
-print(ages[<input type="text" id="ex1-k" autocomplete="off" aria-label="המפתח">])</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex1-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex1-output"></div>
+        <p class="exercise-task">השלימי כך שיודפס <span class="mono">25</span>. החליפי את ___ והריצי.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card">
@@ -824,42 +818,27 @@ print(len(d), d["b"])</div>
 
       <div class="exercise-card rust">
         <div class="exercise-num">תרגיל 3 · ברירת מחדל</div>
-        <p class="exercise-task">השלימי את שם הפעולה כך שיודפס <span class="mono">0</span> במקום שגיאה.</p>
-        <div class="exercise-code">ages = {"דנה": 30, "רונית": 25}
-print(ages.<input type="text" id="ex3-m" autocomplete="off" aria-label="שם הפעולה">("שרה", 0))</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex3-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex3-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex3-output"></div>
+        <p class="exercise-task">השלימי את שם הפעולה כך שיודפס <span class="mono">0</span> במקום שגיאה. החליפי את ___ והריצי.</p>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card rust">
         <div class="exercise-num">תרגיל 4 · מעבר על ערכים</div>
-        <p class="exercise-task">השלימי כך שיודפס הסכום <span class="mono">20</span>.</p>
-        <div class="exercise-code">prices = {"עט": 5, "מחברת": 12, "מחק": 3}
-total = 0
-for price in prices.<input type="text" id="ex4-m" autocomplete="off" aria-label="שם הפעולה">():
-    total = total + price
-print(total)</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex4-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex4-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex4-output"></div>
+        <p class="exercise-task">השלימי כך שיודפס הסכום <span class="mono">20</span>. החליפי את ___ והריצי.</p>
+        <div id="ex4-ed"></div>
       </div>
 
       <div class="exercise-divider">
-        <span>כתיבה אישית — פותרות בעורך הפייתון שלכן, לא כאן</span>
+        <span>כתיבה אישית — כותבות כאן, מריצות ובודקות</span>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 5 · כתיבה חופשית · מתרגם האימוג׳ים שלך</div>
-        <p class="exercise-task">כתבי בעורך הפייתון מתרגם כמו בדמו, עם מילון של 5 מילים לפחות ומשפט משלך (רשימת מילים), שמדפיס כל מילה או את האימוג׳י שלה.</p>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex5-answer" rows="7" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
-        <div class="ai-note"><strong>עידן ה-AI:</strong> עכשיו בקשי מ-AI: ״הוסף למילון שלי עוד 5 מילים עם אימוג׳ים״. הדביקי את הקוד שחזר, ובמשפט אחד: האם ה-AI שמר על המבנה של המילון שלך?</div>
-        <textarea class="exercise-answer" id="ex5-ai-code" rows="5" style="margin-top:12px;" placeholder="# הדביקו כאן את הקוד שה-AI החזיר..."></textarea>
+        <p class="exercise-task">כתבי מתרגם כמו בדמו, עם מילון של 5 מילים לפחות ומשפט משלך (רשימת מילים), שמדפיס כל מילה או את האימוג׳י שלה.</p>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex5-ed"></div>
+        <div class="ai-note"><strong>עידן ה-AI:</strong> עכשיו בקשי מ-AI: ״הוסף למילון שלי עוד 5 מילים עם אימוג׳ים״. הדביקי את הקוד שחזר בעורך שלמטה (אפשר להריץ אותו), ובמשפט אחד: האם ה-AI שמר על המבנה של המילון שלך?</div>
+        <div id="ex5ai-ed" style="margin-top:12px;"></div>
         <textarea class="exercise-answer rtl" id="ex5-ai" rows="2" style="margin-top:12px;" placeholder="משפט אחד: האם המבנה נשמר?"></textarea>
       </div>
 
@@ -923,6 +902,26 @@ print(total)</div>
 <footer><div class="wrap">שיעור פייתון · מילונים</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, ex6: false, detectiveSolved: 0, detectiveTotal: 2 };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -937,25 +936,6 @@ reportLessonProgress();
 
 /*PURE-START*/
 /* לוגיקת הבדיקה של תרגילים 1-4. פונקציות טהורות ללא DOM, מוכנות לעבור לשרת. */
-function pyScalar(v) { return typeof v === "string" ? "''" + v + "''" : String(v); }
-
-function stripQuotes(src) {
-  var t = String(src == null ? "" : src).trim();
-  var m = /^(["''])(.*)\1$/.exec(t);
-  return m ? m[2].trim() : t;
-}
-
-/* תרגיל 1: ages[key] צריך להדפיס 25 */
-function checkEx1(src) {
-  var ages = { "דנה": 30, "רונית": 25, "מיכל": 41 };
-  var key = stripQuotes(src);
-  if (!key) return { ok: false, error: "כתבי מפתח (שם) בין הסוגריים." };
-  if (!Object.prototype.hasOwnProperty.call(ages, key)) return { ok: false, error: "KeyError: ''" + key + "''. אין כרטיס בשם הזה בספר.", shown: "KeyError: ''" + key + "''" };
-  var got = ages[key];
-  if (got === 25) return { ok: true, shown: String(got) };
-  return { ok: false, error: "יצא " + got + ". רוצות 25: של מי הגיל הזה?", shown: String(got) };
-}
-
 /* תרגיל 2: ניחוש של len(d) ו-d["b"] אחרי השינויים. התשובה "3 5" */
 function checkEx2(src) {
   var d = { a: 1, b: 2 };
@@ -969,25 +949,6 @@ function checkEx2(src) {
   return { ok: false, error: "לא בדיוק. אחרי השינויים יש במילון שלושה מפתחות (a, b, c), ו-b קיבל ערך חדש.", shown: shown };
 }
 
-/* תרגיל 3: ages.<name>("שרה", 0) צריך להדפיס 0 */
-function checkEx3(src) {
-  var name = String(src == null ? "" : src).trim();
-  if (!name) return { ok: false, error: "כתבי את שם הפעולה." };
-  if (name === "get") return { ok: true, shown: "0" };
-  if (name === "pop") return { ok: false, error: "pop גם מחזירה ברירת מחדל, אבל היא מוחקת מהמילון. כאן רוצות רק לקרוא, בלי למחוק." };
-  if (name === "keys" || name === "values" || name === "items") return { ok: false, error: name + " לא מקבלת מפתח וברירת מחדל. איזו פעולה קוראת ערך לפי מפתח בלי לקרוס?" };
-  return { ok: false, error: "למילון אין פעולה בשם ''" + name + "''. הרמז: היא קוראת ערך לפי מפתח, ולא קורסת." };
-}
-
-/* תרגיל 4: for price in prices.<name>() צריך לסכם ל-20 */
-function checkEx4(src) {
-  var name = String(src == null ? "" : src).trim();
-  if (!name) return { ok: false, error: "כתבי את שם הפעולה." };
-  if (name === "values") return { ok: true, shown: "20" };
-  if (name === "keys") return { ok: false, error: "TypeError: אי אפשר לחבר מספר למחרוזת. keys נותנת את השמות (עט, מחברת, מחק), ולא את המחירים." };
-  if (name === "items") return { ok: false, error: "TypeError: items נותנת זוגות (שם, מחיר), ואי אפשר לחבר מספר לזוג." };
-  return { ok: false, error: "למילון אין פעולה בשם ''" + name + "''. מחפשות את זו שנותנת רק את הערכים." };
-}
 /*PURE-END*/
 
 function $(id) { return document.getElementById(id); }
@@ -1184,10 +1145,26 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
     if (r.ok) { setFeedback($("ex" + n + "-feedback"), true, okText); window.lessonProgress["ex" + n] = true; reportLessonProgress(); }
     else setFeedback($("ex" + n + "-feedback"), false, r.error);
   }
-  $("ex1-check").addEventListener("click", function () { run(1, checkEx1($("ex1-k").value), "נכון! רונית היא 25."); });
+  /* תרגילים 1, 3, 4: הקוד רץ בפייתון אמיתי, והפלט נבדק */
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 3, maxRows: 6, code: ''ages = {"דנה": 30, "רונית": 25, "מיכל": 41}\nprint(ages[___])\n'', hint: "החליפי את ___ והריצי.",
+    tests: [{ label: "הפלט", out: "25" }],
+    passText: "נכון! רונית היא 25.",
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
+  });
   $("ex2-check").addEventListener("click", function () { run(2, checkEx2($("ex2-guess").value), "נכון! שלושה מפתחות, ו-b הוא 5."); });
-  $("ex3-check").addEventListener("click", function () { run(3, checkEx3($("ex3-m").value), "מדויק! get לא קורסת, והיא מחזירה את ברירת המחדל."); });
-  $("ex4-check").addEventListener("click", function () { run(4, checkEx4($("ex4-m").value), "יפה! values נותנת רק את המחירים: 20."); });
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 3, maxRows: 6, code: ''ages = {"דנה": 30, "רונית": 25}\nprint(ages.___("שרה", 0))\n'', hint: "החליפי את ___ בשם של פעולה והריצי.",
+    tests: [{ label: "הפלט", out: "0" }],
+    passText: "מדויק! get לא קורסת, והיא מחזירה את ברירת המחדל.",
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
+  });
+  pyEditor({
+    el: "ex4-ed", id: "ex4", rows: 5, maxRows: 8, code: ''prices = {"עט": 5, "מחברת": 12, "מחק": 3}\ntotal = 0\nfor price in prices.___():\n    total = total + price\nprint(total)\n'', hint: "החליפי את ___ בשם של פעולה והריצי.",
+    tests: [{ label: "הפלט", out: "20" }],
+    passText: "יפה! values נותנת רק את המחירים: 20.",
+    onPass: function () { window.lessonProgress.ex4 = true; reportLessonProgress(); }
+  });
 })();
 
 /* ---------- תרגיל 6 (אתגר רשות): פייתון אמיתי בדפדפן ---------- */
@@ -1212,6 +1189,19 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
   });
 })();
 
+/* ---------- exercise 5: free writing, runs for real ---------- */
+var ex5Editor = pyEditor({
+  el: "ex5-ed", id: "ex5", rows: 9, maxRows: 20, code: ''# מילון של 5 מילים לפחות, ומשפט משלך כרשימת מילים\n'',
+  tests: [{ label: "מתרגם אימוג׳ים", verify: function (r) {
+    var pairs = (r.code.match(/["''][^"''\n]+["'']\s*:\s*["''][^"''\n]+["'']/g) || []).length;
+    if (pairs < 5) return "צריך מילון עם 5 מילים לפחות (מילה: אימוג׳י).";
+    if (!/\bfor\b/.test(r.code)) return "עברי על המילים של המשפט עם לולאת for.";
+    return r.printed.split("\n").filter(function (l) { return l.trim(); }).length >= 2 ? true : "התוכנית צריכה להדפיס את המשפט, מילה או אימוג׳י לכל מילה.";
+  } }]
+});
+/* הקוד שה-AI החזיר: אפשר להדביק ולהריץ, בלי בדיקה אוטומטית */
+var ex5AiEditor = pyEditor({ el: "ex5ai-ed", id: "ex5ai", rows: 6, maxRows: 18, code: ''# הדביקי כאן את הקוד שה-AI החזיר\n'', label: "הקוד שה-AI החזיר" });
+
 /* ---------- certificate download ---------- */
 (function () {
   var nameInput = $("cert-name"), btn = $("cert-download"), statusEl = $("cert-status");
@@ -1225,8 +1215,8 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
   }
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex5 = esc($("ex5-answer").value.trim()) || "(לא הוזן קוד)";
-    var aiCode = esc($("ex5-ai-code").value.trim()) || "(לא הוזן קוד)";
+    var ex5 = esc(edCode(ex5Editor, "ex5").trim()) || "(לא הוזן קוד)";
+    var aiCode = esc(edCode(ex5AiEditor, "ex5ai").trim()) || "(לא הוזן קוד)";
     var ai = esc($("ex5-ai").value.trim()) || "(לא הוזן)";
     var dateStr = new Date().toLocaleDateString("he-IL");
     return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">'' +
@@ -1299,7 +1289,8 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
 /* מדגים לולאה על מילון צעד אחר צעד */
 (function () {
   var data = [["Dana", 30], ["Yuval", 25], ["Noa", 28]];
-  var mode = "keys", i = 0;
+', 6, '2026-10-08T07:27:31.938Z');
+UPDATE lessons SET html_content = html_content || '  var mode = "keys", i = 0;
   var cards = document.getElementById("gd-cards"), code = document.getElementById("gd-code"),
       vr = document.getElementById("gd-var"), out = document.getElementById("gd-out"),
       msg = document.getElementById("gd-msg"), next = document.getElementById("gd-next");
@@ -1394,4 +1385,4 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
 })();
 </script></body>
 </html>
-', 6, '2026-10-08T07:27:31.938Z');
+' WHERE id='1dc32f032e4139e5832650a29aa9b0b7';

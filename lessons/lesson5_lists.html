@@ -496,47 +496,26 @@ print(sum(grades) / len(grades))
       <div class="exercises-banner">
         <span class="badge">👇 מפה זה עלייך</span>
         <h2 class="section-title">התרגילים שלכן</h2>
-        <p>חמישה תרגילים — ארבעה עם בדיקה מיידית, ואחד שכותבים בעורך הפייתון ומדביקים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
+        <p>חמישה תרגילים — ארבעה עם בדיקה מיידית, ואחד שכותבים ומריצים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
       </div>
       <p class="lede" style="margin-top:22px;">משלימות את החסר בקוד, לוחצות ״בדקי״, ורואות מיד אם זה עובד.</p>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 1 · אינדקס</div>
-        <p class="exercise-task">השלימי כך שיודפס <span class="mono">אגס</span>.</p>
-        <div class="exercise-code">fruits = ["תפוח", "בננה", "אגס"]
-print(fruits[<input type="text" id="ex1-i" autocomplete="off" aria-label="האינדקס">])</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex1-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex1-output"></div>
+        <p class="exercise-task">השלימי כך שיודפס <span class="mono">אגס</span>. החליפי את ___ והריצי.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 2 · פרוסה</div>
-        <p class="exercise-task">השלימי כך שיודפס <span class="mono">[30, 40, 50]</span>.</p>
-        <div class="exercise-code">nums = [10, 20, 30, 40, 50, 60]
-print(nums[<input type="text" id="ex2-a" autocomplete="off" aria-label="התחלה">:<input type="text" id="ex2-b" autocomplete="off" aria-label="עצירה">])</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex2-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex2-output"></div>
+        <p class="exercise-task">השלימי כך שיודפס <span class="mono">[30, 40, 50]</span>. החליפי את שני ה-___ והריצי.</p>
+        <div id="ex2-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 3 · שמות פעולות</div>
-        <p class="exercise-task">השלימי את שמות הפעולות כך שיודפס <span class="mono">['x', 'a', 'c', 'd']</span>.</p>
-        <div class="exercise-code">items = ["a", "b", "c"]
-items.<input type="text" class="wide" id="ex3-a" autocomplete="off" aria-label="פעולה ראשונה">(0, "x")
-items.<input type="text" class="wide" id="ex3-b" autocomplete="off" aria-label="פעולה שנייה">("b")
-items.<input type="text" class="wide" id="ex3-c" autocomplete="off" aria-label="פעולה שלישית">("d")
-print(items)</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex3-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex3-feedback" role="status" aria-live="polite"></span>
-        </div>
-        <div class="exercise-output" id="ex3-output"></div>
+        <p class="exercise-task">השלימי את שמות הפעולות כך שיודפס <span class="mono">['x', 'a', 'c', 'd']</span>. החליפי את שלושת ה-___ והריצי.</p>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
@@ -557,14 +536,14 @@ print(len(a))</div>
 
 
       <div class="exercise-divider">
-        <span>כתיבה אישית — פותרות בעורך הפייתון שלכן, לא כאן</span>
+        <span>כתיבה אישית — כותבות כאן, מריצות ובודקות</span>
       </div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 5 · כתיבה חופשית · רשימת מטלות</div>
-        <p class="exercise-task">כתבי בעורך הפייתון תוכנית עם רשימה של 3 מטלות. הוסיפי מטלה רביעית, הסירי את הראשונה, והדפיסי את הרשימה ממוינת ואת מספר המטלות.</p>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex5-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-task">כתבי תוכנית עם רשימה של 3 מטלות. הוסיפי מטלה רביעית, הסירי את הראשונה, והדפיסי את הרשימה ממוינת ואת מספר המטלות.</p>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex5-ed"></div>
         <div class="ai-note"><strong>עידן ה-AI:</strong> בקשי מ-AI לכתוב את אותה תוכנית. השווי לקוד שלך. מה הוא עשה בדרך אחרת? כתבי משפט אחד.</div>
         <textarea class="exercise-answer rtl" id="ex5-ai" rows="2" style="margin-top:12px;" placeholder="משפט אחד על ההבדל..."></textarea>
       </div>
@@ -612,6 +591,26 @@ print(len(a))</div>
 <footer><div class="wrap">שיעור פייתון · רשימות</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 2 };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -657,30 +656,6 @@ function parseIntStrict(src) {
   return parseInt(t, 10);
 }
 
-/* תרגיל 1: fruits[i] צריך להיות "אגס" */
-function checkEx1(src) {
-  var fruits = ["תפוח", "בננה", "אגס"];
-  var i = parseIntStrict(src);
-  if (i === null) return { ok: false, error: "שימי מספר שלם." };
-  var at = i < 0 ? fruits.length + i : i;
-  if (at < 0 || at >= fruits.length) return { ok: false, error: "IndexError: אין תא " + i + " במדף של " + fruits.length + " תאים.", shown: "IndexError" };
-  var got = fruits[at];
-  if (got === "אגס") return { ok: true, shown: got };
-  return { ok: false, error: "יצא " + got + ". רוצות אגס.", shown: got };
-}
-
-/* תרגיל 2: nums[a:b] צריך להיות [30, 40, 50] */
-function checkEx2(a, b) {
-  var nums = [10, 20, 30, 40, 50, 60];
-  var s = parseIntStrict(a), e = parseIntStrict(b);
-  if (s === null || e === null) return { ok: false, error: "שימי שני מספרים שלמים." };
-  var r = sliceIndexes(nums.length, s, e, null);
-  var got = r.indexes.map(function (k) { return nums[k]; });
-  var shown = pyRepr(got);
-  if (shown === "[30, 40, 50]") return { ok: true, shown: shown };
-  return { ok: false, error: "יצא " + shown + ". רוצות [30, 40, 50].", shown: shown };
-}
-
 /* תרגיל 4: אותה רשימה אחרי append, האורך הוא 4 */
 function checkEx4(src) {
   var g = parseIntStrict(src);
@@ -691,34 +666,6 @@ function checkEx4(src) {
   return { ok: false, error: "לא בדיוק. b ו-a הם אותה רשימה, אז הוסיפו אליה ערך, והאורך יוצא " + a.length + ".", shown: String(a.length) };
 }
 
-/* תרגיל 3: מריצים את שלוש הפעולות על ["a","b","c"] ובודקים ש-items הוא ['x','a','c','d'] */
-function checkEx3(n1, n2, n3) {
-  var items = ["a", "b", "c"];
-  var ops = [[String(n1).trim(), [0, "x"]], [String(n2).trim(), ["b"]], [String(n3).trim(), ["d"]]];
-  for (var k = 0; k < ops.length; k++) {
-    var name = ops[k][0], args = ops[k][1];
-    if (!name) return { ok: false, error: "השלימי את שלושת שמות הפעולות." };
-    if (name === "append") {
-      if (args.length !== 1) return { ok: false, error: "TypeError: append מקבלת ערך אחד בלבד, אבל כאן יש " + args.length + "." };
-      items.push(args[0]);
-    } else if (name === "insert") {
-      if (args.length !== 2) return { ok: false, error: "TypeError: insert צריכה שני ערכים: מקום וערך." };
-      items.splice(args[0], 0, args[1]);
-    } else if (name === "remove") {
-      if (args.length !== 1) return { ok: false, error: "TypeError: remove מקבלת ערך אחד בלבד, אבל כאן יש " + args.length + "." };
-      var at = items.indexOf(args[0]);
-      if (at < 0) return { ok: false, error: "ValueError: remove לא מצאה את '" + args[0] + "' ברשימה." };
-      items.splice(at, 1);
-    } else if (name === "pop") {
-      return { ok: false, error: "pop מוציאה לפי מקום ולא מקבלת ערך כזה. בדקי את הכפתורים בדמו." };
-    } else {
-      return { ok: false, error: "לרשימה אין פעולה בשם '" + name + "'." };
-    }
-  }
-  var shown = pyRepr(items);
-  if (shown === "['x', 'a', 'c', 'd']") return { ok: true, shown: shown };
-  return { ok: false, error: "יצא " + shown + ". רוצות ['x', 'a', 'c', 'd'].", shown: shown };
-}
 /*PURE-END*/
 
 function $(id) { return document.getElementById(id); }
@@ -967,11 +914,45 @@ function makeGuess(btnId, inputId, fbId, test, okText, badText) {
     if (r.ok) { setFeedback($("ex" + n + "-feedback"), true, okText); window.lessonProgress["ex" + n] = true; reportLessonProgress(); }
     else setFeedback($("ex" + n + "-feedback"), false, r.error);
   }
-  $("ex1-check").addEventListener("click", function () { run(1, checkEx1($("ex1-i").value), "נכון! אפשר גם 2 וגם -1."); });
-  $("ex2-check").addEventListener("click", function () { run(2, checkEx2($("ex2-a").value, $("ex2-b").value), "מדויק! ההתחלה כלולה והעצירה לא."); });
-  $("ex3-check").addEventListener("click", function () { run(3, checkEx3($("ex3-a").value, $("ex3-b").value, $("ex3-c").value), "יפה! insert, remove ו-append, בסדר הזה."); });
+  /* תרגילים 1-3: הקוד רץ בפייתון אמיתי, והפלט נבדק */
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 3, maxRows: 6, code: 'fruits = ["תפוח", "בננה", "אגס"]\nprint(fruits[___])\n', hint: "החליפי את ___ והריצי.",
+    tests: [{ label: "הפלט", out: "אגס" }],
+    passText: "נכון! אפשר גם 2 וגם -1.",
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
+  });
+  pyEditor({
+    el: "ex2-ed", id: "ex2", rows: 3, maxRows: 6, code: 'nums = [10, 20, 30, 40, 50, 60]\nprint(nums[___:___])\n', hint: "החליפי את שני ה-___ במספרים והריצי.",
+    tests: [{ label: "הפלט", out: "[30, 40, 50]" }],
+    passText: "מדויק! ההתחלה כלולה והעצירה לא.",
+    onPass: function () { window.lessonProgress.ex2 = true; reportLessonProgress(); }
+  });
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 6, maxRows: 9, code: 'items = ["a", "b", "c"]\nitems.___(0, "x")\nitems.___("b")\nitems.___("d")\nprint(items)\n', hint: "החליפי את שלושת ה-___ בשמות של פעולות והריצי.",
+    tests: [{ label: "הפלט", out: "['x', 'a', 'c', 'd']" }],
+    passText: "יפה! insert, remove ו-append, בסדר הזה.",
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
+  });
   $("ex4-check").addEventListener("click", function () { run(4, checkEx4($("ex4-guess").value), "נכון! b = a לא יוצר עותק."); });
 })();
+
+/* ---------- exercise 5: free writing, runs for real ---------- */
+var ex5Editor = pyEditor({
+  el: "ex5-ed", id: "ex5", rows: 8, maxRows: 18, code: '# רשימה של 3 מטלות, והמשך מכאן\n',
+  tests: [{ label: "רשימת מטלות", verify: function (r) {
+    if (!/append|insert/.test(r.code)) return "הוסיפי מטלה רביעית (append או insert).";
+    if (!/remove|pop|del\b/.test(r.code)) return "הסירי את המטלה הראשונה (remove, pop או del).";
+    var lines = r.printed.split("\n").map(function (l) { return l.trim(); });
+    var list = null;
+    lines.forEach(function (l) {
+      if (/^\[.*\]$/.test(l)) { var items = (l.match(/'[^']*'|"[^"]*"/g) || []); if (items.length === 3) list = items; }
+    });
+    if (!list) return "הדפיסי את הרשימה אחרי ההוספה וההסרה: אמורות להישאר 3 מטלות.";
+    var sorted = list.slice().sort();
+    if (list.join("|") !== sorted.join("|")) return "הרשימה שהודפסה לא ממוינת. אפשר להשתמש ב-sorted(...) או ב-sort().";
+    return lines.indexOf("3") >= 0 ? true : "הדפיסי גם את מספר המטלות (3), עם len.";
+  } }]
+});
 
 /* ---------- certificate download ---------- */
 (function () {
@@ -986,7 +967,7 @@ function makeGuess(btnId, inputId, fbId, test, okText, badText) {
   }
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex5 = esc($("ex5-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex5 = esc(edCode(ex5Editor, "ex5").trim()) || "(לא הוזן קוד)";
     var ai = esc($("ex5-ai").value.trim()) || "(לא הוזן)";
     var dateStr = new Date().toLocaleDateString("he-IL");
     return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +

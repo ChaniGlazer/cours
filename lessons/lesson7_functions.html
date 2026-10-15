@@ -404,11 +404,9 @@ result = <span class="part" data-k="call">greet(<span class="tok-str">"Dana"</sp
       <div class="game-card">
         <span class="badge-game">🎮 משחק 2</span>
         <h3>print או return?</h3>
-        <p>שתי פונקציות שנראות כמעט זהות. הריצו כל אחת, וגלו למה אחת מהן שוברת את התוכנית.</p>
+        <p>שתי פונקציות שנראות כמעט זהות. הריצו כל אחת, וגלו למה אחת מהן שוברת את התוכנית. אפשר גם לשנות את הקוד.</p>
         <div class="seg" id="pr-seg"><button type="button" data-v="print" class="active">גרסה א׳: print</button><button type="button" data-v="return">גרסה ב׳: return</button></div>
-        <div class="code-card"><pre id="pr-code"></pre></div>
-        <div class="row" style="display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap;"><button class="btn" id="pr-run" type="button" style="padding:10px 26px;font-size:15px;">▶ הריצו</button><span id="pr-x" style="font-family:var(--mono);color:var(--ink-dim);direction:ltr"></span></div>
-        <div class="console" id="pr-con"><span class="dim">לחצו "הריצו" כדי לראות מה קורה...</span></div>
+        <div id="pr-ed"></div>
         <div class="callout info" style="margin-top:14px;"><span class="ico">📦</span><p><code>print</code> רק <strong>מציג</strong> למסך. <code>return</code> <strong>מחזיר ערך</strong> שאפשר לשמור, לחשב איתו ולהעביר הלאה.</p></div>
       </div>
     </div>
@@ -439,39 +437,19 @@ result = <span class="part" data-k="call">greet(<span class="tok-str">"Dana"</sp
   <div class="wrap">
     <div class="eyebrow v">חשוב לדעת</div>
     <h2 class="section-title">הבועה של הפונקציה</h2>
-    <p class="lede">משתנה שנוצר <strong style="color:var(--ink)">בתוך</strong> פונקציה חי רק בתוכה, כמו חדר סגור. כשהפונקציה נגמרת, החדר נעלם. הריצו את שלושת המקרים וראו.</p>
+    <p class="lede">משתנה שנוצר <strong style="color:var(--ink)">בתוך</strong> פונקציה חי רק בתוכה, כמו חדר סגור. כשהפונקציה נגמרת, החדר נעלם. הריצו את שלושת המקרים וראו. אפשר לשנות את הקוד ולנסות עוד.</p>
     <div class="scope-grid">
       <div class="scope-card">
         <h4>🫧 מקרה 1: לנסות להציץ פנימה</h4>
-        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">make_secret</span>():
-    secret = 42
-
-make_secret()
-<span class="tok-fn">print</span>(secret)</pre></div>
-        <button class="btn" data-sc="1" type="button">▶ הריצו</button>
-        <div class="scope-out" id="sc-1">...</div>
+        <div id="sc1-ed"></div>
       </div>
       <div class="scope-card">
         <h4>📦 מקרה 2: להוציא החוצה עם return</h4>
-        <div class="code-card"><pre><span class="tok-kw">def</span> <span class="tok-fn">make_secret</span>():
-    secret = 42
-    <span class="tok-kw">return</span> secret
-
-x = make_secret()
-<span class="tok-fn">print</span>(x)</pre></div>
-        <button class="btn" data-sc="2" type="button">▶ הריצו</button>
-        <div class="scope-out" id="sc-2">...</div>
+        <div id="sc2-ed"></div>
       </div>
       <div class="scope-card">
         <h4>👀 מקרה 3: להסתכל החוצה</h4>
-        <div class="code-card"><pre>bonus = 10
-
-<span class="tok-kw">def</span> <span class="tok-fn">add_bonus</span>(score):
-    <span class="tok-kw">return</span> score + bonus
-
-<span class="tok-fn">print</span>(add_bonus(5))</pre></div>
-        <button class="btn" data-sc="3" type="button">▶ הריצו</button>
-        <div class="scope-out" id="sc-3">...</div>
+        <div id="sc3-ed"></div>
       </div>
     </div>
     <div class="callout warn"><span class="ico">🧠</span><p><strong>כלל זהב:</strong> פונקציה יכולה <strong>לקרוא</strong> משתנים מבחוץ, אבל מה שהיא יוצרת בפנים נשאר בפנים. כדי להוציא תוצאה, משתמשים ב-<code>return</code>.</p></div>
@@ -494,7 +472,7 @@ x = make_secret()
   <div class="wrap">
     <div class="eyebrow v">עכשיו אתם</div>
     <h2 class="section-title">שלושה אתגרים לכתיבה</h2>
-    <p class="lede">כתבו את הפתרונות בעורך הפייתון שלכם, הריצו, ובדקו שהתוצאה כמו בדוגמה. אחר כך הדביקו כאן והורידו קובץ מסכם.</p>
+    <p class="lede">כתבו את הפתרונות כאן, הריצו, ובדקו שהתוצאה כמו בדוגמה. אחר כך הורידו קובץ מסכם.</p>
     <div class="ex-grid">
       <div class="ex-card">
         <span class="tag-lv lv1">קל</span>
@@ -502,7 +480,7 @@ x = make_secret()
         <p>כתבו פונקציה <code>is_even(n)</code> שמחזירה <code>True</code> אם המספר זוגי, ו-<code>False</code> אם לא.</p>
         <div class="code-card"><pre><span class="tok-fn">print</span>(is_even(4))   <span class="tok-cm"># True</span>
 <span class="tok-fn">print</span>(is_even(7))   <span class="tok-cm"># False</span></pre></div>
-        <textarea id="ex1" placeholder="# הדביקו כאן את הפתרון"></textarea>
+        <div id="ex1-ed"></div>
       </div>
       <div class="ex-card">
         <span class="tag-lv lv2">בינוני</span>
@@ -510,7 +488,7 @@ x = make_secret()
         <p>כתבו <code>discount(price, percent=10)</code> שמחזירה את המחיר אחרי הנחה. אם לא שולחים אחוז, ההנחה היא 10%.</p>
         <div class="code-card"><pre><span class="tok-fn">print</span>(discount(200))      <span class="tok-cm"># 180.0</span>
 <span class="tok-fn">print</span>(discount(200, 25))  <span class="tok-cm"># 150.0</span></pre></div>
-        <textarea id="ex2" placeholder="# הדביקו כאן את הפתרון"></textarea>
+        <div id="ex2-ed"></div>
       </div>
       <div class="ex-card">
         <span class="tag-lv lv3">אתגר</span>
@@ -519,7 +497,7 @@ x = make_secret()
         <div class="code-card"><pre>hero = {<span class="tok-str">"name"</span>: <span class="tok-str">"Noa"</span>, <span class="tok-str">"hp"</span>: 50}
 <span class="tok-fn">print</span>(hit(hero, 20))  <span class="tok-cm"># 30</span>
 <span class="tok-fn">print</span>(hit(hero, 70))  <span class="tok-cm"># 0</span></pre></div>
-        <textarea id="ex3" placeholder="# הדביקו כאן את הפתרון"></textarea>
+        <div id="ex3-ed"></div>
       </div>
     </div>
 
@@ -568,6 +546,27 @@ print(a)   # NameError</div></div></button>
 function $(id) { return document.getElementById(id); }
 var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 var progress = { machine: false, pizza: false, pr: false, puzzle: {}, scope: {}, det: { right: 0, done: 0, total: 5 } };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -700,27 +699,16 @@ reportLessonProgress();
 (function () {
   var ver = "print";
   var codes = {
-    print: '<span class="tok-kw">def</span> <span class="tok-fn">add_one</span>(n):\n    <span class="tok-fn">print</span>(n + 1)\n\nx = add_one(5)\n<span class="tok-fn">print</span>(x * 2)',
-    "return": '<span class="tok-kw">def</span> <span class="tok-fn">add_one</span>(n):\n    <span class="tok-kw">return</span> n + 1\n\nx = add_one(5)\n<span class="tok-fn">print</span>(x * 2)'
+    print: 'def add_one(n):\n    print(n + 1)\n\nx = add_one(5)\nprint(x * 2)\n',
+    "return": 'def add_one(n):\n    return n + 1\n\nx = add_one(5)\nprint(x * 2)\n'
   };
-  function show() {
-    $("pr-code").innerHTML = codes[ver];
+  var ed = pyEditor({ el: "pr-ed", id: "pr", rows: 6, maxRows: 12, code: codes.print, onRun: function () { progress.pr = true; } });
+  function show(run) {
     document.querySelectorAll("#pr-seg button").forEach(function (b) { b.classList.toggle("active", b.dataset.v === ver); });
-    $("pr-x").textContent = "";
-    $("pr-con").innerHTML = '<span class="dim">לחצו "הריצו" כדי לראות מה קורה...</span>';
+    if (ed) { ed.setCode(codes[ver]); if (run) ed.run(); }
   }
-  document.querySelectorAll("#pr-seg button").forEach(function (b) { b.addEventListener("click", function () { ver = b.dataset.v; show(); }); });
-  $("pr-run").addEventListener("click", function () {
-    progress.pr = true;
-    if (ver === "print") {
-      $("pr-x").textContent = "x = None";
-      $("pr-con").innerHTML = '6\n<span class="err">Traceback (most recent call last):\n  File "main.py", line 5, in &lt;module&gt;\n    print(x * 2)\nTypeError: unsupported operand type(s) for *: \'NoneType\' and \'int\'</span>\n<span class="dim">הפונקציה רק הציגה 6 למסך, ולא החזירה כלום, ולכן x ריק (None).</span>';
-    } else {
-      $("pr-x").textContent = "x = 6";
-      $("pr-con").innerHTML = '<span class="ok">12</span>\n<span class="dim">הפונקציה החזירה 6, הוא נשמר ב-x, ואפשר היה להמשיך לחשב איתו.</span>';
-    }
-  });
-  show();
+  document.querySelectorAll("#pr-seg button").forEach(function (b) { b.addEventListener("click", function () { ver = b.dataset.v; show(true); }); });
+  show(false);
 })();
 
 /* ---------- puzzle ---------- */
@@ -773,16 +761,13 @@ reportLessonProgress();
 
 /* ---------- scope ---------- */
 (function () {
-  var res = {
-    1: ["err", "NameError: name 'secret' is not defined\n\nהמשתנה secret חי רק בתוך הפונקציה, והיא כבר נגמרה."],
-    2: ["ok", "42\n\nreturn הוציא את הערך מהחדר, ושמרנו אותו ב-x."],
-    3: ["ok", "15\n\nפונקציה יכולה לקרוא משתנה מבחוץ (bonus)."]
+  var codes = {
+    1: 'def make_secret():\n    secret = 42\n\nmake_secret()\nprint(secret)\n',
+    2: 'def make_secret():\n    secret = 42\n    return secret\n\nx = make_secret()\nprint(x)\n',
+    3: 'bonus = 10\n\ndef add_bonus(score):\n    return score + bonus\n\nprint(add_bonus(5))\n'
   };
-  document.querySelectorAll("[data-sc]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var k = b.dataset.sc, o = $("sc-" + k);
-      o.className = "scope-out " + res[k][0]; o.textContent = res[k][1]; progress.scope[k] = true;
-    });
+  [1, 2, 3].forEach(function (k) {
+    pyEditor({ el: "sc" + k + "-ed", id: "sc" + k, rows: 5, maxRows: 10, code: codes[k], onRun: function () { progress.scope[k] = true; } });
   });
 })();
 
@@ -816,12 +801,41 @@ reportLessonProgress();
   });
 })();
 
+/* ---------- exercises: real functions, tested by calling them ---------- */
+var EDS = {};
+/* מוסיפים לקוד של התלמידה קריאות בדיקה אחרי סימון @@T, ובודקים רק את מה שהודפס אחריו (הדפסות משלה לא מפריעות) */
+function fnTest(label, setup, calls, expected) {
+  return {
+    label: label,
+    transform: function (code) { return code + "\n\n" + (setup ? setup + "\n" : "") + "print('@@T')\n" + calls.map(function (c) { return "print(" + c + ")"; }).join("\n") + "\n"; },
+    verify: function (r) {
+      var got = r.printed.split("@@T\n").pop().replace(/\n+$/, "").split("\n");
+      for (var i = 0; i < calls.length; i++) {
+        if (got[i] !== expected[i]) return calls[i] + " צריכה להחזיר " + expected[i] + ", אבל יצא " + (got[i] === undefined || got[i] === "" ? "כלום" : got[i]) + ". (אם יצא None, חסר return.)";
+      }
+      return true;
+    }
+  };
+}
+EDS.ex1 = pyEditor({
+  el: "ex1-ed", id: "ex1", rows: 6, maxRows: 16, code: 'def is_even(n):\n    # כתבי כאן\n    pass\n',
+  tests: [fnTest("is_even על כמה מספרים", "", ["is_even(4)", "is_even(7)", "is_even(0)", "is_even(-3)"], ["True", "False", "True", "False"])]
+});
+EDS.ex2 = pyEditor({
+  el: "ex2-ed", id: "ex2", rows: 6, maxRows: 16, code: 'def discount(price, percent=10):\n    # כתבי כאן\n    pass\n',
+  tests: [fnTest("discount עם ובלי אחוז", "", ["discount(200)", "discount(200, 25)", "discount(100, 50)", "discount(80, 0)"], ["180.0", "150.0", "50.0", "80.0"])]
+});
+EDS.ex3 = pyEditor({
+  el: "ex3-ed", id: "ex3", rows: 7, maxRows: 16, code: 'def hit(person, damage):\n    # כתבי כאן\n    pass\n',
+  tests: [fnTest("hit על גיבור", 'hero = {"name": "Noa", "hp": 50}', ["hit(hero, 20)", "hit(hero, 70)", 'hit({"hp": 10}, 3)'], ["30", "0", "7"])]
+});
+
 /* ---------- download results ---------- */
 (function () {
   function summaryHtml(name) {
     var p = progress, date = new Date().toLocaleDateString("he-IL");
     var puz = Object.keys(p.puzzle).length;
-    function sec(t, id) { var v = $(id).value.trim() || "(לא הוזן קוד)"; return "<h2>" + t + "</h2><pre>" + esc(v) + "</pre>"; }
+    function sec(t, id) { var v = edCode(EDS[id], id).trim() || "(לא הוזן קוד)"; return "<h2>" + t + "</h2><pre>" + esc(v) + "</pre>"; }
     return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תוצאות · ' + esc(name) + '</title><style>body{font-family:Arial,sans-serif;background:#F5F3FF;color:#25224F;padding:40px 20px;line-height:1.7}.w{max-width:760px;margin:0 auto}h1{margin:0 0 4px}h2{margin:28px 0 8px;color:#4453E0;font-size:18px}pre{direction:ltr;text-align:left;background:#221F55;color:#ECEBFF;border-radius:14px;padding:14px 18px;white-space:pre-wrap;font-size:14px}.card{background:#fff;border-radius:18px;padding:16px 20px;box-shadow:0 6px 24px rgba(60,50,150,.12)}</style></head><body><div class="w"><h1>תוצאות · שיעור פונקציות</h1><div>שם: ' + esc(name) + ' · תאריך: ' + date + '</div>' +
       '<h2>משחקים וחידות</h2><div class="card"><div>פאזלי הרכבה שנפתרו: ' + puz + ' מתוך 3</div><div>בלשי קוד: ' + p.det.right + ' נכונות מתוך ' + p.det.total + '</div></div>' +
       sec("אתגר 1 · is_even", "ex1") + sec("אתגר 2 · discount", "ex2") + sec("אתגר 3 · hit", "ex3") + '</div></body></html>';

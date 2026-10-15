@@ -478,53 +478,33 @@ for i in range(5):
       <div class="exercises-banner">
         <span class="badge">👇 מפה זה עלייך</span>
         <h2 class="section-title">התרגילים שלכן</h2>
-        <p>ארבעה תרגילים עם בדיקה מיידית, אתגר ״בלש הקוד״, ושני תרגילים שכותבים בעורך הפייתון ומדביקים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
+        <p>ארבעה תרגילים עם בדיקה מיידית, אתגר ״בלש הקוד״, ושני תרגילים שכותבים ומריצים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
       </div>
       <p class="lede" style="margin-top:22px;">כאן כותבים ביטויים אמיתיים. הבדיקה מריצה בדיוק את מה שכתבתן. בפייתון כותבים <span class="mono">and</span> / <span class="mono">or</span> (לא <span class="mono">&amp;&amp;</span> כמו ב-Java).</p>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 1 · ביטוי</div>
-        <p class="exercise-task">כתבו ביטוי שיגרום לרשימה להיות בדיוק: 1, 4, 7, 10, 13</p>
-        <div class="exercise-code">result = [ <input type="text" class="code-in" id="ex1-expr" placeholder="?" autocomplete="off"> for i in range(5) ]</div>
-        <div class="exercise-controls">
-          <button class="btn primary" id="ex1-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex1-fb"></span>
-        </div>
-        <div class="exercise-output" id="ex1-out"></div>
+        <p class="exercise-task">כתבו ביטוי שיגרום לרשימה להיות בדיוק: 1, 4, 7, 10, 13. החליפו את ___ והריצו.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 2 · תנאי</div>
-        <p class="exercise-task">כתבו תנאי כך שבסוף תתקבל בדיוק הרשימה: 3, 4, 5, 6</p>
-        <div class="exercise-code">result = [ i for i in range(10) if <input type="text" class="code-in" id="ex2-cond" style="width:210px" placeholder="?" autocomplete="off"> ]</div>
-        <div class="exercise-controls">
-          <button class="btn primary" id="ex2-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex2-fb"></span>
-        </div>
-        <div class="exercise-output" id="ex2-out"></div>
+        <p class="exercise-task">כתבו תנאי כך שבסוף תתקבל בדיוק הרשימה: 3, 4, 5, 6. החליפו את ___ והריצו.</p>
+        <div id="ex2-ed"></div>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 3 · טווח</div>
-        <p class="exercise-task">השלימו את ההתחלה והסוף של ה-range כדי לקבל: 9, 16, 25, 36</p>
-        <div class="exercise-code">result = [ i * i for i in range(<input type="number" class="code-in num" id="ex3-a">, <input type="number" class="code-in num" id="ex3-b">) ]</div>
-        <div class="exercise-controls">
-          <button class="btn primary" id="ex3-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex3-fb"></span>
-        </div>
-        <div class="exercise-output" id="ex3-out"></div>
+        <p class="exercise-task">השלימו את ההתחלה והסוף של ה-range כדי לקבל: 9, 16, 25, 36. החליפו את ___ והריצו.</p>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 4 · תרגום מלא</div>
-        <p class="exercise-task">כתבו את הקוד הארוך הזה בשורה אחת, והשלימו את כל החלקים החסרים:</p>
+        <p class="exercise-task">כתבו את הקוד הארוך הזה בשורה אחת, והחליפו את כל ה-___ בחלקים החסרים:</p>
         <div class="exercise-hint">result = []<br>for n in range(1, 11):<br>&nbsp;&nbsp;&nbsp;&nbsp;if n &gt; 6:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.append(n * 2)</div>
-        <div class="exercise-code">result = [ <input type="text" class="code-in" style="width:100px" id="ex4-expr" placeholder="?" autocomplete="off"> for n in range(<input type="number" class="code-in num" id="ex4-a">, <input type="number" class="code-in num" id="ex4-b">) if <input type="text" class="code-in" style="width:130px" id="ex4-cond" placeholder="?" autocomplete="off"> ]</div>
-        <div class="exercise-controls">
-          <button class="btn primary" id="ex4-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex4-fb"></span>
-        </div>
-        <div class="exercise-output" id="ex4-out"></div>
+        <div id="ex4-ed"></div>
       </div>
 
       <div class="exercise-divider"><span>אתגר — בלש הקוד</span></div>
@@ -533,30 +513,28 @@ for i in range(5):
         <div class="detective-head" id="det-progress"></div>
         <p class="exercise-task" id="det-task"></p>
         <div class="detective-out" id="det-out"></div>
-        <div class="exercise-code" id="det-code"></div>
+        <div id="det-ed"></div>
         <div class="exercise-controls">
-          <button class="btn primary" id="det-check" type="button">בדקי</button>
           <button class="btn amber" id="det-next" type="button" style="display:none;">הסיבוב הבא ▸</button>
-          <span class="exercise-feedback" id="det-fb"></span>
         </div>
       </div>
 
-      <div class="exercise-divider"><span>כתיבה אישית — פותרות בעורך הפייתון שלכן, ומדביקות כאן</span></div>
+      <div class="exercise-divider"><span>כתיבה אישית — כותבות כאן, מריצות ובודקות</span></div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 5 · סעודת החג</div>
         <p class="exercise-task">בסעודת החג יש 8 שולחנות, ממוספרים 0 עד 7. בשולחן מספר i יושבים i + 2 אנשים. כתבו בשורה אחת רשימה שמראה כמה אנשים יושבים בכל שולחן. אחר כך כתבו עוד שורה אחת — רשימה של מספרי השולחנות שיושבים בהם יותר מ-5 אנשים. הדפיסו את שתי הרשימות.</p>
         <div class="exercise-hint">tables = [ ... for i in range(8) ]<br>full_tables = [ ... ]</div>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex5-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex5-ed"></div>
       </div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 6 · המספר שלי</div>
         <p class="exercise-task">בחרי מספר שקשור לחג שאת אוהבת (למשל 8 — נרות חנוכה, 7 — ימי סוכות). צרי רשימה של 10 הכפולות הראשונות שלו, ואחר כך רשימה נוספת — רק הכפולות שגדולות מ-30. הדפיסי את שתיהן.</p>
         <div class="exercise-hint">my_number = 8<br>multiples = [ ... ]<br>big_multiples = [ ... ]</div>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex6-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex6-ed"></div>
       </div>
     </div>
   </section>
@@ -584,6 +562,26 @@ for i in range(5):
 <footer><div class="wrap">שיעור פייתון · for מקוצר</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 0, quizCorrect: 0, quizTotal: 0, labGoals: 0, labGoalsTotal: 5 };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -1013,93 +1011,84 @@ function renderCells(container, arr, opts) {
 })();
 
 /* ---------- exercises ---------- */
+/* תרגילים 1-4: הקוד רץ בפייתון אמיתי, וה-print של התוצאה נבדק מול הרשימה הנדרשת */
 (function () {
-  function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
-  function show(id, arr) { $(id).textContent = fmt(arr); }
-
-  function judge(prefix, res, target, key, okText) {
-    if (!res.ok) { fb(prefix + "-fb", false, res.error); $(prefix + "-out").textContent = ""; return; }
-    show(prefix + "-out", res.out);
-    if (sameArr(res.out, target)) { fb(prefix + "-fb", true, okText); window.lessonProgress[key] = true; reportLessonProgress(); }
-    else fb(prefix + "-fb", false, "יצא " + fmt(res.out) + ". רוצות " + fmt(target) + ".");
-  }
-
-  $("ex1-check").addEventListener("click", function () {
-    judge("ex1", runComp($("ex1-expr").value, "i", rng(0, 5)), [1, 4, 7, 10, 13], "ex1", "מדויק! כל איבר גדול ב-3 מהקודם, והתחלה ב-1.");
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 3, maxRows: 6, code: 'result = [ ___ for i in range(5) ]\nprint(result)\n', hint: "החליפי את ___ בביטוי והריצי.",
+    tests: [{ label: "הרשימה", out: "[1, 4, 7, 10, 13]" }],
+    passText: "מדויק! כל איבר גדול ב-3 מהקודם, והתחלה ב-1.",
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
   });
-
-  $("ex2-check").addEventListener("click", function () {
-    var c = $("ex2-cond").value;
-    if (!c.trim()) { fb("ex2-fb", false, "כתבי תנאי."); return; }
-    judge("ex2", runComp("i", "i", rng(0, 10), c), [3, 4, 5, 6], "ex2", "יפה! התנאי מסנן בדיוק את 3 עד 6.");
+  pyEditor({
+    el: "ex2-ed", id: "ex2", rows: 3, maxRows: 6, code: 'result = [ i for i in range(10) if ___ ]\nprint(result)\n', hint: "החליפי את ___ בתנאי והריצי.",
+    tests: [{ label: "הרשימה", out: "[3, 4, 5, 6]" }],
+    passText: "יפה! התנאי מסנן בדיוק את 3 עד 6.",
+    onPass: function () { window.lessonProgress.ex2 = true; reportLessonProgress(); }
   });
-
-  $("ex3-check").addEventListener("click", function () {
-    var a = parseInt($("ex3-a").value, 10), b = parseInt($("ex3-b").value, 10);
-    if (isNaN(a) || isNaN(b)) { fb("ex3-fb", false, "מלאי את שני המספרים."); return; }
-    judge("ex3", runComp("i * i", "i", rng(a, b)), [9, 16, 25, 36], "ex3", "נכון! range(3, 7) נותן 3, 4, 5, 6 — והריבועים שלהם.");
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 3, maxRows: 6, code: 'result = [ i * i for i in range(___, ___) ]\nprint(result)\n', hint: "החליפי את שני ה-___ במספרים והריצי.",
+    tests: [{ label: "הרשימה", out: "[9, 16, 25, 36]" }],
+    passText: "נכון! range(3, 7) נותן 3, 4, 5, 6 — והריבועים שלהם.",
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
   });
-
-  $("ex4-check").addEventListener("click", function () {
-    var a = parseInt($("ex4-a").value, 10), b = parseInt($("ex4-b").value, 10);
-    if (isNaN(a) || isNaN(b)) { fb("ex4-fb", false, "מלאי את שני המספרים ב-range."); return; }
-    judge("ex4", runComp($("ex4-expr").value, "n", rng(a, b), $("ex4-cond").value), [14, 16, 18, 20], "ex4", "בדיוק! קיצרתן ארבע שורות לשורה אחת.");
+  pyEditor({
+    el: "ex4-ed", id: "ex4", rows: 3, maxRows: 6, code: 'result = [ ___ for n in range(___, ___) if ___ ]\nprint(result)\n', hint: "החליפי את ארבעת ה-___ והריצי.",
+    tests: [{ label: "הרשימה", out: "[14, 16, 18, 20]" }],
+    passText: "בדיוק! קיצרתן ארבע שורות לשורה אחת.",
+    onPass: function () { window.lessonProgress.ex4 = true; reportLessonProgress(); }
   });
 })();
 
+/* ---------- free-writing exercises 5-6: run for real ---------- */
+function printedLists(r) {
+  return r.printed.split("\n").filter(function (l) { return /^\s*\[.*\]\s*$/.test(l); }).map(function (l) { return (l.match(/-?\d+/g) || []).map(Number); });
+}
+var ex5Editor = pyEditor({
+  el: "ex5-ed", id: "ex5", rows: 7, maxRows: 16, code: 'tables = [ ... for i in range(8) ]\nfull_tables = [ ... ]\n# הדפיסי את שתי הרשימות\n',
+  tests: [{ label: "שתי הרשימות", has: ["[2, 3, 4, 5, 6, 7, 8, 9]", "[4, 5, 6, 7]"], hasLabels: ["רשימת מספר האנשים בכל שולחן: [2, 3, 4, 5, 6, 7, 8, 9]", "רשימת השולחנות עם יותר מ-5 אנשים: [4, 5, 6, 7]"] }]
+});
+var ex6Editor = pyEditor({
+  el: "ex6-ed", id: "ex6", rows: 7, maxRows: 16, code: 'my_number = 8\nmultiples = [ ... ]\nbig_multiples = [ ... ]\n# הדפיסי את שתי הרשימות\n',
+  tests: [{ label: "עשר הכפולות והכפולות הגדולות", verify: function (r) {
+    var ls = printedLists(r);
+    if (ls.length < 2) return "הדפיסי שתי רשימות (כל אחת בשורה משלה).";
+    var a = ls[0], b = ls[1], d = a[0];
+    if (a.length !== 10 || !d) return "הרשימה הראשונה צריכה להכיל 10 כפולות.";
+    for (var k = 0; k < 10; k++) if (a[k] !== d * (k + 1)) return "הרשימה הראשונה צריכה להיות 10 הכפולות הראשונות של מספר אחד.";
+    var want = a.filter(function (v) { return v > 30; });
+    if (b.join(",") !== want.join(",")) return "הרשימה השנייה צריכה להכיל רק את הכפולות שגדולות מ-30.";
+    return true;
+  } }]
+});
+
 /* ---------- detective ---------- */
 (function () {
-  function num(v) { var n = parseInt(v, 10); return isNaN(n) ? null : n; }
-  var T = '<input type="text" class="code-in" id="d-%" placeholder="?" autocomplete="off">';
-  var N = '<input type="number" class="code-in num" id="d-%">';
-  function field(tpl, k) { return tpl.replace("%", k); }
   var rounds = [
-    { task: "איזה ביטוי חסר כדי לקבל את הרשימה הזאת?", out: [0, 2, 4, 6, 8], ids: ["d-0"],
-      html: "result = [ " + field(T, 0) + " for i in range(5) ]",
-      sim: function (v) { return runComp(v[0], "i", rng(0, 5)); } },
-    { task: "עכשיו גם הטווח חסר. מה הביטוי, ומה ההתחלה והסוף?", out: [1, 4, 9, 16, 25], ids: ["d-0", "d-1", "d-2"],
-      html: "result = [ " + field(T, 0) + " for i in range(" + field(N, 1) + ", " + field(N, 2) + ") ]",
-      sim: function (v) { var a = num(v[1]), b = num(v[2]); if (a === null || b === null) return { ok: false, error: "מלאי את שני המספרים." }; return runComp(v[0], "i", rng(a, b)); } },
-    { task: "כאן חסרים ההתחלה, הסוף והצעד.", out: [10, 20, 30], ids: ["d-0", "d-1", "d-2"],
-      html: "result = [ i for i in range(" + field(N, 0) + ", " + field(N, 1) + ", " + field(N, 2) + ") ]",
-      sim: function (v) { var a = num(v[0]), b = num(v[1]), s = num(v[2]); if (a === null || b === null || s === null || s <= 0) return { ok: false, error: "מלאי שלושה מספרים (הצעד חייב להיות חיובי)." }; return runComp("i", "i", rng(a, b, s)); } },
-    { task: "הפעם ה-if חסר. כתבי תנאי שמסנן נכון.", out: [4, 5, 6, 7], ids: ["d-0"],
-      html: "result = [ i for i in range(10) if " + field(T, 0).replace('class="code-in"', 'class="code-in" style="width:210px"') + " ]",
-      sim: function (v) { if (!v[0].trim()) return { ok: false, error: "כתבי תנאי." }; return runComp("i", "i", rng(0, 10), v[0]); } },
-    { task: "אתגר בונוס: חסרים גם הביטוי וגם התנאי.", out: [5, 7, 9], ids: ["d-0", "d-1"],
-      html: "result = [ " + field(T, 0) + " for i in range(10) if " + field(T, 1).replace('class="code-in"', 'class="code-in" style="width:210px"') + " ]",
-      sim: function (v) { if (!v[1].trim()) return { ok: false, error: "כתבי גם תנאי." }; return runComp(v[0], "i", rng(0, 10), v[1]); } }
+    { task: "איזה ביטוי חסר כדי לקבל את הרשימה הזאת?", out: "[0, 2, 4, 6, 8]", code: 'result = [ ___ for i in range(5) ]\nprint(result)\n' },
+    { task: "עכשיו גם הטווח חסר. מה הביטוי, ומה ההתחלה והסוף?", out: "[1, 4, 9, 16, 25]", code: 'result = [ ___ for i in range(___, ___) ]\nprint(result)\n' },
+    { task: "כאן חסרים ההתחלה, הסוף והצעד.", out: "[10, 20, 30]", code: 'result = [ i for i in range(___, ___, ___) ]\nprint(result)\n' },
+    { task: "הפעם ה-if חסר. כתבי תנאי שמסנן נכון.", out: "[4, 5, 6, 7]", code: 'result = [ i for i in range(10) if ___ ]\nprint(result)\n' },
+    { task: "אתגר בונוס: חסרים גם הביטוי וגם התנאי.", out: "[5, 7, 9]", code: 'result = [ ___ for i in range(10) if ___ ]\nprint(result)\n' }
   ];
   var idx = 0;
   window.lessonProgress.detectiveTotal = rounds.length;
-  var progressEl = $("det-progress"), taskEl = $("det-task"), outEl = $("det-out"), codeEl = $("det-code");
-  var checkBtn = $("det-check"), nextBtn = $("det-next"), fbEl = $("det-fb");
-
+  var progressEl = $("det-progress"), taskEl = $("det-task"), outEl = $("det-out"), nextBtn = $("det-next");
+  var ed = pyEditor({
+    el: "det-ed", id: "det", rows: 3, maxRows: 6, code: rounds[0].code, hint: "החליפי כל ___ והריצי. הרשימה שצריכה לצאת מופיעה למעלה.",
+    tests: [{ label: "הרשימה", out: rounds[0].out }],
+    onPass: function () {
+      window.lessonProgress.detectiveSolved = Math.max(window.lessonProgress.detectiveSolved, idx + 1);
+      if (idx < rounds.length - 1) nextBtn.style.display = "";
+    }
+  });
   function render() {
     var r = rounds[idx];
     progressEl.textContent = "סיבוב " + (idx + 1) + " מתוך " + rounds.length;
     taskEl.textContent = r.task;
-    outEl.textContent = fmt(r.out);
-    codeEl.innerHTML = r.html;
-    fbEl.textContent = ""; fbEl.className = "exercise-feedback";
-    checkBtn.style.display = ""; nextBtn.style.display = "none";
+    outEl.textContent = r.out;
+    nextBtn.style.display = "none";
+    if (ed) { ed.setCode(r.code); ed.setTests([{ label: "הרשימה", out: r.out }]); }
   }
-  checkBtn.addEventListener("click", function () {
-    var r = rounds[idx];
-    var vals = r.ids.map(function (id) { return $(id).value; });
-    var res = r.sim(vals);
-    if (!res.ok) { fbEl.textContent = res.error; fbEl.className = "exercise-feedback wrong"; return; }
-    if (sameArr(res.out, r.out)) {
-      fbEl.className = "exercise-feedback correct";
-      fbEl.textContent = idx === rounds.length - 1 ? "פתרתן את כל הבלש! 🕵️" : "פתרתן! ✓";
-      checkBtn.style.display = "none";
-      window.lessonProgress.detectiveSolved = Math.max(window.lessonProgress.detectiveSolved, idx + 1);
-      if (idx < rounds.length - 1) nextBtn.style.display = "";
-    } else {
-      fbEl.className = "exercise-feedback wrong";
-      fbEl.textContent = "יצא " + fmt(res.out) + " — נסי שוב.";
-    }
-  });
   nextBtn.addEventListener("click", function () { idx++; render(); });
   render();
 })();
@@ -1122,8 +1111,8 @@ function renderCells(container, arr, opts) {
 
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex5 = esc($("ex5-answer").value.trim()) || "(לא הוזן קוד)";
-    var ex6 = esc($("ex6-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex5 = esc(edCode(ex5Editor, "ex5").trim()) || "(לא הוזן קוד)";
+    var ex6 = esc(edCode(ex6Editor, "ex6").trim()) || "(לא הוזן קוד)";
     var dateStr = new Date().toLocaleDateString("he-IL");
     return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +
       "<title>תעודת תרגול — " + esc(name) + "</title>" +

@@ -515,15 +515,13 @@ print(count)</pre>
       <div class="exercises-banner">
         <span class="badge">תרגילים</span>
         <h2>תרגילים לכל הכיתה</h2>
-        <p>שני תרגילים קצרים כאן, ושני תרגילים לכתוב ב-VS Code.</p>
+        <p>שני תרגילים קצרים, ושני תרגילים לכתוב ולהריץ כאן.</p>
       </div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 1</div>
-        <div class="exercise-task">השלימי כך שיודפס <span class="mono">PYTHON</span> באותיות גדולות.</div>
-        <div class="exercise-code"><span>word = "python"
-print(word.</span><input type="text" id="ex1-a" class="wide" autocomplete="off" aria-label="השלמה"><span>())</span></div>
-        <div class="exercise-controls"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
+        <div class="exercise-task">השלימי כך שיודפס <span class="mono">PYTHON</span> באותיות גדולות. החליפי את ___ והריצי.</div>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
@@ -533,20 +531,20 @@ print(word.</span><input type="text" id="ex1-a" class="wide" autocomplete="off" 
         <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" style="width:140px;direction:ltr" aria-label="התשובה"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
       </div>
 
-      <div class="exercise-divider">ב-VS Code</div>
+      <div class="exercise-divider">כתיבה והרצה</div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 3</div>
         <div class="exercise-task">כרטיס ביקור: בקשי עם <span class="mono">input</span> שם מלא, והדפיסי אותו באותיות גדולות, את אורכו, ואת האות הראשונה שלו. השתמשי ב-f-string.</div>
         <p class="exercise-note">רמז: <span class="mono">name.upper()</span>, <span class="mono">len(name)</span>, <span class="mono">name[0]</span>.</p>
-        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 3" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 4 · אתגר</div>
         <div class="exercise-task">בודקת פלינדרום: מילה שנקראת אותו דבר מימין לשמאל ומשמאל לימין, כמו <span class="mono">level</span>. בקשי מילה, והדפיסי אם היא פלינדרום.</div>
         <p class="exercise-note">רמז: <span class="mono">word[::-1]</span>. אפשר להשתמש גם ב-<span class="mono">lower()</span> כדי שאותיות גדולות לא יפריעו.</p>
-        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 4" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+        <div id="ex4-ed"></div>
       </div>
     </div>
   </section>
@@ -677,12 +675,59 @@ function vw(){
 $(''vw-in'').oninput=vw;vw();
 
 // ---- exercises ----
+
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 // דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
 var exSolved={};
 function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
 reportEx();
 function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
-chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim().replace(/[()]/g,'''')===''upper''},''ex1-feedback'',''נכון! upper() הופכת את כל האותיות לגדולות.'',''כמעט. איזו שיטה הופכת לאותיות גדולות? נסי בארגז השיטות למעלה.'');
+pyEditor({
+  el: "ex1-ed", id: "ex1", rows: 3, maxRows: 6, code: ''word = "python"\nprint(word.___())\n'', hint: "החליפי את ___ בשם של שיטה והריצי.",
+  tests: [{ label: "הפלט", out: "PYTHON" }],
+  passText: "נכון! upper() הופכת את כל האותיות לגדולות.",
+  onPass: function () { exSolved["ex1-btn"] = true; reportEx(); }
+});
+pyEditor({
+  el: "ex3-ed", id: "ex3", rows: 7, maxRows: 16, code: ''# כרטיס ביקור: בקשי שם מלא עם input\n'',
+  tests: [{ label: "yael levi", inputs: ["yael levi"], verify: function (r) {
+    if (r.printed.indexOf("YAEL LEVI") < 0) return "חסר השם באותיות גדולות: YAEL LEVI (upper).";
+    if (!/\b9\b/.test(r.printed)) return "חסר האורך של השם: 9 (len).";
+    if (!/[yY]/.test(r.printed.replace(/YAEL LEVI/g, ""))) return "חסרה האות הראשונה של השם (אינדקס 0).";
+    return /\bf["'']/.test(r.code) ? true : "השתמשי ב-f-string (f לפני המרכאות).";
+  } }]
+});
+var firstPalin = "";
+pyEditor({
+  el: "ex4-ed", id: "ex4", rows: 7, maxRows: 16, code: ''# בודקת פלינדרום: בקשי מילה, והדפיסי אם היא פלינדרום\n'',
+  tests: [
+    { label: "level (פלינדרום)", inputs: ["level"], verify: function (r) { firstPalin = r.printed.trim(); return firstPalin ? true : "הדפיסי תשובה: האם המילה פלינדרום."; } },
+    { label: "python (לא פלינדרום)", inputs: ["python"], verify: function (r) {
+      var t = r.printed.trim();
+      if (!t) return "הדפיסי תשובה: האם המילה פלינדרום.";
+      return t !== firstPalin ? true : "למילה python צריכה להיות תשובה שונה מזו של level.";
+    } }
+  ]
+});
 chk(''ex2-btn'',function(){return $(''ex2-in'').value.replace(/\s+/g,'''').replace(/"/g,"''")==="[''a'',''b'',''c'']"},''ex2-feedback'',''נכון! split מחזירה רשימה של מחרוזות.'',''לא בדיוק. split מחזירה רשימה, ולכן יש סוגריים מרובעים ומרכאות סביב כל איבר.'');
 })();
 

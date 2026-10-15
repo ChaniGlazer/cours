@@ -855,41 +855,26 @@ while air &lt; 10:
       <div class="exercises-banner">
         <span class="badge">👇 מפה זה עלייך</span>
         <h2 class="section-title">התרגילים שלכן</h2>
-        <p>שישה תרגילים — ארבעה עם בדיקה מיידית, ושניים שכותבים בעורך הפייתון ומדביקים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
+        <p>שישה תרגילים — ארבעה עם בדיקה מיידית, ושניים שכותבים ומריצים כאן. בסוף מורידות קובץ עם כל התוצאות.</p>
       </div>
       <p class="lede" style="margin-top:22px;">משלימות את החסר בקוד, לוחצות "בדקי", ורואות מיד אם זה עובד — בדיוק כמו בפייתון האמיתית.</p>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 1 · for</div>
-        <p class="exercise-task">total מתחיל ב-0, ובכל סיבוב מוסיפים אליו את i. איזה N ב-range(N) יגרום ל-total הסופי להיות בדיוק 45?</p>
-        <div class="exercise-code">total = 0<br>for i in range(<input type="number" id="ex1-n" min="0" max="40">):<br>&nbsp;&nbsp;&nbsp;&nbsp;total = total + i<br>print(total)</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex1-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex1-feedback"></span>
-        </div>
-        <div class="exercise-output" id="ex1-output"></div>
+        <p class="exercise-task">total מתחיל ב-0, ובכל סיבוב מוסיפים אליו את i. איזה N ב-range(N) יגרום ל-total הסופי להיות בדיוק 45? החליפו את ___ והריצו.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 2 · for</div>
-        <p class="exercise-task">כתבו קוד שמדפיס בדיוק: 5 9 13 17 21</p>
-        <div class="exercise-code">for i in range(<input type="number" id="ex2-start" min="0" max="40">, <input type="number" id="ex2-stop" min="0" max="40">, <input type="number" id="ex2-step" min="1" max="10">):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex2-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex2-feedback"></span>
-        </div>
-        <div class="exercise-output" id="ex2-output"></div>
+        <p class="exercise-task">כתבו קוד שמדפיס בדיוק את המספרים 5, 9, 13, 17, 21 (כל מספר בשורה משלו). החליפו את שלושת ה-___ והריצו.</p>
+        <div id="ex2-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 3 · while</div>
-        <p class="exercise-task">count מתחיל ב-1 ומוכפל פי 2 בכל סיבוב. השלימו את התנאי כך שיודפס בדיוק: 1 2 4 8 16 (ולא 32)</p>
-        <div class="exercise-code">count = 1<br>while count <= <input type="number" id="ex3-limit" min="0" max="100">:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(count)<br>&nbsp;&nbsp;&nbsp;&nbsp;count = count * 2</div>
-        <div class="exercise-controls">
-          <button class="exercise-check-btn" id="ex3-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex3-feedback"></span>
-        </div>
-        <div class="exercise-output" id="ex3-output"></div>
+        <p class="exercise-task">count מתחיל ב-1 ומוכפל פי 2 בכל סיבוב. השלימו את התנאי כך שיודפס בדיוק: 1 2 4 8 16 (ולא 32). החליפו את ___ והריצו.</p>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
@@ -905,23 +890,23 @@ while air &lt; 10:
         <div class="exercise-output" id="ex4-output"></div>
       </div>
       <div class="exercise-divider">
-        <span>כתיבה אישית — פותרות בעורך הפייתון שלכן, לא כאן</span>
+        <span>כתיבה אישית — כותבות כאן, מריצות ובודקות</span>
       </div>
 
       <div class="exercise-card for-accent open-exercise">
         <div class="exercise-num">תרגיל 5 · for · כתיבה חופשית</div>
         <p class="exercise-task">כתבו קוד עם לולאת for שרצה בדיוק 3 פעמים. בכל סיבוב (לפי הערך של i) תדפיסי שם של חג שאת אוהבת, ומשפט קצר על מה היה הכי כיף לך בו. אפשר להיעזר ב-if בתוך הלולאה כדי להדפיס דבר שונה בכל סיבוב.</p>
         <div class="exercise-hint">רמז לפתיחה:<br>for i in range(3):<br>&nbsp;&nbsp;&nbsp;&nbsp;if i == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("...")<br>&nbsp;&nbsp;&nbsp;&nbsp;elif i == 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("...")</div>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex5-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex5-ed"></div>
       </div>
 
       <div class="exercise-card while-accent open-exercise">
         <div class="exercise-num">תרגיל 6 · while · כתיבה חופשית</div>
         <p class="exercise-task">כתבו לולאת while שסופרת לאחור כמה ימים נשארו עד החג האהוב עלייך (למשל מתחילים ב-10 ויורדים ב-1 בכל סיבוב), ומדפיסה בכל סיבוב כמה ימים נשארו. כשהלולאה נגמרת, תדפיסי משפט אחד על מה הכי כיף לך בחג הזה.</p>
         <div class="exercise-hint">רמז לפתיחה:<br>days_left = 10<br>while days_left > 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(days_left, "ימים עד החג!")<br>&nbsp;&nbsp;&nbsp;&nbsp;days_left = days_left - 1</div>
-        <p class="exercise-note">✍️ כתבו ושמרו את הפתרון בעורך הפייתון שלכן, ואז הדביקו אותו כאן:</p>
-        <textarea class="exercise-answer" id="ex6-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-note">✍️ כתבו כאן את הפתרון והריצו אותו:</p>
+        <div id="ex6-ed"></div>
       </div>
     </div>
   </section>
@@ -940,11 +925,9 @@ while air &lt; 10:
         </div>
         <p class="detective-task" id="det-task"></p>
         <div class="detective-output" id="det-output"></div>
-        <div class="detective-code" id="det-code"></div>
+        <div id="det-ed"></div>
         <div class="exercise-controls">
-          <button class="exercise-check-btn" id="det-check" type="button">בדקי</button>
           <button class="run-btn" id="det-next" type="button" style="display:none;">הסיבוב הבא ▸</button>
-          <span class="exercise-feedback" id="det-feedback"></span>
         </div>
       </div>
     </div>
@@ -1019,6 +1002,26 @@ while air &lt; 10:
 <footer><div class="wrap">שיעור פייתון · for ו-while</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, detectiveSolved: 0, detectiveTotal: 0, quizCorrect: 0, quizTotal: 0 };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -1412,56 +1415,24 @@ reportLessonProgress();
     el.className = "exercise-feedback " + (ok ? "correct" : "wrong");
   }
 
-  // Exercise 1: total = sum(0..n-1) — target total = 45 (n = 10)
-  document.getElementById("ex1-check").addEventListener("click", function () {
-    var n = parseInt(document.getElementById("ex1-n").value, 10);
-    var outEl = document.getElementById("ex1-output");
-    var fbEl = document.getElementById("ex1-feedback");
-    if (isNaN(n) || n < 0) { setFeedback(fbEl, false, "שימי מספר תקין."); outEl.textContent = ""; return; }
-    var total = 0;
-    for (var i = 0; i < n; i++) total += i;
-    outEl.textContent = "total = " + total;
-    if (total === 45) { setFeedback(fbEl, true, "בדיוק 45!"); window.lessonProgress.ex1 = true; reportLessonProgress(); }
-    else setFeedback(fbEl, false, "עם N = " + n + ", total יוצא " + total + ". רוצות 45.");
+  // תרגילים 1-3: מריצים את הקוד של התלמידה בפייתון אמיתי ובודקים את הפלט
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 4, maxRows: 8, code: 'total = 0\nfor i in range(___):\n    total = total + i\nprint(total)\n', hint: "החליפי את ___ במספר והריצי.",
+    tests: [{ label: "הפלט", out: "45" }],
+    passText: "בדיוק 45!",
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
   });
-
-  // Exercise 2: for i in range(start, stop, step): print(i) — target [5,9,13,17,21]
-  document.getElementById("ex2-check").addEventListener("click", function () {
-    var start = parseInt(document.getElementById("ex2-start").value, 10);
-    var stop = parseInt(document.getElementById("ex2-stop").value, 10);
-    var step = parseInt(document.getElementById("ex2-step").value, 10);
-    var outEl = document.getElementById("ex2-output");
-    var fbEl = document.getElementById("ex2-feedback");
-    if (isNaN(start) || isNaN(stop) || isNaN(step) || step <= 0) { setFeedback(fbEl, false, "שימי שלושה מספרים תקינים (step חייב להיות חיובי)."); outEl.textContent = ""; return; }
-    var result = [];
-    for (var i = start; i < stop; i += step) result.push(i);
-    outEl.textContent = result.join(" ");
-    var target = [5, 9, 13, 17, 21];
-    if (result.length === target.length && result.every(function (v, idx) { return v === target[idx]; })) {
-      setFeedback(fbEl, true, "מדויק!");
-      window.lessonProgress.ex2 = true; reportLessonProgress();
-    } else {
-      setFeedback(fbEl, false, "זה נותן: " + (result.join(" ") || "כלום") + ". רוצות: 5 9 13 17 21.");
-    }
+  pyEditor({
+    el: "ex2-ed", id: "ex2", rows: 3, maxRows: 8, code: 'for i in range(___, ___, ___):\n    print(i)\n', hint: "החליפי את שלושת ה-___ במספרים והריצי.",
+    tests: [{ label: "הפלט", out: "5\n9\n13\n17\n21" }],
+    passText: "מדויק!",
+    onPass: function () { window.lessonProgress.ex2 = true; reportLessonProgress(); }
   });
-
-  // Exercise 3: while count <= limit: print(count); count *= 2 — target [1,2,4,8,16]
-  document.getElementById("ex3-check").addEventListener("click", function () {
-    var limit = parseInt(document.getElementById("ex3-limit").value, 10);
-    var outEl = document.getElementById("ex3-output");
-    var fbEl = document.getElementById("ex3-feedback");
-    if (isNaN(limit)) { setFeedback(fbEl, false, "שימי מספר תקין."); outEl.textContent = ""; return; }
-    var result = [];
-    var count = 1, guard = 0;
-    while (count <= limit && guard < 100) { result.push(count); count *= 2; guard++; }
-    outEl.textContent = result.join(" ") || "(אין פלט)";
-    var target = [1, 2, 4, 8, 16];
-    if (result.length === target.length && result.every(function (v, idx) { return v === target[idx]; })) {
-      setFeedback(fbEl, true, "יפה! כל סף בין 16 ל-31 עובד.");
-      window.lessonProgress.ex3 = true; reportLessonProgress();
-    } else {
-      setFeedback(fbEl, false, "זה נותן: " + (result.join(" ") || "כלום") + ". רוצות: 1 2 4 8 16.");
-    }
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 4, maxRows: 8, code: 'count = 1\nwhile count <= ___:\n    print(count)\n    count = count * 2\n', hint: "החליפי את ___ במספר והריצי.",
+    tests: [{ label: "הפלט", out: "1\n2\n4\n8\n16" }],
+    passText: "יפה! כל סף בין 16 ל-31 עובד.",
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
   });
 
   // Exercise 4: predict iteration count of count=100, while count>0, count -= 7 — target 15
@@ -1483,75 +1454,31 @@ reportLessonProgress();
   });
 })();
 
+/* ---------- free-writing exercises 5-6: run for real ---------- */
+function printedLines(r) { return r.printed.split("\n").filter(function (l) { return l.trim() !== ""; }); }
+var ex5Editor = pyEditor({
+  el: "ex5-ed", id: "ex5", rows: 7, maxRows: 18, code: '# כתבי כאן לולאת for שרצה 3 פעמים\n',
+  tests: [{ label: "לולאת for שמדפיסה 3 פעמים", verify: function (r) {
+    if (!/\bfor\b/.test(r.code)) return "צריך לולאת for.";
+    return printedLines(r).length >= 3 ? true : "הלולאה צריכה להדפיס משהו בכל אחד משלושת הסיבובים.";
+  } }]
+});
+var ex6Editor = pyEditor({
+  el: "ex6-ed", id: "ex6", rows: 7, maxRows: 18, code: '# כתבי כאן לולאת while שסופרת לאחור\n',
+  tests: [{ label: "לולאת while שסופרת לאחור", verify: function (r) {
+    if (!/\bwhile\b/.test(r.code)) return "צריך לולאת while.";
+    return printedLines(r).length >= 4 ? true : "הלולאה צריכה להדפיס בכל סיבוב כמה ימים נשארו, ובסוף משפט אחד.";
+  } }]
+});
+
 /* ---------- code detective challenge ---------- */
 (function () {
   var rounds = [
-    {
-      task: "איזה N צריך לשים ב-range(N) כדי לקבל את הפלט הזה?",
-      output: [0, 1, 2, 3, 4, 5, 6, 7],
-      isFor: true,
-      html: 'range(<input type="number" id="d-in-0" min="0" max="40">)',
-      ids: ["d-in-0"],
-      simulate: function (v) {
-        var n = v[0], out = [];
-        if (isNaN(n) || n < 0) return null;
-        for (var i = 0; i < n; i++) out.push(i);
-        return out;
-      }
-    },
-    {
-      task: "הפעם עם שני ערכים — מה יהיו start ו-stop?",
-      output: [12, 13, 14, 15, 16, 17],
-      isFor: true,
-      html: 'range(<input type="number" id="d-in-0" min="0" max="40">, <input type="number" id="d-in-1" min="0" max="40">)',
-      ids: ["d-in-0", "d-in-1"],
-      simulate: function (v) {
-        var s = v[0], e = v[1], out = [];
-        if (isNaN(s) || isNaN(e)) return null;
-        for (var i = s; i < e; i++) out.push(i);
-        return out;
-      }
-    },
-    {
-      task: "עכשיו גם עם קפיצה — מה יהיו start, stop ו-step?",
-      output: [1, 4, 7, 10, 13],
-      isFor: true,
-      html: 'range(<input type="number" id="d-in-0" min="0" max="40">, <input type="number" id="d-in-1" min="0" max="40">, <input type="number" id="d-in-2" min="1" max="10">)',
-      ids: ["d-in-0", "d-in-1", "d-in-2"],
-      simulate: function (v) {
-        var s = v[0], e = v[1], st = v[2], out = [];
-        if (isNaN(s) || isNaN(e) || isNaN(st) || st <= 0) return null;
-        for (var i = s; i < e; i += st) out.push(i);
-        return out;
-      }
-    },
-    {
-      task: "הפעם זה while, ועם שני נעלמים — מאיזה מספר count מתחילים, ובכמה יורדים בכל סיבוב?",
-      output: [20, 15, 10, 5],
-      isFor: false,
-      html: 'count = <input type="number" id="d-in-0" min="0" max="40"><br>while count &gt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(count)<br>&nbsp;&nbsp;&nbsp;&nbsp;count = count - <input type="number" id="d-in-1" min="1" max="20">',
-      ids: ["d-in-0", "d-in-1"],
-      simulate: function (v) {
-        var c = v[0], step = v[1], out = [], guard = 0;
-        if (isNaN(c) || isNaN(step) || step <= 0) return null;
-        while (c > 0 && guard < 100) { out.push(c); c -= step; guard++; }
-        return out;
-      }
-    },
-    {
-      task: "אתגר בונוס: total מתחיל ב-0 וצובר את count בכל סיבוב. איזה סף יגרום לתוצאה הסופית להיות בדיוק זו?",
-      output: [55],
-      isFor: false,
-      html: 'total = 0<br>count = 1<br>while count &lt;= <input type="number" id="d-in-0" min="0" max="40">:<br>&nbsp;&nbsp;&nbsp;&nbsp;total = total + count<br>&nbsp;&nbsp;&nbsp;&nbsp;count = count + 1<br>print(total)',
-      ids: ["d-in-0"],
-      simulate: function (v) {
-        var limit = v[0];
-        if (isNaN(limit)) return null;
-        var total = 0, count = 1, guard = 0;
-        while (count <= limit && guard < 200) { total += count; count++; guard++; }
-        return [total];
-      }
-    }
+    { task: "איזה N צריך לשים ב-range(N) כדי לקבל את הפלט הזה?", output: [0, 1, 2, 3, 4, 5, 6, 7], code: 'for i in range(___):\n    print(i)\n' },
+    { task: "הפעם עם שני ערכים — מה יהיו start ו-stop?", output: [12, 13, 14, 15, 16, 17], code: 'for i in range(___, ___):\n    print(i)\n' },
+    { task: "עכשיו גם עם קפיצה — מה יהיו start, stop ו-step?", output: [1, 4, 7, 10, 13], code: 'for i in range(___, ___, ___):\n    print(i)\n' },
+    { task: "הפעם זה while, ועם שני נעלמים — מאיזה מספר count מתחילים, ובכמה יורדים בכל סיבוב?", output: [20, 15, 10, 5], code: 'count = ___\nwhile count > 0:\n    print(count)\n    count = count - ___\n' },
+    { task: "אתגר בונוס: total מתחיל ב-0 וצובר את count בכל סיבוב. איזה סף יגרום לתוצאה הסופית להיות בדיוק זו?", output: [55], code: 'total = 0\ncount = 1\nwhile count <= ___:\n    total = total + count\n    count = count + 1\nprint(total)\n' }
   ];
 
   var idx = 0;
@@ -1559,50 +1486,24 @@ reportLessonProgress();
   var progressEl = document.getElementById("det-progress");
   var taskEl = document.getElementById("det-task");
   var outputEl = document.getElementById("det-output");
-  var codeEl = document.getElementById("det-code");
-  var checkBtn = document.getElementById("det-check");
   var nextBtn = document.getElementById("det-next");
-  var feedbackEl = document.getElementById("det-feedback");
-
-  function arraysEqual(a, b) {
-    if (!a || !b || a.length !== b.length) return false;
-    return a.every(function (v, i) { return v === b[i]; });
-  }
+  var ed = pyEditor({
+    el: "det-ed", id: "det", rows: 4, maxRows: 10, code: rounds[0].code, hint: "החליפי כל ___ במספר והריצי. הפלט שצריך לצאת מופיע למעלה.",
+    tests: [{ label: "הפלט", out: rounds[0].output.join("\n") }],
+    onPass: function () {
+      window.lessonProgress.detectiveSolved = Math.max(window.lessonProgress.detectiveSolved, idx + 1);
+      nextBtn.style.display = idx < rounds.length - 1 ? "" : "none";
+    }
+  });
 
   function renderRound() {
     var r = rounds[idx];
     progressEl.textContent = "סיבוב " + (idx + 1) + " מתוך " + rounds.length;
     taskEl.textContent = r.task;
     outputEl.textContent = r.output.join("\n");
-    codeEl.innerHTML = r.isFor ? ("for i in " + r.html + ":<br>&nbsp;&nbsp;&nbsp;&nbsp;print(i)") : r.html;
-    feedbackEl.textContent = "";
-    feedbackEl.className = "exercise-feedback";
-    checkBtn.style.display = "";
     nextBtn.style.display = "none";
+    if (ed) { ed.setCode(r.code); ed.setTests([{ label: "הפלט", out: r.output.join("\n") }]); }
   }
-
-  checkBtn.addEventListener("click", function () {
-    var r = rounds[idx];
-    var vals = r.ids.map(function (id) { return parseInt(document.getElementById(id).value, 10); });
-    var result = r.simulate(vals);
-    if (!result) {
-      feedbackEl.textContent = "שימי מספרים בכל השדות.";
-      feedbackEl.className = "exercise-feedback wrong";
-      return;
-    }
-    if (arraysEqual(result, r.output)) {
-      feedbackEl.textContent = "פתרתן! ✓";
-      feedbackEl.className = "exercise-feedback correct";
-      checkBtn.style.display = "none";
-      window.lessonProgress.detectiveSolved = Math.max(window.lessonProgress.detectiveSolved, idx + 1);
-      if (idx < rounds.length - 1) nextBtn.style.display = "";
-      else nextBtn.style.display = "none";
-      if (idx === rounds.length - 1) feedbackEl.textContent = "פתרתן את כל הבלש! 🕵️";
-    } else {
-      feedbackEl.textContent = "זה נותן: " + (result.join(", ") || "כלום") + " — נסי שוב.";
-      feedbackEl.className = "exercise-feedback wrong";
-    }
-  });
 
   nextBtn.addEventListener("click", function () {
     idx++;
@@ -1687,8 +1588,8 @@ reportLessonProgress();
 
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex5 = escapeHtml(document.getElementById("ex5-answer").value.trim()) || "(לא הוזן קוד)";
-    var ex6 = escapeHtml(document.getElementById("ex6-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex5 = escapeHtml(edCode(ex5Editor, "ex5").trim()) || "(לא הוזן קוד)";
+    var ex6 = escapeHtml(edCode(ex6Editor, "ex6").trim()) || "(לא הוזן קוד)";
     var dateStr = new Date().toLocaleDateString("he-IL");
 
     return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +

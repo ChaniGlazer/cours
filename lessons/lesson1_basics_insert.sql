@@ -159,9 +159,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
     <div class="try">
       <div class="try-label">שנו את הטקסט ולחצו ״הריצי״:</div>
-      <div class="try-row"><span>print("</span><input type="text" id="hero-text" value="שלום עולם!" maxlength="40" aria-label="הטקסט להדפסה"><span>")</span></div>
-      <div class="terminal" id="hero-term"></div>
-      <button class="big-btn" id="hero-run" type="button">▶ הריצי</button>
+      <div id="hero-ed"></div>
       <div class="try-msg" id="hero-msg"></div>
     </div>
   </div>
@@ -174,15 +172,12 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
     <div class="wrap">
       <div class="eyebrow g">חלק 1 · פלט</div>
       <h2 class="section-title">print — מציגה על המסך</h2>
-      <p class="lede">מה שכתוב בסוגריים של <span class="mono">print</span> מופיע על המסך. <strong>טקסט</strong> כותבים בין מרכאות, ו<strong>מספרים</strong> בלי. לחצו על כל דוגמה וראו מה יוצא.</p>
+      <p class="lede">מה שכתוב בסוגריים של <span class="mono">print</span> מופיע על המסך. <strong>טקסט</strong> כותבים בין מרכאות, ו<strong>מספרים</strong> בלי. לחצו על דוגמה, הריצו, ואז שנו את הקוד ונסו שוב.</p>
 
       <div class="panel">
         <div class="chips" id="print-chips"></div>
         <div class="panel-pad">
-          <div class="mini-label" style="margin-top:0;">הקוד</div>
-          <div class="codeblock single" id="print-code" style="border-radius:12px;"></div>
-          <div class="mini-label">הפלט</div>
-          <div class="terminal" id="print-term" style="border-radius:12px;"></div>
+          <div id="print-ed"></div>
         </div>
         <div class="panel-foot" id="print-why">בחרו דוגמה.</div>
       </div>
@@ -222,36 +217,23 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
     <div class="wrap">
       <div class="eyebrow c">חלק 3 · קלט</div>
       <h2 class="section-title">input — שואלת ומחכה</h2>
-      <p class="lede"><span class="mono">input</span> שואלת את המשתמשת שאלה, מחכה לתשובה, והתשובה נכנסת למשתנה. הריצו את התוכנית ועקבו אחרי השורה המודגשת.</p>
+      <p class="lede"><span class="mono">input</span> שואלת את המשתמשת שאלה, מחכה לתשובה, והתשובה נכנסת למשתנה. הריצו את התוכנית: היא תעצור ותחכה שתכתבי תשובה ותלחצי Enter. אפשר גם לשנות את הקוד ולהריץ שוב.</p>
 
       <div class="panel">
-        <div class="codeblock" id="in-code">
-          <div class="line">name = input("איך קוראים לך? ")</div>
-          <div class="line">print("שלום", name)</div>
-        </div>
-        <div class="terminal" id="in-term"></div>
-        <div class="panel-bar" style="border-top:1px solid var(--line); border-bottom:none;">
-          <button class="btn c" id="in-run" type="button">▶ הריצי</button>
-          <span style="font-size:14.5px; color:var(--ink-dim);" id="in-hint">התוכנית תחכה שתכתבי תשובה ותלחצי Enter.</span>
-        </div>
+        <div class="panel-pad"><div id="in-ed"></div></div>
       </div>
 
       <h2 class="section-title" style="font-size:1.35rem; margin-top:46px;">המלכודת: input תמיד מחזירה טקסט</h2>
-      <p class="lede" style="font-size:16.5px;">הקלידו שני מספרים. בלי <span class="mono">int</span> פייתון מחברת אותם כמו מילים. עם <span class="mono">int</span> היא הופכת אותם למספרים אמיתיים.</p>
+      <p class="lede" style="font-size:16.5px;">הריצו, הקלידו שני מספרים, וראו מה יוצא: בלי <span class="mono">int</span> פייתון מחברת אותם כמו מילים. עם <span class="mono">int</span> היא הופכת אותם למספרים אמיתיים. לחצו על ״עם int״ (או הוסיפו int בעצמכן) והריצו שוב.</p>
 
       <div class="panel">
         <div class="panel-bar">
-          <label for="t-a">מספר ראשון:</label>
-          <input type="text" id="t-a" value="5" style="width:70px" autocomplete="off">
-          <label for="t-b">שני:</label>
-          <input type="text" id="t-b" value="3" style="width:70px" autocomplete="off">
           <div class="seg">
             <button class="on" data-int="0" type="button">בלי int</button>
             <button data-int="1" type="button">עם int</button>
           </div>
         </div>
-        <div class="codeblock" id="trap-code"></div>
-        <div class="terminal" id="trap-term"></div>
+        <div class="panel-pad"><div id="trap-ed"></div></div>
         <div class="panel-foot" id="trap-note"></div>
       </div>
     </div>
@@ -268,13 +250,8 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 1 · print</div>
-        <p class="exercise-task">השלימו את הקוד כך שהמסך יציג: שלום עולם</p>
-        <div class="exercise-code">print(<input type="text" class="code-in" id="ex1-in" placeholder="?" autocomplete="off">)</div>
-        <div class="exercise-controls">
-          <button class="btn g" id="ex1-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex1-fb"></span>
-        </div>
-        <div class="exercise-output" id="ex1-out"></div>
+        <p class="exercise-task">השלימו את הקוד כך שהמסך יציג: שלום עולם. החליפו את ___ במה שחסר והריצו.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card">
@@ -293,22 +270,17 @@ print(x)</div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 3 · input</div>
-        <p class="exercise-task">התוכנית שואלת בת כמה את ומדפיסה את הגיל בשנה הבאה. מה חסר כדי שהחיבור יעבוד על מספר?</p>
-        <div class="exercise-code">age = <input type="text" class="code-in sm" id="ex3-in" placeholder="?" autocomplete="off">(input("בת כמה את? "))
-print(age + 1)</div>
-        <div class="exercise-controls">
-          <button class="btn g" id="ex3-check" type="button">בדקי</button>
-          <span class="exercise-feedback" id="ex3-fb"></span>
-        </div>
+        <p class="exercise-task">התוכנית שואלת בת כמה את ומדפיסה את הגיל בשנה הבאה. מה חסר כדי שהחיבור יעבוד על מספר? החליפו את ___ והריצו (הקלידו גיל כשהתוכנית שואלת).</p>
+        <div id="ex3-ed"></div>
       </div>
 
-      <div class="exercise-divider"><span>בעורך הפייתון שלכן</span></div>
+      <div class="exercise-divider"><span>כתיבה אישית</span></div>
 
       <div class="exercise-card">
         <div class="exercise-num">תרגיל 4 · מכונת העתיד</div>
         <p class="exercise-task">כתבו תוכנית ששואלת את המשתמשת איך קוראים לה ובאיזו שנה נולדה, ומדפיסה באיזו שנה היא תהיה בת 30 וכמה שנים נשארו עד אז. נניחו שהשנה היא 2026 ושמרו אותה במשתנה. למשל: <span class="mono">דנה, תהיי בת 30 בשנת 2038 — עוד 12 שנים!</span></p>
-        <p class="exercise-note">✍️ כתבו ושמרו בעורך, ואז הדביקו כאן:</p>
-        <textarea class="exercise-answer" id="ex4-answer" rows="6" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="exercise-note">✍️ כתבו כאן את התוכנית, הריצו, ובדקו שהיא עובדת:</p>
+        <div id="ex4-ed"></div>
       </div>
     </div>
   </section>
@@ -336,6 +308,26 @@ print(age + 1)</div>
 <footer><div class="wrap">שיעור ראשון בפייתון · פלט, משתנים וקלט</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { first: false, ex1: false, ex2: false, ex3: false };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -373,49 +365,44 @@ $("jump-to-exercises").addEventListener("click", function () {
 
 /* ---------- hero: first program ---------- */
 (function () {
-  var inp = $("hero-text"), term = $("hero-term"), msg = $("hero-msg");
-  $("hero-run").addEventListener("click", function () {
-    termClear(term);
-    var txt = inp.value;
-    if (txt.indexOf(''"'') !== -1) {
-      termAdd(term, ''SyntaxError: בתוך מרכאות כפולות אי אפשר לכתוב מרכאות כפולות'', "t-err");
-      msg.style.color = "var(--danger)";
-      msg.textContent = "נסי בלי סימן מרכאות בתוך הטקסט.";
-      return;
+  var msg = $("hero-msg");
+  pyEditor({
+    el: "hero-ed", id: "hero", rows: 2, maxRows: 4,
+    code: ''print("שלום עולם!")\n'',
+    onRun: function (r) {
+      if (r.error) { msg.style.color = "var(--danger)"; msg.textContent = "יש שגיאה. קראו מה כתוב בפלט, תקנו, והריצו שוב."; return; }
+      msg.style.color = "";
+      msg.textContent = "🎉 זו התוכנית הראשונה שלכן! עכשיו נבין איך היא עובדת.";
+      window.lessonProgress.first = true;
     }
-    termAdd(term, txt);
-    msg.style.color = "";
-    msg.textContent = "🎉 זו התוכנית הראשונה שלכן! עכשיו נבין איך היא עובדת.";
-    window.lessonProgress.first = true;
   });
 })();
 
 /* ---------- print chips ---------- */
 (function () {
   var progs = [
-    { label: "טקסט", code: ''print("שלום עולם")'', out: "שלום עולם", why: "טקסט בין מרכאות מודפס בדיוק כמו שהוא." },
-    { label: "חישוב", code: "print(5 + 3)", out: "8", why: "בלי מרכאות פייתון מחשבת — ומדפיסה את התוצאה." },
-    { label: "בתוך מרכאות", code: ''print("5 + 3")'', out: "5 + 3", why: "בתוך מרכאות זה רק טקסט. פייתון לא מחשבת, פשוט מעתיקה." },
-    { label: "פסיק", code: ''print("גיל:", 15)'', out: "גיל: 15", why: "פסיק מפריד בין חלקים, ופייתון שמה ביניהם רווח לבד." },
-    { label: "בלי מרכאות", code: "print(hello)", err: "NameError: name ''hello'' is not defined", bad: true, why: "בלי מרכאות פייתון חושבת ש-hello הוא שם של משתנה — ולא מכירה אותו. זו שגיאה שתפגשו הרבה." }
+    { label: "טקסט", code: ''print("שלום עולם")'', why: "טקסט בין מרכאות מודפס בדיוק כמו שהוא." },
+    { label: "חישוב", code: "print(5 + 3)", why: "בלי מרכאות פייתון מחשבת — ומדפיסה את התוצאה." },
+    { label: "בתוך מרכאות", code: ''print("5 + 3")'', why: "בתוך מרכאות זה רק טקסט. פייתון לא מחשבת, פשוט מעתיקה." },
+    { label: "פסיק", code: ''print("גיל:", 15)'', why: "פסיק מפריד בין חלקים, ופייתון שמה ביניהם רווח לבד." },
+    { label: "בלי מרכאות", code: "print(hello)", bad: true, why: "בלי מרכאות פייתון חושבת ש-hello הוא שם של משתנה — ולא מכירה אותו. זו השגיאה הנפוצה ביותר של מתחילות." }
   ];
-  var chips = $("print-chips"), code = $("print-code"), term = $("print-term"), why = $("print-why");
+  var chips = $("print-chips"), why = $("print-why");
   var btns = [];
-  function pick(i) {
+  var ed = pyEditor({ el: "print-ed", id: "print", rows: 2, maxRows: 6, code: progs[0].code + "\n" });
+  function pick(i, run) {
     var p = progs[i];
     btns.forEach(function (b, k) { b.classList.toggle("on", k === i); });
-    code.innerHTML = highlight(p.code);
-    termClear(term);
-    if (p.err) termAdd(term, p.err, "t-err"); else termAdd(term, p.out);
     why.textContent = p.why;
+    if (ed) { ed.setCode(p.code + "\n"); if (run) ed.run(); }
   }
   progs.forEach(function (p, i) {
     var b = document.createElement("button");
     b.type = "button"; b.className = "chip" + (p.bad ? " bad" : ""); b.textContent = p.label;
-    b.addEventListener("click", function () { pick(i); });
+    b.addEventListener("click", function () { pick(i, true); });
     btns.push(b); chips.appendChild(b);
   });
-  pick(0);
+  pick(0, false);
 })();
 
 /* ---------- variables ---------- */
@@ -469,79 +456,42 @@ $("jump-to-exercises").addEventListener("click", function () {
 })();
 
 /* ---------- input program ---------- */
-(function () {
-  var term = $("in-term"), runBtn = $("in-run"), hint = $("in-hint");
-  var lines = document.querySelectorAll("#in-code .line");
-  function mark(k) { lines.forEach(function (l, i) { l.classList.toggle("active", i === k); }); }
-  runBtn.addEventListener("click", function () {
-    termClear(term); runBtn.disabled = true; mark(0);
-    var row = document.createElement("div");
-    row.className = "t-line";
-    var q = document.createElement("span"); q.className = "t-ask"; q.textContent = "איך קוראים לך? ";
-    var input = document.createElement("input"); input.type = "text"; input.className = "t-in"; input.maxLength = 20; input.setAttribute("aria-label", "התשובה שלך");
-    row.appendChild(q); row.appendChild(input); term.appendChild(row);
-    hint.textContent = "התוכנית עצרה וממתינה לך. כתבי תשובה ולחצי Enter.";
-    input.focus();
-    input.addEventListener("keydown", function (e) {
-      if (e.key !== "Enter") return;
-      var typed = input.value;
-      var sp = document.createElement("span"); sp.className = "t-typed"; sp.textContent = typed;
-      row.replaceChild(sp, input);
-      mark(1);
-      termAdd(term, "שלום " + typed);
-      hint.textContent = "המשתנה name קיבל את מה שהקלדת (" + (typed || "ריק") + "), ו-print הדפיסה אותו.";
-      runBtn.disabled = false; runBtn.textContent = "▶ הריצי שוב";
-    });
-  });
-})();
+pyEditor({
+  el: "in-ed", id: "in", rows: 2, maxRows: 6,
+  code: ''name = input("איך קוראים לך? ")\nprint("שלום", name)\n''
+});
 
 /* ---------- input trap (int) ---------- */
 (function () {
-  var a = $("t-a"), b = $("t-b"), codeEl = $("trap-code"), term = $("trap-term"), note = $("trap-note");
-  var btns = document.querySelectorAll(".seg button"), useInt = false;
-  function render() {
-    var code = useInt
-      ? ''a = int(input("מספר ראשון: "))\nb = int(input("שני: "))\nprint(a + b)''
-      : ''a = input("מספר ראשון: ")\nb = input("שני: ")\nprint(a + b)'';
-    codeEl.innerHTML = code.split("\n").map(function (l) { return ''<div class="line">'' + highlight(l) + "</div>"; }).join("");
-    termClear(term);
-    var x = a.value, y = b.value;
-    if (useInt) {
-      var okInt = /^-?\d+$/;
-      if (!okInt.test(x.trim()) || !okInt.test(y.trim())) {
-        termAdd(term, "ValueError: אי אפשר להפוך את מה שהקלדת למספר שלם", "t-err");
-        note.textContent = "int עובדת רק על טקסט שנראה כמו מספר שלם, כמו 5 או 12.";
-      } else {
-        termAdd(term, String(parseInt(x, 10) + parseInt(y, 10)));
-        note.textContent = "int הפכה את שני הטקסטים למספרים, אז + חיברה אותם כמו שצריך.";
-      }
-    } else {
-      termAdd(term, x + y);
-      note.textContent = ''input החזירה את "'' + x + ''" ו-"'' + y + ''" כטקסט, ו-+ בין טקסטים פשוט מדביקה אותם. לכן יצא '' + x + y + ", לא חיבור.";
+  var note = $("trap-note"), btns = document.querySelectorAll(".seg button");
+  var NO_INT = ''a = input("מספר ראשון: ")\nb = input("שני: ")\nprint(a + b)\n'';
+  var WITH_INT = ''a = int(input("מספר ראשון: "))\nb = int(input("שני: "))\nprint(a + b)\n'';
+  var ed = pyEditor({
+    el: "trap-ed", id: "trap", rows: 3, maxRows: 8, code: NO_INT,
+    onRun: function (r) {
+      var code = ed ? ed.getCode() : "";
+      if (r.error && r.error.type === "ValueError") note.textContent = "int עובדת רק על טקסט שנראה כמו מספר שלם, כמו 5 או 12.";
+      else if (r.error) note.textContent = "";
+      else if (/\bint\s*\(/.test(code)) note.textContent = "int הפכה את שני הטקסטים למספרים, אז + חיברה אותם כמו שצריך.";
+      else note.textContent = ''input החזירה את "'' + r.inputs[0] + ''" ו-"'' + r.inputs[1] + ''" כטקסט, ו-+ בין טקסטים פשוט מדביקה אותם. לכן יצא '' + r.inputs[0] + r.inputs[1] + ", לא חיבור.";
     }
-  }
+  });
   btns.forEach(function (bt) {
     bt.addEventListener("click", function () {
-      useInt = bt.dataset.int === "1";
       btns.forEach(function (o) { o.classList.toggle("on", o === bt); });
-      render();
+      note.textContent = "";
+      if (ed) { ed.setCode(bt.dataset.int === "1" ? WITH_INT : NO_INT); ed.run(); }
     });
   });
-  a.addEventListener("input", render); b.addEventListener("input", render);
-  render();
 })();
 
 /* ---------- exercises ---------- */
 (function () {
   function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
-  $("ex1-check").addEventListener("click", function () {
-    var v = $("ex1-in").value.trim(), out = $("ex1-out");
-    if (!v) { fb("ex1-fb", false, "כתבי משהו."); return; }
-    var m = /^(["''])(.*)\1$/.exec(v);
-    if (!m) { out.textContent = "NameError"; fb("ex1-fb", false, "בלי מרכאות פייתון תחפש משתנה בשם הזה. טקסט כותבים בין מרכאות."); return; }
-    out.textContent = m[2];
-    if (m[2] === "שלום עולם") { fb("ex1-fb", true, "מדויק!"); window.lessonProgress.ex1 = true; reportLessonProgress(); }
-    else fb("ex1-fb", false, "יצא ״" + m[2] + "״. צריך בדיוק: שלום עולם.");
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 2, maxRows: 5, code: ''print(___)\n'', hint: "החליפי את ___ במה שצריך להדפיס, והריצי.",
+    tests: [{ label: "הפלט", out: "שלום עולם" }],
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
   });
   $("ex2-check").addEventListener("click", function () {
     var v = $("ex2-in").value.trim();
@@ -551,14 +501,18 @@ $("jump-to-exercises").addEventListener("click", function () {
     else if (v === "3") fb("ex2-fb", false, "לא מחברים את המספרים הנפרדים — x = x + 3 לוקחת את הערך הנוכחי של x.");
     else fb("ex2-fb", false, "לא בדיוק. עקבי: x הוא 5, ואז x + 3 נכנס בחזרה לתוך x.");
   });
-  $("ex3-check").addEventListener("click", function () {
-    var v = $("ex3-in").value.trim();
-    if (!v) { fb("ex3-fb", false, "כתבי משהו."); return; }
-    if (v === "int") { fb("ex3-fb", true, "נכון! int הופכת את הטקסט שהוקלד למספר, אז age + 1 מחברת."); window.lessonProgress.ex3 = true; reportLessonProgress(); }
-    else if (v === "float") fb("ex3-fb", false, "float עובדת, אבל תיתן 16.0. לגיל מתאימה int — מספר שלם.");
-    else fb("ex3-fb", false, "input מחזירה טקסט. איזו פונקציה הופכת טקסט למספר שלם? (3 אותיות)");
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 3, maxRows: 6, code: ''age = ___(input("בת כמה את? "))\nprint(age + 1)\n'', hint: "החליפי את ___ והריצי. הקלידי גיל כשהתוכנית שואלת.",
+    tests: [{ label: "גיל 15", inputs: ["15"], out: "16" }, { label: "גיל 30", inputs: ["30"], out: "31" }],
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
   });
 })();
+
+/* ---------- exercise 4: free writing, runs for real ---------- */
+var ex4Editor = pyEditor({
+  el: "ex4-ed", id: "ex4", rows: 7, maxRows: 18, code: ''# כתבי כאן את התוכנית\n'',
+  tests: [{ label: "דנה, נולדה ב-2000", inputs: ["דנה", "2000"], has: ["דנה", "2030", "4"], hasLabels: ["השם שהוקלד (דנה)", "השנה שבה תהיה בת 30 (2030)", "כמה שנים נשארו (4)"] }]
+});
 
 /* ---------- certificate download ---------- */
 (function () {
@@ -573,7 +527,7 @@ $("jump-to-exercises").addEventListener("click", function () {
   }
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex4 = esc($("ex4-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex4 = esc(edCode(ex4Editor, "ex4").trim()) || "(לא הוזן קוד)";
     var dateStr = new Date().toLocaleDateString("he-IL");
     return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">'' +
       "<title>תעודת תרגול — " + esc(name) + "</title>" +

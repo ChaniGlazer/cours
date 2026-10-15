@@ -516,16 +516,13 @@ print(greet("Dana"))</pre></div>
       <div class="exercises-banner">
         <span class="badge">תרגילים</span>
         <h2>תרגילים לכל הכיתה</h2>
-        <p>שני תרגילים קצרים כאן, ושני תרגילים לכתוב ב-VS Code.</p>
+        <p>שני תרגילים קצרים, ושני תרגילים לכתוב ולהריץ כאן.</p>
       </div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 1</div>
-        <div class="exercise-task">השלימי את החסר.</div>
-        <div class="exercise-code"><span>___ random</span>
-<span>number = random.</span><input type="text" id="ex1-b" class="wide" autocomplete="off" aria-label="השלמה 2"><span>(1, 10)</span>
-<span>print(number)</span></div>
-        <div class="exercise-controls"><span class="mono" style="color:var(--ink-faint)">שורה 1:</span><input type="text" id="ex1-a" autocomplete="off" style="width:96px" aria-label="השלמה 1"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
+        <div class="exercise-task">השלימי את החסר: החליפי את שני ה-___ והריצי.</div>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
@@ -536,19 +533,19 @@ print(sqrt(16) + 1)</span></div>
         <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" aria-label="התשובה"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
       </div>
 
-      <div class="exercise-divider">ב-VS Code</div>
+      <div class="exercise-divider">כתיבה והרצה</div>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 3</div>
         <div class="exercise-task">נחשי את המספר: התוכנית בוחרת מספר בין 1 ל-20 עם <span class="mono">randint</span>, ואת מנחשת עד שתצליחי. אחרי כל ניחוש היא מדפיסה "גבוה מדי" או "נמוך מדי".</div>
         <p class="exercise-note">רמז: לולאת <span class="mono">while</span> ו-<span class="mono">input</span>, ואל תשכחי <span class="mono">int()</span>.</p>
-        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 3" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+        <div id="ex3-ed"></div>
       </div>
 
       <div class="exercise-card while-accent">
         <div class="exercise-num">תרגיל 4 · אתגר</div>
         <div class="exercise-task">מגרילת שמות: צרי רשימה עם שמות של בנות הכיתה, והגרילי באמצעות <span class="mono">random.choice</span> מי תנהל את השיעור הבא. הוסיפי קובץ נפרד <span class="mono">names.py</span> שמחזיק את הרשימה, והביאי אותה עם <span class="mono">import</span>.</div>
-        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 4" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+        <div id="ex4-ed"></div>
       </div>
     </div>
   </section>
@@ -671,12 +668,70 @@ function pwMake(){var l=+$('pw-len').value,chars='abcdefghijklmnopqrstuvwxyzABCD
 $('pw-go').onclick=pwMake;pwCode();
 
 // ---- exercises ----
+
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 // דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
 var exSolved={};
 function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
 reportEx();
 function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className='exercise-feedback correct';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className='exercise-feedback wrong';f.textContent=badMsg}}}
-chk('ex1-btn',function(){return $('ex1-a').value.trim()==='import'&&$('ex1-b').value.trim()==='randint'},'ex1-feedback','נכון! import random ואז random.randint.','כמעט. מה מביאים בשורה הראשונה, ואיזה כלי מחזיר מספר שלם אקראי?');
+function randTest(seed) {
+  return { label: "הרצה " + seed, seed: seed, verify: function (r) {
+    var n = r.printed.trim();
+    return /^\d+$/.test(n) && +n >= 1 && +n <= 10 ? true : "אמור להיות מודפס מספר שלם בין 1 ל-10.";
+  } };
+}
+pyEditor({
+  el: "ex1-ed", id: "ex1", rows: 4, maxRows: 6, code: '___ random\nnumber = random.___(1, 10)\nprint(number)\n', hint: "החליפי את שני ה-___ והריצי.",
+  tests: [randTest(1), randTest(2), randTest(3)],
+  passText: "נכון! import random ואז random.randint.",
+  onPass: function () { exSolved["ex1-btn"] = true; reportEx(); }
+});
+var ASC = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"], DESC = ASC.slice().reverse();
+pyEditor({
+  el: "ex3-ed", id: "ex3", rows: 9, maxRows: 18, code: '# נחשי את המספר: randint בין 1 ל-20, ולולאת while\n',
+  tests: [
+    { label: "ניחושים עולים (1,2,3...)", seed: 3, inputs: ASC, needMsg: "התוכנית ביקשה ניחוש גם אחרי שכל המספרים נוסו. בדקי שהלולאה נעצרת כשהניחוש נכון.",
+      verify: function (r) { return /נמוך מדי/.test(r.printed) ? true : "כשהניחוש קטן מהמספר צריך להדפיס: נמוך מדי"; } },
+    { label: "ניחושים יורדים (20,19,18...)", seed: 3, inputs: DESC, needMsg: "התוכנית ביקשה ניחוש גם אחרי שכל המספרים נוסו. בדקי שהלולאה נעצרת כשהניחוש נכון.",
+      verify: function (r) { return /גבוה מדי/.test(r.printed) ? true : "כשהניחוש גדול מהמספר צריך להדפיס: גבוה מדי"; } }
+  ]
+});
+pyEditor({
+  el: "ex4-ed", id: "ex4", rows: 8, maxRows: 16,
+  files: [
+    { name: "main.py", code: 'import random\nfrom names import names\n\n# הגרילי מי תנהל את השיעור הבא\n' },
+    { name: "names.py", code: '# רשימת השמות של בנות הכיתה\nnames = []\n' }
+  ],
+  hint: "יש שני קבצים: main.py ו-names.py. עברי בין הלשוניות. הרצה היא תמיד של main.py.",
+  tests: [{ label: "מגרילת שמות", verify: function (r) {
+    var list = (r.files[0] ? r.files[0].code : "").match(/["'][^"'\n]+["']/g) || [];
+    list = list.map(function (q) { return q.slice(1, -1); });
+    if (list.length < 3) return "ב-names.py צריכה להיות רשימה של 3 שמות לפחות.";
+    if (!/\bimport\b/.test(r.code) || !/names/.test(r.code)) return "ב-main.py הביאי את הרשימה מ-names.py עם import.";
+    if (!/choice/.test(r.code)) return "הגרילי עם random.choice.";
+    return list.some(function (n) { return r.printed.indexOf(n) >= 0; }) ? true : "התוכנית צריכה להדפיס שם אחד מהרשימה.";
+  } }]
+});
 chk('ex2-btn',function(){var v=$('ex2-in').value.trim();return v==='5.0'},'ex2-feedback','נכון! sqrt(16) היא 4.0, ועוד 1 זה 5.0.','לא בדיוק. שימי לב ש-sqrt מחזירה מספר עשרוני.');
 })();
 

@@ -252,13 +252,8 @@
 
       <div class="ex-card">
         <div class="ex-num">תרגיל 1 · כתבו תנאי</div>
-        <p class="ex-task">רכבת ההרים מתאימה מגובה 140 ס״מ ומעלה (140 כולל). כתבו את התנאי.</p>
-        <div class="ex-code">if <input type="text" class="code-in" id="ex1-in" placeholder="?" autocomplete="off">:
-    print("אפשר לעלות!")</div>
-        <div class="ex-controls">
-          <button class="btn main" id="ex1-check" type="button">בדקי</button>
-          <span class="ex-fb" id="ex1-fb"></span>
-        </div>
+        <p class="ex-task">רכבת ההרים מתאימה מגובה 140 ס״מ ומעלה (140 כולל). כתבו את התנאי: החליפו את ___ והריצו.</p>
+        <div id="ex1-ed"></div>
       </div>
 
       <div class="ex-card">
@@ -277,22 +272,17 @@ else:
 
       <div class="ex-card">
         <div class="ex-num">תרגיל 3 · בין שני מספרים</div>
-        <p class="ex-task">כתבו תנאי שנכון רק כש-num נמצא בין 10 ל-20, כולל שניהם (10 ו-20 נחשבים).</p>
-        <div class="ex-code">if <input type="text" class="code-in" id="ex3-in" placeholder="?" autocomplete="off">:
-    print("בטווח!")</div>
-        <div class="ex-controls">
-          <button class="btn main" id="ex3-check" type="button">בדקי</button>
-          <span class="ex-fb" id="ex3-fb"></span>
-        </div>
+        <p class="ex-task">כתבו תנאי שנכון רק כש-num נמצא בין 10 ל-20, כולל שניהם (10 ו-20 נחשבים). החליפו את ___ והריצו.</p>
+        <div id="ex3-ed"></div>
       </div>
 
-      <div class="ex-divider"><span>בעורך הפייתון שלכן</span></div>
+      <div class="ex-divider"><span>כתיבה אישית</span></div>
 
       <div class="ex-card">
         <div class="ex-num">תרגיל 4 · שומר הסיסמה</div>
         <p class="ex-task">כתבו תוכנית ששומרת סיסמה סודית במשתנה (למשל python123), שואלת את המשתמשת איזו סיסמה היא מקלידה, ומדפיסה <span class="mono">הדלת נפתחת</span> אם היא נכונה, ו-<span class="mono">הדלת נשארת נעולה</span> אם לא. בונוס: אם לא הקלידה כלום, הדפיסו <span class="mono">לא הקלדת כלום</span>.</p>
-        <p class="ex-note">✍️ כתבו ושמרו בעורך, ואז הדביקו כאן:</p>
-        <textarea class="ex-answer" id="ex4-answer" rows="7" placeholder="# הדביקו כאן את הקוד שכתבתן..."></textarea>
+        <p class="ex-note">✍️ כתבו כאן את התוכנית, הריצו, ובדקו שהיא עובדת:</p>
+        <div id="ex4-ed"></div>
       </div>
     </div>
   </section>
@@ -320,6 +310,26 @@ else:
 <footer><div class="wrap">שיעור שני בפייתון · תנאים</div></footer>
 
 <script>
+/* עורך פייתון אמיתי: התשתית (Pyodide) מוזרקת על ידי האתר כ-window.pyxRunner. בקובץ שנפתח לבד אין אותה, ולכן יש גיבוי: תיבת טקסט רגילה. */
+function pyEditor(cfg) {
+  if (window.pyxRunner && window.pyxRunner.mountCode) return window.pyxRunner.mountCode(cfg);
+  var host = document.getElementById(cfg.el);
+  if (host) {
+    var note = document.createElement("p");
+    note.style.cssText = "font-size:14px;opacity:.8;margin:0 0 8px";
+    note.textContent = "הרצת הקוד זמינה כשהשיעור נפתח באתר הקורס. כאן אפשר לכתוב ולהעתיק.";
+    var ta = document.createElement("textarea");
+    ta.id = (cfg.id || cfg.el) + "-code"; ta.rows = 6; ta.dir = "ltr"; ta.value = (cfg.files ? cfg.files[0].code : cfg.code) || "";
+    ta.style.cssText = "width:100%;box-sizing:border-box;font-family:var(--mono,monospace);font-size:14px";
+    host.textContent = ""; host.appendChild(note); host.appendChild(ta);
+  }
+  return null;
+}
+function edCode(ed, id) {
+  if (ed) return ed.getCode();
+  var t = document.getElementById(id + "-code");
+  return t ? t.value : "";
+}
 window.lessonProgress = { ex1: false, ex2: false, ex3: false };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
@@ -331,88 +341,6 @@ function reportLessonProgress() {
   window.reportProgress(done, keys.length);
 }
 reportLessonProgress();
-
-/*PURE-START*/
-function evalPy(src, vars) {
-  var s = String(src == null ? "" : src).trim();
-  if (!s) return { ok: false, error: "השדה ריק." };
-  if (/&&|\|\||!(?!=)/.test(s)) return { ok: false, error: "בפייתון כותבים and / or / not — לא && ו-||." };
-  var re = /\s*(\d+(?:\.\d+)?|[A-Za-z_]\w*|\*\*|\/\/|==|!=|<=|>=|[-+*\/%()<>])/g;
-  var tokens = [], last = 0, m;
-  while ((m = re.exec(s)) !== null) {
-    if (m.index !== last) return { ok: false, error: "יש תו שלא מוכר בביטוי." };
-    tokens.push(m[1]);
-    last = re.lastIndex;
-  }
-  if (s.slice(last).trim() !== "") return { ok: false, error: "יש תו שלא מוכר בביטוי." };
-  var pos = 0;
-  function peek() { return tokens[pos]; }
-  function next() { return tokens[pos++]; }
-  function fail(msg) { throw new Error(msg); }
-  function orExpr() { var v = andExpr(); while (peek() === "or") { next(); var r = andExpr(); v = !!(v || r); } return v; }
-  function andExpr() { var v = notExpr(); while (peek() === "and") { next(); var r = notExpr(); v = !!(v && r); } return v; }
-  function notExpr() { if (peek() === "not") { next(); return !notExpr(); } return cmpExpr(); }
-  function cmpExpr() {
-    var left = addExpr(), ops = ["<", ">", "<=", ">=", "==", "!="], result = true, chained = false;
-    while (ops.indexOf(peek()) !== -1) {
-      var op = next(), right = addExpr(), ok;
-      if (op === "<") ok = left < right;
-      else if (op === ">") ok = left > right;
-      else if (op === "<=") ok = left <= right;
-      else if (op === ">=") ok = left >= right;
-      else if (op === "==") ok = left === right;
-      else ok = left !== right;
-      result = result && ok; left = right; chained = true;
-    }
-    return chained ? result : left;
-  }
-  function addExpr() { var v = mulExpr(); while (peek() === "+" || peek() === "-") { var op = next(), r = mulExpr(); v = op === "+" ? v + r : v - r; } return v; }
-  function mulExpr() {
-    var v = unary();
-    while (["*", "/", "//", "%"].indexOf(peek()) !== -1) {
-      var op = next(), r = unary();
-      if (op !== "*" && r === 0) fail("אי אפשר לחלק באפס.");
-      if (op === "*") v = v * r;
-      else if (op === "/") v = v / r;
-      else if (op === "//") v = Math.floor(v / r);
-      else v = ((v % r) + r) % r;
-    }
-    return v;
-  }
-  function unary() { if (peek() === "-") { next(); return -unary(); } if (peek() === "+") { next(); return unary(); } return power(); }
-  function power() { var b = atom(); if (peek() === "**") { next(); var e = unary(); return Math.pow(b, e); } return b; }
-  function atom() {
-    var t = next();
-    if (t === undefined) fail("הביטוי נגמר באמצע.");
-    if (t === "(") { var v = orExpr(); if (next() !== ")") fail("חסר סוגר )."); return v; }
-    if (/^\d/.test(t)) return parseFloat(t);
-    if (t === "True") return true;
-    if (t === "False") return false;
-    if (Object.prototype.hasOwnProperty.call(vars, t)) return vars[t];
-    return fail("אני לא מכירה את '" + t + "'. השתמשי ב-" + Object.keys(vars).join(", ") + ".");
-  }
-  try {
-    var value = orExpr();
-    if (pos < tokens.length) fail("יש משהו מיותר בסוף: '" + tokens[pos] + "'.");
-    return { ok: true, value: value };
-  } catch (e) {
-    return { ok: false, error: e.message };
-  }
-}
-
-/* checks a condition against [value, expectedBoolean] cases */
-function checkCond(src, varName, cases) {
-  if (/(^|[^=!<>])=([^=]|$)/.test(String(src))) return { ok: false, error: "= שמה ערך. לבדיקה כותבים == (שני שווים), או < ו-> להשוואה." };
-  for (var k = 0; k < cases.length; k++) {
-    var vars = {}; vars[varName] = cases[k][0];
-    var r = evalPy(src, vars);
-    if (!r.ok) return { ok: false, error: r.error };
-    var got = !!r.value;
-    if (got !== cases[k][1]) return { ok: false, error: "כש-" + varName + " הוא " + cases[k][0] + " התנאי צריך להיות " + (cases[k][1] ? "True" : "False") + " — אבל יצא " + (got ? "True" : "False") + "." };
-  }
-  return { ok: true };
-}
-/*PURE-END*/
 
 function $(id) { return document.getElementById(id); }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -550,13 +478,28 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
 /* ---------- exercises ---------- */
 (function () {
   function fb(id, ok, text) { var e = $(id); e.textContent = text; e.className = "ex-fb " + (ok ? "ok" : "bad"); }
-  $("ex1-check").addEventListener("click", function () {
-    var r = checkCond($("ex1-in").value, "height", [[140, true], [150, true], [185, true], [139, false], [120, false], [100, false]]);
-    if (r.ok) { fb("ex1-fb", true, "נכון! התנאי עובד גם ב-140 בדיוק וגם מתחתיו ומעליו."); window.lessonProgress.ex1 = true; reportLessonProgress(); } else fb("ex1-fb", false, r.error);
+  /* בדיקה אמיתית: מריצים את הקוד של התלמידה כמה פעמים, כל פעם עם ערך אחר במשתנה בשורה הראשונה */
+  function condTests(varName, cases, okLine) {
+    return cases.map(function (c) {
+      return {
+        label: varName + " = " + c[0],
+        transform: function (code) { return code.replace(new RegExp("^" + varName + "\\s*=.*$", "m"), varName + " = " + c[0]); },
+        out: c[1] ? okLine : "",
+        hidden: false
+      };
+    });
+  }
+  pyEditor({
+    el: "ex1-ed", id: "ex1", rows: 3, maxRows: 8, code: 'height = 150\nif ___:\n    print("אפשר לעלות!")\n', hint: "החליפי את ___ בתנאי והריצי. הבדיקה מנסה כמה גבהים.",
+    tests: condTests("height", [[140, true], [150, true], [185, true], [139, false], [120, false], [100, false]], "אפשר לעלות!"),
+    passText: "נכון! התנאי עובד גם ב-140 בדיוק וגם מתחתיו ומעליו.",
+    onPass: function () { window.lessonProgress.ex1 = true; reportLessonProgress(); }
   });
-  $("ex3-check").addEventListener("click", function () {
-    var r = checkCond($("ex3-in").value, "num", [[10, true], [15, true], [20, true], [9, false], [21, false], [0, false], [100, false]]);
-    if (r.ok) { fb("ex3-fb", true, "מדויק! התנאי נכון בדיוק מ-10 עד 20."); window.lessonProgress.ex3 = true; reportLessonProgress(); } else fb("ex3-fb", false, r.error);
+  pyEditor({
+    el: "ex3-ed", id: "ex3", rows: 3, maxRows: 8, code: 'num = 15\nif ___:\n    print("בטווח!")\n', hint: "החליפי את ___ בתנאי והריצי. הבדיקה מנסה כמה מספרים.",
+    tests: condTests("num", [[10, true], [15, true], [20, true], [9, false], [21, false], [0, false], [100, false]], "בטווח!"),
+    passText: "מדויק! התנאי נכון בדיוק מ-10 עד 20.",
+    onPass: function () { window.lessonProgress.ex3 = true; reportLessonProgress(); }
   });
   var opts = [
     { t: "A", ok: true }, { t: "B", ok: false }, { t: "A ו-B", ok: false }, { t: "C", ok: false }
@@ -578,6 +521,23 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
   });
 })();
 
+/* ---------- exercise 4: password keeper, runs for real ---------- */
+var ex4Editor = pyEditor({
+  el: "ex4-ed", id: "ex4", rows: 8, maxRows: 18, code: '# כתבי כאן את התוכנית\n',
+  tests: [
+    { label: "סיסמה שגויה", inputs: ["לא-הסיסמה-123"], verify: function (r) {
+      if (r.printed.indexOf("הדלת נפתחת") >= 0) return "הוקלדה סיסמה לא נכונה, והתוכנית הדפיסה ״הדלת נפתחת״.";
+      return r.printed.indexOf("הדלת נשארת נעולה") >= 0 ? true : "בסיסמה שגויה צריך להדפיס: הדלת נשארת נעולה";
+    } },
+    { label: "הסיסמה הנכונה", inputs: function (code) {
+      var m = /^\s*\w+\s*=\s*["']([^"'\n]+)["']/m.exec(code);
+      return [m ? m[1] : "python123"];
+    }, verify: function (r) {
+      return r.printed.indexOf("הדלת נפתחת") >= 0 ? true : "כשמקלידים את הסיסמה השמורה במשתנה, צריך להדפיס: הדלת נפתחת";
+    } }
+  ]
+});
+
 /* ---------- certificate download ---------- */
 (function () {
   var nameInput = $("cert-name"), btn = $("cert-download"), statusEl = $("cert-status");
@@ -591,7 +551,7 @@ $("jump-to-exercises").addEventListener("click", function () { $("exercises").sc
   }
   function buildCertificateHtml(name) {
     var p = window.lessonProgress;
-    var ex4 = esc($("ex4-answer").value.trim()) || "(לא הוזן קוד)";
+    var ex4 = esc(edCode(ex4Editor, "ex4").trim()) || "(לא הוזן קוד)";
     var dateStr = new Date().toLocaleDateString("he-IL");
     return '<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">' +
       "<title>תעודת תרגול — " + esc(name) + "</title>" +
