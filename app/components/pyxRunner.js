@@ -965,7 +965,9 @@ function pyxHost(cfg) {
 
 export const PYX_RUNNER_SCRIPT =
   "<script>(" +
-  pyxHost.toString() +
+  // הקוד המכווץ של הבנייה לפרודקשן מאחד את "<" + "/script>" למחרוזת אחת "</script>", וזה היה סוגר את תג ה-script של השיעור באמצע.
+  // לכן מבריחים כל "</script" בטקסט הפונקציה (בתוך מחרוזת JS, "<\/script>" שווה בדיוק ל-"</script>").
+  pyxHost.toString().replace(/<\/script/gi, "<\\/script") +
   ")(" +
   JSON.stringify({
     base: BASE,
