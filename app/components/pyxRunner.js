@@ -18,6 +18,10 @@ const BASE = "https://cdn.jsdelivr.net/pyodide/v0.29.5/full/";
 const CSP =
   "default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net; worker-src blob:; connect-src https://cdn.jsdelivr.net";
 
+// בבניית השרת (esbuild עם keepNames) נוספות לפונקציות קריאות __name(...), והן נכנסות גם לטקסט של toString שמוזרק לשיעור.
+// בתוך ה-iframe אין __name, והסקריפט היה נכשל בשקט (window.pyxRunner לא הוגדר). לכן כל קטע מוזרק מקבל הגדרה ריקה שלו.
+const NAME_SHIM = "var __name=function(t){return t};";
+
 // פייתון: מריץ את הקוד של התלמידה, ואז קורא לפונקציה בשם fn_name עם כל מקרה בדיקה. מחזיר JSON.
 const HARNESS = [
   "import sys, io, json, traceback",
@@ -260,7 +264,7 @@ function pyxHost(cfg) {
       f.tabIndex = -1;
       f.title = "מפעיל הפייתון (מוסתר)";
       f.style.cssText = "display:none;width:0;height:0;border:0";
-      f.srcdoc = '<!doctype html><meta http-equiv="Content-Security-Policy" content="' + cfg.csp + '"><script>(' + cfg.bridge + ")();<" + "/script>";
+      f.srcdoc = '<!doctype html><meta http-equiv="Content-Security-Policy" content="' + cfg.csp + '"><script>var __name=function(t){return t};(' + cfg.bridge + ")();<" + "/script>";
       document.body.appendChild(f);
       s.frame = f;
     } catch (e) { s.state = "dead"; s.error = { reason: "unsupported" }; return s; }
@@ -964,7 +968,7 @@ function pyxHost(cfg) {
 }
 
 export const PYX_RUNNER_SCRIPT =
-  "<script>(" +
+  "<script>" + NAME_SHIM + "(" +
   // הקוד המכווץ של הבנייה לפרודקשן מאחד את "<" + "/script>" למחרוזת אחת "</script>", וזה היה סוגר את תג ה-script של השיעור באמצע.
   // לכן מבריחים כל "</script" בטקסט הפונקציה (בתוך מחרוזת JS, "<\/script>" שווה בדיוק ל-"</script>").
   pyxHost.toString().replace(/<\/script/gi, "<\\/script") +
@@ -974,7 +978,7 @@ export const PYX_RUNNER_SCRIPT =
     csp: CSP,
     harness: HARNESS,
     css: CODE_CSS,
-    worker: "(" + pyxWorker.toString() + ")();",
+    worker: NAME_SHIM + "(" + pyxWorker.toString() + ")();",
     bridge: pyxBridge.toString()
   }).replace(/<\//g, "<\\/") +
   ");</script>";
