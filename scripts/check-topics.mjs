@@ -31,6 +31,9 @@ for (const t of TOPICS) {
   }
   if (!/^[a-z0-9-]+$/.test(t.slug)) bad(t.slug, "slug לא באנגלית");
   if (t.description.length > 155) bad(t.slug, `description באורך ${t.description.length}`);
+  const shortWords = String(t.short || "").split(/\s+/).filter(Boolean).length;
+  if (!t.short) bad(t.slug, "חסר short");
+  else if (shortWords > 40) bad(t.slug, `short ארוך מדי: ${shortWords} מילים (עד 40)`);
   if (!lessonSlugs.has(t.lessonSlug)) bad(t.slug, `שיעור לא קיים: ${t.lessonSlug}`);
   for (const r of t.related) if (!slugs.has(r) || r === t.slug) bad(t.slug, `נושא קשור לא תקין: ${r}`);
   if (t.related.length < 2) bad(t.slug, "פחות משני נושאים קשורים");
@@ -39,7 +42,7 @@ for (const t of TOPICS) {
   const paragraphs = t.sections.flatMap((s) => s.paragraphs);
   const words = paragraphs.join(" ").split(/\s+/).filter(Boolean).length;
   const examples = t.sections.flatMap((s) => s.examples || []);
-  rows.push({ slug: t.slug, paragraphs: paragraphs.length, words, examples: examples.length });
+  rows.push({ slug: t.slug, paragraphs: paragraphs.length, words, examples: examples.length, shortWords });
   if (paragraphs.length < 3 || paragraphs.length > 4) bad(t.slug, `מספר פסקאות: ${paragraphs.length}`);
   if (words < 250 || words > 400) bad(t.slug, `מספר מילים: ${words}`);
   if (examples.length < 1 || examples.length > 2) bad(t.slug, `מספר דוגמאות: ${examples.length}`);

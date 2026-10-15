@@ -21,6 +21,20 @@ export async function generateMetadata({ params }) {
   };
 }
 
+function Example({ ex }) {
+  return (
+    <div className="tp-example">
+      <pre className="tp-code">
+        <code dir="ltr">{ex.code}</code>
+      </pre>
+      <div className="tp-out-label">מה מודפס:</div>
+      <pre className="tp-code tp-code--out">
+        <code dir="ltr">{ex.output}</code>
+      </pre>
+    </div>
+  );
+}
+
 export default async function TopicPage({ params }) {
   const { slug } = await params;
   const topic = getTopic(slug);
@@ -29,6 +43,8 @@ export default async function TopicPage({ params }) {
   const url = absoluteUrl(`/topics/${topic.slug}`);
   const lessonHref = `/courses/${COURSE_ID}/${topic.lessonSlug}`;
   const related = topic.related.map((s) => getTopic(s)).filter(Boolean);
+  // הדוגמה הראשונה של הנושא מוצגת בראש העמוד, וכל השאר בתוך "להרחבה".
+  const firstExample = topic.sections.flatMap((sec) => sec.examples || [])[0] || null;
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -66,54 +82,64 @@ export default async function TopicPage({ params }) {
 
           <h1 className="tp-h1">{topic.h1}</h1>
 
-          {topic.sections.map((s) => (
-            <section className="tp-section" key={s.h2}>
-              <h2>{s.h2}</h2>
-              {s.paragraphs.map((p, i) => (
-                <p key={i}>
-                  <TopicText text={p} />
-                </p>
+          <section className="tp-short" aria-labelledby="tp-short-h">
+            <h2 id="tp-short-h">בקצרה</h2>
+            <p>
+              <TopicText text={topic.short} />
+            </p>
+          </section>
+
+          {firstExample && <Example ex={firstExample} />}
+
+          <div className="tp-lead">
+            <a href={lessonHref} className="btn btn-primary tp-bigcta">
+              לשיעור המלא וההרצה <span aria-hidden="true">←</span>
+            </a>
+          </div>
+
+          <details className="tp-more">
+            <summary>להרחבה</summary>
+            <div className="tp-more__body">
+              {topic.sections.map((sec) => (
+                <section className="tp-section" key={sec.h2}>
+                  <h2>{sec.h2}</h2>
+                  {sec.paragraphs.map((p, i) => (
+                    <p key={i}>
+                      <TopicText text={p} />
+                    </p>
+                  ))}
+                  {(sec.examples || [])
+                    .filter((ex) => ex !== firstExample)
+                    .map((ex, i) => (
+                      <Example ex={ex} key={i} />
+                    ))}
+                </section>
               ))}
-              {(s.examples || []).map((ex, i) => (
-                <div className="tp-example" key={i}>
-                  <pre className="tp-code">
-                    <code dir="ltr">{ex.code}</code>
-                  </pre>
-                  <div className="tp-out-label">מה מודפס:</div>
-                  <pre className="tp-code tp-code--out">
-                    <code dir="ltr">{ex.output}</code>
-                  </pre>
-                </div>
-              ))}
-            </section>
-          ))}
+            </div>
+          </details>
 
           <section className="tp-section" aria-labelledby="tp-faq-h">
             <h2 id="tp-faq-h">שאלות ותשובות</h2>
-            {topic.faq.map((f) => (
-              <div className="tp-qa" key={f.q}>
-                <h3>
-                  <TopicText text={f.q} />
-                </h3>
-                <p>
-                  <TopicText text={f.a} />
-                </p>
-              </div>
-            ))}
-          </section>
-
-          <section className="tp-cta" aria-labelledby="tp-cta-h">
-            <h2 id="tp-cta-h">רוצה לתרגל את זה?</h2>
-            <p>בשיעור המלא יש הסבר מפורט, דוגמאות ותרגילים אינטראקטיביים.</p>
-            <a href={lessonHref} className="btn btn-primary">
-              לשיעור המלא וההרצה
-            </a>
+            <div className="tp-faq">
+              {topic.faq.map((f) => (
+                <details className="tp-qa" key={f.q}>
+                  <summary>
+                    <h3>
+                      <TopicText text={f.q} />
+                    </h3>
+                  </summary>
+                  <p>
+                    <TopicText text={f.a} />
+                  </p>
+                </details>
+              ))}
+            </div>
           </section>
 
           {related.length > 0 && (
             <section className="tp-section" aria-labelledby="tp-rel-h">
               <h2 id="tp-rel-h">נושאים קשורים</h2>
-              <ul className="tp-related">
+              <ul className="tp-chips">
                 {related.map((r) => (
                   <li key={r.slug}>
                     <a href={`/topics/${r.slug}`}>{r.h1}</a>
@@ -125,8 +151,17 @@ export default async function TopicPage({ params }) {
               </p>
             </section>
           )}
+
+          <div className="tp-lead tp-lead--end">
+            <a href={lessonHref} className="btn btn-primary tp-bigcta">
+              לשיעור המלא וההרצה <span aria-hidden="true">←</span>
+            </a>
+          </div>
         </div>
       </article>
+      <a href={lessonHref} className="tp-float btn btn-primary">
+        לשיעור המלא וההרצה <span aria-hidden="true">←</span>
+      </a>
     </>
   );
 }

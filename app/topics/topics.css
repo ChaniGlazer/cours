@@ -26,14 +26,7 @@
 
 .tp-qa h3 { margin: 0 0 4px; font-family: var(--font-body); font-weight: 700; font-size: 1.15rem; line-height: 1.4; }
 
-.tp-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 26px 28px; background: var(--white); border: 1.5px solid var(--gold); border-radius: var(--radius); box-shadow: 0 0 0 4px rgba(255, 127, 150, 0.12); }
-.tp-cta h2 { margin: 0; font-size: 1.5rem; }
-.tp-cta p { margin: 0 0 6px; color: var(--text-soft); font-size: 1.05rem; }
-.tp-cta .btn { min-height: 56px; font-size: 1.1rem; }
 
-.tp-related { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.tp-related a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: 1.05rem; text-decoration: none; border-bottom: 1px solid var(--border); }
-.tp-related a:hover, .tp-all a:hover { border-bottom-color: var(--gold); }
 .tp-all { margin: 0; }
 .tp-all a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); min-height: 44px; display: inline-flex; align-items: center; }
 
@@ -48,6 +41,43 @@
   .tp { padding: 28px 0 56px; }
   .tp-wrap { gap: 22px; }
   .tp-section p { font-size: 1.05rem; }
-  .tp-cta { padding: 22px 20px; }
-  .tp-cta .btn { width: 100%; }
+}
+
+/* ---- תבנית קצרה: בקצרה, דוגמה, כפתור לשיעור, והשאר בתוך "להרחבה" ---- */
+.tp-short { background: var(--white); border: 1px solid var(--border); border-inline-start: 4px solid var(--moss); border-radius: 16px; padding: 18px 22px; display: flex; flex-direction: column; gap: 6px; }
+.tp-short h2 { margin: 0; font-family: var(--font-body); font-weight: 700; font-size: 0.95rem; color: var(--moss); letter-spacing: 0.02em; }
+.tp-short p { margin: 0; font-size: 1.2rem; line-height: 1.7; }
+
+.tp-lead { display: flex; }
+.tp-bigcta { width: 100%; max-width: 560px; min-height: 64px; font-size: 1.3rem; }
+.tp-lead--end { padding-top: 4px; }
+
+.tp-more, .tp-qa { background: var(--white); border: 1px solid var(--border); border-radius: 16px; }
+.tp-more > summary, .tp-qa > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 10px 22px; font-weight: 700; font-size: 1.15rem; border-radius: 16px; }
+.tp-more > summary::-webkit-details-marker, .tp-qa > summary::-webkit-details-marker { display: none; }
+.tp-more > summary::after, .tp-qa > summary::after { content: "+"; flex: none; display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); font-size: 1.3rem; line-height: 1; color: var(--text-soft); }
+.tp-more[open] > summary::after, .tp-qa[open] > summary::after { content: "−"; border-color: var(--gold); color: var(--gold); }
+.tp-more > summary:hover, .tp-qa > summary:hover { background: var(--paper-2); }
+.tp-more > summary:focus-visible, .tp-qa > summary:focus-visible { outline: 3px solid var(--gold-dark); outline-offset: 2px; }
+.tp-more__body { display: flex; flex-direction: column; gap: 28px; padding: 22px 22px 24px; border-top: 1px solid var(--border); }
+.tp-faq { display: flex; flex-direction: column; gap: 10px; }
+.tp-qa > summary h3 { margin: 0; font-family: var(--font-body); font-weight: 700; font-size: 1.1rem; line-height: 1.4; }
+.tp-qa > p { margin: 0; padding: 0 22px 18px; color: var(--text-soft); font-size: 1.05rem; line-height: 1.75; }
+
+.tp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.tp-chips a { display: inline-flex; align-items: center; min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 1.5px solid var(--border); font-weight: 700; font-size: 0.95rem; text-decoration: none; background: transparent; }
+.tp-chips a:hover { border-color: var(--gold); }
+.tp-all { margin: 0; }
+.tp-all a { font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--border); min-height: 44px; display: inline-flex; align-items: center; }
+.tp-all a:hover { border-bottom-color: var(--gold); }
+
+/* כפתור צף בנייד בלבד: קבוע בתחתית, מורחק מ-safe-area */
+.tp-float { display: none; }
+@media (max-width: 720px) {
+  .tp-float { display: flex; position: fixed; z-index: 40; inset-inline: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); min-height: 56px; font-size: 1.1rem; box-shadow: 0 10px 28px -8px rgba(0, 0, 0, 0.7); }
+  .tp { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+  .tp-short p { font-size: 1.1rem; }
+  .tp-bigcta { max-width: none; }
+  .tp-more__body, .tp-qa > p { padding-inline: 18px; }
+  .tp-more > summary, .tp-qa > summary { padding-inline: 18px; }
 }
