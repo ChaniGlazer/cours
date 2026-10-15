@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import LessonHtmlFrame from "./LessonHtmlFrame";
+import TutorWidget from "./TutorWidget";
+import { TUTOR_COURSES } from "@/lib/tutorCourses";
 import { countDone, isAuto, lessonStatus, markSeen, setDone, useProgress } from "./progress";
 import "./lesson-design.css";
 
@@ -34,7 +36,7 @@ function ringTexts(done, total) {
   return [done === 1 ? "התחלה טובה!" : "ממשיכים יפה!", note];
 }
 
-export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, children }) {
+export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, children }) {
   const progress = useProgress();
   const slugs = lessons.map((l) => l.slug);
   const idx = slugs.indexOf(currentSlug);
@@ -45,6 +47,10 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   // תרגילי החובה בשיעור הנוכחי, כפי שהשיעור דיווח. נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
   const [exercises, setExercises] = useState(null);
   const exerciseProgress = exercises?.slug === currentSlug ? exercises : null;
+  // הקשר לחונכת: התרגיל שהלומדת עובדת עליו וקוד שכתבה, כפי שה-iframe של השיעור דיווח (tutor-context). נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
+  const hasTutor = TUTOR_COURSES.includes(course.id);
+  const [tutorCtx, setTutorCtx] = useState(null);
+  const tutorContext = tutorCtx?.slug === currentSlug ? tutorCtx : null;
   // lesson-complete מטופל פעם אחת בלבד לכל שיעור.
   const completeHandledRef = useRef(null);
   const ringOffset = total > 0 ? RING_C * (1 - done / total) : RING_C;
@@ -61,6 +67,11 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
       if (Number.isInteger(done) && Number.isInteger(total) && total > 0 && done >= 0 && done <= total) {
         setExercises({ slug: currentSlug, done, total });
       }
+    } else if (data.type === "tutor-context") {
+      if (!hasTutor) return;
+      const key = typeof data.topicKey === "string" && /^[a-z0-9_-]{1,40}$/.test(data.topicKey) ? data.topicKey : null;
+      if (!key) return;
+      setTutorCtx({ slug: currentSlug, topicKey: key, code: typeof data.code === "string" ? data.code.slice(0, 4000) : "" });
     } else if (data.type === "lesson-complete") {
       if (completeHandledRef.current === currentSlug) return;
       completeHandledRef.current = currentSlug;
@@ -214,7 +225,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           )}
 
           <section id="lesson" className="lx-content">
-            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} /> : children}
+            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} /> : children}
           </section>
 
           <section className="lx-complete">
@@ -252,6 +263,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           </section>
         </main>
       </div>
+      {hasTutor && <TutorWidget key={currentSlug} courseId={course.id} lessonSlug={currentSlug} loggedIn={loggedIn} context={tutorContext} />}
     </div>
   );
 }

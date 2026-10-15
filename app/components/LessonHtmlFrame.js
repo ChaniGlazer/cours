@@ -34,6 +34,148 @@ const REPORT_SCRIPT =
   // השיעור יכול להיטען לפני שההורה מחובר (hydration) ולפספס את הודעת ההתחלה, ולכן ההורה מבקש שליחה חוזרת.
   "addEventListener('message',function(e){if(e.source===parent&&e.data&&e.data.type==='lesson-parent-ready'&&last>=0)" +
   "parent.postMessage({type:'lesson-progress',done:last,total:tot},'*');});})();</script>";
+// זיהוי התרגיל הפעיל בשיעור, עבור החונכת (TutorWidget). הפונקציה מוזרקת ל-iframe כטקסט (toString), ולכן היא עצמאית לגמרי:
+// בלי התייחסות למשתנים מחוץ לה, ובתחביר פשוט (ES5). כשהלומדת מתמקדת בתרגיל, מקלידה בו או לוחצת בו, נשלחת להורה
+// { type: "tutor-context", topicKey, code }: topicKey הוא "exN" (לפי ids שמתחילים ב-exN, או כותרת "תרגיל N"), או במשחקים של
+// השיעורים: puzzle-N (פאזלי ההרכבה בשיעור הפונקציות), robot-N ו-prediction (שיעור הפתיחה). code הוא מה שנכתב בתרגיל (textarea,
+// או הקוד של התרגיל עם ערכי השדות שמולאו). שיעור שאי אפשר לזהות בו תרגיל לא שולח כלום, וההורה משתמש ב-"general".
+function tutorContextProbe() {
+  var MAX_CODE = 4000;
+  var lastKey = "";
+  var timer = null;
+
+  function numOf(id) {
+    var m = /^ex(\d+)(?:-|$)/.exec(id || "");
+    return m ? m[1] : null;
+  }
+
+  // מספר התרגיל של צומת: כל ה-ids שמתחילים ב-exN בתוכו (או הוא עצמו) חייבים להיות של אותו N, אחרת הצומת רחב מדי.
+  function exerciseOf(node) {
+    var nums = {};
+    var count = 0;
+    var own = numOf(node.id);
+    var i;
+    var n;
+    if (own) {
+      nums[own] = 1;
+      count = 1;
+    }
+    var withIds = node.querySelectorAll ? node.querySelectorAll("[id]") : [];
+    for (i = 0; i < withIds.length; i++) {
+      n = numOf(withIds[i].id);
+      if (n && !nums[n]) {
+        nums[n] = 1;
+        count++;
+      }
+    }
+    if (count === 1) return "ex" + Object.keys(nums)[0];
+    if (count === 0 && node.querySelectorAll) {
+      var heads = node.querySelectorAll(".exercise-num, .task-num");
+      if (heads.length === 1) {
+        var m = /(\d+)/.exec(heads[0].textContent || "");
+        if (m) return "ex" + m[1];
+      }
+    }
+    return null;
+  }
+
+  function activeIndex(selector) {
+    var els = document.querySelectorAll(selector);
+    for (var i = 0; i < els.length; i++) {
+      if (els[i].classList.contains("active") || els[i].classList.contains("on")) return i;
+    }
+    return -1;
+  }
+
+  function topicOf(el) {
+    if (!el || !el.closest) return null;
+    var idx;
+    if (el.closest("#puzzle")) {
+      idx = activeIndex("#puz-tabs .m-tab");
+      return idx >= 0 ? "puzzle-" + (idx + 1) : null;
+    }
+    if (el.closest("#robot")) {
+      idx = activeIndex("#lvl-tabs button");
+      return idx >= 0 ? "robot-" + (idx + 1) : null;
+    }
+    var task = el.closest(".task-card");
+    if (task && task.querySelector("#pred-opts")) return "prediction";
+    var node = el;
+    while (node && node !== document.body && node !== document.documentElement) {
+      var t = exerciseOf(node);
+      if (t) return t;
+      node = node.parentElement;
+    }
+    return null;
+  }
+
+  // הצומת הגדול ביותר שעדיין שייך לאותו תרגיל (כרטיס התרגיל), כדי לקרוא ממנו את הקוד.
+  function cardOf(el, topic) {
+    var card = null;
+    var node = el;
+    while (node && node !== document.body && node !== document.documentElement) {
+      var t = exerciseOf(node);
+      if (t === topic) card = node;
+      else if (card) break;
+      node = node.parentElement;
+    }
+    return card;
+  }
+
+  function codeOf(el, topic) {
+    var i;
+    var lines;
+    if (topic.indexOf("puzzle-") === 0) {
+      var built = document.querySelectorAll("#puz-built .pline");
+      lines = [];
+      for (i = 0; i < built.length; i++) lines.push(built[i].textContent);
+      return lines.join("\n");
+    }
+    if (topic.indexOf("robot-") === 0) {
+      var rc = document.getElementById("rb-code");
+      return rc ? rc.textContent || "" : "";
+    }
+    var card = cardOf(el, topic);
+    if (!card) return "";
+    var area = card.querySelector("textarea");
+    if (area) return area.value || "";
+    var block = card.querySelector(".exercise-code, .ex-code, pre");
+    if (!block) return "";
+    var clone = block.cloneNode(true);
+    var from = block.querySelectorAll("input, select");
+    var to = clone.querySelectorAll("input, select");
+    for (i = 0; i < to.length; i++) {
+      var v = from[i] && from[i].value ? from[i].value : "___";
+      to[i].parentNode.replaceChild(document.createTextNode(v), to[i]);
+    }
+    return clone.textContent || "";
+  }
+
+  function send(el) {
+    var topic = topicOf(el);
+    if (!topic) return;
+    var code = codeOf(el, topic).replace(/\s+$/, "").slice(0, MAX_CODE);
+    var key = topic + "|" + code;
+    if (key === lastKey) return;
+    lastKey = key;
+    parent.postMessage({ type: "tutor-context", topicKey: topic, code: code }, "*");
+  }
+
+  document.addEventListener("focusin", function (e) { send(e.target); }, true);
+  // לחיצה במשחקים (פאזל, רובוט) בונה מחדש את ה-DOM, והאלמנט שנלחץ כבר לא מחובר כשהקוד נקרא. לכן מעגנים לחלק הקבוע של המשחק.
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    var anchor = target.closest ? target.closest("#puzzle") || target.closest("#robot") || target : target;
+    setTimeout(function () { send(anchor); }, 60);
+  }, true);
+  document.addEventListener("input", function (e) {
+    var target = e.target;
+    clearTimeout(timer);
+    timer = setTimeout(function () { send(target); }, 400);
+  }, true);
+}
+const TUTOR_CONTEXT_SCRIPT = "<script>(" + tutorContextProbe.toString() + ")();</script>";
+
 const LAYOUT_RESET =
   "<style>html,body{width:100%;max-width:none!important;margin-left:0!important;margin-right:0!important;overflow-y:hidden!important}" +
   "body>*{max-width:none!important}" + HIDE_INNER_CHROME + "</style>";
@@ -41,13 +183,13 @@ const LAYOUT_RESET =
 // הודעות נוספות מהשיעור (למשל lesson-progress ו-lesson-complete) מועברות להורה ב-prop onMessage.
 // ה-origin של ה-iframe הוא "null" (sandbox בלי allow-same-origin), ולכן הזהות נבדקת לפי event.source בלבד.
 // כל השיעורים (בכל הקורסים) מוצגים בעיצוב הכהה האחיד של האתר: הצבעים מוחלפים בזמן ההצגה בלבד.
-export default function LessonHtmlFrame({ html, onMessage }) {
+export default function LessonHtmlFrame({ html, onMessage, tutor = false }) {
   const iframeRef = useRef(null);
   const onMessageRef = useRef(onMessage);
   const [height, setHeight] = useState(600);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
-  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT, [html]);
+  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor]);
 
   // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {

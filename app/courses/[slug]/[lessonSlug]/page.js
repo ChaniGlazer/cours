@@ -89,6 +89,7 @@ export default async function LessonPage({ params }) {
         heading={heading}
         hero={hero}
         html={lesson.html_content || null}
+        loggedIn={Boolean(user)}
       >
         {embed ? (
           <div className="video-wrap">
