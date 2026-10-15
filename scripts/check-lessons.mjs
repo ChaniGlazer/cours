@@ -107,6 +107,10 @@ for (const sqlName of sqlFiles) {
     const { values, html: sqlHtml, chunks } = assembleHtml(sql);
     const [, courseId, s] = values;
     if (chunks > 1) notes.push(`ה-SQL מחולק ל-${chunks} פקודות (מגבלת D1)`);
+    // D1 מגביל פקודת SQL אחת ל-100,000 בתים (עברית היא 2 בתים לתו). חריגה גורמת ל-SQLITE_TOOBIG בהרצה, ולכן נכשלים כבר כאן.
+    const maxStmt = Math.max(...sql.split(/;\n(?=DELETE FROM|INSERT INTO|UPDATE lessons)/).map((st) => Buffer.byteLength(st, "utf8") + 2));
+    if (maxStmt > 99000) problems.push(`פקודת SQL של ${maxStmt} בתים חורגת ממגבלת D1 (100,000)`);
+    else if (maxStmt > 95000) notes.push(`פקודת SQL של ${maxStmt} בתים (מגבלת D1: 100,000)`);
     slug = s;
     if (sql.includes("\r")) problems.push("הקובץ SQL מכיל CRLF");
     if (!existsSync(join(dir, htmlName))) problems.push(`חסר ${htmlName}`);

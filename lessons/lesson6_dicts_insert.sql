@@ -395,6 +395,8 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .pyx-code { min-height: 190px; tab-size: 4; white-space: pre; overflow: auto; }
   .pyx-status { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel-2); border-radius: 10px; padding: 10px 14px; }
   .pyx-status[hidden] { display: none; }
+  .pyx-retry { align-self: flex-start; }
+  .pyx-retry[hidden] { display: none; }
   .pyx-status.err { color: var(--rust); }
   .pyx-bar { display: block; height: 4px; border-radius: 4px; background: var(--line-strong); overflow: hidden; position: relative; }
   .pyx-bar::after { content: ""; position: absolute; inset-block: 0; width: 35%; background: var(--gold); border-radius: 4px; animation: pyx-slide 1.3s ease-in-out infinite; }
@@ -862,11 +864,11 @@ print(total)</div>
       </div>
 
       <div class="exercise-divider">
-        <span>פייתון אמיתי, כאן בדפדפן — הקוד רץ ונבדק אוטומטית</span>
+        <span>אתגר רשות — פייתון אמיתי כאן בדפדפן, הקוד רץ ונבדק אוטומטית</span>
       </div>
 
       <div class="exercise-card" id="ex6-card">
-        <div class="exercise-num">תרגיל 6 · כתיבת קוד אמיתי · ספירת מילים</div>
+        <div class="exercise-num">תרגיל 6 · אתגר רשות · כתיבת קוד אמיתי · ספירת מילים</div>
         <p class="exercise-task">כתבי פונקציה בשם <span class="mono">count_words</span> שמקבלת רשימת מילים ומחזירה מילון: כל מילה היא מפתח, והערך הוא כמה פעמים היא הופיעה ברשימה.</p>
         <p class="exercise-note">הקוד שלך רץ באמת, בפייתון, בתוך הדף. לחצי ״הריצי״ והוא ייבדק מול כמה מקרים. (Ctrl+Enter גם מריץ.)</p>
         <textarea class="exercise-answer pyx-code" id="ex6-code" rows="9" dir="ltr" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="הקוד שלך בפייתון">def count_words(words):
@@ -878,7 +880,7 @@ print(total)</div>
           <button class="exercise-check-btn" id="ex6-stop" type="button" hidden>עצרי</button>
           <span class="exercise-feedback" id="ex6-feedback" role="status" aria-live="polite"></span>
         </div>
-        <div class="pyx-status" id="ex6-status" role="status" aria-live="polite" hidden><span id="ex6-status-text"></span><span class="pyx-bar" id="ex6-bar" aria-hidden="true"></span></div>
+        <div class="pyx-status" id="ex6-status" role="status" aria-live="polite" hidden><span id="ex6-status-text"></span><span class="pyx-bar" id="ex6-bar" aria-hidden="true"></span><button class="exercise-check-btn pyx-retry" id="ex6-retry" type="button" hidden>נסי שוב</button></div>
         <div class="exercise-output" id="ex6-output" aria-label="פלט התוכנית"></div>
         <ul class="pyx-tests" id="ex6-tests" aria-label="תוצאות הבדיקות"></ul>
       </div>
@@ -920,119 +922,14 @@ print(total)</div>
 
 <footer><div class="wrap">שיעור פייתון · מילונים</div></footer>
 
-<!-- תרגיל 6: מקורות שרצים בתוך iframe פנימי מבודד ו-Web Worker (לא מורצים כאן, נקראים כטקסט) -->
-<script type="text/plain" id="pyx-worker-src">
-var BASE = "https://cdn.jsdelivr.net/pyodide/v0.29.5/full/";
-var py = null;
-function lockdown() {
-  // שכבת הגנה שנייה: אחרי שפייתון עלה אין עוד צורך ברשת, ולכן מסירים את ה-API שלה (CSP של ה-iframe הפנימי הוא החסימה האמיתית).
-  var names = ["fetch", "XMLHttpRequest", "WebSocket", "EventSource", "importScripts", "Worker", "SharedWorker", "caches", "BroadcastChannel"];
-  var deny = function () { throw new Error("אין גישה לרשת בתרגיל הזה"); };
-  var proto = Object.getPrototypeOf(Object.getPrototypeOf(self));
-  names.forEach(function (n) {
-    try { delete proto[n]; } catch (e) {}
-    try { delete self[n]; } catch (e) {}
-    try { Object.defineProperty(self, n, { value: deny, writable: false, configurable: false }); } catch (e) {}
-  });
-}
-self.onmessage = async function (e) {
-  var d = e.data;
-  try {
-    if (d.type === "boot") {
-      var t0 = Date.now();
-      importScripts(BASE + "pyodide.js");
-      py = await loadPyodide({ indexURL: BASE });
-      py.runPython(d.harness);
-      lockdown();
-      self.postMessage({ type: "ready", ms: Date.now() - t0 });
-    } else if (d.type === "run") {
-      py.globals.set("PYX_CODE", d.code);
-      py.globals.set("PYX_TESTS", d.tests);
-      self.postMessage({ type: "result", json: py.runPython("run_student(PYX_CODE, PYX_TESTS)") });
-    }
-  } catch (err) {
-    self.postMessage({ type: "fatal", message: String((err && err.message) || err) });
-  }
-};
-</script>
-<script type="text/x-python" id="pyx-harness-src">
-import sys, io, json, traceback
-
-def _line_of(e):
-    ln = None
-    for fr in traceback.extract_tb(e.__traceback__):
-        if fr.filename == "<code>":
-            ln = fr.lineno
-    return ln
-
-def _err(e):
-    if isinstance(e, SyntaxError):
-        return {"type": type(e).__name__, "msg": e.msg or "", "line": e.lineno}
-    return {"type": type(e).__name__, "msg": str(e), "line": _line_of(e)}
-
-def run_student(code, tests_json):
-    tests = json.loads(tests_json)
-    buf = io.StringIO()
-    real_out, real_err = sys.stdout, sys.stderr
-    sys.stdout = sys.stderr = buf
-    res = {"error": None, "cases": []}
-    try:
-        ns = {"__name__": "__main__"}
-        try:
-            exec(compile(code, "<code>", "exec"), ns)
-        except BaseException as e:
-            res["error"] = _err(e)
-        else:
-            fn = ns.get("count_words")
-            if not callable(fn):
-                res["error"] = {"type": "MissingFunction", "msg": "", "line": None}
-            else:
-                for t in tests:
-                    c = {"id": t["id"]}
-                    try:
-                        got = fn(json.loads(json.dumps(t["input"])))
-                        c["got"] = repr(got)[:200]
-                        c["none"] = got is None
-                        c["pass"] = isinstance(got, dict) and got == t["expected"]
-                    except BaseException as e:
-                        c["pass"] = False
-                        c["error"] = _err(e)
-                    res["cases"].append(c)
-    finally:
-        sys.stdout, sys.stderr = real_out, real_err
-    res["stdout"] = buf.getvalue()[:4000]
-    return json.dumps(res, ensure_ascii=False)
-</script>
-<script type="text/plain" id="pyx-bridge-src">
-(function () {
-  var worker = null;
-  function post(m) { parent.postMessage(m, "*"); }
-  window.addEventListener("message", function (e) {
-    if (e.source !== parent) return;
-    var d = e.data || {};
-    if (d.type === "boot") {
-      try {
-        worker = new Worker(URL.createObjectURL(new Blob([d.workerSrc], { type: "text/javascript" })));
-      } catch (err) { post({ type: "fatal", message: "worker: " + err }); return; }
-      worker.onmessage = function (ev) { post(ev.data); };
-      worker.onerror = function (ev) { post({ type: "fatal", message: String((ev && ev.message) || "worker error") }); };
-      worker.postMessage({ type: "boot", harness: d.harness });
-    } else if (d.type === "run" && worker) {
-      worker.postMessage(d);
-    }
-  });
-  post({ type: "alive" });
-})();
-</script>
-
 <script>
 window.lessonProgress = { name: "", ex1: false, ex2: false, ex3: false, ex4: false, ex6: false, detectiveSolved: 0, detectiveTotal: 2 };
 
 /* דיווח התקדמות לאתר שמציג את השיעור. window.reportProgress מוזרק על ידי האתר ושולח לו הודעה;
-   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4 ותרגיל 6 (פייתון אמיתי בדפדפן; תרגיל 5 ב-VS Code). */
+   בקובץ שנפתח לבד אין אותו, ולכן הקריאה מוגנת. תרגילי החובה: תרגילים 1-4. תרגיל 5 (VS Code) ותרגיל 6 (אתגר רשות, פייתון אמיתי בדפדפן) לא נספרים. */
 function reportLessonProgress() {
   if (!window.reportProgress) return;
-  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4", "ex6"], done = 0;
+  var p = window.lessonProgress, keys = ["ex1", "ex2", "ex3", "ex4"], done = 0;
   for (var i = 0; i < keys.length; i++) { if (p[keys[i]]) done++; }
   window.reportProgress(done, keys.length);
 }
@@ -1205,8 +1102,7 @@ var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
   $("get-b").addEventListener("click", function () {
     var k = $("get-key").value.trim(), i = findIdx(pairs, k), cap = ''ages.get("'' + k + ''", 0)'';
     show("get-out-b", cap, ''<div class="ok">'' + iso(i >= 0 ? reprVal(pairs[i][1]) : "0") + "</div>");
-', 6, '2026-10-08T07:27:31.938Z');
-UPDATE lessons SET html_content = html_content || '    renderCards($("get-cards"), pairs, null, i >= 0 ? k : null);
+    renderCards($("get-cards"), pairs, null, i >= 0 ? k : null);
   });
   makeGuess("g2-btn", "g2-input", "g2-fb", function (v) { return v === "0"; },
     "נכון! אין שרה, אז get מחזירה את ברירת המחדל שקבענו: 0.", "לא בדיוק. get לא קורסת, והיא מחזירה את הערך השני שכתבנו בסוגריים.");
@@ -1294,160 +1190,26 @@ UPDATE lessons SET html_content = html_content || '    renderCards($("get-cards"
   $("ex4-check").addEventListener("click", function () { run(4, checkEx4($("ex4-m").value), "יפה! values נותנת רק את המחירים: 20."); });
 })();
 
-/* ---------- תרגיל 6: פייתון אמיתי בדפדפן (Pyodide בתוך Web Worker) ---------- */
-/* ארכיטקטורה: ה-iframe של השיעור הוא sandbox בלי allow-same-origin (origin "null"). בתוכו יוצרים iframe פנימי נוסף (גם הוא sandbox
-   עם allow-scripts בלבד) שמכיל meta CSP: חיבורים רק ל-cdn.jsdelivr.net. ה-Worker נוצר מ-Blob בתוך ה-iframe הפנימי ולכן יורש את ה-CSP,
-   כך שהדפדפן עצמו חוסם גישה לרשת מהקוד של התלמידה. הריגה (timeout או "עצרי") = הסרת ה-iframe הפנימי, והריצה הבאה יוצרת אחד חדש.
-   Pyodide נטען רק בלחיצה הראשונה על "הריצי", בגרסה מקובעת. */
+/* ---------- תרגיל 6 (אתגר רשות): פייתון אמיתי בדפדפן ---------- */
+/* התשתית (Worker מבודד, CSP, טעינה מוקדמת, בדיקה מול מקרים, הודעות) מוזרקת על ידי האתר כ-window.pyxRunner. כאן רק הגדרת התרגיל. */
 (function () {
-  var RUN_TIMEOUT_MS = 5000, BOOT_TIMEOUT_MS = 90000;
-  var CASES = [
-    { id: 1, label: "רשימה שבה מילה חוזרת", input: ["a", "b", "a"], expected: { a: 2, b: 1 } },
-    { id: 2, label: "רשימה ריקה", input: [], expected: {} },
-    { id: 3, label: "מילה אחת שחוזרת שלוש פעמים", input: ["x", "x", "x"], expected: { x: 3 } },
-    { id: 4, label: "מקרה נסתר", hidden: true, input: ["go", "stop", "go", "go", "stop", "wait"], expected: { go: 3, stop: 2, wait: 1 } }
-  ];
-  var CSP = "default-src ''none''; script-src ''unsafe-inline'' ''unsafe-eval'' ''wasm-unsafe-eval'' blob: https://cdn.jsdelivr.net; worker-src blob:; connect-src https://cdn.jsdelivr.net";
-  var el = { code: $("ex6-code"), run: $("ex6-run"), stop: $("ex6-stop"), fb: $("ex6-feedback"), status: $("ex6-status"), statusText: $("ex6-status-text"), out: $("ex6-output"), tests: $("ex6-tests") };
-  var frame = null, state = "idle", timer = null, bootStarted = 0, pending = null;
-
-  function pyRepr(v) {
-    if (typeof v === "string") return "''" + v + "''";
-    if (Array.isArray(v)) return "[" + v.map(pyRepr).join(", ") + "]";
-    if (v && typeof v === "object") return "{" + Object.keys(v).map(function (k) { return pyRepr(k) + ": " + pyRepr(v[k]); }).join(", ") + "}";
-    return String(v);
+  if (!window.pyxRunner) {
+    $("ex6-run").disabled = true;
+    $("ex6-status").hidden = false;
+    $("ex6-status-text").textContent = "הרצת הקוד זמינה רק כשהשיעור נפתח באתר הקורסים.";
+    return;
   }
-  function setStatus(text, kind) {
-    el.status.hidden = !text;
-    el.status.className = "pyx-status" + (kind ? " " + kind : "");
-    el.statusText.textContent = text || "";
-  }
-  function setFeedback(ok, text) { el.fb.textContent = text; el.fb.className = "exercise-feedback " + (ok ? "correct" : "wrong"); }
-  function setBusy(busy) { el.run.disabled = busy; el.stop.hidden = !busy; }
-
-  function kill(reason) {
-    clearTimeout(timer); timer = null;
-    if (frame) { frame.remove(); frame = null; }
-    state = "idle"; pending = null;
-    setBusy(false);
-    if (reason) setStatus(reason, "err");
-  }
-
-  // הודעות שגיאה ידידותיות בעברית
-  function friendly(err) {
-    var line = err.line ? " (בשורה " + err.line + ")" : "", m = err.msg || "";
-    switch (err.type) {
-      case "KeyError": return "KeyError" + line + ": ניסית לקרוא מהמילון את המפתח " + m + ", אבל הוא עוד לא קיים שם. אפשר לבדוק קודם עם in, או להשתמש ב-get עם ערך ברירת מחדל.";
-      case "SyntaxError": return "SyntaxError" + line + ": יש טעות בכתיב של הקוד (" + m + "). בדקי נקודתיים, סוגריים ומרכאות.";
-      case "IndentationError": case "TabError": return err.type + line + ": ההזחה לא נכונה (" + m + "). כל הקוד שבתוך הפונקציה צריך להיות מוזח באותה מידה.";
-      case "NameError": return "NameError" + line + ": הפייתון לא מכירה את השם הזה (" + m + "). אולי שכחת להגדיר אותו, או שיש טעות הקלדה.";
-      case "TypeError": return "TypeError" + line + ": פעולה על סוג ערך לא מתאים (" + m + ").";
-      case "AttributeError": return "AttributeError" + line + ": לערך הזה אין את הפעולה שביקשת (" + m + ").";
-      case "IndexError": return "IndexError" + line + ": ביקשת תא שלא קיים ברשימה (" + m + ").";
-      case "ValueError": return "ValueError" + line + ": ערך לא מתאים (" + m + ").";
-      case "ZeroDivisionError": return "ZeroDivisionError" + line + ": אי אפשר לחלק באפס.";
-      case "MissingFunction": return "לא מצאתי פונקציה בשם count_words. בדקי שכתבת def count_words(words): בדיוק כך.";
-      default: return err.type + line + (m ? ": " + m : "");
-    }
-  }
-
-  function render(res) {
-    el.tests.textContent = "";
-    var pass = 0, shown = 0;
-    res.cases.forEach(function (c) {
-      var spec = CASES.filter(function (x) { return x.id === c.id; })[0];
-      var li = document.createElement("li");
-      li.className = c.pass ? "pass" : "fail";
-      var mark = document.createElement("span"); mark.className = "mark"; mark.textContent = c.pass ? "✓" : "✗"; mark.setAttribute("aria-label", c.pass ? "עבר" : "נכשל");
-      var body = document.createElement("span");
-      var title = document.createElement("span"); title.textContent = "מקרה " + c.id + ": " + spec.label;
-      body.appendChild(title);
-      if (!spec.hidden) {
-        var d1 = document.createElement("span"); d1.className = "detail";
-        d1.appendChild(document.createTextNode("קלט: ")); var c1 = document.createElement("code"); c1.textContent = "count_words(" + pyRepr(spec.input) + ")"; d1.appendChild(c1);
-        body.appendChild(d1);
-        if (!c.pass) {
-          var d2 = document.createElement("span"); d2.className = "detail";
-          if (c.error) { d2.textContent = friendly(c.error); }
-          else if (c.none) { d2.textContent = "הפונקציה לא החזירה כלום (None). בדקי שיש return."; }
-          else {
-            d2.appendChild(document.createTextNode("קיבלת: ")); var c2 = document.createElement("code"); c2.textContent = c.got; d2.appendChild(c2);
-            d2.appendChild(document.createTextNode(" · ציפינו ל: ")); var c3 = document.createElement("code"); c3.textContent = pyRepr(spec.expected); d2.appendChild(c3);
-          }
-          body.appendChild(d2);
-        }
-      } else if (!c.pass && c.error) {
-        var d3 = document.createElement("span"); d3.className = "detail"; d3.textContent = friendly(c.error); body.appendChild(d3);
-      }
-      li.appendChild(mark); li.appendChild(body); el.tests.appendChild(li);
-      if (c.pass) pass++; shown++;
-    });
-    return pass === CASES.length && shown === CASES.length;
-  }
-
-  function onResult(json) {
-    var res = JSON.parse(json);
-    state = "ready"; clearTimeout(timer); timer = null; setBusy(false);
-    setStatus("", "");
-    // פלט של פייתון הוא LTR; ההודעה בעברית כשאין פלט מוצגת מימין לשמאל
-    el.out.style.direction = res.stdout ? "" : "rtl"; el.out.style.textAlign = res.stdout ? "" : "right";
-    el.out.textContent = res.stdout ? res.stdout : "התוכנית לא הדפיסה כלום. זה בסדר: הבדיקה קוראת לפונקציה שלך בעצמה.";
-    el.tests.textContent = "";
-    if (res.error) { setFeedback(false, friendly(res.error)); return; }
-    var all = render(res);
-    if (all) {
-      setFeedback(true, "מעולה! כל המקרים עברו, גם המקרה הנסתר.");
-      window.lessonProgress.ex6 = true; reportLessonProgress();
-    } else {
-      setFeedback(false, "עוד לא. בדקי את המקרים שסומנו ב-✗ ונסי שוב.");
-    }
-  }
-
-  function sendRun() {
-    state = "running";
-    setStatus("מריצה את הקוד…", "");
-    timer = setTimeout(function () { kill("הקוד רץ יותר מ-5 שניות, ולכן עצרתי אותו (לולאה אינסופית?). בדקי שהלולאה מסתיימת ונסי שוב. בלחיצה הבאה פייתון תיטען מחדש."); setFeedback(false, "הריצה נעצרה אחרי 5 שניות."); el.out.textContent = ""; el.tests.textContent = ""; }, RUN_TIMEOUT_MS);
-    frame.contentWindow.postMessage({ type: "run", code: el.code.value, tests: JSON.stringify(CASES.map(function (c) { return { id: c.id, input: c.input, expected: c.expected }; })) }, "*");
-  }
-
-  function onMessage(e) {
-    if (!frame || e.source !== frame.contentWindow) return;
-    var d = e.data || {};
-    if (d.type === "alive") {
-      frame.contentWindow.postMessage({ type: "boot", workerSrc: $("pyx-worker-src").textContent, harness: $("pyx-harness-src").textContent }, "*");
-    } else if (d.type === "ready") {
-      clearTimeout(timer); timer = null;
-      window.__pyxBootMs = d.ms;
-      if (pending) { pending = null; sendRun(); } else { state = "ready"; setBusy(false); setStatus("פייתון מוכנה (" + (d.ms / 1000).toFixed(1) + " שניות). לחצי ״הריצי״.", "done"); }
-    } else if (d.type === "result") {
-      onResult(d.json);
-    } else if (d.type === "fatal") {
-      var wasBooting = state === "booting";
-      kill(wasBooting ? "לא הצלחתי לטעון את פייתון לדפדפן. בדקי חיבור לאינטרנט ונסי שוב." : "שגיאה בהרצה: " + d.message);
-      setFeedback(false, wasBooting ? "הטעינה נכשלה." : "הריצה נכשלה.");
-    }
-  }
-
-  function start() {
-    if (state === "booting" || state === "running") return;
-    el.fb.textContent = ""; el.fb.className = "exercise-feedback"; el.tests.textContent = ""; el.out.textContent = "";
-    if (state === "ready" && frame) { setBusy(true); sendRun(); return; }
-    // לחיצה ראשונה (או אחרי הריגה): יוצרים iframe פנימי מבודד ומעלים את פייתון
-    state = "booting"; pending = true; setBusy(true); bootStarted = Date.now();
-    setStatus("טוענת את פייתון לדפדפן… (כ-5MB, רק בפעם הראשונה; זה יכול לקחת כמה שניות)", "");
-    frame = document.createElement("iframe");
-    frame.setAttribute("sandbox", "allow-scripts");
-    frame.setAttribute("aria-hidden", "true"); frame.tabIndex = -1; frame.title = "מפעיל הפייתון (מוסתר)";
-    frame.style.cssText = "display:none;width:0;height:0;border:0";
-    frame.srcdoc = ''<!doctype html><meta http-equiv="Content-Security-Policy" content="'' + CSP + ''"><script>'' + $("pyx-bridge-src").textContent + ''<'' + ''/script>'';
-    document.body.appendChild(frame);
-    timer = setTimeout(function () { kill("טעינת פייתון לקחה יותר מדי זמן. בדקי חיבור לאינטרנט ונסי שוב."); setFeedback(false, "הטעינה נכשלה."); }, BOOT_TIMEOUT_MS);
-  }
-
-  window.addEventListener("message", onMessage);
-  el.run.addEventListener("click", start);
-  el.stop.addEventListener("click", function () { kill("עצרתי את הריצה. בלחיצה הבאה פייתון תיטען מחדש."); setFeedback(false, "הריצה נעצרה."); });
-  el.code.addEventListener("keydown", function (ev) { if ((ev.ctrlKey || ev.metaKey) && ev.key === "Enter") { ev.preventDefault(); start(); } });
+  window.pyxRunner.mount({
+    fn: "count_words", topicKey: "ex6", card: "ex6-card",
+    ids: { code: "ex6-code", run: "ex6-run", stop: "ex6-stop", retry: "ex6-retry", feedback: "ex6-feedback", status: "ex6-status", statusText: "ex6-status-text", output: "ex6-output", tests: "ex6-tests" },
+    cases: [
+      { id: 1, label: "רשימה שבה מילה חוזרת", input: ["a", "b", "a"], expected: { a: 2, b: 1 } },
+      { id: 2, label: "רשימה ריקה", input: [], expected: {} },
+      { id: 3, label: "מילה אחת שחוזרת שלוש פעמים", input: ["x", "x", "x"], expected: { x: 3 } },
+      { id: 4, label: "מקרה נסתר", hidden: true, input: ["go", "stop", "go", "go", "stop", "wait"], expected: { go: 3, stop: 2, wait: 1 } }
+    ],
+    onPass: function () { window.lessonProgress.ex6 = true; }
+  });
 })();
 
 /* ---------- certificate download ---------- */
@@ -1632,4 +1394,4 @@ UPDATE lessons SET html_content = html_content || '    renderCards($("get-cards"
 })();
 </script></body>
 </html>
-' WHERE course_id='python-ai-era' AND slug='dicts';
+', 6, '2026-10-08T07:27:31.938Z');
