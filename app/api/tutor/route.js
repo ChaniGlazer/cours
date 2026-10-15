@@ -7,6 +7,7 @@
 // מספר הניסיון נקבע רק כאן (ב-D1), ורמת הרמז נגזרת ממנו. המפתח, שגיאות הספק ומידע פנימי לא מוחזרים לעולם.
 import { getCurrentUser } from "@/lib/auth";
 import { validateTutorBody } from "@/lib/tutorInput";
+import { tutorAllowedFor, tutorEnabled } from "@/lib/tutorAccess";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
 import { lessonAnswers, lessonContext } from "@/lib/tutorLessons";
 import { buildTutorInstructions, hintLevel, wrapHistoryTurn, wrapLearnerTurn } from "@/lib/tutorPrompt";
@@ -25,6 +26,8 @@ const NO_STORE = { "Cache-Control": "no-store" };
 const json = (body, status = 200, headers = {}) => Response.json(body, { status, headers: { ...NO_STORE, ...headers } });
 
 const MSG = {
+  disabled: "החונכת לא זמינה כרגע",
+  notAllowed: "החונכת עדיין לא נפתחה לחשבון הזה.",
   forbidden: "אי אפשר לשלוח את הבקשה הזאת.",
   login: "צריך להתחבר כדי לדבר עם החונכת.",
   badRequest: "הבקשה לא תקינה. בדקי את ההודעה והקוד ונסי שוב.",
@@ -57,10 +60,15 @@ async function safetyId(userId) {
 
 export async function POST(request) {
   try {
+    // מתג כיבוי (TUTOR_ENABLED=false): לפני כל דבר אחר, בלי לגעת ב-DB ובלי לקרוא ל-OpenAI.
+    if (!tutorEnabled()) return json({ error: MSG.disabled }, 503);
+
     if (!sameSite(request)) return json({ error: MSG.forbidden }, 403);
 
     const user = await getCurrentUser();
     if (!user) return json({ error: MSG.login }, 401);
+    // הפעלה הדרגתית (TUTOR_ALLOW_EMAILS): מחוברת שהמייל שלה לא ברשימה מקבלת 403.
+    if (!tutorAllowedFor(user)) return json({ error: MSG.notAllowed }, 403);
 
     const declared = Number(request.headers.get("content-length"));
     if (Number.isFinite(declared) && declared > MAX_BODY_CHARS * 3) return json({ error: MSG.badRequest }, 400);

@@ -5,6 +5,7 @@ import { hasPurchasedCourse } from "@/lib/purchases";
 import { isAdmin } from "@/lib/admin-auth";
 import { parseVideoEmbed } from "@/lib/video";
 import LessonLayout from "@/app/components/LessonLayout";
+import { tutorVisibleFor } from "@/lib/tutorAccess";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
@@ -90,6 +91,7 @@ export default async function LessonPage({ params }) {
         hero={hero}
         html={lesson.html_content || null}
         loggedIn={Boolean(user)}
+        tutorEnabled={tutorVisibleFor(user)}
       >
         {embed ? (
           <div className="video-wrap">

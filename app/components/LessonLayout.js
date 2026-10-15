@@ -36,7 +36,7 @@ function ringTexts(done, total) {
   return [done === 1 ? "התחלה טובה!" : "ממשיכים יפה!", note];
 }
 
-export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, children }) {
+export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, tutorEnabled = false, children }) {
   const progress = useProgress();
   const slugs = lessons.map((l) => l.slug);
   const idx = slugs.indexOf(currentSlug);
@@ -48,7 +48,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   const [exercises, setExercises] = useState(null);
   const exerciseProgress = exercises?.slug === currentSlug ? exercises : null;
   // הקשר לחונכת: התרגיל שהלומדת עובדת עליו וקוד שכתבה, כפי שה-iframe של השיעור דיווח (tutor-context). נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
-  const hasTutor = TUTOR_COURSES.includes(course.id);
+  // tutorEnabled מגיע מהשרת (מתג הכיבוי ורשימת המיילים): החלטה אחת בלבד, בלי חשיפת משתני סביבה ל-client.
+  const hasTutor = tutorEnabled && TUTOR_COURSES.includes(course.id);
   const [tutorCtx, setTutorCtx] = useState(null);
   const tutorContext = tutorCtx?.slug === currentSlug ? tutorCtx : null;
   // lesson-complete מטופל פעם אחת בלבד לכל שיעור.
