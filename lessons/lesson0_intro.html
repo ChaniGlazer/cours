@@ -416,8 +416,16 @@ function simulate(level, cmds) {
   undoBtn.addEventListener("click", function () { if (!running) { cmds.pop(); renderProg(-1); } });
   clearBtn.addEventListener("click", function () { if (!running) { cmds = []; buildGrid(); renderProg(-1); setMsg(""); } });
 
+  /* after a failed run, send the robot back to the start so it is clear the attempt is over */
+  function returnToStart(L) {
+    timers.push(setTimeout(function () {
+      place(L.start[0], L.start[1], L.dir * 90);
+    }, 1200));
+  }
+
   runBtn.addEventListener("click", function () {
     if (running || !cmds.length) return;
+    stopTimers();
     var L = LEVELS[lvl], res = simulate(L, cmds);
     running = true; buildGrid(); renderProg(-1); setMsg("");
     res.steps.forEach(function (s, k) {
@@ -436,9 +444,11 @@ function simulate(level, cmds) {
         setMsg("🎉 הגיע לכוכב! התוכנית שלך: " + cmds.length + " הוראות" + (shortest ? " — הכי קצר שאפשר!" : ". אפשר לנסות בפחות הוראות?"), "ok");
         buildTabs();
       } else if (res.status === "bump") {
-        setMsg("💥 הרובוט נתקע בקיר או יצא מהלוח בהוראה מספר " + (res.at + 1) + ". הוא עשה בדיוק מה שאמרת — תקני את ההוראה.", "no");
+        setMsg("💥 הרובוט נתקע בקיר או יצא מהלוח בהוראה מספר " + (res.at + 1) + ". הוא עשה בדיוק מה שאמרת — תקני את ההוראה. הרובוט חוזר להתחלה.", "no");
+        returnToStart(L);
       } else {
-        setMsg("הרובוט סיים את כל ההוראות אבל לא עמד על הכוכב. בדקי כמה צעדים ואיפה הוא פנה.", "no");
+        setMsg("הרובוט סיים את כל ההוראות אבל לא עמד על הכוכב. בדקי כמה צעדים ואיפה הוא פנה. הרובוט חוזר להתחלה.", "no");
+        returnToStart(L);
       }
     }, 350 * res.steps.length + 300));
   });
