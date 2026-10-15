@@ -1,20 +1,24 @@
 // POST /api/tutor - החונך הסוקרטי (צד שרת בלבד, בלי ממשק).
-// בקשה: { courseId, lessonSlug, topicKey, message, history, code? }. תשובה: { reply, attempt, remaining }.
+// בקשה: { courseId, lessonSlug, topicKey, message, history, code? }.
+// תשובה: { reply, suggestions, attempt, level, remaining }. המודל מחזיר JSON מובנה { reply, suggestions } (Structured Outputs),
+// והשרת מפענח אותו ומסנן את ההצעות (כולל הצעות שחושפות תשובה של תרגיל).
 //
 // הסדר חשוב: מקור הבקשה -> התחברות -> ולידציה -> קורס ושיעור -> הגדרות -> הגבלת קצב -> ספירת ניסיון -> OpenAI.
 // מספר הניסיון נקבע רק כאן (ב-D1), ורמת הרמז נגזרת ממנו. המפתח, שגיאות הספק ומידע פנימי לא מוחזרים לעולם.
 import { getCurrentUser } from "@/lib/auth";
 import { validateTutorBody } from "@/lib/tutorInput";
-import { TUTOR_COURSES, lessonContext } from "@/lib/tutorLessons";
+import { TUTOR_COURSES } from "@/lib/tutorCourses";
+import { lessonAnswers, lessonContext } from "@/lib/tutorLessons";
 import { buildTutorInstructions, hintLevel, wrapHistoryTurn, wrapLearnerTurn } from "@/lib/tutorPrompt";
+import { TUTOR_TEXT_FORMAT, finalizeSuggestions, parseTutorOutput } from "@/lib/tutorOutput";
 import { callTutorModel, DEFAULT_API_BASE, TutorProviderError } from "@/lib/tutorOpenAI";
 import { bumpAttempt, consumeRateLimit, lessonExists, logUsage, refundRateLimit, rollbackAttempt } from "@/lib/tutorStore";
 
 // ברירת מחדל מתוך התיעוד של OpenAI (developers.openai.com/api/docs/models, 2026-10): מודל בינוני וחסכוני.
 // ההחלטה הסופית לפי scripts/tutor-eval.mjs, ונקבעת במשתנה הסביבה TUTOR_MODEL.
 const DEFAULT_MODEL = "gpt-6.1-sol";
-// טוקני reasoning נספרים בתוך max_output_tokens, ולכן המגבלה גבוהה מהתשובה הנראית (עד 5 משפטים). האורך נשלט בפרומפט.
-const DEFAULT_MAX_OUTPUT_TOKENS = 1200;
+// טוקני reasoning נספרים בתוך max_output_tokens, ולכן המגבלה גבוהה מהתשובה הנראית (עד 5 משפטים + הצעות ב-JSON). האורך נשלט בפרומפט.
+const DEFAULT_MAX_OUTPUT_TOKENS = 1500;
 const MAX_BODY_CHARS = 30000;
 
 const NO_STORE = { "Cache-Control": "no-store" };
@@ -116,6 +120,7 @@ export async function POST(request) {
         messages,
         maxOutputTokens: maxOut,
         reasoningEffort: effort,
+        textFormat: TUTOR_TEXT_FORMAT,
         safetyIdentifier: await safetyId(user.id),
         // timeout של 20 שניות. TUTOR_TIMEOUT_MS קיים רק כדי שאפשר יהיה לבדוק את הכשל הזה מקומית.
         timeoutMs: Number.parseInt(process.env.TUTOR_TIMEOUT_MS, 10) || 20000
@@ -134,7 +139,10 @@ export async function POST(request) {
       // כשל בלוג לא אמור להפיל תשובה שכבר התקבלה
     }
 
-    return json({ reply: result.text, attempt, remaining: limit.remaining });
+    // פלט לא תקין (לא JSON לפי הסכמה, או JSON חתוך) לא מפיל את הבקשה: reply הוא מה שאפשר לחלץ או הטקסט הגולמי, וההצעות ברירת מחדל.
+    const out = parseTutorOutput(result.text);
+    const suggestions = finalizeSuggestions(out.ok ? out.suggestions : [], lessonAnswers(courseId, lessonSlug));
+    return json({ reply: out.reply, suggestions, attempt, level: hintLevel(attempt), remaining: limit.remaining });
   } catch (e) {
     console.error("tutor route error:", e?.name || "unknown");
     return json({ error: MSG.failed }, 500);

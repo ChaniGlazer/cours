@@ -9,6 +9,8 @@
 //
 // המפתח נלקח רק ממשתנה הסביבה (או מ-OPENAI_BASE_URL לבדיקה מול שרת מדומה). הסקריפט לא כותב לקבצים, וקורא ישירות ללוגיקה
 // של lib/ (אותם פרומפט וקריאה ל-API כמו ב-route), בלי DB ובלי התחברות. כל הרצה עולה כסף: 6 תרחישים × מספר המודלים.
+// כל תשובה היא JSON מובנה { reply, suggestions } (כמו ב-route). הבדיקות רצות על reply ועל ההצעות הגולמיות של המודל (לפני הסינון בשרת):
+// דליפה (answer מהתקציר בתוך הצעה) ופורמט (2 עד 4 הצעות, עד 24 תווים, בלי ריקות ובלי כפילויות).
 // בדיקות הדליפה (leak-*) משוות את מחרוזות ה-answer מתקצירי השיעורים (lib/tutorLessons.js) לתשובה, בנרמול רווחים ומרכאות.
 // אזהרה: זו בדיקה אוטומטית ראשונית (regex), והיא לא מחליפה קריאה ידנית של התשובות (--verbose מדפיס אותן).
 
@@ -20,7 +22,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // הקבצים ב-lib/ הם ESM עצמאיים בלי import, אבל package.json לא מוגדר כ-module, ולכן טוענים אותם כ-data URL (בלי כתיבה לדיסק).
 const load = (rel) => import("data:text/javascript;base64," + Buffer.from(readFileSync(join(root, rel))).toString("base64"));
 const { buildTutorInstructions, wrapLearnerTurn, wrapHistoryTurn, hintLevel, PROMPT_MARKER } = await load("lib/tutorPrompt.js");
-const { lessonContext, TUTOR_LESSONS } = await load("lib/tutorLessons.js");
+const { lessonContext, lessonAnswers, TUTOR_LESSONS } = await load("lib/tutorLessons.js");
+const { parseTutorOutput, suggestionLeaks, normForMatch, TUTOR_TEXT_FORMAT, MAX_SUGGESTION_CHARS, MAX_SUGGESTIONS, MIN_SUGGESTIONS } = await load("lib/tutorOutput.js");
 const { callTutorModel, DEFAULT_API_BASE } = await load("lib/tutorOpenAI.js");
 
 const COURSE = "python-ai-era";
@@ -40,7 +43,22 @@ const PRICES = {
 const models = (process.env.TUTOR_EVAL_MODELS ? process.env.TUTOR_EVAL_MODELS.split(",").map((s) => s.trim()).filter(Boolean) : DEFAULT_MODELS);
 
 const sentences = (s) => s.replace(/```[\s\S]*?```/g, " קוד. ").split(/[.!?]+(?:\s|$)/).filter((x) => x.trim().length > 1).length;
-const hasHebrew = (s) => /[֐-׿]/.test(s);
+const hasHebrew = (s) => /[\u0590-\u05FF]/.test(s);
+
+// פורמט ודליפה של ההצעות הגולמיות של המודל. מחזיר null אם תקין.
+function suggestionsProblem(parsed, lesson) {
+  if (!parsed.ok) return "הפלט אינו JSON תקין לפי הסכמה";
+  const list = parsed.suggestions;
+  if (list.some((s) => typeof s !== "string" || !s.trim())) return "הצעה ריקה או לא מחרוזת";
+  if (list.length < MIN_SUGGESTIONS || list.length > MAX_SUGGESTIONS) return `מספר הצעות לא תקין (${list.length})`;
+  const long = list.find((s) => s.trim().length > MAX_SUGGESTION_CHARS);
+  if (long) return `הצעה ארוכה מ-${MAX_SUGGESTION_CHARS} תווים ("${long.slice(0, 30)}…")`;
+  const keys = list.map((s) => normForMatch(s));
+  if (new Set(keys).size !== keys.length) return "הצעות כפולות";
+  const answers = lessonAnswers(COURSE, lesson);
+  const leaked = list.find((s) => suggestionLeaks(s, answers));
+  return leaked ? `הצעה חושפת תשובה ("${leaked}")` : null;
+}
 
 // כל בדיקה מחזירה null (עבר) או הסבר קצר לכישלון.
 const common = (r) => {
@@ -238,18 +256,20 @@ for (const model of models) {
         apiKey, baseUrl, model,
         instructions: req.instructions,
         messages: req.messages,
-        maxOutputTokens: Number.parseInt(process.env.TUTOR_MAX_OUTPUT_TOKENS, 10) || 1200,
+        maxOutputTokens: Number.parseInt(process.env.TUTOR_MAX_OUTPUT_TOKENS, 10) || 1500,
+        textFormat: TUTOR_TEXT_FORMAT,
         reasoningEffort: process.env.TUTOR_REASONING_EFFORT === undefined ? "low" : process.env.TUTOR_REASONING_EFFORT === "off" ? "" : process.env.TUTOR_REASONING_EFFORT,
         timeoutMs: 60000
       });
       const ms = Date.now() - t0;
-      const problem = common(out.text) || sc.check(out.text);
+      const parsed = parseTutorOutput(out.text);
+      const problem = common(parsed.reply) || sc.check(parsed.reply) || suggestionsProblem(parsed, sc.lesson);
       row.byGroup[sc.group][problem ? "fail" : "pass"]++;
       row.times.push(ms);
       const c = cost(model, out.usage);
       if (c !== null) row.costs.push(c);
       if (problem) row.fails.push(`${sc.id}: ${problem}`);
-      if (verbose) console.log(`--- ${model} / ${sc.id} (${ms}ms, ${out.usage.output} טוקני פלט)\n${out.text}\n`);
+      if (verbose) console.log(`--- ${model} / ${sc.id} (${ms}ms, ${out.usage.output} טוקני פלט)\n${parsed.reply}\nהצעות: ${JSON.stringify(parsed.ok ? parsed.suggestions : "לא JSON תקין")}\n`);
     } catch (e) {
       row.byGroup[sc.group].err++;
       row.fails.push(`${sc.id}: שגיאת ספק (${e.kind || "unknown"}${e.status ? " " + e.status : ""})`);
