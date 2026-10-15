@@ -20,6 +20,8 @@ export async function generateMetadata({ params }) {
     title: course.title,
     description,
     alternates: { canonical: path },
+    // קורס "בקרוב" לא נכנס למנועי חיפוש (ואינו ב-sitemap), עד שיפתח.
+    ...(course.coming_soon ? { robots: { index: false, follow: true } } : {}),
     openGraph: { type: "website", locale: "he_IL", url: path, title: course.title, description }
   };
 }
@@ -33,8 +35,10 @@ export default async function CoursePage({ params, searchParams }) {
   const user = await getCurrentUser();
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
   const ownsCourse = !course.is_paid || purchased;
-  // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום
-  const hasAccess = ownsCourse || (await isAdmin());
+  // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום, וגם קורס "בקרוב" כתצוגה מקדימה.
+  // קורס "בקרוב" סגור לכל השאר, גם אם הוא חינמי: אין רשימת שיעורים ואין כפתור כניסה.
+  const admin = await isAdmin();
+  const hasAccess = course.coming_soon ? admin : ownsCourse || admin;
 
   const lessons = await getLessonsForCourse(course.id);
   const openSlugs = lessons.filter((_, i) => !(course.is_paid && !hasAccess && i > 0)).map((l) => l.slug);

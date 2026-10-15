@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
     title,
     description,
     alternates: { canonical: path },
-    ...(locked ? { robots: { index: false, follow: true } } : {}),
+    ...(locked || course.coming_soon ? { robots: { index: false, follow: true } } : {}),
     openGraph: { type: "article", locale: "he_IL", url: path, title, description }
   };
 }
@@ -41,9 +41,12 @@ export default async function LessonPage({ params }) {
   if (!course) notFound();
 
   const user = await getCurrentUser();
+  const admin = await isAdmin();
+  // קורס "בקרוב" סגור: הפניה לעמוד הקורס (שמציג "בקרוב"). מנהל מחובר רואה תצוגה מקדימה.
+  if (course.coming_soon && !admin) redirect(`/courses/${course.id}`);
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
   // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום
-  const hasAccess = !course.is_paid || purchased || (await isAdmin());
+  const hasAccess = !course.is_paid || purchased || admin;
 
   const lessons = await getLessonsForCourse(course.id);
   const idx = lessons.findIndex((l) => l.slug === lessonSlug);

@@ -8,10 +8,11 @@ export default async function sitemap() {
 
   const courses = await getCourses();
   for (const course of courses) {
+    // קורס "בקרוב" לא ב-sitemap: עמודו noindex והשיעורים סגורים.
+    if (course.coming_soon) continue;
     entries.push({ url: absoluteUrl(`/courses/${course.id}`), changeFrequency: "weekly", priority: 0.8 });
 
     // שיעורים נגישים לכולם: כל שיעורי קורס חינמי, ורק השיעור הראשון בקורס בתשלום.
-    if (course.coming_soon) continue;
     const lessons = await getLessonsForCourse(course.id);
     lessons.forEach((lesson, idx) => {
       if (!lesson.slug) return;

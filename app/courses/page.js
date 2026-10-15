@@ -36,10 +36,11 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
   const allCourses = await getCourses();
   const lessonsByCourse = await getLessonsByCourse();
-  const courses = allCourses
-    .map((c, i) => ({ ...c, stage: i + 1 }))
+  // קורסים פתוחים קודם (כרגע קורס הפייתון), ואחריהם קורסי "בקרוב". המיון יציב, אז בתוך כל קבוצה נשמר סדר ה-position מהמסד.
+  const courses = [...allCourses]
+    .sort((a, b) => Number(Boolean(a.coming_soon)) - Number(Boolean(b.coming_soon)))
     .filter((c) => {
-      if (filter === "free") return !c.is_paid;
+      if (filter === "free") return !c.is_paid && !c.coming_soon;
       if (filter === "paid") return Boolean(c.is_paid);
       return true;
     });
@@ -134,8 +135,8 @@ export default async function CoursesCatalogPage({ searchParams }) {
         <div className="cx-wrap cx-catalog__inner">
           <div className="cx-catalog__head">
             <div className="cx-catalog__title">
-              <h2 className="cx-h2">המסלול שלכם, שלב אחרי שלב</h2>
-              <p className="cx-lede">מתחילים בבסיס, ממשיכים לבנות עם AI, ובסוף מפרסמים משהו אמיתי.</p>
+              <h2 className="cx-h2">הקורסים שלנו</h2>
+              <p className="cx-lede">קורס הפייתון כבר פתוח וחינמי, ועוד קורסים בדרך.</p>
             </div>
             <nav className="cx-tabs" aria-label="סינון קורסים">
               {tabs.map((t) => (
@@ -169,7 +170,6 @@ export default async function CoursesCatalogPage({ searchParams }) {
                   <article className={`cx-card${soon ? " is-soon" : ""}`} key={course.id}>
                     <div className="cx-card__cover">
                       <div className="cx-card__covertop">
-                        <span className="cx-card__stage">שלב {course.stage}</span>
                         {soon ? (
                           <span className="cx-tag cx-tag--soon">בקרוב</span>
                         ) : course.is_paid ? (
@@ -183,10 +183,15 @@ export default async function CoursesCatalogPage({ searchParams }) {
                     <div className="cx-card__body">
                       <h3 className="cx-card__title">{course.title}</h3>
                       {course.subtitle && <p className="cx-card__desc">{course.subtitle}</p>}
-                      {soon ? (
-                        <p className="cx-card__meta">נפתח בקרוב</p>
-                      ) : (
+                      {soon ? null : (
                         lessons.length > 0 && <p className="cx-card__meta">{lessonsLabel(lessons.length)}</p>
+                      )}
+                      {soon && (
+                        <div className="cx-card__action">
+                          <span className="btn btn-off" aria-disabled="true">
+                            בקרוב
+                          </span>
+                        </div>
                       )}
                       {!soon && (
                         <div className="cx-card__action">
