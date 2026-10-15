@@ -3,6 +3,22 @@
 // הנתונים: outline מ-lib/lessonOutlines.json (נבנה מקובצי ה-HTML של השיעורים בסקריפט build-lesson-outlines),
 // ו-seo מ-lib/lessonSeo.js (שאלות ותשובות כתובות ביד). העיצוב ב-lesson-design.css (lx-seo).
 
+// שמות קבצים כמו .py ו-random.py בתוך פסקה בעברית: בלי עטיפה LTR הנקודה "קופצת" לסוף ויוצג py. במקום .py.
+// לכן כל טוקן שנגמר ב-.py נעטף ב-<code> עם dir="ltr".
+const FILE_TOKEN = /([A-Za-z0-9_-]*\.py)(?![A-Za-z0-9_])/g;
+function Inline({ text }) {
+  const parts = String(text).split(FILE_TOKEN);
+  return parts.map((p, i) =>
+    i % 2 === 1 ? (
+      <code className="lx-seo__file" dir="ltr" key={i}>
+        {p}
+      </code>
+    ) : (
+      p
+    )
+  );
+}
+
 export default function LessonSeoSection({ outline, seo, course, prev, next }) {
   const sections = outline?.sections || [];
   const faq = seo?.faq || [];
@@ -18,12 +34,16 @@ export default function LessonSeoSection({ outline, seo, course, prev, next }) {
           {sections.map((s, i) => (
             <div className="lx-seo__part" key={`${i}-${s.heading}`}>
               <h3>{s.heading}</h3>
-              {s.text && <p>{s.text}</p>}
+              {s.text && (
+                <p>
+                  <Inline text={s.text} />
+                </p>
+              )}
               {s.items && (
                 <ul>
                   {s.items.map((it) => (
                     <li key={it.heading}>
-                      <strong>{it.heading}:</strong> {it.text}
+                      <strong>{it.heading}:</strong> <Inline text={it.text} />
                     </li>
                   ))}
                 </ul>
@@ -31,7 +51,9 @@ export default function LessonSeoSection({ outline, seo, course, prev, next }) {
               {s.points && (
                 <ul>
                   {s.points.map((p) => (
-                    <li key={p}>{p}</li>
+                    <li key={p}>
+                      <Inline text={p} />
+                    </li>
                   ))}
                 </ul>
               )}
@@ -52,7 +74,9 @@ export default function LessonSeoSection({ outline, seo, course, prev, next }) {
           {faq.map((f) => (
             <div className="lx-seo__part" key={f.q}>
               <h3>{f.q}</h3>
-              <p>{f.a}</p>
+              <p>
+                <Inline text={f.a} />
+              </p>
             </div>
           ))}
         </div>

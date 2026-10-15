@@ -92,3 +92,4 @@ a.lx-item:hover { background: var(--paper-2); }
 .lx-seo__nav p { margin: 0; }
 .lx-seo__nav a { color: var(--ink); font-weight: 700; border-bottom: 1px solid var(--border); }
 .lx-seo__nav a:hover { border-bottom-color: var(--gold); }
+.lx-seo__file { font-family: var(--font-mono); font-size: 0.92em; direction: ltr; unicode-bidi: isolate; padding: 1px 6px; border-radius: 6px; background: var(--white); border: 1px solid var(--border); color: var(--ink); }
