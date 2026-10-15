@@ -17,7 +17,22 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dir = join(root, "lessons");
 const remote = process.argv.includes("--remote");
 
-// קורא את רשימת ערכי ה-VALUES (...) הראשונה: מחרוזות SQL (עם '' כבריחה) ומספרים.
+// קורא מחרוזת SQL (עם '' כבריחה) החל מ-i (על המירכאה הפותחת). מחזיר { value, end }.
+function readLiteral(sql, i) {
+  if (sql[i] !== "'") throw new Error("מחרוזת SQL חייבת להתחיל במירכאה, במיקום " + i);
+  let s = "";
+  i++;
+  for (;;) {
+    if (i >= sql.length) throw new Error("מחרוזת SQL לא נסגרה");
+    if (sql[i] === "'") {
+      if (sql[i + 1] === "'") { s += "'"; i += 2; continue; }
+      return { value: s, end: i + 1 };
+    }
+    s += sql[i++];
+  }
+}
+
+// קורא את רשימת ערכי ה-VALUES (...) הראשונה: מחרוזות SQL ומספרים. מחזיר { values, end }.
 function parseValues(sql) {
   const start = sql.indexOf("VALUES (");
   if (start === -1) throw new Error("אין INSERT ... VALUES");
@@ -26,18 +41,9 @@ function parseValues(sql) {
   while (i < sql.length) {
     while (/\s/.test(sql[i])) i++;
     if (sql[i] === "'") {
-      let s = "";
-      i++;
-      for (;;) {
-        if (i >= sql.length) throw new Error("מחרוזת SQL לא נסגרה");
-        if (sql[i] === "'") {
-          if (sql[i + 1] === "'") { s += "'"; i += 2; continue; }
-          i++;
-          break;
-        }
-        s += sql[i++];
-      }
-      out.push(s);
+      const lit = readLiteral(sql, i);
+      out.push(lit.value);
+      i = lit.end;
     } else {
       const m = /^-?\d+/.exec(sql.slice(i));
       if (!m) throw new Error("ערך לא מוכר ב-VALUES במיקום " + i);
@@ -46,10 +52,29 @@ function parseValues(sql) {
     }
     while (/\s/.test(sql[i])) i++;
     if (sql[i] === ",") { i++; continue; }
-    if (sql[i] === ")") break;
+    if (sql[i] === ")") return { values: out, end: i + 1 };
     throw new Error("תו לא צפוי ב-VALUES במיקום " + i);
   }
-  return out;
+  throw new Error("VALUES לא נסגר");
+}
+
+// שיעורים גדולים נכתבים כ-INSERT של החלק הראשון, ואחריו UPDATE ... html_content = html_content || '...' לכל חלק נוסף
+// (D1 מגביל פקודה אחת לכ-100KB). מרכיבים את ה-HTML המלא מכל החלקים לפי הסדר.
+function assembleHtml(sql) {
+  const { values, end } = parseValues(sql);
+  let html = values[6];
+  const marker = "html_content = html_content || ";
+  let rest = sql.slice(end);
+  let chunks = 1;
+  for (;;) {
+    const at = rest.indexOf(marker);
+    if (at === -1) break;
+    const lit = readLiteral(rest, at + marker.length);
+    html += lit.value;
+    chunks++;
+    rest = rest.slice(lit.end);
+  }
+  return { values, html, chunks };
 }
 
 function firstDiff(a, b) {
@@ -79,7 +104,9 @@ for (const sqlName of sqlFiles) {
   let slug = "?";
   try {
     const sql = readFileSync(join(dir, sqlName), "utf8");
-    const [, courseId, s, , , , sqlHtml] = parseValues(sql);
+    const { values, html: sqlHtml, chunks } = assembleHtml(sql);
+    const [, courseId, s] = values;
+    if (chunks > 1) notes.push(`ה-SQL מחולק ל-${chunks} פקודות (מגבלת D1)`);
     slug = s;
     if (sql.includes("\r")) problems.push("הקובץ SQL מכיל CRLF");
     if (!existsSync(join(dir, htmlName))) problems.push(`חסר ${htmlName}`);
