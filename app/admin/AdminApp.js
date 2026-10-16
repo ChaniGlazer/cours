@@ -929,7 +929,90 @@ function Stat({ value, label, onClick }) {
   );
 }
 
-function Dashboard({ courses, lessons, testimonials, settings, go }) {
+// סיכום התקדמות הלומדות בלוח הבקרה: מספרים, הפעילות האחרונה, ולכל שיעור כמה פתחו וכמה סיימו.
+function LearnersSummary({ learnerData, courses, lessons, go }) {
+  const { learners, totals } = learnerData;
+  const active = learners.filter((u) => (daysAgo(lastSeenOf(u)) ?? 999) <= 7);
+  const finishedAny = learners.filter((u) => u.progress.some((p) => p.done)).length;
+  const recent = learners.filter((u) => lastSeenOf(u)).slice(0, 5);
+  const trackedCourses = courses.filter((c) => !c.coming_soon && (totals[c.id] || 0) > 0 && learners.some((u) => u.progress.some((p) => p.course_id === c.id)));
+
+  return (
+    <>
+      <h3>לומדות והתקדמות</h3>
+      <div className="adm-stats">
+        <Stat value={learners.length} label="לומדות רשומות" onClick={() => go("learners")} />
+        <Stat value={active.length} label="פעילות ב-7 הימים האחרונים" onClick={() => go("learners")} />
+        <Stat value={finishedAny} label="סיימו לפחות שיעור אחד" onClick={() => go("learners")} />
+      </div>
+
+      {recent.length > 0 && (
+        <>
+          <h4 className="adm-subhead">פעילות אחרונה</h4>
+          <ul className="adm-todos">
+            {recent.map((u) => {
+              const sums = courseSummaries(u, courses, totals);
+              return (
+                <li key={u.id}>
+                  <span>
+                    <strong>{u.name}</strong> · {ago(lastSeenOf(u))} ({fmtDate(lastSeenOf(u))}){" "}
+                    {sums.length === 0 ? <Badge>עוד לא פתחה שיעור</Badge> : sums.map((x) => (
+                      <Badge key={x.course.id} kind={x.done === x.total && x.total > 0 ? "ok" : "gold"}>
+                        {x.done}/{x.total} שיעורים
+                      </Badge>
+                    ))}
+                  </span>
+                  <button type="button" className="btn btn-ghost adm-btn-sm" onClick={() => go("learners", u.id)}>
+                    פירוט
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
+
+      {trackedCourses.map((c) => (
+        <div key={c.id} className="adm-learner-course">
+          <h4 className="adm-subhead">{c.title}: כמה לומדות בכל שיעור</h4>
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th>שיעור</th>
+                <th>פתחו</th>
+                <th>סיימו</th>
+                <th aria-hidden="true"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {lessons.filter((l) => l.course_id === c.id && l.slug).map((l) => {
+                const rows = learners.flatMap((u) => u.progress.filter((p) => p.course_id === c.id && p.lesson_slug === l.slug));
+                const doneN = rows.filter((p) => p.done).length;
+                return (
+                  <tr key={l.id}>
+                    <td>{l.title}</td>
+                    <td>{rows.length}</td>
+                    <td>{doneN}</td>
+                    <td className="adm-table__bar">
+                      <div className="adm-bar" role="img" aria-label={`${doneN} מתוך ${learners.length} סיימו`}>
+                        <span style={{ width: `${learners.length ? Math.round((doneN / learners.length) * 100) : 0}%` }} />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ))}
+      {trackedCourses.length === 0 && (
+        <p className="adm-hint">עדיין לא נאסף מידע על שיעורים. הוא יופיע כאן אחרי שלומדת מחוברת תפתח שיעור.</p>
+      )}
+    </>
+  );
+}
+
+function Dashboard({ courses, lessons, testimonials, settings, learnerData, go }) {
   const paid = courses.filter((c) => c.is_paid).length;
   const soon = courses.filter((c) => c.coming_soon).length;
   const lessonsOf = (id) => lessons.filter((l) => l.course_id === id).length;
@@ -953,6 +1036,8 @@ function Dashboard({ courses, lessons, testimonials, settings, go }) {
         <Stat value={lessons.length} label="שיעורים" onClick={() => go("lessons")} />
         <Stat value={testimonials.length} label={`המלצות (${testimonials.filter((t) => t.status === "pending").length} ממתינות)`} onClick={() => go("testimonials")} />
       </div>
+
+      <LearnersSummary learnerData={learnerData} courses={courses} lessons={lessons} go={go} />
 
       <h3>דורש תשומת לב</h3>
       {todos.length === 0 ? (
@@ -1076,7 +1161,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
           {current?.desc && <p className="adm-section-desc">{current.desc}</p>}
       <main className="adm-main">
         {section === "dashboard" && (
-          <Dashboard courses={courses} lessons={lessons} testimonials={testimonials} settings={settings} go={goSection} />
+          <Dashboard courses={courses} lessons={lessons} testimonials={testimonials} settings={settings} learnerData={learnerData} go={goSection} />
         )}
         {section === "courses" && (
           <CoursesPanel

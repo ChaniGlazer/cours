@@ -111,3 +111,7 @@
 .adm-table td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .adm-table tr.is-untouched td { color: var(--text-soft); }
 @media (max-width: 720px) { .adm-table { display: block; overflow-x: auto; } }
+
+.adm-subhead { font-size: 1rem; margin: 18px 0 8px; }
+.adm-table__bar { width: 30%; min-width: 90px; }
+.adm-table__bar .adm-bar { margin: 0; }
