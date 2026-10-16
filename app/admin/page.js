@@ -1,6 +1,7 @@
 import { isAdmin } from "@/lib/admin-auth";
 import { getSettings, getAllLessons, getTestimonials } from "@/lib/settings";
 import { getCourses } from "@/lib/courses";
+import { getLearnersOverview } from "@/lib/learnerStore";
 import { adminLoginAction, adminLogoutAction } from "@/app/actions/admin";
 import AdminApp from "./AdminApp";
 
@@ -30,11 +31,12 @@ export default async function AdminPage({ searchParams }) {
     );
   }
 
-  const [settings, courses, lessons, testimonials] = await Promise.all([
+  const [settings, courses, lessons, testimonials, learnerData] = await Promise.all([
     getSettings(),
     getCourses(),
     getAllLessons(),
-    getTestimonials()
+    getTestimonials(),
+    getLearnersOverview()
   ]);
 
   return (
@@ -43,6 +45,7 @@ export default async function AdminPage({ searchParams }) {
       courses={courses}
       lessons={lessons}
       testimonials={testimonials}
+      learnerData={learnerData}
       logoutAction={adminLogoutAction}
     />
   );

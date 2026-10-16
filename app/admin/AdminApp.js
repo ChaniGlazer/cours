@@ -23,6 +23,7 @@ const GROUPS = [
       { key: "lessons", label: "שיעורים", icon: "🎬", desc: "תוכן וסדר השיעורים בכל קורס" }
     ]
   },
+  { label: "לומדות", items: [{ key: "learners", label: "לומדות והתקדמות", icon: "👩‍🎓", desc: "מי נכנסה, מה למדה וכמה התקדמה" }] },
   { label: "שיווק", items: [{ key: "testimonials", label: "המלצות", icon: "💬", desc: "הוכחה חברתית שמוצגת בעמודי הקורס" }] },
   { label: "האתר", items: [{ key: "settings", label: "הגדרות אתר", icon: "⚙️", desc: "מותג, פרופיל מדריך ואחריות" }] }
 ];
@@ -749,6 +750,174 @@ function SettingsPanel({ settings, notify, guard }) {
   );
 }
 
+/* ---------- Learners ---------- */
+
+const fmtDate = (iso) =>
+  iso ? new Date(iso).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Jerusalem" }) : "-";
+
+function daysAgo(iso) {
+  if (!iso) return null;
+  return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+}
+
+function ago(iso) {
+  const d = daysAgo(iso);
+  if (d === null) return "לא נכנסה";
+  if (d <= 0) return "היום";
+  if (d === 1) return "אתמול";
+  return `לפני ${d} ימים`;
+}
+
+const lastSeenOf = (u) => u.last_active_at || u.last_login_at || null;
+
+// לכל קורס שהלומדת נגעה בו: כמה שיעורים הושלמו / נפתחו מתוך הסך.
+function courseSummaries(u, courses, totals) {
+  return courses
+    .map((c) => {
+      const rows = u.progress.filter((p) => p.course_id === c.id);
+      return { course: c, total: totals[c.id] || 0, done: rows.filter((p) => p.done).length, opened: rows.length };
+    })
+    .filter((x) => x.opened > 0);
+}
+
+function LearnerDetail({ u, courses, lessons, totals }) {
+  const sums = courseSummaries(u, courses, totals);
+  return (
+    <div>
+      <h2 className="adm-editor__title">{u.name}</h2>
+      <p className="adm-section-desc">
+        <bdi dir="ltr">{u.email}</bdi>
+      </p>
+      <div className="adm-stats">
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{u.login_count || 0}</span>
+          <span className="adm-stat__label">התחברויות</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value adm-stat__value--sm">{ago(lastSeenOf(u))}</span>
+          <span className="adm-stat__label">פעילות אחרונה: {fmtDate(lastSeenOf(u))}</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value adm-stat__value--sm">{fmtDate(u.created_at)}</span>
+          <span className="adm-stat__label">נרשמה</span>
+        </div>
+      </div>
+      {sums.length === 0 && <p className="adm-empty">עדיין לא נפתח אף שיעור (או שהיא לא ביקרה מאז שהמעקב הופעל).</p>}
+      {sums.map(({ course, total, done, opened }) => {
+        const list = lessons.filter((l) => l.course_id === course.id && l.slug);
+        const bySlug = new Map(u.progress.filter((p) => p.course_id === course.id).map((p) => [p.lesson_slug, p]));
+        return (
+          <div key={course.id} className="adm-learner-course">
+            <h3>
+              {course.title}{" "}
+              <Badge kind={done === total && total > 0 ? "ok" : "gold"}>
+                {done}/{total} הושלמו · {opened} נפתחו
+              </Badge>
+            </h3>
+            <div className="adm-bar" role="img" aria-label={`${done} מתוך ${total} שיעורים הושלמו`}>
+              <span style={{ width: `${total ? Math.round((done / total) * 100) : 0}%` }} />
+            </div>
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>שיעור</th>
+                  <th>מצב</th>
+                  <th>תרגילי חובה</th>
+                  <th>ביקורים</th>
+                  <th>ביקור אחרון</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((l) => {
+                  const p = bySlug.get(l.slug);
+                  return (
+                    <tr key={l.id} className={p ? "" : "is-untouched"}>
+                      <td>{l.title}</td>
+                      <td>{!p ? "לא נפתח" : p.done ? <Badge kind="ok">{p.auto ? "הושלם אוטומטית" : "הושלם"}</Badge> : <Badge>נפתח</Badge>}</td>
+                      <td>{p && p.ex_total ? `${p.ex_done}/${p.ex_total}` : "-"}</td>
+                      <td>{p ? p.visits : "-"}</td>
+                      <td>{p ? fmtDate(p.last_seen_at) : "-"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function LearnersPanel({ learnerData, courses, lessons, selected, setSelected }) {
+  const { learners, totals } = learnerData;
+  const [weekOnly, setWeekOnly] = useState(false);
+  const active = learners.filter((u) => (daysAgo(lastSeenOf(u)) ?? 999) <= 7).length;
+  const withProgress = learners.filter((u) => u.progress.some((p) => p.done)).length;
+  const items = useMemo(
+    () => (weekOnly ? learners.filter((u) => (daysAgo(lastSeenOf(u)) ?? 999) <= 7) : learners),
+    [learners, weekOnly]
+  );
+  const current = learners.find((u) => u.id === selected);
+
+  return (
+    <div className="adm-learners">
+      <div className="adm-stats">
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{learners.length}</span>
+          <span className="adm-stat__label">לומדות רשומות</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{active}</span>
+          <span className="adm-stat__label">פעילות ב-7 הימים האחרונים</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{withProgress}</span>
+          <span className="adm-stat__label">סיימו לפחות שיעור אחד</span>
+        </div>
+      </div>
+      <p className="adm-hint">
+        המעקב מתחיל ברגע ההפעלה. התקדמות שנשמרה קודם בדפדפן של לומדת מועברת לכאן בביקור הבא שלה באתר.
+      </p>
+      <MasterDetail
+        title="לומדות"
+        items={items}
+        selectedId={selected}
+        onSelect={(id) => setSelected(id)}
+        onNew={() => setWeekOnly((v) => !v)}
+        newLabel={weekOnly ? "הצגת כל הלומדות" : "רק פעילות השבוע"}
+        searchText={(u) => `${u.name} ${u.email}`}
+        empty="עדיין אין לומדות רשומות."
+        renderItem={(u) => {
+          const sums = courseSummaries(u, courses, totals);
+          return (
+            <>
+              <strong>{u.name}</strong>
+              <span className="adm-list__meta">
+                <bdi dir="ltr">{u.email}</bdi>
+              </span>
+              <span className="adm-list__meta">
+                {ago(lastSeenOf(u))}
+                {sums.map((s) => (
+                  <Badge key={s.course.id} kind={s.done === s.total && s.total > 0 ? "ok" : "neutral"}>
+                    {s.done}/{s.total}
+                  </Badge>
+                ))}
+              </span>
+            </>
+          );
+        }}
+      >
+        {current ? (
+          <LearnerDetail u={current} courses={courses} lessons={lessons} totals={totals} />
+        ) : (
+          <EmptyEditor text="בחרי לומדת מהרשימה כדי לראות מתי נכנסה, מה למדה וכמה התקדמה." />
+        )}
+      </MasterDetail>
+    </div>
+  );
+}
+
 /* ---------- Dashboard ---------- */
 
 function Stat({ value, label, onClick }) {
@@ -822,9 +991,9 @@ function Dashboard({ courses, lessons, testimonials, settings, go }) {
 
 /* ---------- Root ---------- */
 
-export default function AdminApp({ settings, courses, lessons, testimonials, logoutAction }) {
+export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, logoutAction }) {
   const [section, setSection] = useState("dashboard");
-  const [selection, setSelection] = useState({ courses: null, lessons: null, testimonials: null });
+  const [selection, setSelection] = useState({ courses: null, lessons: null, testimonials: null, learners: null });
   const [toasts, setToasts] = useState([]);
   const dirtyRef = useRef(false);
 
@@ -863,7 +1032,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, log
       window.history.replaceState(null, "", `#${key}`);
     });
 
-  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length };
+  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length, learners: learnerData.learners.length };
   const current = SECTIONS.find((s) => s.key === section);
 
   return (
@@ -937,6 +1106,15 @@ export default function AdminApp({ settings, courses, lessons, testimonials, log
             selected={selection.testimonials}
             setSelected={setSelectedFor("testimonials")}
             guard={guard}
+          />
+        )}
+        {section === "learners" && (
+          <LearnersPanel
+            learnerData={learnerData}
+            courses={courses}
+            lessons={lessons}
+            selected={selection.learners}
+            setSelected={setSelectedFor("learners")}
           />
         )}
         {section === "settings" && <SettingsPanel settings={settings} notify={notify} guard={guard} />}

@@ -6,9 +6,9 @@
 // בלי "קפיצה" בין שרת ללקוח: ב-HTML מהשרת ובהידרציה אין עדיין נתוני התקדמות, ולכן כל מה שתלוי בהם מוצג כשלד בגובה קבוע
 // (ma-skel) עד שהדפדפן קורא את ה-localStorage. רק אז מופיעים המספרים, התוויות והכפתורים, בלי להציג רגע "0 שיעורים".
 
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { ProgressBar } from "./ui";
-import { countDone, lessonStatus, nextLesson, useProgress } from "./progress";
+import { countDone, enableServerTracking, lessonStatus, nextLesson, useProgress } from "./progress";
 
 const noopSubscribe = () => () => {};
 
@@ -189,6 +189,8 @@ function CourseCard({ ready, course }) {
 export default function MyArea({ firstName, courses }) {
   const ready = useReady();
   const progress = useProgress();
+  // האזור שלי מוצג רק למשתמשת מחוברת: מפעילים מעקב ומעבירים לשרת התקדמות ישנה מהדפדפן.
+  useEffect(() => enableServerTracking(), []);
   const items = useMemo(() => courses.map((c) => describe(c, progress)), [courses, progress]);
 
   return (

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import LessonHtmlFrame from "./LessonHtmlFrame";
 import TutorWidget from "./TutorWidget";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
-import { countDone, isAuto, lessonStatus, markSeen, setDone, useProgress } from "./progress";
+import { countDone, enableServerTracking, isAuto, lessonStatus, markSeen, reportExercises, setDone, useProgress } from "./progress";
 import "./lesson-design.css";
 
 // מעטפת עמוד השיעור (תבנית אחת לכל השיעורים בכל הקורסים), לפי design-reference/lesson-page.html:
@@ -54,12 +54,16 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   const tutorContext = tutorCtx?.slug === currentSlug ? tutorCtx : null;
   // lesson-complete מטופל פעם אחת בלבד לכל שיעור.
   const completeHandledRef = useRef(null);
+  // דיווח תרגילים לשרת רק כשהמצב השתנה.
+  const exReportedRef = useRef(null);
   const ringOffset = total > 0 ? RING_C * (1 - done / total) : RING_C;
   const [ringLabel, ringNote] = ringTexts(done, total);
 
+  // מעקב לפאנל הניהול: רק למשתמשת מחוברת, ולפני markSeen כדי שגם הביקור הזה יידווח.
   useEffect(() => {
+    if (loggedIn) enableServerTracking();
     markSeen(course.id, currentSlug);
-  }, [course.id, currentSlug]);
+  }, [course.id, currentSlug, loggedIn]);
 
   // הודעות מהשיעור (כבר אומתו ב-LessonHtmlFrame לפי event.source). ה-slug נלקח מהעמוד ולא מההודעה.
   function handleLessonMessage(data) {
@@ -67,6 +71,11 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
       const { done, total } = data;
       if (Number.isInteger(done) && Number.isInteger(total) && total > 0 && done >= 0 && done <= total) {
         setExercises({ slug: currentSlug, done, total });
+        const sig = `${currentSlug}:${done}/${total}`;
+        if (exReportedRef.current !== sig) {
+          exReportedRef.current = sig;
+          reportExercises(course.id, currentSlug, done, total);
+        }
       }
     } else if (data.type === "tutor-context") {
       if (!hasTutor) return;

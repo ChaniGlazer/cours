@@ -97,3 +97,17 @@
   .adm-list { max-height: 280px; }
   .adm-row2 { grid-template-columns: 1fr; }
 }
+
+/* ---------- לומדות והתקדמות ---------- */
+.adm-stat--static { cursor: default; }
+.adm-stat--static:hover { border-color: var(--border); }
+.adm-stat__value--sm { font-size: 1.15rem; line-height: 1.6; }
+.adm-hint { color: var(--text-soft); font-size: 0.85rem; margin: 0 0 16px; }
+.adm-learner-course { margin-top: 20px; }
+.adm-bar { height: 8px; border-radius: 999px; background: var(--paper-2); overflow: hidden; margin: 6px 0 12px; }
+.adm-bar > span { display: block; height: 100%; background: var(--moss); border-radius: 999px; }
+.adm-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.adm-table th { text-align: right; font-size: 0.78rem; color: var(--text-soft); font-weight: 700; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.adm-table td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.adm-table tr.is-untouched td { color: var(--text-soft); }
+@media (max-width: 720px) { .adm-table { display: block; overflow-x: auto; } }
