@@ -80,7 +80,7 @@ export default async function RootLayout({ children }) {
             <span>
               © {new Date().getFullYear()} {brand}
             </span>
-            {CONTACT_EMAIL ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> : <span>[אימייל ליצירת קשר]</span>}
+            {CONTACT_EMAIL && <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>}
             <nav aria-label="קישורי תחתית">
               <a href="/courses">קטלוג קורסים</a>
               <a href="/topics">נושאים</a>

@@ -13,7 +13,6 @@ export const metadata = {
 };
 
 export default function PrivacyPage() {
-  const contact = CONTACT_EMAIL ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> : "הכתובת שמופיעה בתחתית האתר";
 
   return (
     <section className="section doc-page">
@@ -81,7 +80,17 @@ export default function PrivacyPage() {
         <p>איננו מוכרים מידע לאף גורם.</p>
 
         <h2>הזכויות שלכם</h2>
-        <p>אפשר לבקש לעיין במידע שנשמר עליכם, לתקן אותו או למחוק את החשבון. כדי לפנות: {contact}.</p>
+        <p>
+          אפשר לבקש לעיין במידע שנשמר עליכם, לתקן אותו או למחוק את החשבון.
+          {CONTACT_EMAIL ? (
+            <>
+              {" "}
+              כדי לפנות: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </>
+          ) : (
+            " פרטי יצירת קשר יתווספו כאן בקרוב."
+          )}
+        </p>
       </div>
     </section>
   );
