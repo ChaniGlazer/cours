@@ -2,7 +2,8 @@ import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
-import { SITE_URL, AUTHOR_NAME } from "@/lib/seo";
+import { SITE_URL, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 const DEFAULT_DESCRIPTION =
   "קורסים בעברית ללימוד פייתון ופיתוח אפליקציות בעידן ה-AI, עם שיעורים אינטראקטיביים ותרגילים. חלק מהקורסים חינמיים.";
@@ -20,9 +21,10 @@ export async function generateMetadata() {
       locale: "he_IL",
       siteName: brand,
       title: brand,
-      description: DEFAULT_DESCRIPTION
+      description: DEFAULT_DESCRIPTION,
+      images: OG_IMAGES
     },
-    twitter: { card: "summary", title: brand, description: DEFAULT_DESCRIPTION }
+    twitter: { card: "summary_large_image", title: brand, description: DEFAULT_DESCRIPTION, images: OG_IMAGES }
   };
 }
 
@@ -34,12 +36,10 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="he" dir="rtl">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
+        {/* הגופנים מאוחסנים באתר (@font-face ב-globals.css). preload רק לעברית של גופן הגוף ושל הכותרות: הם בחלק העליון של כל עמוד.
+            crossOrigin חובה גם לאותו דומיין, אחרת הדפדפן מוריד את הגופן פעמיים. */}
+        <link rel="preload" href="/fonts/assistant-hebrew.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/secular-one-hebrew.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
         <header className="site-header">
@@ -80,10 +80,12 @@ export default async function RootLayout({ children }) {
             <span>
               © {new Date().getFullYear()} {brand}
             </span>
-            <span>[אימייל ליצירת קשר]</span>
+            {CONTACT_EMAIL ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> : <span>[אימייל ליצירת קשר]</span>}
             <nav aria-label="קישורי תחתית">
               <a href="/courses">קטלוג קורסים</a>
               <a href="/topics">נושאים</a>
+              <a href="/about">אודות</a>
+              <a href="/privacy">פרטיות</a>
               {user ? (
                 <a href="/my-courses">האזור שלי</a>
               ) : (

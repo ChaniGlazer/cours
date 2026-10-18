@@ -1,5 +1,5 @@
 import { TOPICS } from "@/lib/topics";
-import { absoluteUrl, jsonLdString } from "@/lib/seo";
+import { absoluteUrl, jsonLdString, OG_IMAGES } from "@/lib/seo";
 import "./topics.css";
 
 const TITLE = "נושאים בפייתון: תשובות קצרות לשאלות של מתחילים ומתחילות";
@@ -9,7 +9,7 @@ export const metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/topics" },
-  openGraph: { type: "website", locale: "he_IL", url: "/topics", title: TITLE, description: DESCRIPTION }
+  openGraph: { type: "website", locale: "he_IL", url: "/topics", title: TITLE, description: DESCRIPTION, images: OG_IMAGES }
 };
 
 export default function TopicsIndexPage() {

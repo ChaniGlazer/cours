@@ -107,14 +107,6 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
 
   return (
     <div className="lx">
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-        precedence="default"
-      />
-
       <div className="lx-page">
         <aside className="lx-aside">
           <nav className="lx-card" aria-label="תוכן הקורס">

@@ -1,0 +1,3 @@
+# Cloudflare Workers Assets: כותרות לקבצים סטטיים מתיקיית public. גופנים לא משתנים (שם הקובץ כולל את תת-הקבוצה), ולכן cache ארוך.
+/fonts/*
+  Cache-Control: public, max-age=2592000

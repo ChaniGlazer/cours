@@ -1,0 +1,88 @@
+import { CONTACT_EMAIL } from "@/lib/site";
+import { OG_IMAGES } from "@/lib/seo";
+
+const TITLE = "מדיניות פרטיות";
+const DESCRIPTION = "איזה מידע נאסף באתר, למה, מי עוד מקבל אותו ואיך אפשר לבקש לעיין בו, לתקן או למחוק.";
+const UPDATED = "אוקטובר 2026";
+
+export const metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/privacy" },
+  openGraph: { type: "website", locale: "he_IL", url: "/privacy", title: TITLE, description: DESCRIPTION, images: OG_IMAGES }
+};
+
+export default function PrivacyPage() {
+  const contact = CONTACT_EMAIL ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> : "הכתובת שמופיעה בתחתית האתר";
+
+  return (
+    <section className="section doc-page">
+      <div className="container doc-wrap">
+        <nav className="crumbs" aria-label="נתיב">
+          <a href="/">דף הבית</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">פרטיות</span>
+        </nav>
+        <span className="eyebrow">פרטיות</span>
+        <h1>מדיניות פרטיות</h1>
+        <p className="text-soft">עודכן לאחרונה: {UPDATED}</p>
+        <p>
+          העמוד מסביר בקצרה איזה מידע האתר שומר עליכם, בשביל מה, ומי נוסף מקבל אותו. אפשר ללמוד בקורס החינמי בלי להירשם
+          לחשבון, ואז לא נשמר עליכם מידע אישי בשרת.
+        </p>
+
+        <h2>איזה מידע נשמר</h2>
+        <ul>
+          <li>
+            <strong>הרשמה וחשבון:</strong> שם, כתובת מייל וסיסמה. הסיסמה נשמרת מוצפנת (hash), ואי אפשר לקרוא אותה.
+          </li>
+          <li>
+            <strong>התקדמות בלימוד:</strong> מתי נכנסתם, אילו שיעורים נפתחו או הושלמו וכמה תרגילים הושלמו בהם. לא נשמר תוכן
+            הקוד שכתבתם בתרגילים.
+          </li>
+          <li>
+            <strong>החונכת:</strong> נשמר רישום מינימלי של השימוש (מי, מתי, איזה מודל וכמה טוקנים) ומונים שמגבילים את מספר
+            ההודעות. תוכן השיחה לא נשמר אצלנו.
+          </li>
+          <li>
+            <strong>המלצות:</strong> אם כתבתם המלצה על קורס, נשמרים הטקסט ופרטים שבחרתם למסור (שם, תפקיד, תמונה). ההמלצה
+            מתפרסמת רק לאחר אישור.
+          </li>
+          <li>
+            <strong>רכישה:</strong> פרטי כרטיס האשראי מוזנים בעמוד הסליקה של Invoice4U ואינם נשמרים באתר. האתר שומר רק את
+            סטטוס העסקה כדי לפתוח לכם את הקורס.
+          </li>
+        </ul>
+
+        <h2>עוגיות ואחסון בדפדפן</h2>
+        <p>
+          האתר משתמש בעוגיית התחברות הכרחית (כדי לזהות אתכם אחרי כניסה לחשבון). בנוסף, התקדמות בשיעורים נשמרת גם באחסון
+          המקומי של הדפדפן (localStorage), ונשארת במכשיר שלכם. האתר לא משתמש בעוגיות פרסום ובכלי מעקב שיווקיים.
+        </p>
+
+        <h2>מי עוד מקבל מידע</h2>
+        <ul>
+          <li>
+            <strong>Cloudflare:</strong> אחסון האתר ומסד הנתונים.
+          </li>
+          <li>
+            <strong>Invoice4U:</strong> סליקת תשלום בקורסים בתשלום.
+          </li>
+          <li>
+            <strong>Resend:</strong> שליחת מייל לאיפוס סיסמה.
+          </li>
+          <li>
+            <strong>OpenAI:</strong> כשמשתמשים בחונכת, ההודעות שכתבתם בשיחה נשלחות לספק מודל השפה כדי לקבל תשובה.
+          </li>
+          <li>
+            <strong>Google Fonts:</strong> חלק מהשיעורים טוענים גופנים משרתי Google, ולכן הדפדפן פונה אליהם בעת הצפייה.
+          </li>
+        </ul>
+        <p>איננו מוכרים מידע לאף גורם.</p>
+
+        <h2>הזכויות שלכם</h2>
+        <p>אפשר לבקש לעיין במידע שנשמר עליכם, לתקן אותו או למחוק את החשבון. כדי לפנות: {contact}.</p>
+      </div>
+    </section>
+  );
+}

@@ -10,7 +10,7 @@ import OUTLINES from "@/lib/lessonOutlines.json";
 import { getLessonSeo } from "@/lib/lessonSeo";
 import { getTopicsForLesson } from "@/lib/topics";
 import { tutorVisibleFor } from "@/lib/tutorAccess";
-import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
+import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { slug, lessonSlug } = await params;
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }) {
     description,
     alternates: { canonical: path },
     ...(locked || course.coming_soon ? { robots: { index: false, follow: true } } : {}),
-    openGraph: { type: "article", locale: "he_IL", url: path, title, description }
+    openGraph: { type: "article", locale: "he_IL", url: path, title, description, images: OG_IMAGES }
   };
 }
 

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
 import { isAdmin } from "@/lib/admin-auth";
@@ -8,7 +9,7 @@ import TestimonialForm from "./TestimonialForm";
 import { CourseBadge } from "@/app/components/ui";
 import { CourseCta, CourseProgress, Syllabus } from "@/app/components/CourseClient";
 import { startPaymentAction } from "@/app/actions/payment";
-import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
+import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, SITE_URL, OG_IMAGES } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }) {
     alternates: { canonical: path },
     // קורס "בקרוב" לא נכנס למנועי חיפוש (ואינו ב-sitemap), עד שיפתח.
     ...(course.coming_soon ? { robots: { index: false, follow: true } } : {}),
-    openGraph: { type: "website", locale: "he_IL", url: path, title: course.title, description }
+    openGraph: { type: "website", locale: "he_IL", url: path, title: course.title, description, images: OG_IMAGES }
   };
 }
 
@@ -46,6 +47,9 @@ export default async function CoursePage({ params, searchParams }) {
   const canReview = Boolean(user) && ownsCourse && !course.coming_soon;
   const myTestimonial = canReview ? await getUserTestimonial(user.id, course.id) : null;
 
+  // Course לפי הדרישות של Google: name, description ו-provider (הארגון שמפרסם: האתר עצמו). המדריכה היא instructor של המופע המקוון.
+  // אין courseWorkload, כי אין לנו נתון אמיתי על משך הקורס.
+  const settings = await getSettings();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
@@ -53,14 +57,20 @@ export default async function CoursePage({ params, searchParams }) {
     description: toDescription(course.description, course.subtitle || course.title),
     url: absoluteUrl(`/courses/${course.id}`),
     inLanguage: "he",
-    provider: { "@type": "Person", name: AUTHOR_NAME },
+    provider: { "@type": "Organization", name: settings.site_title || "קורסים בעידן ה-AI", url: SITE_URL },
     offers: {
       "@type": "Offer",
+      category: course.is_paid ? "Paid" : "Free",
       price: course.is_paid ? String(course.price_ils || 0) : "0",
       priceCurrency: "ILS",
+      url: absoluteUrl(`/courses/${course.id}`),
       availability: course.coming_soon ? "https://schema.org/PreOrder" : "https://schema.org/InStock"
     },
-    hasCourseInstance: { "@type": "CourseInstance", courseMode: "online", courseWorkload: "PT0S" }
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      instructor: { "@type": "Person", name: AUTHOR_NAME }
+    }
   };
 
   return (

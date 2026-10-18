@@ -1,5 +1,6 @@
 import { getCourses, getLessonsByCourse } from "@/lib/courses";
 import { CardAction, ResumeCard } from "@/app/components/CourseClient";
+import { absoluteUrl, jsonLdString } from "@/lib/seo";
 import "./courses-design.css";
 
 export const metadata = {
@@ -61,16 +62,25 @@ export default async function CoursesCatalogPage({ searchParams }) {
   const startCourse = resumable[0];
   const startHref = startCourse ? `/courses/${startCourse.id}` : "#courses";
 
+  // ItemList לקטלוג: רק קורסים פעילים (בלי "בקרוב"), בלי קשר למסנן הכרטיסיות שנבחר.
+  const activeCourses = allCourses.filter((c) => !c.coming_soon);
+  const itemListLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "קטלוג הקורסים",
+    itemListElement: activeCourses.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: absoluteUrl(`/courses/${c.id}`),
+      name: c.title
+    }))
+  };
+
   return (
     <div className="cx">
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-        precedence="default"
-      />
-
+      {activeCourses.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(itemListLd) }} />
+      )}
       {/* HERO */}
       <section className="cx-hero">
         <div className="cx-wrap cx-hero__grid">

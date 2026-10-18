@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { TOPICS, COURSE_ID, getTopic } from "@/lib/topics";
-import { absoluteUrl, jsonLdString, AUTHOR_NAME } from "@/lib/seo";
+import { absoluteUrl, jsonLdString, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
 import TopicText from "../TopicText";
 import "../topics.css";
 
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
     title: topic.title,
     description: topic.description,
     alternates: { canonical: path },
-    openGraph: { type: "article", locale: "he_IL", url: path, title: topic.title, description: topic.description }
+    openGraph: { type: "article", locale: "he_IL", url: path, title: topic.title, description: topic.description, images: OG_IMAGES }
   };
 }
 
