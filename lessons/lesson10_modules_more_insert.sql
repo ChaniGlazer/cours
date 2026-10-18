@@ -415,14 +415,11 @@ help(math.sqrt)</pre>
     <div class="wrap">
       <div class="eyebrow for-c">משימה 3</div>
       <h2 class="section-title">להתקין מודול חדש עם pip</h2>
-      <p class="lede">מודולים שהם לא מובנים צריך להתקין פעם אחת במחשב, בטרמינל של VS Code. כאן יש טרמינל לדוגמה. הריצי את <span class="mono">main.py</span>, תראי שגיאה, ותתקיני את המודול החסר.</p>
+      <p class="lede">מודולים שהם לא מובנים צריך להתקין פעם אחת במחשב, בטרמינל של VS Code. כאן יש טרמינל <strong>אמיתי</strong>: הוא מריץ פייתון אמיתי ומתקין חבילות אמיתיות מהאינטרנט. הריצי את <span class="mono">main.py</span>, תראי שגיאה אמיתית, ותתקיני את המודול החסר.</p>
 
       <div class="playground">
-        <div class="playground-stage"><div class="code-card for-accent"><div class="code-card-label">main.py</div><pre class="hl">import colorama
-print("Hello, agent!")</pre></div></div>
-        <div class="field-row"><span style="font-size:14.5px;font-weight:600">פקודות לדוגמה:</span><div class="pill-row" id="tm-pills"></div></div>
-        <div class="log" id="tm-log" style="min-height:150px;max-height:260px" aria-live="polite"></div>
-        <div class="field-row"><span class="mono" style="color:var(--ink-faint)">&gt;</span><input type="text" id="tm-in" autocomplete="off" spellcheck="false" style="width:min(360px,100%)!important;direction:ltr;text-align:left" aria-label="פקודה"><button class="guess-btn" id="tm-go" type="button">הריצי</button><span class="guess-feedback" id="tm-fb" role="status" aria-live="polite"></span></div>
+        <div id="term-pip" style="padding:6px 22px 18px"></div>
+        <div class="guess-row"><span class="guess-feedback" id="tm-fb" role="status" aria-live="polite"></span></div>
       </div>
 
       <div class="callout java"><strong>זהירות:</strong> מתקינים רק חבילות שמכירים או שהמורה ביקשה. שמות דומים הם לפעמים חבילות מזויפות, ולכן בודקים שכתבתם את השם בדיוק. נסי להתקין <span class="mono">pip install colorma</span> ותראי מה קורה כשהשם לא נכון.</div>
@@ -466,6 +463,11 @@ print("C")</pre></div>
         </div>
         <div class="field-row"><label style="font-weight:700;font-size:15px"><input type="checkbox" id="mg-guard" checked> יש את שורת <bdi dir="ltr">__name__</bdi></label><div class="pill-row" id="mg-run"></div></div>
         <div class="log" id="mg-log" aria-live="polite"></div>
+      </div>
+
+      <p class="lede" style="margin-top:28px">ועכשיו באמת: זה טרמינל אמיתי עם שני הקבצים. הריצי כל אחד מהם, ושני את הקוד כדי לראות מה קורה.</p>
+      <div class="playground">
+        <div id="term-main" style="padding:6px 22px 18px"></div>
       </div>
 
       <div class="ek-insight"><span class="ek-ic">🚪</span><div><b class="ek-tag">איך זוכרים</b><p>מה שבתוך <span class="m">if __name__ == "__main__":</span> רץ רק כשמריצים את הקובץ <b>ישירות</b>, ולא כשמייבאים אותו.</p></div></div>
@@ -592,23 +594,26 @@ $(''g1-btn'').onclick=function(){var v=$(''g1-input'').value.trim().replace(/^ra
   if(v===''shuffle''){fb.className=''guess-feedback correct'';fb.textContent=''נכון! random.shuffle(x) מערבבת את הרשימה במקום.''}
   else{fb.className=''guess-feedback wrong'';fb.textContent=''לא בדיוק. לחצי על random למעלה וחפשי כלי שמערבב.''}};
 
-// ---- terminal ----
-var installed={},KNOWN={colorama:''0.4.6'',requests:''2.32.3'',openai:''1.54.0'',pyfiglet:''1.0.2'',pandas:''2.2.3''},tl=$(''tm-log''),tdone=false;
-function tline(t,cls){var d=document.createElement(''div'');d.className=''row'';d.style.whiteSpace=''pre-wrap'';var s=document.createElement(''span'');s.className=cls||'''';s.style.whiteSpace=''pre-wrap'';s.textContent=t;d.appendChild(s);tl.appendChild(d)}
-function run(cmd){cmd=cmd.trim();if(!cmd)return;tline(''> ''+cmd,''arrow'');
-  var m;
-  if(/^(python|py)\s+main\.py$/.test(cmd)){
-    if(installed.colorama){tline(''Hello, agent!'',''res'');if(!tdone){tdone=true;var fb=$(''tm-fb'');fb.className=''guess-feedback correct'';fb.textContent=''עובד! אחרי ההתקנה ה-import הצליח.''}}
-    else{tline(''Traceback (most recent call last):\n  File "main.py", line 1, in <module>\n    import colorama\nModuleNotFoundError: No module named \''colorama\'''',''bad'')}}
-  else if(m=cmd.match(/^(?:python -m )?pip install ([A-Za-z0-9_.-]+)$/)){var n=m[1].toLowerCase();
-    if(KNOWN[n]){installed[n]=1;tline(''Collecting ''+n+''\n  Downloading ''+n+''-''+KNOWN[n]+''-py3-none-any.whl\nInstalling collected packages: ''+n+''\nSuccessfully installed ''+n+''-''+KNOWN[n],''res'')}
-    else tline(''ERROR: Could not find a version that satisfies the requirement ''+n+'' (from versions: none)\nERROR: No matching distribution found for ''+n,''bad'')}
-  else if(/^pip list$/.test(cmd)){var ks=Object.keys(installed);tline(''Package    Version\n---------- -------\npip        24.3.1''+ks.map(function(k){return ''\n''+k+Array(Math.max(1,11-k.length)).join('' '')+KNOWN[k]}).join(''''),''res'')}
-  else tline(''הפקודה הזו לא קיימת בטרמינל לדוגמה. נסי אחת מהפקודות בכפתורים.'',''bad'');
-  tl.scrollTop=tl.scrollHeight}
-$(''tm-go'').onclick=function(){run($(''tm-in'').value);$(''tm-in'').value=''''};
-$(''tm-in'').onkeydown=function(e){if(e.key===''Enter'')$(''tm-go'').click()};
-pillRow($(''tm-pills''),[''python main.py'',''pip install colorama'',''pip list'',''pip install colorma''],function(j){$(''tm-in'').value=[''python main.py'',''pip install colorama'',''pip list'',''pip install colorma''][j];$(''tm-in'').focus()});
+// ---- terminal (אמיתי: window.pyxTerminal מוזרק על ידי האתר; בקובץ שנפתח לבד אין אותו) ----
+var tdone=false;
+function termMissing(id){var h=$(id);if(h)h.innerHTML=''<p style="color:var(--ink-faint);padding:12px 0">הטרמינל האמיתי זמין רק בעמוד השיעור באתר.</p>''}
+if(window.pyxTerminal){
+  window.pyxTerminal.mount({
+    el:''term-pip'',
+    files:[{name:''main.py'',code:''import colorama\nprint("Hello, agent!")\n''}],
+    suggest:[''python main.py'',''pip install colorama'',''pip list'',''pip install colorma''],
+    hint:''אפשר לערוך את main.py ולהריץ שוב. לחצי על פקודה כדי להכניס אותה לשורה, ואז Enter.'',
+    onEvent:function(e){
+      if(e.type===''run''&&e.name===''main.py''&&e.exit===0&&/Hello, agent!/.test(e.out)&&!tdone){
+        tdone=true;var fb=$(''tm-fb'');fb.className=''guess-feedback correct'';fb.textContent=''עובד! אחרי ההתקנה ה-import הצליח.''}}
+  });
+  window.pyxTerminal.mount({
+    el:''term-main'',
+    files:[{name:''helpers.py'',code:''print("A")\nif __name__ == "__main__":\n    print("B")\n''},{name:''main.py'',code:''import helpers\nprint("C")\n''}],
+    suggest:[''python helpers.py'',''python main.py'',''ls'',''cat helpers.py''],
+    hint:''יש שני קבצים: helpers.py ו-main.py. עברי בין הלשוניות, שני את הקוד והריצי.''
+  });
+}else{termMissing(''term-pip'');termMissing(''term-main'')}
 
 // ---- search order ----
 var od=$(''od-same'');

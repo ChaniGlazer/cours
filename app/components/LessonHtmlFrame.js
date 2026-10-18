@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lessonThemeCss, themeLessonHtml } from "@/lib/lessonTheme";
 import { PYX_RUNNER_SCRIPT } from "./pyxRunner";
+import { PYX_TERMINAL_SCRIPT } from "./pyxTerminal";
 
 // כל שיעור HTML הוא קובץ עצמאי ומלא (עם ה-<style>/<script> שלו) - מציגים אותו
 // ב-iframe נפרד כדי שלא יתנגש עם ה-CSS/JS של שאר האתר, וכדי שהלוגיקה של השיעור
@@ -190,7 +191,7 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false }) {
   const [height, setHeight] = useState(600);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
-  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + PYX_RUNNER_SCRIPT + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor]);
+  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor]);
 
   // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {
