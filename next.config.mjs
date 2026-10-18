@@ -9,7 +9,7 @@ const nextConfig = {
       {
         source: "/:path*",
         destination: "https://course.codebloom.co.il/:path*",
-        permanent: false
+        permanent: true
       }
     ];
   }
