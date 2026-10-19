@@ -210,6 +210,8 @@ button{font-family:var(--body);cursor:pointer}
 .tpanel input{background:#2c1a0f;color:#cdb88a;border:1px solid #5a4430;border-radius:4px}
 /* full-page mode: the lesson frame fills the whole browser window while the game runs (the host page switches the frame to position:fixed) */
 html.er-full,html.er-full body{overflow-y:auto!important}
+html.er-full{scrollbar-width:none}
+html.er-full::-webkit-scrollbar,html.er-full body::-webkit-scrollbar{display:none}
 html.er-full #er-root{min-height:100vh}
 html.er-full .er-top{position:sticky;top:0}
 html.er-full #er-fx{position:fixed;height:100%}
