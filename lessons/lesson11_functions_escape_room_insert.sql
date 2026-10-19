@@ -208,6 +208,12 @@ button{font-family:var(--body);cursor:pointer}
 .foot{height:auto;padding:30px 0 40px;text-align:center}
 .foot a{color:#5a4430;font-size:11px;text-decoration:none;opacity:.7}
 .tpanel input{background:#2c1a0f;color:#cdb88a;border:1px solid #5a4430;border-radius:4px}
+/* full-page mode: the lesson frame fills the whole browser window while the game runs (the host page switches the frame to position:fixed) */
+html.er-full,html.er-full body{overflow-y:auto!important}
+html.er-full #er-root{min-height:100vh}
+html.er-full .er-top{position:sticky;top:0}
+html.er-full #er-fx{position:fixed;height:100%}
+html.er-full #er-exit{position:fixed;height:100%;border-radius:0}
 </style></head><body style="margin:0">
 <div id="er-root" dir="rtl">
 
@@ -258,7 +264,7 @@ button{font-family:var(--body);cursor:pointer}
 
 <section id="er-done" hidden style="padding:30px 0 60px">
   <div class="cert" id="er-result"></div>
-  <div class="center" style="margin-top:26px"><button class="brass" id="er-dl" type="button">הורידו קובץ תוצאות</button><div class="msg ok" id="er-dl-st"></div><textarea id="er-dl-fb" hidden readonly style="width:100%;min-height:120px;direction:ltr;font-size:12px;border-radius:6px;padding:10px"></textarea></div>
+  <div class="center" style="margin-top:26px"><button class="brass" id="er-leave" type="button" style="font-size:22px">יציאה וחזרה לשיעור</button><div style="height:18px"></div><button class="leather" id="er-dl" type="button">הורידו קובץ תוצאות</button><div class="msg ok" id="er-dl-st"></div><textarea id="er-dl-fb" hidden readonly style="width:100%;min-height:120px;direction:ltr;font-size:12px;border-radius:6px;padding:10px"></textarea></div>
 </section>
 </div>
 
@@ -280,6 +286,9 @@ const HINTS=[
  [''לולאה על מילון עוברת על המפתחות. total צובר את הערכים של כולם.'',''get("plum", ברירת מחדל) מחזירה את ברירת המחדל אם אין מפתח plum, ולא קורסת.''],
  [''ערך ברירת מחדל נכנס לפעולה רק כשלא שולחים ארגומנט במקומו.'',''mystery(5) מחזירה ערך ששמור ב-x, ואז mystery(3, 4) שומרת ב-y. הדפסה אחת בסוף.'']];
 let S=null,tick=null,busy=false;
+/* ---------- full-page mode: ask the host page to stretch this frame over the whole window ---------- */
+function setFull(on){document.documentElement.classList.toggle(''er-full'',on);try{parent.postMessage({type:''lesson-fullscreen'',on:on},''*'')}catch(e){}}
+addEventListener(''message'',e=>{if(e.source===parent&&e.data&&e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''er-full'',!!e.data.on)});
 const fmt=sec=>{sec=Math.max(0,Math.floor(sec));const m=Math.floor(sec/60),s=sec%60;return (m<10?''0'':'''')+m+'':''+(s<10?''0'':'''')+s};
 const elapsed=()=>((S.end||Date.now())-S.start)/1000+S.pen;
 const show=id=>{[''er-setup'',''er-play'',''er-done''].forEach(x=>$(x).hidden=x!==id);$(''er-top'').hidden=id===''er-setup''};
@@ -436,7 +445,7 @@ function upTimer(){const e=elapsed();$(''er-timer'').textContent=fmt(e);const rc
   $(''er-pen'').textContent=S.pen?''כולל ''+fmt(S.pen)+'' קנסות'':'''';
   $(''w-sec'').style.transform=`rotate(${(e%60)*6}deg)`;$(''w-min'').style.transform=`rotate(${(e/60%60)*6}deg)`}
 function begin(){$(''er-plate'').textContent=S.name?(''בריחה מהמעבדה · ''+S.name):''בריחה מהמעבדה'';clearInterval(tick);
-  if(S.end)return finish();show(''er-play'');renderRoom();upTimer();report();tick=setInterval(upTimer,1000)}
+  if(S.end)return finish();setFull(true);show(''er-play'');scrollTo(0,0);renderRoom();upTimer();report();tick=setInterval(upTimer,1000)}
 function finish(){
   clearInterval(tick);show(''er-done'');const rooms=D[S.v].rooms;let rows='''';
   rooms.forEach((r,i)=>rows+=`<tr><td>חדר ${i+1}: ${esc(r.title)}</td><td><b>✔</b></td></tr>`);
@@ -453,6 +462,7 @@ $(''er-dl'').onclick=()=>{const html=resultHtml(),st=$(''er-dl-st'');
 /* ---------- start / resume / teacher reset ---------- */
 $(''er-start'').onclick=()=>{S={v:[''A'',''B'',''C''][Math.floor(Math.random()*3)],name:$(''er-name'').value.trim(),start:Date.now(),pen:0,cur:0,locks:{},hints:{},end:null,wrong:0,hintsUsed:0};save();begin()};
 $(''er-resume-btn'').onclick=()=>begin();
+$(''er-leave'').onclick=()=>setFull(false);
 const TEACHER_CODE=''2580'';
 $(''er-teacher'').onclick=e=>{e.preventDefault();$(''er-tpanel'').classList.toggle(''on'')};
 $(''er-tgo'').onclick=()=>{if($(''er-tcode'').value===TEACHER_CODE){try{localStorage.removeItem(KEY)}catch(x){}try{parent.postMessage({type:''lesson-state-clear'',key:KEY},''*'')}catch(x){}S=null;location.reload()}else{$(''er-tcode'').value='''';$(''er-tcode'').placeholder=''שגוי''}};

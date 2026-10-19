@@ -189,6 +189,8 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false }) {
   const iframeRef = useRef(null);
   const onMessageRef = useRef(onMessage);
   const [height, setHeight] = useState(600);
+  // מסך מלא: שיעור (תרגיל הבריחה) מבקש {type:'lesson-fullscreen', on} כדי לתפוס את כל חלון הדפדפן, ובסיום לשחרר.
+  const [full, setFull] = useState(false);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
   const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor]);
@@ -207,6 +209,10 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false }) {
         if (data.h > 0) setHeight(data.h);
         return;
       }
+      if (data.type === "lesson-fullscreen") {
+        setFull(data.on === true);
+        return;
+      }
       onMessageRef.current?.(data);
     }
     window.addEventListener("message", handleMessage);
@@ -215,14 +221,34 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false }) {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
+  // במסך מלא ננעלת הגלילה של האתר, ו-Escape משחרר (כך שאי אפשר להיתקע בתוך השיעור).
+  useEffect(() => {
+    if (!full) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") setFull(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      // אחרי היציאה חוזרים להציג את השיעור במקומו בעמוד.
+      iframeRef.current?.scrollIntoView?.({ block: "start" });
+    };
+  }, [full]);
+
+  // השיעור מתעדכן במצב בפועל (למשל אחרי Escape בהורה), כדי שיוריד את מצב המסך המלא אצלו.
+  useEffect(() => {
+    iframeRef.current?.contentWindow?.postMessage({ type: "lesson-fullscreen-state", on: full }, "*");
+  }, [full]);
+
   return (
     <iframe
       ref={iframeRef}
       srcDoc={injected + themed}
       title="תוכן השיעור"
       className="lesson-html-frame"
-      scrolling="no"
-      style={{ height }}
+      scrolling={full ? "yes" : "no"}
+      style={full ? { position: "fixed", inset: 0, width: "100%", height: "100%", zIndex: 2000, borderRadius: 0, overflow: "auto", background: "#14121f" } : { height }}
       sandbox="allow-scripts allow-downloads allow-popups allow-top-navigation-by-user-activation"
     />
   );
