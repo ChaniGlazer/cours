@@ -208,14 +208,72 @@ button{font-family:var(--body);cursor:pointer}
 .foot{height:auto;padding:30px 0 40px;text-align:center}
 .foot a{color:#5a4430;font-size:11px;text-decoration:none;opacity:.7}
 .tpanel input{background:#2c1a0f;color:#cdb88a;border:1px solid #5a4430;border-radius:4px}
+/* ===== suspense intro ===== */
+#er-intro{position:absolute;left:0;right:0;top:0;height:640px;z-index:100;overflow:hidden;background:#06030a;border-radius:6px;direction:rtl;--beat:1.2s;transition:opacity .9s}
+#er-intro.out{opacity:0;pointer-events:none}
+#er-intro.shake{animation:itquake .45s}
+@keyframes itquake{10%{transform:translate(-9px,5px)}30%{transform:translate(8px,-6px)}50%{transform:translate(-6px,-4px)}70%{transform:translate(5px,6px)}90%{transform:translate(-3px,2px)}}
+.it-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(150,20,20,0) 28%,rgba(150,20,20,.65) 100%);opacity:0;animation:itbeat var(--beat) ease-in-out infinite}
+#er-intro.alarm .it-bg{opacity:1}
+@keyframes itbeat{0%,100%{transform:scale(1);filter:brightness(.7)}45%{transform:scale(1.04);filter:brightness(1.35)}}
+.it-siren{position:absolute;top:-150px;width:380px;height:380px;border-radius:50%;background:conic-gradient(from 0deg,rgba(255,50,50,0) 0 300deg,rgba(255,60,60,.7) 335deg,rgba(255,50,50,0) 360deg);animation:itspin 1.5s linear infinite;filter:blur(8px);opacity:0;transition:opacity .6s}
+.it-siren.l{left:-150px}.it-siren.r{right:-150px;animation-direction:reverse}
+#er-intro.alarm .it-siren{opacity:1}
+@keyframes itspin{to{transform:rotate(360deg)}}
+.it-flick{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:9}
+.it-flash{position:absolute;inset:0;background:#fff7d6;opacity:0;pointer-events:none;z-index:12}
+.it-flash.go{animation:itflash .9s ease-out}
+@keyframes itflash{0%{opacity:.95}100%{opacity:0}}
+.it-fly{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:hidden}
+.fl{position:absolute;left:0;top:0;will-change:transform;animation:itfly var(--d,3s) linear forwards}
+@keyframes itfly{from{transform:translate(var(--x0),var(--y0)) rotate(var(--r0)) scale(var(--s,1))}to{transform:translate(var(--x1),var(--y1)) rotate(var(--r1)) scale(var(--s,1))}}
+.fl.paper{width:124px;padding:8px 10px;background:linear-gradient(170deg,#efe0b8,#dcc791);color:#2a1b10;font:700 12px/1.5 ''Courier Prime'',''Courier New'',monospace;direction:ltr;text-align:left;box-shadow:0 10px 16px rgba(0,0,0,.65);border-radius:2px}
+.fl.paper::before{content:"";display:block;width:34px;height:5px;background:#8c1f1f;margin-bottom:4px;opacity:.8}
+.fl.spark{width:5px;height:5px;border-radius:50%;background:#ffe08a;box-shadow:0 0 10px 3px #ff9a3a}
+.fl.key svg,.fl.gear svg{display:block;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6))}
+.it-door{position:absolute;top:0;bottom:0;width:50.6%;z-index:5;background:repeating-linear-gradient(90deg,#343a3f 0 38px,#262b2f 38px 42px),#2e3438;box-shadow:inset 0 0 60px rgba(0,0,0,.7);transition:transform .32s cubic-bezier(.75,0,1,.5)}
+.it-door.l{left:0;transform:translateX(-103%);border-right:8px solid #c79a3b}
+.it-door.r{right:0;transform:translateX(103%);border-left:8px solid #c79a3b}
+.it-door::before{content:"";position:absolute;top:44%;height:46px;width:100%;background:repeating-linear-gradient(-45deg,#e8b020 0 22px,#14110a 22px 44px);opacity:.92}
+.it-door::after{content:"LOCKDOWN";position:absolute;top:calc(44% + 54px);left:0;right:0;text-align:center;font:700 22px ''Courier Prime'',monospace;letter-spacing:.4em;color:#c79a3b;opacity:.8}
+.closed .it-door{transform:none}
+.opening .it-door{transition:transform 1.1s cubic-bezier(.6,0,.3,1)}
+.opening .it-door.l{transform:translateX(-103%)}.opening .it-door.r{transform:translateX(103%)}
+.it-word{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);text-align:center;z-index:8;padding:0 18px;font:400 clamp(2.1rem,9vw,5rem)/1.12 ''Suez One'',''Frank Ruhl Libre'',serif;color:#f4e8c8;text-shadow:0 4px 0 #000,0 0 28px rgba(0,0,0,.8)}
+.it-word .ln{display:block}
+.it-word.alarm{color:#ff4d4d;text-shadow:0 0 34px rgba(255,40,40,.9),0 4px 0 #000;animation:itshake .11s infinite}
+@keyframes itshake{0%{transform:translate(-50%,-50%) translateX(-3px)}50%{transform:translate(-50%,-50%) translateX(3px)}100%{transform:translate(-50%,-50%) translateX(-3px)}}
+.it-word.alarm{left:50%;right:auto;width:100%;transform:translate(-50%,-50%)}
+.it-word.slam{animation:itslam .32s cubic-bezier(.2,1.5,.4,1)}
+@keyframes itslam{from{transform:translateY(-50%) scale(2.6);opacity:0}}
+.it-word.glitch{text-shadow:3px 0 0 rgba(255,40,80,.85),-3px 0 0 rgba(60,220,255,.8),0 4px 0 #000;animation:itglitch .8s steps(2) infinite}
+@keyframes itglitch{0%{transform:translateY(-50%) skewX(0)}20%{transform:translateY(-50%) translateX(-4px) skewX(6deg)}40%{transform:translateY(-50%) translateX(5px)}60%{transform:translateY(-50%) skewX(-5deg)}100%{transform:translateY(-50%)}}
+.it-word.gold{color:#ffe08a;text-shadow:0 0 40px rgba(255,200,80,.9),0 4px 0 #000}
+.it-sub{position:absolute;left:0;right:0;top:calc(46% + 3.6rem);text-align:center;z-index:8;font:700 clamp(.8rem,2.6vw,1.05rem) ''Courier Prime'',monospace;letter-spacing:.32em;color:#c9b489;direction:ltr;opacity:.9;text-shadow:0 2px 0 #000}
+.it-count{position:absolute;left:50%;top:46%;z-index:8;width:210px;height:210px;margin:-105px 0 0 -105px;display:none;align-items:center;justify-content:center;font:400 9rem ''Suez One'',serif;color:#f4e8c8;text-shadow:0 0 40px rgba(255,60,60,.9),0 6px 0 #000}
+.it-count.on{display:flex;animation:itpunch .8s ease-out}
+.it-count::after{content:"";position:absolute;inset:0;border:5px solid rgba(255,80,80,.8);border-radius:50%;animation:itring .8s ease-out forwards}
+@keyframes itpunch{0%{transform:scale(2.8);opacity:0;filter:blur(8px)}25%{transform:scale(1);opacity:1;filter:blur(0)}100%{transform:scale(.88);opacity:.85}}
+@keyframes itring{from{transform:scale(.6);opacity:1}to{transform:scale(2.2);opacity:0}}
+.it-bar{position:absolute;left:0;right:0;bottom:0;height:5px;z-index:10;background:rgba(255,255,255,.08)}
+.it-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c79a3b,#ff4d4d);float:right}
+.it-skip{position:absolute;left:14px;bottom:16px;z-index:11;background:rgba(0,0,0,.5);color:#d9c79a;border:1px solid rgba(217,199,154,.5);border-radius:100px;padding:6px 16px;font:700 13px ''Heebo'',sans-serif;cursor:pointer}
+.it-skip:hover{background:rgba(0,0,0,.8)}
+#er-intro.rm .it-word{animation:none!important}
+#er-intro.rm .it-word.fade{animation:itfade .6s both!important}
+@keyframes itfade{from{opacity:0}}
+.mockbtn{position:absolute;top:8px;left:8px;z-index:70;background:#14110a;color:#e6c66a;border:1px dashed #c79a3b;border-radius:100px;padding:5px 14px;font:700 12px ''Heebo'',sans-serif;cursor:pointer;opacity:.9}
+
+#er-play.intro-on #er-room,#er-play.intro-on #er-map{visibility:hidden}
 /* full-page mode: the lesson frame fills the whole browser window while the game runs (the host page switches the frame to position:fixed) */
 html.er-full,html.er-full body{overflow-y:auto!important}
 html.er-full{scrollbar-width:none}
 html.er-full::-webkit-scrollbar,html.er-full body::-webkit-scrollbar{display:none}
 html.er-full #er-root{min-height:100vh}
 html.er-full .er-top{position:sticky;top:0}
-html.er-full #er-fx{position:fixed;height:100%}
+html.er-full #er-fx,html.er-full #er-intro{position:fixed;height:100%}
 html.er-full #er-exit{position:fixed;height:100%;border-radius:0}
+html.er-full #er-intro{border-radius:0}
 </style></head><body style="margin:0">
 <div id="er-root" dir="rtl">
 
@@ -385,6 +443,71 @@ function wireDial(el,onEnter){const n=el.querySelectorAll(''.wh'').length,d=Arra
   el.addEventListener(''keydown'',e=>{if(/^[0-9]$/.test(e.key)){d.shift();d.push(+e.key);el._touched=true;sTick(+e.key);draw();e.preventDefault()}else if(e.key===''Backspace''){d.pop();d.unshift(0);draw();e.preventDefault()}else if(e.key===''Enter''){onEnter&&onEnter()}});
   el.value=()=>el._touched?+d.join(''''):null;el.clear=()=>{d.fill(0);el._touched=false;draw()}}
 
+/* ---------- suspense intro: words that decode, things that fly, doors that slam ---------- */
+function runIntro(host,done){
+  const RM=RMO,SC=''אבגדהוזחטיכלמנסעפצקרשת0123456789#%@$&'',T=[];let ended=false,alive=true,timer=null;
+  host.className='''';host.innerHTML=''<div class="it-bg"></div><div class="it-siren l"></div><div class="it-siren r"></div><div class="it-fly"></div><div class="it-door l"></div><div class="it-door r"></div><div class="it-word-host" aria-live="assertive"></div><div class="it-sub"></div><div class="it-count"></div><div class="it-flick"></div><div class="it-flash"></div><div class="it-bar"><i></i></div><button type="button" class="it-skip">דלגו ›</button>'';
+  if(RM)host.classList.add(''rm'');
+  const $q=s=>host.querySelector(s),fly=$q(''.it-fly''),wordHost=$q(''.it-word-host''),sub=$q(''.it-sub''),count=$q(''.it-count''),flick=$q(''.it-flick''),flash=$q(''.it-flash''),bar=$q(''.it-bar i'');
+  const W=()=>host.clientWidth||900,H=()=>host.clientHeight||640,rnd=(a,b)=>a+Math.random()*(b-a);
+  const at=(ms,fn)=>T.push(setTimeout(()=>{if(alive)fn()},ms));
+  function setBeat(s){host.style.setProperty(''--beat'',s+''s'')}
+  function word(lines,cls,subText){
+    const el=document.createElement(''div'');el.className=''it-word ''+(cls||'''')+(RM?'' fade'':'''');
+    const txts=Array.isArray(lines)?lines:[lines];
+    txts.forEach(t=>{const ln=document.createElement(''span'');ln.className=''ln'';ln.textContent=RM?t:'''';ln.dataset.t=t;el.appendChild(ln)});
+    wordHost.innerHTML='''';wordHost.appendChild(el);sub.textContent=subText||'''';
+    if(RM)return;
+    el.querySelectorAll(''.ln'').forEach((ln,k)=>{const t=ln.dataset.t,chars=Array.from(t);let f=0;const F=11;
+      const iv=setInterval(()=>{if(!alive||!ln.isConnected){clearInterval(iv);return}f++;
+        ln.textContent=chars.map((c,i)=>{if(c==='' '')return '' '';const fromEnd=(chars.length-1-i)/chars.length;return fromEnd<f/F?c:SC[Math.floor(Math.random()*SC.length)]}).join('''');
+        if(f>=F){clearInterval(iv);ln.textContent=t}},38+k*0)});
+  }
+  const SNIP=[''def f(x):'',''return x * 2'',''print(a + b)'',''if n > 3:'',''for i in range(5):'',''d["key"]'',''x = 7'',''[1, 2, 3]'',''lock = 42'',''while True:'',''def open():'',''ans = 36''];
+  const KEY=''<svg width="54" height="54" viewBox="0 0 54 54"><circle cx="16" cy="16" r="11" fill="none" stroke="#e6c66a" stroke-width="6"/><path d="M24 24 L48 48 M38 38 l6 -6 M43 43 l5 -5" stroke="#e6c66a" stroke-width="6" stroke-linecap="round"/></svg>'';
+  const GEAR=''<svg width="62" height="62" viewBox="0 0 62 62"><g fill="#b08a30"><circle cx="31" cy="31" r="17"/>''+[0,1,2,3,4,5,6,7].map(i=>`<rect x="27" y="2" width="8" height="12" transform="rotate(${i*45} 31 31)"/>`).join('''')+''</g><circle cx="31" cy="31" r="7" fill="#06030a"/></svg>'';
+  function spawn(kind,fromSeam){
+    if(RM||!alive)return;const w=W(),h=H(),el=document.createElement(''i'');el.className=''fl ''+kind;
+    let x0,y0,x1,y1,d=rnd(2.2,4),s=rnd(.8,1.5),r0=rnd(-60,60),r1=r0+rnd(-300,300);
+    if(kind===''spark''){const a=rnd(0,6.28),dist=rnd(80,260);x0=w/2;y0=rnd(h*.2,h*.8);x1=x0+Math.cos(a)*dist*1.6;y1=y0+Math.sin(a)*dist;d=rnd(.5,1.1);s=1;r0=r1=0}
+    else{const side=Math.floor(rnd(0,4));
+      if(side===0){x0=-160;y0=rnd(0,h);x1=w+160;y1=rnd(0,h)}else if(side===1){x0=w+160;y0=rnd(0,h);x1=-160;y1=rnd(0,h)}else if(side===2){x0=rnd(0,w);y0=-120;x1=rnd(0,w);y1=h+120}else{x0=rnd(0,w);y0=h+120;x1=rnd(0,w);y1=-120}}
+    el.style.cssText=`--x0:${x0}px;--y0:${y0}px;--x1:${x1}px;--y1:${y1}px;--r0:${r0}deg;--r1:${r1}deg;--s:${s};--d:${d}s`;
+    if(kind===''paper'')el.textContent=SNIP[Math.floor(Math.random()*SNIP.length)]+''\n''+SNIP[Math.floor(Math.random()*SNIP.length)];
+    else if(kind===''key'')el.innerHTML=KEY;else if(kind===''gear'')el.innerHTML=GEAR;
+    if(kind===''paper'')el.style.whiteSpace=''pre'';
+    fly.appendChild(el);setTimeout(()=>el.remove(),d*1000+80);
+  }
+  let rate=0;function loop(){if(!alive)return;if(rate>0){const kinds=[''paper'',''paper'',''paper'',''key'',''gear''];for(let i=0;i<rate;i++)spawn(kinds[Math.floor(Math.random()*kinds.length)])}timer=setTimeout(loop,rate>2?260:420)}
+  function burst(n){for(let i=0;i<n;i++)spawn(''spark'')}
+  function flicker(){if(RM)return;flick.style.opacity=''.85'';setTimeout(()=>{flick.style.opacity=''0''},90)}
+  function quake(){if(RM)return;host.classList.remove(''shake'');void host.offsetWidth;host.classList.add(''shake'')}
+  function finish(){if(ended)return;ended=true;alive=false;T.forEach(clearTimeout);clearTimeout(timer);host.classList.add(''out'');setTimeout(()=>{host.remove()},950);}
+  const TOTAL=RM?6200:10200;
+  bar.style.transition=''width ''+TOTAL+''ms linear'';requestAnimationFrame(()=>{bar.style.width=''100%''});
+  if(RM){
+    [[''אזהרה''],[''פריצה במעבדה''],[''הדלתות ננעלות''],[''הפרופסור נעלם''],[''6 דלתות. 6 קודים.''],[''בהצלחה!'']].forEach((w,i)=>at(i*1000,()=>word(w,''fade'')));
+    at(5600,()=>{done&&done();finish()});
+  } else {
+    at(250,()=>flicker());at(520,()=>flicker());
+    at(700,()=>{host.classList.add(''alarm'');word(''אזהרה'',''alarm slam'',''ZONE BREACH'');setBeat(1.0);rate=1});
+    at(1800,()=>{word(''פריצה במעבדה'',''alarm'',''INTRUDER · LAB 7'');for(let i=0;i<5;i++)spawn(''paper'');rate=2});
+    at(2900,()=>{word(''הדלתות ננעלות'',''alarm slam'',''LOCKDOWN INITIATED'');host.classList.add(''closed'')});
+    at(3250,()=>{quake();burst(26);flicker()});
+    at(4100,()=>{word(''הפרופסור נעלם...'',''glitch'',''SUBJECT: MISSING'');setBeat(.8);rate=2});
+    at(5300,()=>{word([''שש דלתות.'',''שישה קודים.''],''slam'',''6 DOORS · 6 CODES'');for(let i=0;i<6;i++)spawn(''paper'');rate=3});
+    at(6700,()=>{word(''רק קוד נכון יפתח אותן'','''',''ONLY THE RIGHT CODE'');setBeat(.6);flicker();rate=3});
+    at(7800,()=>{wordHost.innerHTML='''';sub.textContent='''';rate=0;count.textContent=''3'';count.className=''it-count on'';flicker()});
+    at(8500,()=>{count.className=''it-count'';void count.offsetWidth;count.textContent=''2'';count.className=''it-count on''});
+    at(9200,()=>{count.className=''it-count'';void count.offsetWidth;count.textContent=''1'';count.className=''it-count on'';setBeat(.4)});
+    at(9900,()=>{count.className=''it-count'';word(''קדימה!'',''gold slam'',''GO'');flash.classList.add(''go'');host.classList.remove(''alarm'');host.classList.add(''opening'');host.classList.remove(''closed'');done&&done()});
+    at(11400,()=>finish());
+    loop();
+  }
+  $q(''.it-skip'').onclick=()=>{if(ended)return;if(!RM){host.classList.add(''opening'');host.classList.remove(''closed'')}done&&done();done=null;finish()};
+  return {skip:()=>$q(''.it-skip'').click()};
+}
+
 /* ---------- game ---------- */
 function renderMap(){const rooms=D[S.v].rooms;let h='''';
   const door=(st,no)=>`<div class="dr ${st}"><div class="frame"><div class="light"></div><div class="leaf"></div></div><span class="pl">🔒</span><span class="no">${no}</span></div>`;
@@ -462,7 +585,15 @@ $(''er-dl'').onclick=()=>{const html=resultHtml(),st=$(''er-dl-st'');
   try{const blob=new Blob([html],{type:''text/html;charset=utf-8''}),url=URL.createObjectURL(blob),a=document.createElement(''a'');a.href=url;a.download=''escape-room-results.html'';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);st.textContent=''הקובץ ירד! שלחו אותו למורה.''}
   catch(e){st.textContent=''ההורדה האוטומטית לא עבדה. העתיקו את הטקסט למטה ושמרו כקובץ html.'';const t=$(''er-dl-fb'');t.hidden=false;t.value=html}};
 /* ---------- start / resume / teacher reset ---------- */
-$(''er-start'').onclick=()=>{S={v:[''A'',''B'',''C''][Math.floor(Math.random()*3)],name:$(''er-name'').value.trim(),start:Date.now(),pen:0,cur:0,locks:{},hints:{},end:null,wrong:0,hintsUsed:0};save();begin()};
+function startWithIntro(){
+  S={v:[''A'',''B'',''C''][Math.floor(Math.random()*3)],name:$(''er-name'').value.trim()||(S&&S.name)||'''',start:Date.now(),pen:0,cur:0,locks:{},hints:{},end:null,wrong:0,hintsUsed:0};
+  clearInterval(tick);$(''er-plate'').textContent=S.name?(''בריחה מהמעבדה · ''+S.name):''בריחה מהמעבדה'';
+  setFull(true);show(''er-play'');renderRoom();$(''er-timer'').textContent=''00:00'';
+  const play=$(''er-play'');play.classList.add(''intro-on'');const old=$(''er-intro'');if(old)old.remove();
+  const el=document.createElement(''div'');el.id=''er-intro'';play.appendChild(el);
+  try{play.scrollIntoView({block:''start''})}catch(e){}
+  runIntro(el,()=>{play.classList.remove(''intro-on'');S.start=Date.now();save();upTimer();report();tick=setInterval(upTimer,1000)})}
+$(''er-start'').onclick=startWithIntro;
 $(''er-resume-btn'').onclick=()=>begin();
 $(''er-leave'').onclick=()=>setFull(false);
 const TEACHER_CODE=''2580'';
