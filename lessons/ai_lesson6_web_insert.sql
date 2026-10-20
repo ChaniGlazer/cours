@@ -464,7 +464,7 @@ text = st.<span class="f">chat_input</span>(<span class="s">"<span class="he">כ
 
       <div class="callout warn">
         <span class="ico">🌍</span>
-        <p>האתר שלכם רץ כרגע <strong>רק במחשב שלכם</strong>. להעלות אותו לשרת, כך שכל אחד יוכל להשתמש בו, תלמדו בקורס Vibe Coding, שמלמד לפתח עם AI מההתחלה ועד הסוף.</p>
+        <p>האתר שלכם רץ כרגע <strong>רק במחשב שלכם</strong>. להעלות אותו לשרת, כך שכל אחד יוכל להשתמש בו, תלמדו ב<a class="plink" href="/courses/vibe-coding" target="_top">קורס Vibe Coding</a>, שמלמד לפתח עם AI מההתחלה ועד הסוף.</p>
       </div>
 
       <div class="next-card">
