@@ -442,7 +442,13 @@ plan = json.<span class="f">loads</span>(response.output_text)
           <div class="em">➕</div>
           <div>
             <h4>הוסיפו שדה</h4>
-            <p>הוסיפו להנחיה שדה <code>"difficulty"</code> (קל, בינוני או קשה), ואחרי כן הדפיסו אותו בסוף:</p>
+            <p>נוסיף להנחיה שדה <code>"difficulty"</code> (קל, בינוני או קשה). ב-<code>workout.py</code> מחקו את שתי שורות ה-<code>instructions</code> (השאירו את הרווחים שלפניהן) והדביקו במקומן:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>instructions</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>instructions=<span class="s">"""<span class="he">אתה מאמן כושר. החזר JSON בלבד, בעברית, במבנה הזה. הערך של difficulty הוא קל, בינוני או קשה:</span>
+{"title": "...", "minutes": 20, "difficulty": "...", "exercises": [{"name": "...", "sets": 3, "reps": 10}]}"""</span>,</pre>
+            </div>
+            <p style="margin-top:10px;">ואחרי כן הדפיסו את השדה החדש בסוף הקובץ:</p>
             <div class="code-card"><pre><span class="f">print</span>(plan[<span class="s">"difficulty"</span>])</pre></div>
           </div>
         </div>
