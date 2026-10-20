@@ -397,7 +397,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="step-card" data-step>
           <div class="step-head"><h3>2 · מתקינים פייתון</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
           <div class="step-body">
-            <p>פתחו טרמינל ב-VS Code והריצו את הפקודה. אם מופיעה גרסה 3.9 ומעלה, פייתון כבר מותקן ואפשר לדלג לצעד הבא.</p>
+            <p>פתחו טרמינל ב-VS Code והריצו את הפקודה. אם מופיעה גרסה 3.11 ומעלה, פייתון כבר מותקן ואפשר לדלג לצעד הבא.</p>
             <div class="code-card term">
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre><span class="prompt">PS&gt; </span>python --version
