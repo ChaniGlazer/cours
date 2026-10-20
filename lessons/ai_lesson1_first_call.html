@@ -328,6 +328,10 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <span class="ico">📋</span>
     <p><strong>מה צריך:</strong> מחשב (לא טלפון), ידע בסיסי בפייתון (משתנים, פונקציות, רשימות), וכרטיס אשראי להטענת 5 דולר.<br><strong>חדשים לפייתון?</strong> התחילו ב<a class="plink" href="/courses/python-ai-era" target="_top">קורס 'לימוד פייתון בעידן ה-AI'</a>.</p>
   </div>
+  <div class="callout warn">
+    <span class="ico">🪟</span>
+    <p><strong>הקורס כתוב ל-Windows.</strong> משתמשי Mac: בצעדים 2 ו-5 למטה יש תיבה מתקפלת בשם "משתמשי Mac" עם הפקודות המתאימות, ובשיעורים 2 עד 6 כתוב ליד כל פקודת <code>python</code> מה לכתוב ב-Mac.</p>
+  </div>
 </div>
 
 <main>
@@ -415,6 +419,19 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             </div>
             <p style="margin-top:12px;">אם מופיעה שגיאה שהפקודה לא מוכרת, היכנסו לקישור ולחצו על <strong>Download Python</strong>. <strong>חשוב מאוד:</strong> במסך הראשון של ההתקנה סמנו את התיבה <code>Add python.exe to PATH</code> לפני שלוחצים Install. אחרי ההתקנה סגרו ופתחו מחדש את VS Code. אם נפתחה חנות Microsoft, פייתון לא מותקן. התקינו אותו מ-python.org.</p>
             <a class="link-btn" href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org/downloads/windows ↗</a>
+            <details class="explain" style="margin-top:16px;">
+              <summary>🍎 משתמשי Mac</summary>
+              <div class="explain-body">
+                <h4>בדיקת פייתון</h4>
+                <p>פתחו טרמינל והריצו את הפקודה:</p>
+                <div class="code-card term">
+                  <div class="code-card-head"><span>טרמינל (Mac)</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>python3 --version</pre>
+                </div>
+                <h4>התקנת ספריות</h4>
+                <p>בכל הקורס כותבים <code>python3</code> במקום <code>python</code>, למשל <code>python3 -m pip install ...</code></p>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -529,6 +546,24 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
               </div>
               <p style="margin-top:10px; font-size:14px;">מופיע <code>KEY FOUND</code>? מעולה, סיימתם. מופיע <code>KEY MISSING</code>? ודאו שסגרתם את VS Code לגמרי ופתחתם אותו מחדש, ושהדבקתם את הפקודה כולל המרכאות.</p>
             </div>
+
+            <details class="explain" style="margin-top:16px;">
+              <summary>🍎 משתמשי Mac</summary>
+              <div class="explain-body">
+                <h4>א. שמירה</h4>
+                <p>במקום <code>setx</code>, הריצו בטרמינל את הפקודה (והחליפו את <code>sk-...</code> במפתח שהעתקתם), ואז פתחו טרמינל חדש:</p>
+                <div class="code-card term">
+                  <div class="code-card-head"><span>טרמינל (Mac)</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>echo 'export OPENAI_API_KEY="sk-..."' &gt;&gt; ~/.zshrc</pre>
+                </div>
+                <h4>ב. בדיקה</h4>
+                <p>בטרמינל החדש הריצו את הפקודה. כמו ב-Windows, היא לא מדפיסה את המפתח:</p>
+                <div class="code-card term">
+                  <div class="code-card-head"><span>טרמינל (Mac)</span><button class="copy-btn" type="button">העתק</button></div>
+<pre>if [ -n "$OPENAI_API_KEY" ]; then echo "KEY FOUND"; else echo "KEY MISSING"; fi</pre>
+                </div>
+              </div>
+            </details>
 
             <div class="callout ok">
               <span class="ico">📝</span>
