@@ -471,6 +471,11 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
               </div>
             </details>
 
+            <div class="callout info">
+              <span class="ico">🏷️</span>
+              <p>בקורס נשתמש במודל <code>gpt-4o-mini</code>. אם בעתיד הוא יוחלף, עדכנו את שמו בקוד של כל שיעור.</p>
+            </div>
+
             <div class="sub"><h4>ג. (מומלץ) קובעים תקרת הוצאה</h4>
               <p>בדף ה-Limits אפשר להגביל כמה כסף ייצא מהחשבון בחודש, כדי להיות רגועים.</p>
               <a class="link-btn" href="https://platform.openai.com/settings/organization/limits" target="_blank" rel="noopener">Limits: תקרת הוצאה ↗</a>
