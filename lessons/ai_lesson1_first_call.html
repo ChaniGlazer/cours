@@ -640,7 +640,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <ul id="mission-list">
           <li><label><input type="checkbox"><span>VS Code ופייתון מותקנים אצלי, וגם התוסף Python</span></label></li>
           <li><label><input type="checkbox"><span>יש לי חשבון OpenAI עם קרדיט קטן, ויצרתי מפתח API</span></label></li>
-          <li><label><input type="checkbox"><span>שמרתי את המפתח עם <code>setx</code>, ובדיקת <code>KEY FOUND</code> הצליחה</span></label></li>
+          <li><label><input type="checkbox"><span>שמרתי את המפתח כמשתנה סביבה (ב-Windows עם <code>setx</code>, ב-Mac עם <code>export</code>), ובדיקת <code>KEY FOUND</code> הצליחה</span></label></li>
         </ul>
         <div class="mission-done" id="mission-done"></div>
       </div>
