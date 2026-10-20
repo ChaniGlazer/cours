@@ -413,7 +413,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
 <pre><span class="prompt">PS&gt; </span>python --version
 <span class="out">Python 3.12.4</span></pre>
             </div>
-            <p style="margin-top:12px;">אם מופיעה שגיאה שהפקודה לא מוכרת, היכנסו לקישור ולחצו על <strong>Download Python</strong>. <strong>חשוב מאוד:</strong> במסך הראשון של ההתקנה סמנו את התיבה <code>Add python.exe to PATH</code> לפני שלוחצים Install. אחרי ההתקנה סגרו ופתחו מחדש את VS Code.</p>
+            <p style="margin-top:12px;">אם מופיעה שגיאה שהפקודה לא מוכרת, היכנסו לקישור ולחצו על <strong>Download Python</strong>. <strong>חשוב מאוד:</strong> במסך הראשון של ההתקנה סמנו את התיבה <code>Add python.exe to PATH</code> לפני שלוחצים Install. אחרי ההתקנה סגרו ופתחו מחדש את VS Code. אם נפתחה חנות Microsoft, פייתון לא מותקן. התקינו אותו מ-python.org.</p>
             <a class="link-btn" href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org/downloads/windows ↗</a>
           </div>
         </div>
