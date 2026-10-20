@@ -433,8 +433,8 @@ called = <span class="k">False</span>
 
       <div class="next-card">
         <div class="eyebrow">בשיעור הבא · שיעור 8</div>
-        <h3>שיגור</h3>
-        <p style="margin-top:6px;">האתר שלכם עובד, אבל רק אצלכם במחשב. בשיעור האחרון נעלה אותו לאינטרנט, כדי שכל אחד יוכל להשתמש בו.</p>
+        <h3>סיכום ופרויקט סיום</h3>
+        <p style="margin-top:6px;">בשיעור האחרון נסכם את המסע, ותבנו אפליקציה משלכם, עם דמות, זיכרון ואתר.</p>
       </div>
     </div>
   </section>
@@ -598,7 +598,7 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
-    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 8, ונעלה את האתר לאינטרנט." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 8, ונבנה את פרויקט הסיום." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
 })();
