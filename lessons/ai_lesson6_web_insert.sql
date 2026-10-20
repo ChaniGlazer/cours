@@ -276,6 +276,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python -m pip install streamlit</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px; font-size:15px;">ההתקנה ארוכה יותר מהקודמות, כי Streamlit מביאה איתה הרבה ספריות. חכו להודעת <code>Successfully installed</code>.</p>
           </div>
         </div>
@@ -328,6 +329,7 @@ text = st.<span class="f">chat_input</span>(<span class="s">"<span class="he">כ
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python -m streamlit run app.py</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px;">אחרי כמה שניות ייפתח דפדפן עם האתר שלכם (בכתובת <code>localhost:8501</code>). כתבו הודעה ותראו את הבוט עונה בחלון צ''אט.</p>
             <div class="callout ok">
               <span class="ico">🎉</span>

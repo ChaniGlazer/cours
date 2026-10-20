@@ -349,6 +349,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python -m pip install openai</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px; font-size:15px;">כמה שניות של טקסט שרץ, ובסוף שורה שמתחילה ב-<code>Successfully installed</code>. מופיעות שם גם ספריות נוספות, וזה בסדר גמור: הן באות יחד איתה.</p>
           </div>
         </div>
@@ -392,6 +393,7 @@ response = client.responses.<span class="f">create</span>(
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python first_call.py</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px;">אחרי שנייה או שתיים תופיע תשובה בעברית, בערך כך. המילים שלכם יהיו קצת שונות, ובעוד רגע נבין למה:</p>
             <div class="code-card term">
               <div class="code-card-head"><span>הפלט</span></div>
@@ -1116,6 +1118,7 @@ history = []
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python chat.py</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px;">שאלו משהו ושימו לב איך הוא עונה. אחר כך עצרו (<code>exit</code>), החליפו את הטקסט שבתוך <code>instructions</code> לדמות אחרת, והריצו שוב.</p>
             <div class="callout ok">
               <span class="ico">🎉</span>

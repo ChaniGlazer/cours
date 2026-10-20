@@ -386,6 +386,7 @@ plan = json.<span class="f">loads</span>(response.output_text)
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python workout.py</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px;">כתבו בעברית, למשל <strong>"אימון של 20 דקות בבית בלי ציוד"</strong>, ותקבלו משהו כזה:</p>
             <div class="code-card">
 <pre class="he-out">אימון ביתי קצר - 20 min
