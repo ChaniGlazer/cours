@@ -484,8 +484,20 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
         btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
         setTimeout(function () { btn.textContent = original; }, 1600);
       }
-      try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); }
-      catch (e) { done(false); }
+      function fallback() {
+        var ok = false;
+        try {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.setAttribute("readonly", "");
+          ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+          document.body.appendChild(ta); ta.select();
+          ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch (e) {}
+        done(ok);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); }
+      catch (e) { fallback(); }
     });
   });
 })();
