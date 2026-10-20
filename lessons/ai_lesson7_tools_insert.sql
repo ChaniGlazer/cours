@@ -375,7 +375,7 @@ called = <span class="k">False</span>
   <section id="experiments">
     <div class="wrap">
       <div class="eyebrow c">משחקים</div>
-      <h2 class="section-title">שני ניסויים</h2>
+      <h2 class="section-title">שלושה ניסויים</h2>
       <div class="exps">
         <div class="exp">
           <div class="em">👋</div>
@@ -392,6 +392,21 @@ called = <span class="k">False</span>
             <div class="code-card">
               <div class="code-card-head"><span>הוראה ל-AI</span><button class="copy-btn" type="button">העתק</button></div>
 <pre class="he-out">הנה קוד שעובד של בוט עם כלי אחד. הוסף כלי נוסף בשם get_time שמחזיר את השעה הנוכחית (בלי פרמטרים). שמור על שאר הקוד, ואל תוסיף מפתח API. החזר את הקוד המלא.
+
+(כאן מדביקים את הקוד של tools.py)</pre>
+            </div>
+          </div>
+        </div>
+        <div class="exp">
+          <div class="em">🔗</div>
+          <div>
+            <h4>חברו את הכלי לאתר</h4>
+            <p>עד עכשיו הכלי רץ בטרמינל, והאתר משיעור 6 לא מכיר אותו. הדביקו ל-AI (ChatGPT או Claude) את <code>app.py</code> משיעור 6 ואת <code>tools.py</code>, עם ההוראה:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>הוראה ל-AI</span><button class="copy-btn" type="button">העתק</button></div>
+<pre class="he-out">הנה שני קבצים שעובדים: אפליקציית Streamlit (app.py) ובוט עם כלי (tools.py). חבר את הכלי calculate_bmi לאפליקציית ה-Streamlit, כך שהבוט באתר יפעיל אותו בעצמו. שמור על שאר הקוד, ואל תוסיף מפתח API לקוד. החזר את הקוד המלא.
+
+(כאן מדביקים את הקוד של app.py)
 
 (כאן מדביקים את הקוד של tools.py)</pre>
             </div>
