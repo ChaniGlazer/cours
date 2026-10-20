@@ -134,6 +134,9 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .code-card pre.he-out { direction: rtl; text-align: right; font-family: var(--sans); font-size: 16.5px; line-height: 1.7; white-space: pre-wrap; }
 .term .out { color: #B9B6E8; }
 .he { direction: rtl; unicode-bidi: isolate; }
+.code-card pre.numbered { counter-reset: nline; }
+.code-card pre.numbered .nline { display: block; counter-increment: nline; }
+.code-card pre.numbered .nline::before { content: counter(nline); display: inline-block; width: 1.6em; margin-right: 1.1em; text-align: right; color: #8C89C4; user-select: none; }
 .k { color: #C4A7FF; } .s { color: #9BE8B5; } .f { color: #8FB4FF; } .cm { color: #8C89C4; font-style: italic; }
 
 .btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
@@ -365,13 +368,14 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             </ol>
             <div class="code-card">
               <div class="code-card-head"><span>first_call.py</span><button class="copy-btn" type="button">העתק</button></div>
-<pre><span class="k">from</span> openai <span class="k">import</span> OpenAI
-client = <span class="f">OpenAI</span>()
-response = client.responses.<span class="f">create</span>(
-    model=<span class="s">"gpt-4o-mini"</span>,
-    input=<span class="s">"<span class="he">מה זה API? ענה בעברית, בשני משפטים</span>"</span>,
-)
-<span class="f">print</span>(response.output_text)</pre>
+<pre class="numbered"><span class="nline"><span class="k">from</span> openai <span class="k">import</span> OpenAI
+</span><span class="nline">client = <span class="f">OpenAI</span>()
+</span><span class="nline">response = client.responses.<span class="f">create</span>(
+</span><span class="nline">    model=<span class="s">"gpt-4o-mini"</span>,
+</span><span class="nline">    input=<span class="s">"<span class="he">מה זה API? ענה בעברית, בשני משפטים</span>"</span>,
+</span><span class="nline">)
+</span><span class="nline"><span class="f">print</span>(response.output_text)
+</span></pre>
             </div>
             <div class="callout warn">
               <span class="ico">⚠️</span>
