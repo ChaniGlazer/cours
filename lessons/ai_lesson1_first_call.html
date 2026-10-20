@@ -315,7 +315,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       </div>
       <div class="demo-note">* הדגמה מוקלטת להמחשה בלבד.</div>
     </div>
-    <p class="demo-after" id="demo-after">עד סוף הקורס, <strong>תוכנה שאתם כתבתם</strong> תנהל שיחות כאלה, ותהיה פתוחה לכל מי שתרצו.</p>
+    <p class="demo-after" id="demo-after">עד סוף הקורס, <strong>תוכנה שאתם כתבתם</strong> תנהל שיחות כאלה, ותרוץ באתר שבניתם בעצמכם.</p>
    </div>
   </div>
 </header>
