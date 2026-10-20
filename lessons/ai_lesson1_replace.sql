@@ -827,9 +827,11 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
+    if (window.reportProgress) window.reportProgress(n, boxes.length);
     $("mission-done").textContent = n === boxes.length ? "🎉 הכול מוכן! נתראה בשיעור 2, ונכתוב את הקוד הראשון." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  if (window.reportProgress) window.reportProgress(0, boxes.length);
 })();
 </script>
 

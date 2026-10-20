@@ -640,9 +640,11 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
+    if (window.reportProgress) window.reportProgress(n, boxes.length);
     $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 6, ונהפוך את הבוט לאתר." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  if (window.reportProgress) window.reportProgress(0, boxes.length);
 })();
 </script>
 

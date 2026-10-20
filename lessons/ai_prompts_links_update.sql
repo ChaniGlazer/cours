@@ -746,9 +746,11 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
+    if (window.reportProgress) window.reportProgress(n, boxes.length);
     $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 3, ונלמד את הבוט לזכור." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  if (window.reportProgress) window.reportProgress(0, boxes.length);
 })();
 </script>
 
@@ -1398,9 +1400,11 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
+    if (window.reportProgress) window.reportProgress(n, boxes.length);
     $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 5, ונלמד את הבוט לענות במבנה קבוע." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  if (window.reportProgress) window.reportProgress(0, boxes.length);
 })();
 </script>
 
