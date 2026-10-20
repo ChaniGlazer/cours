@@ -332,6 +332,7 @@ called = <span class="k">False</span>
               <div class="code-card-head"><span>טרמינל</span><button class="copy-btn" type="button">העתק</button></div>
 <pre>python tools.py</pre>
             </div>
+            <p style="margin-top:8px; font-size:14px;">ב-Mac: <code>python3</code> במקום <code>python</code></p>
             <p style="margin-top:12px;">כתבו בעברית: <strong>"אני שוקל 80 קילו וגובה 1.80 מטר, מה ה-BMI שלי?"</strong>. התשובה תכלול את המספר המדויק שחישב הקוד שלכם, בערך כך:</p>
             <div class="code-card">
 <pre class="he-out">ה-BMI שלך הוא 24.7, וזה בטווח התקין. כל הכבוד, המשך כך! 💪</pre>
