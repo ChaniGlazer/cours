@@ -483,8 +483,8 @@ plan = json.<span class="f">loads</span>(response.output_text)
 
       <div class="next-card">
         <div class="eyebrow">בשיעור הבא · שיעור 6</div>
-        <h3>כלים</h3>
-        <p style="margin-top:6px;">עד עכשיו המודל רק דיבר. בשיעור הבא נלמד אותו להפעיל פונקציות שאנחנו כותבים, ונהפוך אותו מבוט שמדבר לבוט שעושה.</p>
+        <h3>ממשק web</h3>
+        <p style="margin-top:6px;">עד עכשיו הכול רץ בטרמינל. בשיעור הבא נהפוך את הבוט לאתר אמיתי, עם חלון צ'אט שאפשר להראות לכל אחד.</p>
       </div>
     </div>
   </section>
@@ -627,7 +627,7 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
   function upd() {
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
-    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 6, ונלמד את הבוט להפעיל כלים." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+    $("mission-done").textContent = n === boxes.length ? "🎉 מעולה! נתראה בשיעור 6, ונהפוך את הבוט לאתר." : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
 })();
