@@ -77,6 +77,9 @@ section:nth-of-type(even) { background: rgba(255,255,255,.55); }
 h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 62ch; }
 
+.plink { color: #E0553F; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.plink:hover { text-decoration-thickness: 2px; }
+
 /* top bars */
 .scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
 .scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
@@ -319,6 +322,13 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
    </div>
   </div>
 </header>
+
+<div class="wrap">
+  <div class="callout info">
+    <span class="ico">📋</span>
+    <p><strong>מה צריך:</strong> מחשב (לא טלפון), ידע בסיסי בפייתון (משתנים, פונקציות, רשימות), וכרטיס אשראי להטענת 5 דולר.<br><strong>חדשים לפייתון?</strong> התחילו ב<a class="plink" href="/courses/python-ai-era" target="_top">קורס ''לימוד פייתון בעידן ה-AI''</a>.</p>
+  </div>
+</div>
 
 <main>
 
