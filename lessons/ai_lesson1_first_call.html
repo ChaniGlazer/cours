@@ -299,7 +299,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <h1>איך בונים אפליקציה<br>שמשתמשת ב-<span class="a1">AI</span><br>ומה צריך <span class="a2">כדי להתחיל</span></h1>
     <p class="hero-sub">בשיעור הזה נבין את הרעיון, נכין את המחשב, ונקבל <strong style="color:var(--ink)">מפתח API</strong>: הכרטיס שמאפשר לקוד שלנו לדבר עם מודל ה-AI של OpenAI. נלמד גם איך לשמור אותו בצורה מאובטחת.</p>
     <div class="time-row">
-      <span class="pill">⏱ כ-30 דקות</span>
+      <span class="pill">⏱ כ-45 דקות</span>
       <span class="pill">🧠 בלי לכתוב קוד עדיין</span>
       <span class="pill">💻 הכול ב-VS Code</span>
     </div>
