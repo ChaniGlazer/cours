@@ -1,0 +1,545 @@
+DELETE FROM lessons WHERE course_id='vibe-coding' AND slug='lesson-1-intro';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('b3f1c8a24d6e4f7a9c0e5d2b81a74c36', 'vibe-coding', 'lesson-1-intro', 'שיעור 1 - מ-Vibe Coding להנדסה בעזרת AI', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 1 — מ-Vibe Coding להנדסה בעזרת AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14121f;
+    --bg-panel: #1d1a2d;
+    --bg-panel-2: #26223b;
+    --ink: #f4f1fa;
+    --ink-dim: #bdb7d3;
+    --ink-faint: #9e97ba;
+    --cyan: #ff7f96;
+    --cyan-soft: #412a3e;
+    --violet: #ffd27a;
+    --violet-soft: #413739;
+    --success: #6fe0a0;
+    --success-soft: #2a3a3f;
+    --danger: #ff7f96;
+    --danger-soft: #412a3e;
+    --warn: #ffd27a;
+    --warn-soft: #413739;
+    --blue: #8fb8ff;
+    --blue-soft: #2f334f;
+    --line: rgba(244,241,250,0.10);
+    --line-strong: rgba(244,241,250,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif;
+    --sans: "Assistant", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(700px 420px at 12% -5%, rgba(255,127,150,0.12), transparent 60%),
+      radial-gradient(700px 420px at 100% 18%, rgba(255,210,122,0.10), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--cyan); color: #14121f; }
+
+  .wrap { max-width: 740px; margin: 0 auto; padding: 0 22px; }
+  p { color: var(--ink-dim); margin: 0; }
+  p strong, li strong { color: var(--ink); }
+  h1, h2, h3, h4 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  code { font-family: var(--mono); }
+  p code, li code {
+    font-size: 0.88em; background: var(--bg-panel-2); border: 1px solid var(--line);
+    border-radius: 6px; padding: 1px 7px; color: var(--cyan); direction: ltr; unicode-bidi: isolate;
+  }
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  section { padding: 60px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; direction: rtl; }
+  .eyebrow.c { color: var(--cyan); }
+  .eyebrow.v { color: var(--violet); }
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); line-height: 1.25; }
+  h3.sub { font-size: 19px; margin-top: 28px; }
+  .lede { font-size: 18px; margin-top: 14px; }
+  .lede + .lede { margin-top: 12px; }
+
+  .scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+  .scroll-progress i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+  .topbar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 12px 0; }
+  .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; }
+  .topbar .course { font-family: var(--display); font-weight: 700; color: var(--ink); }
+  .topbar .lesson-chip { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); border: 1px solid var(--cyan); border-radius: 100px; padding: 3px 12px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 52px; text-align: center; }
+  .hero h1 { font-size: clamp(2.1rem, 7vw, 3.3rem); line-height: 1.18; }
+  .hero h1 .a1 { color: var(--cyan); }
+  .hero h1 .a2 { color: var(--violet); }
+  .hero-sub { max-width: 46ch; margin: 18px auto 0; font-size: 18.5px; }
+  .time-row { margin-top: 22px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .pill { font-size: 13.5px; font-weight: 600; color: var(--ink-dim); border: 1px solid var(--line-strong); border-radius: 100px; padding: 4px 14px; }
+  .morph { margin-top: 30px; font-size: 38px; letter-spacing: 8px; }
+
+  /* ---------- shared bits ---------- */
+  .callout { margin-top: 20px; border-radius: 14px; padding: 14px 18px; font-size: 15.5px; display: flex; gap: 12px; align-items: flex-start; border: 1px solid; }
+  .callout .ico { font-size: 20px; line-height: 1.5; }
+  .callout p { color: var(--ink); }
+  .callout.warn { background: var(--warn-soft); border-color: rgba(255,210,122,.45); }
+  .callout.danger { background: var(--danger-soft); border-color: rgba(255,127,150,.5); }
+  .callout.info { background: var(--cyan-soft); border-color: rgba(255,127,150,.4); }
+  .callout.ok { background: var(--success-soft); border-color: rgba(111,224,160,.45); }
+
+  .code-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 14px; }
+  .code-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 13.5px; font-weight: 700; color: var(--ink-faint); }
+  .copy-btn { font-size: 12.5px; font-weight: 700; color: var(--cyan); background: transparent; border: 1px solid var(--line-strong); border-radius: 100px; padding: 4px 12px; }
+  .copy-btn:hover { border-color: var(--cyan); }
+  .code-card pre { direction: ltr; text-align: left; margin: 0; padding: 16px 18px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14px; line-height: 1.7; color: #f4f1fa; }
+  .code-card pre.he-out { direction: rtl; text-align: right; font-family: var(--sans); font-size: 16px; line-height: 1.7; white-space: pre-wrap; }
+
+  /* ---------- two styles ---------- */
+  .cmp { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .cmp { grid-template-columns: 1fr; } }
+  .cmp-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .cmp-card.a { border-top: 4px solid var(--violet); }
+  .cmp-card.b { border-top: 4px solid var(--success); }
+  .cmp-card .em { font-size: 34px; line-height: 1.2; }
+  .cmp-card h3 { font-size: 19px; margin: 6px 0 6px; }
+  .cmp-card ul { list-style: none; margin: 0; padding: 0; color: var(--ink-dim); font-size: 15.5px; }
+  .cmp-card li { padding: 3px 0; }
+
+  /* ---------- control gauge ---------- */
+  .demo { margin-top: 28px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 18px 18px; }
+  .demo-title { font-family: var(--display); font-weight: 800; color: var(--cyan); margin-bottom: 4px; }
+  .choices { display: grid; gap: 8px; }
+  .choice { text-align: start; background: var(--bg-panel-2); border: 1px solid var(--line-strong); color: var(--ink); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+  .choice:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .choice.sel { border-color: var(--cyan); background: var(--cyan-soft); }
+  .choice.right { border-color: var(--success); background: var(--success-soft); }
+  .choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+  .choice:disabled { cursor: default; }
+  .demo .choices { margin-top: 12px; }
+  .gauge { position: relative; height: 16px; border-radius: 99px; background: linear-gradient(270deg, var(--success), var(--violet) 50%, var(--danger)); margin: 38px 8px 8px; }
+  .needle { position: absolute; top: -9px; width: 6px; height: 34px; border-radius: 3px; background: #fff; right: 50%; transform: translateX(50%); transition: right .5s cubic-bezier(.3,1.4,.5,1); box-shadow: 0 0 0 3px rgba(0,0,0,.35); }
+  .gauge-labels { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--ink-faint); }
+  #gtext { margin-top: 12px; min-height: 56px; font-size: 15.5px; color: var(--ink-dim); }
+  #gtext b { color: var(--ink); }
+
+  /* ---------- study bars ---------- */
+  .bars { margin-top: 22px; display: grid; gap: 12px; }
+  .bar { display: flex; align-items: center; gap: 12px; font-size: 15.5px; }
+  .bar .lab { width: 96px; flex-shrink: 0; color: var(--ink-dim); }
+  .bar .track { flex: 1; min-width: 0; height: 34px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .bar .fill { height: 100%; width: 0; display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font-family: var(--display); font-weight: 800; color: #14121f; transition: width 1.1s ease; }
+  .bar .f1 { background: var(--cyan); }
+  .bar .f2 { background: var(--success); }
+
+  /* ---------- steps ---------- */
+  .steps { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .step-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; transition: border-color .2s; }
+  .step-card.done { border-color: var(--success); }
+  .step-head { display: flex; align-items: center; gap: 12px; }
+  .step-ico { width: 44px; height: 44px; border-radius: 14px; background: var(--bg-panel-2); display: flex; align-items: center; justify-content: center; font-size: 23px; flex-shrink: 0; }
+  .step-head h3 { font-size: 17.5px; flex: 1; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--ink-dim); cursor: pointer; flex-shrink: 0; }
+  .check input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
+  .step-body { margin-top: 12px; }
+  .step-body > p { font-size: 15.5px; }
+  .step-body > p + p { margin-top: 8px; }
+  .step-body .fine { font-size: 14px; color: var(--ink-faint); }
+
+  /* ---------- experiments ---------- */
+  .exps { margin-top: 16px; display: grid; gap: 12px; }
+  .exp { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .exp .em { font-size: 30px; line-height: 1.3; }
+  .exp h4 { font-size: 16px; }
+  .exp p { font-size: 15px; margin-top: 2px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-card { margin-top: 16px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .quiz-card > p { color: var(--ink); font-weight: 600; font-size: 16px; margin-bottom: 12px; }
+  .fb { margin-top: 10px; font-size: 14.5px; font-weight: 700; min-height: 22px; }
+  .fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+
+  /* ---------- mission ---------- */
+  .mission { margin-top: 24px; background: linear-gradient(135deg, var(--cyan-soft), var(--violet-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px 20px; }
+  .mission h3 { font-size: 20px; }
+  .mission ul { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+  .mission li label { display: flex; gap: 12px; align-items: flex-start; color: var(--ink); font-size: 16px; cursor: pointer; }
+  .mission li input { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--success); flex-shrink: 0; }
+  .mission li input:checked + span { color: var(--ink-faint); text-decoration: line-through; }
+  .mission-done { margin-top: 16px; font-weight: 800; font-family: var(--display); color: var(--success); min-height: 26px; }
+  .next-card { margin-top: 26px; border: 1px dashed var(--line-strong); border-radius: var(--radius); padding: 18px 24px; }
+  .next-card .eyebrow { margin-bottom: 4px; }
+  .next-card h3 { font-size: 19px; }
+
+  footer { padding: 44px 0 70px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">Vibe Coding</span>
+    <span class="lesson-chip">שיעור 1</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow c" style="text-align:center;">שיעור 1 · פותחים</div>
+    <h1>מ-<span class="a1">Vibe Coding</span><br>להנדסה <span class="a2">בעזרת AI</span></h1>
+    <p class="hero-sub">תבנו דף קטן בשיחה עם AI, ותלמדו לשאול את השאלה החשובה: מה בעצם קיבלתי?</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-25 דקות</span>
+      <span class="pill">🧰 בלי התקנות</span>
+      <span class="pill">🎯 להבין לפני שמקבלים</span>
+    </div>
+    <div class="morph" aria-hidden="true">💬 → 🧠 → ✅</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= PART 1 ================= -->
+  <section id="styles">
+    <div class="wrap">
+      <div class="eyebrow">חלק 1</div>
+      <h2 class="section-title">שני סגנונות עבודה</h2>
+      <p class="lede">מבקשים מה-AI לכתוב קוד. מה עושים אחר כך? כאן הדרכים נפרדות.</p>
+
+      <div class="cmp">
+        <div class="cmp-card a">
+          <div class="em">🎲</div>
+          <h3>Vibe Coding</h3>
+          <ul>
+            <li>מבקשים, מריצים</li>
+            <li>שגיאה? מדביקים בחזרה</li>
+            <li>לא קוראים את הקוד</li>
+          </ul>
+        </div>
+        <div class="cmp-card b">
+          <div class="em">🧭</div>
+          <h3>הנדסה בעזרת AI</h3>
+          <ul>
+            <li>מנסחים משימה ברורה</li>
+            <li>קוראים, שואלים, בודקים</li>
+            <li>אדם אחראי על התוצאה</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="lede">אף סגנון אינו &quot;נכון&quot; תמיד. השאלה היא <strong>מה על הכף</strong>. נסו בעצמכם:</p>
+
+      <div class="demo">
+        <div class="demo-title">🎛 הדגמה: כמה בקרה צריך?</div>
+        <p style="font-size:15px;">בחרו מה בונים, והמחוג יראה כמה בדיקה נדרשת.</p>
+        <div class="choices" id="scen">
+          <button class="choice" type="button" data-v="8" data-t="<b>אפשר לעבוד חופשי.</b> דף חד-פעמי שרק אתם רואים. אם נשבר, לא קרה כלום.">🎂 דף ברכה ליום הולדת לחבר</button>
+          <button class="choice" type="button" data-v="15" data-t="<b>אפשר לעבוד חופשי.</b> זה ניסוי ללמידה, ואחרי שמבינים אפשר לזרוק.">🧪 ניסוי קטן כדי להבין רעיון</button>
+          <button class="choice" type="button" data-v="60" data-t="<b>בקרה בינונית ומעלה.</b> כלי שנשאר לאורך זמן יתפתח, ולכן צריך להבין אותו ולשמור עליו מסודר.">🛠 כלי קטן שישמש אתכם כל יום</button>
+          <button class="choice" type="button" data-v="85" data-t="<b>בקרה גבוהה.</b> אתר שאוסף טלפונים או שמות הוא מידע אישי. כאן קוראים כל שורה ובודקים אבטחה.">📋 אתר שבו אנשים משאירים פרטים</button>
+          <button class="choice" type="button" data-v="97" data-t="<b>בקרה מלאה.</b> תשלומים הם אזור שכותבים ובודקים בעצמכם, עם בקרה קפדנית מאוד.">💳 אפליקציה שמקבלת תשלומים</button>
+        </div>
+        <div class="gauge"><div class="needle" id="needle"></div></div>
+        <div class="gauge-labels"><span>חופשי</span><span>בקרה מלאה</span></div>
+        <div id="gtext">👆 בחרו אפשרות.</div>
+      </div>
+
+      <div class="callout info">
+        <span class="ico">💡</span>
+        <p>הקורס מלמד את שני הקצוות: מתי מותר לעבוד חופשי, ומתי חייבים בקרה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 2 ================= -->
+  <section id="why">
+    <div class="wrap">
+      <div class="eyebrow c">חלק 2</div>
+      <h2 class="section-title">למה להבין, ולא רק להריץ?</h2>
+      <p class="lede">Anthropic בדקה זאת בניסוי אקראי (ינואר 2026). 52 מהנדסים למדו ספרייה חדשה, ואחר כך נבחנו בהבנה.</p>
+
+      <div class="bars" id="bars">
+        <div class="bar"><span class="lab">עם עזרת AI</span><div class="track"><div class="fill f1" data-w="50">50%</div></div></div>
+        <div class="bar"><span class="lab">בלי AI</span><div class="track"><div class="fill f2" data-w="67">67%</div></div></div>
+      </div>
+
+      <p class="lede">הפער הגדול ביותר היה בדיבוג. מי שהאציל ל-AI את כל הקוד למד הכי פחות. מי שביקש <strong>קוד ואז הבין אותו</strong> (ביקש הסבר, או שאל שאלות רעיוניות) למד טוב יותר.</p>
+
+      <div class="callout warn">
+        <span class="ico">⚠️</span>
+        <p>זה מדגם קטן שבדק הבנה מיידית בלבד, והחוקרים עצמם מדגישים שמדובר בקשר ולא בהוכחת סיבתיות. לכן לא מסיקים מכך ש&quot;AI מאט&quot; או &quot;AI מאיץ&quot;. המסקנה היא על <strong>איך</strong> משתמשים בו.</p>
+      </div>
+      <div class="callout ok">
+        <span class="ico">🧠</span>
+        <p><strong>הכלל של הקורס:</strong> לא מקבלים קוד שלא ניסחתם במילים שלכם מה הוא עושה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 3 ================= -->
+  <section id="build">
+    <div class="wrap">
+      <div class="eyebrow v">חלק 3</div>
+      <h2 class="section-title">בונים דף ראשון</h2>
+      <p class="lede">צריך רק צ׳אט של AI כלשהו (ChatGPT, Claude, Gemini ועוד, גרסה חינמית מספיקה) ודפדפן.</p>
+
+      <div class="steps">
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">💬</div><h3>1 · מבקשים דף</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>פתחו שיחה חדשה והעתיקו לשם את הבקשה:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>הוראה ל-AI</span><button class="copy-btn" type="button">העתק</button></div>
+<pre class="he-out">בנה לי דף HTML אחד לברכת יום הולדת: כותרת גדולה, כפתור שבלחיצה עליו מופיעה הודעת הפתעה, ועיצוב צבעוני. תן לי את הקוד המלא בקובץ אחד.</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">💾</div><h3>2 · שומרים ופותחים</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>העתיקו את הקוד לקובץ בשם <code>index.html</code> ופתחו אותו בדפדפן בלחיצה כפולה.</p>
+            <p class="fine">ב-Windows: פנקס רשימות ← שמירה בשם ← &quot;כל הקבצים&quot;. ב-Mac: ב-TextEdit בחרו Format ← Make Plain Text לפני השמירה.</p>
+          </div>
+        </div>
+
+        <div class="step-card" data-step>
+          <div class="step-head"><div class="step-ico">🛑</div><h3>3 · עוצרים, ושואלים שלוש שאלות</h3><label class="check"><input type="checkbox" class="step-check"> סיימתי</label></div>
+          <div class="step-body">
+            <p>הדף עובד? יופי. <strong>זה הרגע שבו vibe coding נגמר והנדסה מתחילה.</strong> שלחו ל-AI, אחת אחת:</p>
+            <div class="code-card">
+              <div class="code-card-head"><span>הוראה ל-AI</span><button class="copy-btn" type="button">העתק</button></div>
+<pre class="he-out">1. הסבר לי בשפה פשוטה מה עושה כל חלק בקוד.
+2. מה בקוד הזה אתה לא בטוח בו?
+3. איך אוכל לבדוק בעצמי שהכפתור באמת עובד כמו שביקשתי?</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 4 ================= -->
+  <section id="predict">
+    <div class="wrap">
+      <div class="eyebrow c">חלק 4</div>
+      <h2 class="section-title">נחשו לפני שמריצים</h2>
+      <p class="lede">הרגל מרכזי: לפני הרצה, מנחשים מה הקוד יעשה. שלושה ניסויים קצרים יתרגלו את זה.</p>
+
+      <h3 class="sub">ניסויים קצרים</h3>
+      <div class="exps">
+        <div class="exp">
+          <div class="em">🔮</div>
+          <div>
+            <h4>ניסוי 1</h4>
+            <p>בקשו מה-AI &quot;שנה את צבע הכפתור לכחול&quot;. לפני שאתם מעתיקים, נחשו איזו שורה תשתנה.</p>
+          </div>
+        </div>
+        <div class="exp">
+          <div class="em">✏️</div>
+          <div>
+            <h4>ניסוי 2</h4>
+            <p>שנו בעצמכם, בלי AI, את הטקסט של ההודעה בקובץ. שמרו ורעננו את הדף.</p>
+          </div>
+        </div>
+        <div class="exp">
+          <div class="em">🧪</div>
+          <div>
+            <h4>ניסוי 3</h4>
+            <p>מחקו שורה אחת מהקוד ורעננו. מה נשבר? החזירו אותה. ככה לומדים מה כל חלק עושה.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout danger">
+        <span class="ico">🛑</span>
+        <p>&quot;זה רץ&quot; אינו אומר &quot;זה נכון&quot; ואינו אומר &quot;זה בטוח&quot;. בשיעורים הבאים נלמד איך בודקים.</p>
+      </div>
+      <div class="callout info">
+        <span class="ico">🆘</span>
+        <p>קיבלתם שגיאה? העתיקו אותה ושאלו ChatGPT או Claude מה לתקן (בלי המפתח!). אפשר גם לבקש עזרה בניסוח הבקשות, ובהמשך יהיה קורס פרומפטים נפרד.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="wrap">
+      <div class="eyebrow">בדיקה</div>
+      <h2 class="section-title">4 שאלות קצרות</h2>
+      <div id="quiz-container"></div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION ================= -->
+  <section id="mission">
+    <div class="wrap">
+      <div class="eyebrow c">משימות סיום</div>
+      <h2 class="section-title">סיימתם? סמנו</h2>
+
+      <div class="mission">
+        <h3>🎯 שלוש משימות</h3>
+        <ul id="mission-list">
+          <li><label><input type="checkbox"><span>בניתי דף עם AI ופתחתי אותו בדפדפן</span></label></li>
+          <li><label><input type="checkbox"><span>ביקשתי מה-AI להסביר את הקוד ושאלתי &quot;במה אתה לא בטוח?&quot;</span></label></li>
+          <li><label><input type="checkbox"><span>שיניתי דבר אחד בקוד בעצמי והרצתי שוב</span></label></li>
+        </ul>
+        <div class="mission-done" id="mission-done"></div>
+      </div>
+
+      <div class="next-card">
+        <div class="eyebrow">בשיעור הבא</div>
+        <h3>הכלי והסביבה</h3>
+        <p style="margin-top:6px;">נתקין כלי עבודה, נקיים שיחה ראשונה ונבין מה הוא &quot;רואה&quot; בפרויקט.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">Vibe Coding · שיעור 1</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- copy buttons ---------- */
+(function () {
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.closest(".code-card").querySelector("pre").textContent.trim();
+      var original = btn.textContent;
+      function done(ok) {
+        btn.textContent = ok ? "הועתק ✓" : "סמנו והעתיקו ידנית";
+        setTimeout(function () { btn.textContent = original; }, 1600);
+      }
+      function fallback() {
+        var ok = false;
+        try {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.setAttribute("readonly", "");
+          ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+          document.body.appendChild(ta); ta.select();
+          ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch (e) {}
+        done(ok);
+      }
+      try { navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); }
+      catch (e) { fallback(); }
+    });
+  });
+})();
+
+/* ---------- control gauge ---------- */
+(function () {
+  var opts = document.querySelectorAll("#scen .choice");
+  opts.forEach(function (o) {
+    o.addEventListener("click", function () {
+      opts.forEach(function (x) { x.classList.remove("sel"); });
+      o.classList.add("sel");
+      $("needle").style.right = o.dataset.v + "%";
+      $("gtext").innerHTML = o.dataset.t;
+    });
+  });
+})();
+
+/* ---------- study bars: fill when scrolled into view ---------- */
+(function () {
+  var bars = $("bars");
+  function go() { bars.querySelectorAll(".fill").forEach(function (f) { f.style.width = f.dataset.w + "%"; }); }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e, ob) { if (e[0].isIntersecting) { go(); ob.disconnect(); } }, { threshold: 0.4 }).observe(bars);
+  } else go();
+})();
+
+/* ---------- step checklist ---------- */
+(function () {
+  document.querySelectorAll(".step-check").forEach(function (c) {
+    c.addEventListener("change", function () { c.closest(".step-card").classList.toggle("done", c.checked); });
+  });
+})();
+
+/* ---------- quiz ---------- */
+(function () {
+  var qs = [
+    { q: "מה ההבדל העיקרי בין vibe coding להנדסה בעזרת AI?", opts: ["הכלי שבו משתמשים", "בהנדסה קוראים, שואלים ובודקים; ב-vibe coding מריצים בלי לקרוא", "כמות הקוד שנכתב"], ok: 1 },
+    { q: "איך למדו הכי טוב בניסוי של Anthropic?", opts: ["ביקשו קוד, ואז הבינו אותו (למשל בבקשת הסבר)", "האציל ל-AI את כל הקוד", "הדביקו שגיאות בלי לקרוא"], ok: 0 },
+    { q: "מתי מותר לעבוד \"חופשי\"?", opts: ["באפליקציה שמקבלת תשלומים", "באתר שאוסף פרטים אישיים", "באב-טיפוס חד-פעמי שלא נשאר ולא נוגע במידע רגיש"], ok: 2 },
+    { q: "הקוד שה-AI כתב רץ בלי שגיאות. מה זה מוכיח?", opts: ["שהוא נכון ובטוח", "רק שהוא רץ. נכונות ואבטחה צריך לבדוק", "שאין צורך להבין אותו"], ok: 1 }
+  ];
+  var host = $("quiz-container");
+  qs.forEach(function (item, i) {
+    var card = el("div", "quiz-card");
+    card.appendChild(el("p", "", (i + 1) + ". " + item.q));
+    var choices = el("div", "choices"); var fb = el("div", "fb");
+    card.appendChild(choices); card.appendChild(fb);
+    item.opts.forEach(function (o, j) {
+      var b = el("button", "choice", o); b.type = "button";
+      b.addEventListener("click", function () {
+        if (j === item.ok) {
+          choices.querySelectorAll(".choice").forEach(function (x) { x.disabled = true; });
+          b.classList.add("right");
+          fb.textContent = "נכון! ✅"; fb.className = "fb correct";
+        } else {
+          b.classList.add("wrong"); b.disabled = true;
+          fb.textContent = "לא בדיוק, נסו שוב."; fb.className = "fb wrong";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+})();
+
+/* ---------- mission ---------- */
+(function () {
+  var boxes = document.querySelectorAll("#mission-list input");
+  function upd() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    if (window.reportProgress) window.reportProgress(n, boxes.length);
+    $("mission-done").textContent = n === boxes.length ? "🎉 כל הכבוד! סיימתם את שיעור 1" : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+  }
+  boxes.forEach(function (b) { b.addEventListener("change", upd); });
+  if (window.reportProgress) window.reportProgress(0, boxes.length);
+})();
+</script>
+
+</body>
+</html>
+', 1, '2026-10-25T00:00:00.000Z');
