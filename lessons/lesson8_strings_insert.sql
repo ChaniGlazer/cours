@@ -4,7 +4,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מחרוזות (str) בפייתון — רכבת של אותיות</title>
+<title>מחרוזות (str) בפייתון — תיק סודי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -192,6 +192,13 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
     font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong);
     border-radius: 8px; color: var(--ink); padding: 8px 10px; direction: ltr; text-align: center;
   }
+  .m-legend { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:6px 18px; padding:12px 24px; font-size:13.5px; color:var(--ink-dim); border-top:1px solid var(--line); }
+  .m-legend code { display:inline-block; font-family:var(--mono); direction:ltr; unicode-bidi:isolate; color:var(--ink); background:var(--bg-panel-2); padding:1px 6px; border-radius:5px; margin-inline-end:6px; }
+  .m-steps { padding:0 24px 12px; font-size:13.5px; color:var(--ink-dim); }
+  .m-steps div { padding:2px 0; } .m-steps code { display:inline-block; font-family:var(--mono); direction:ltr; unicode-bidi:isolate; color:var(--ink); }
+  .code-row { justify-content: center; gap: 6px; font-size: 16px; }
+  .field-row.code-row input[type="number"] { width: 56px; padding: 8px 4px; }
+  @media (max-width: 520px) { .field-row.code-row { font-size: 12.5px; gap: 3px; padding: 16px 6px; } .code-row .mono { font-size: 12.5px; } .field-row.code-row input[type="number"] { width: 40px; font-size: 13px; } }
   .field-row input[type="text"] { width: 120px; }
   .field-row input[type="number"], .num-in { width: 72px; }
 
@@ -358,9 +365,9 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 <body>
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow" style="justify-content:center; display:flex;">שיעור פייתון · מגמת מחשבים</div>
-    <h1>רכבת של אותיות:<br><span class="accent-for">מחרוזות</span> <span class="accent-while">(str)</span></h1>
-    <p class="hero-sub">כל הודעה, שם וסיסמה שכתבתן בתוכנית הם <strong>מחרוזת</strong>. היום נלמד לחתוך אותן, לשנות אותן ולהרכיב מהן משפטים.</p>
+    <div class="eyebrow" style="justify-content:center; display:flex;">🕵️ תיק סודי · שיעור מחרוזות</div>
+    <h1>סוכנות סודיות:<br><span class="accent-for">מחרוזות</span> <span class="accent-while">(str)</span></h1>
+    <p class="hero-sub">את הסוכנת החדשה של היחידה. בכל משימה תפצחי קוד, תחתכי הודעות, תכתבי סיפורים ותצפינו סודות, וכל אלה עובדים על <strong>מחרוזות</strong>.</p>
     <div class="code-card for-accent solo-code" style="margin:36px auto 0; text-align:left;">
       <div class="code-card-label">Python</div>
       <pre class="hl">word = "python"
@@ -395,6 +402,16 @@ print(word[0].upper() + word[1:])
         </div>
       </div>
 
+      <div class="playground" id="pz1" style="margin-top:28px">
+        <div class="playground-controls"><label>🔐 משימה 1: שחזרי את המילה <span class="mono">cat</span> מתוך <span class="mono">word = "chocolate"</span></label></div>
+        <div class="playground-stage"><div class="shelf" id="pz1-boxes"></div></div>
+        <div class="field-row code-row" dir="ltr">
+          <span class="mono">word[</span><input type="number" id="pz1-a" class="num-in" aria-label="אינדקס 1"><span class="mono">] + word[</span><input type="number" id="pz1-b" class="num-in" aria-label="אינדקס 2"><span class="mono">] + word[</span><input type="number" id="pz1-c" class="num-in" aria-label="אינדקס 3"><span class="mono">]</span>
+        </div>
+        <div class="playground-code" id="pz1-out" style="padding:8px 22px 4px">...</div>
+        <div class="guess-row"><button class="guess-btn" id="pz1-btn" type="button">פצחי את הקוד</button><span class="guess-feedback" id="pz1-fb" role="status" aria-live="polite"></span></div>
+      </div>
+
       <div class="ek-insight"><span class="ek-ic">🚂</span><div><b class="ek-tag">איך זוכרים</b><p>מחרוזת היא רכבת, וכל תו הוא קרון עם מספר. הקרון הראשון הוא מספר <span class="m">0</span>, והאחרון הוא <span class="m">-1</span>.</p></div></div>
     </div>
   </section>
@@ -415,14 +432,18 @@ print(word[0].upper() + word[1:])
 
   <section id="methods">
     <div class="wrap">
-      <div class="eyebrow for-c">שיטות</div>
-      <h2 class="section-title">שיטות: כפתורים של מחרוזת</h2>
-      <p class="lede">לכל מחרוזת יש כפתורים מובנים. כותבים נקודה ושם של פעולה אחרי המחרוזת: <span class="mono">text.upper()</span>. נסי אותם על הטקסט, וגם שני רווחים בתחילתו ובסופו לא יטעו אותך.</p>
+      <div class="eyebrow for-c">משימה 2</div>
+      <h2 class="section-title">מכונת ההסוואה: שיטות</h2>
+      <p class="lede">לכל מחרוזת יש כפתורים מובנים: נקודה ושם של פעולה, למשל <span class="mono">text.upper()</span>. אפשר גם לשרשר כמה כפתורים בזה אחר זה. הרכיבי שרשרת של פעולות ועקבי אחרי הטקסט.</p>
 
       <div class="playground">
-        <div class="playground-controls"><label for="m-text"><bdi dir="ltr">text =</bdi></label><input type="text" id="m-text" value="  hello Python class  " class="num-in" style="width:min(300px,100%);direction:ltr"></div>
-        <div class="field-row"><div class="pill-row" id="m-pills"></div></div>
-        <div class="log" id="m-log" aria-live="polite"><div class="empty">לחצי על שיטה כדי להריץ אותה.</div></div>
+        <div class="playground-controls" dir="ltr"><label for="m-text"><bdi dir="ltr">text =</bdi></label><input type="text" id="m-text" value="  hello Python class  " class="num-in" style="width:min(300px,100%);direction:ltr"></div>
+        <div class="field-row"><span style="font-size:14.5px;font-weight:600">לחצי כדי להוסיף לשרשרת:</span><div class="pill-row" id="m-pills"></div></div>
+        <div class="m-legend"><div><code>.strip()</code> מוחק רווחים מההתחלה ומהסוף</div><div><code>.upper()</code> כל האותיות לגדולות</div><div><code>.lower()</code> כל האותיות לקטנות</div><div><code>.title()</code> האות הראשונה בכל מילה לגדולה</div><div><code>.replace("l", "L")</code> מחליף כל l ב-L</div><div><code>.replace(" ", "_")</code> מחליף כל רווח בקו תחתון</div></div>
+        <div class="m-steps" id="m-steps"></div>
+        <div class="playground-code" id="m-code" aria-live="polite"></div>
+        <div class="log" id="m-log" aria-live="polite"></div>
+        <div class="playground-note" id="m-orig" style="padding-top:12px"></div>
       </div>
 
       <div class="ek-insight"><span class="ek-ic">📸</span><div><b class="ek-tag">איך זוכרים</b><p>מחרוזת לא משתנה לעולם. כל שיטה מחזירה מחרוזת <b>חדשה</b>, כמו צילום עם פילטר, והמקור נשאר כמו שהיה. כדי לשמור אותה, כותבים <span class="m">text = text.upper()</span>.</p></div></div>
@@ -459,24 +480,38 @@ print(name)</pre>
         <div class="playground-code" id="sl-code" aria-live="polite"></div>
       </div>
 
+      <div class="playground" style="margin-top:28px">
+        <div class="playground-controls"><label>✂️ משימה 3: חתכי את הסוד מתוך ההודעה</label><span class="mono">msg = "xxxSECRETyyy"</span></div>
+        <div class="playground-stage"><div class="shelf" id="pz2-boxes"></div></div>
+        <div class="field-row code-row" dir="ltr"><span class="mono">msg[</span><input type="number" id="pz2-a" class="num-in" aria-label="התחלה"><span class="mono">:</span><input type="number" id="pz2-b" class="num-in" aria-label="עצירה"><span class="mono">]</span></div>
+        <div class="playground-code" id="pz2-out" style="padding:8px 22px 4px">...</div>
+        <div style="padding:16px 24px 0;font-size:14.5px;font-weight:600;border-top:1px solid var(--line)">והודעה שנכתבה במראה: <span class="mono" dir="ltr">"!nohtyp evol I"</span><br>מה כותבים בסוגריים כדי להפוך אותה?</div>
+        <div class="field-row code-row" dir="ltr"><span class="mono">msg[</span><input type="text" id="pz3-in" class="num-in" autocomplete="off" aria-label="הסוגריים" style="width:90px"><span class="mono">]</span><button class="guess-btn" id="pz3-btn" type="button" dir="rtl" style="margin-inline-start:10px">בדקי</button></div>
+        <div class="guess-row" style="padding-top:0"><span class="guess-feedback" id="pz3-fb" role="status" aria-live="polite"></span></div>
+      </div>
+
       <div class="ek-insight"><span class="ek-ic">✂️</span><div><b class="ek-tag">איך זוכרים</b><p>חותכים <b>לפני</b> התא של העצירה. לכן <span class="m">[2:5]</span> לוקחת את תאים 2, 3 ו-4 בלבד.</p></div></div>
     </div>
   </section>
 
   <section id="fstr">
     <div class="wrap">
-      <div class="eyebrow for-c">f-string</div>
-      <h2 class="section-title">להרכיב משפט עם f-string</h2>
-      <p class="lede">כדי לשלב משתנים בתוך משפט, כותבים <span class="mono">f</span> לפני המרכאות ושמים כל משתנה בסוגריים מסולסלים. נסי את שלוש הדרכים, ושימי לב מה קורה עם <span class="mono">+</span> כשיש מספר.</p>
+      <div class="eyebrow for-c">משימה 4</div>
+      <h2 class="section-title">מחולל סיפורים מצחיקים: f-string</h2>
+      <p class="lede">כדי לשלב משתנים בתוך משפט, כותבים <span class="mono">f</span> לפני המרכאות ושמים כל משתנה בסוגריים מסולסלים. מלאי את הפרטים וקבלי סיפור, או לחצי על ההפתעה.</p>
 
       <div class="playground">
-        <div class="playground-controls">
-          <label for="fs-name"><bdi dir="ltr">name =</bdi></label><input type="text" id="fs-name" value="Dana" maxlength="12" class="num-in" style="width:120px;direction:ltr">
-          <label for="fs-age"><bdi dir="ltr">age =</bdi></label><input type="number" id="fs-age" value="15" class="num-in">
+        <div class="playground-controls" style="gap:10px">
+          <label for="fs-name"><bdi dir="ltr">name</bdi></label><input type="text" id="fs-name" value="Dana" maxlength="12" class="num-in" style="width:100px;direction:ltr">
+          <label for="fs-animal"><bdi dir="ltr">animal</bdi></label><input type="text" id="fs-animal" value="dragon" maxlength="12" class="num-in" style="width:100px;direction:ltr">
+          <label for="fs-food"><bdi dir="ltr">food</bdi></label><input type="text" id="fs-food" value="pizza" maxlength="12" class="num-in" style="width:100px;direction:ltr">
+          <label for="fs-num"><bdi dir="ltr">n</bdi></label><input type="number" id="fs-num" value="7" class="num-in">
+          <button class="pill reset" id="fs-rand" type="button">🎲 הפתעה</button>
         </div>
-        <div class="field-row"><div class="pill-row" id="fs-pills"></div></div>
-        <div class="playground-code" id="fs-code"></div>
-        <div class="log" id="fs-out" aria-live="polite"></div>
+        <div class="log" id="fs-out" style="font-family:var(--sans);font-size:19px;direction:ltr;text-align:left;line-height:1.7;color:var(--for);white-space:normal" aria-live="polite"></div>
+        <pre class="code-static hl" id="fs-code" style="margin:0;border-radius:0"></pre>
+        <div class="field-row"><span style="font-size:14.5px;font-weight:600">ומה קורה אם משתמשים ב-<span class="mono">+</span> עם מספר?</span><button class="pill" id="fs-bad" type="button">נסי שרשור עם +</button></div>
+        <div class="log" id="fs-err" style="min-height:0;padding:0 24px"></div>
       </div>
 
       <div class="ek-insight"><span class="ek-ic">🧩</span><div><b class="ek-tag">איך זוכרים</b><p>האות <span class="m">f</span> הופכת את המחרוזת לתבנית: כל מה שבתוך <span class="m">{ }</span> מוחלף בערך, וגם מספרים נכנסים בלי <span class="m">str()</span>.</p></div></div>
@@ -535,8 +570,8 @@ print(count)</pre>
 
       <div class="exercise-card for-accent">
         <div class="exercise-num">תרגיל 3</div>
-        <div class="exercise-task">כרטיס ביקור: בקשי עם <span class="mono">input</span> שם מלא, והדפיסי אותו באותיות גדולות, את אורכו, ואת האות הראשונה שלו. השתמשי ב-f-string.</div>
-        <p class="exercise-note">רמז: <span class="mono">name.upper()</span>, <span class="mono">len(name)</span>, <span class="mono">name[0]</span>.</p>
+        <div class="exercise-task">סיפור משלך: בקשי עם <span class="mono">input</span> שם, חיה ואוכל, והדפיסי סיפור קצר ומצחיק עם f-string. הוסיפי גם את אורך השם עם <span class="mono">len</span>.</div>
+        <p class="exercise-note">רמז: <span class="mono">f"{name} ... {len(name)}"</span>.</p>
         <div id="ex3-ed"></div>
       </div>
 
@@ -559,6 +594,7 @@ print(count)</pre>
         <li>שיטות כמו <span class="mono">upper</span>, <span class="mono">strip</span>, <span class="mono">replace</span>, <span class="mono">split</span>, והן מחזירות מחרוזת חדשה במקום לשנות את המקור.</li>
         <li>פרוסות <span class="mono">[התחלה:עצירה]</span>, והעצירה לא כלולה.</li>
         <li>f-string: <span class="mono">f"Hi {name}"</span>.</li>
+        <li>לולאה על מחרוזת עוברת תו אחר תו.</li>
       </ul>
     </div>
   </section>
@@ -624,9 +660,18 @@ pillRow($(''ops-pills''),OPS.map(function(o){return o[0]}),function(j){var w=$('
 
 // ---- methods ----
 function title(s){return s.replace(/[A-Za-z]+/g,function(x){return x[0].toUpperCase()+x.slice(1).toLowerCase()})}
-function cnt(s,c){return s.split(c).length-1}
-var MS=[[''text.upper()'',function(t){return rep(t.toUpperCase())}],[''text.lower()'',function(t){return rep(t.toLowerCase())}],[''text.title()'',function(t){return rep(title(t))}],[''text.strip()'',function(t){return rep(t.trim())}],[''text.replace("l", "L")'',function(t){return rep(t.split(''l'').join(''L''))}],[''text.split()'',function(t){return ''[''+t.split(/\s+/).filter(Boolean).map(rep).join('', '')+'']''}],[''text.count("l")'',function(t){return String(cnt(t,''l''))}]];
-pillRow($(''m-pills''),MS.map(function(o){return o[0]}),function(j){row($(''m-log''),''>>> ''+MS[j][0],MS[j][1]($(''m-text'').value))});
+var MS=[[''.strip()'',function(t){return t.trim()}],[''.upper()'',function(t){return t.toUpperCase()}],[''.lower()'',function(t){return t.toLowerCase()}],[''.title()'',function(t){return title(t)}],[''.replace("l", "L")'',function(t){return t.split(''l'').join(''L'')}],[''.replace(" ", "_")'',function(t){return t.split('' '').join(''_'')}]],chain=[];
+function mrender(){
+  var t=$(''m-text'').value,r=t,code=''text''+chain.map(function(i){return MS[i][0]}).join('''');
+  chain.forEach(function(i){r=MS[i][1](r)});
+  $(''m-code'').innerHTML=''<div class="line">''+highlight(code)+''</div>'';
+  var l=$(''m-log'');l.innerHTML='''';row(l,''>>>'',rep(r));
+  var MD=[''מחק רווחים בהתחלה ובסוף'',''הפך לאותיות גדולות'',''הפך לאותיות קטנות'',''האות הראשונה בכל מילה גדולה'',''החליף l ב-L'',''החליף רווחים בקו תחתון''],cur=t,st=$(''m-steps'');st.innerHTML='''';
+  chain.forEach(function(i,n){cur=MS[i][1](cur);var d=document.createElement(''div'');d.innerHTML=(n+1)+''. <code></code> ''+MD[i]+'' ← '';d.querySelector(''code'').textContent=MS[i][0];var c=document.createElement(''code'');c.textContent=rep(cur);d.appendChild(c);st.appendChild(d)});
+  $(''m-orig'').textContent=''והטקסט המקורי? ''+rep(t)+'' (הוא לא השתנה).'';
+}
+pillRow($(''m-pills''),MS.map(function(o){return o[0]}).concat([''↺ נקי'']),function(j){if(j===MS.length)chain=[];else chain.push(j);mrender()});
+$(''m-text'').oninput=mrender;mrender();
 
 // ---- rescue ----
 var rs=$(''rescue1'');
@@ -651,18 +696,65 @@ function slices(){
 $(''sl-a'').oninput=function(){rev=false;slices()};$(''sl-b'').oninput=function(){rev=false;slices()};
 $(''sl-rev'').onclick=function(){rev=!rev;slices()};slices();
 
-// ---- f-string ----
-var FS=[''"Hi " + name + ", you are " + age'',''"Hi " + name + ", you are " + str(age)'',''f"Hi {name}, you are {age}"''],fsCur=0;
-function fstr(){
-  var nm=$(''fs-name'').value,ag=$(''fs-age'').value||''0'';
-  activate($(''fs-pills''),fsCur);
-  $(''fs-code'').innerHTML=''<div class="line">''+highlight(''name = "''+nm+''"\nage = ''+ag+''\nprint(''+FS[fsCur]+'')'').split(''\n'').join(''</div><div class="line">'')+''</div>'';
-  var o=$(''fs-out'');o.innerHTML='''';
-  if(fsCur===0)row(o,'''',''TypeError: can only concatenate str (not "int") to str'',true);
-  else row(o,'''',''Hi ''+nm+'', you are ''+ag);
+// ---- משימה 1: אינדקסים ----
+var PZ1=''chocolate'',PZ1_IDS=[''pz1-a'',''pz1-b'',''pz1-c''];
+function pz1Pick(){return PZ1_IDS.map(function(id){var v=$(id).value;return v===''''?null:+v})}
+function pz1Boxes(){
+  var n=PZ1.length,on=[];
+  pz1Pick().forEach(function(i){if(i!==null){var k=i<0?i+n:i;if(k>=0&&k<n)on.push(k)}});
+  boxes($(''pz1-boxes''),PZ1,on,true);
 }
-pillRow($(''fs-pills''),[''שרשור עם +'',''שרשור עם str()'',''f-string''],function(j){fsCur=j;fstr()});
-$(''fs-name'').oninput=fstr;$(''fs-age'').oninput=fstr;fstr();
+PZ1_IDS.forEach(function(id){$(id).oninput=pz1Boxes});pz1Boxes();
+$(''pz1-btn'').onclick=function(){
+  var p=pz1Pick(),fb=$(''pz1-fb''),out=$(''pz1-out'');
+  if(p.indexOf(null)>-1){fb.className=''guess-feedback wrong'';fb.textContent=''מלאי את שלושת המספרים.'';return}
+  var res='''',bad=false;
+  p.forEach(function(i){var k=i<0?i+PZ1.length:i;if(k<0||k>=PZ1.length)bad=true;else res+=PZ1[k]});
+  out.innerHTML=''<div class="line">''+highlight(''print(word[''+p[0]+''] + word[''+p[1]+''] + word[''+p[2]+''])'')+''</div><div class="line ''+(bad?''err'':''out'')+''">''+esc(bad?''IndexError: string index out of range'':res)+''</div>'';
+  if(bad){fb.className=''guess-feedback wrong'';fb.textContent=''אין תא כזה. בדקי את המספרים מול הרכבת.''}
+  else if(res===''cat''){fb.className=''guess-feedback correct'';fb.textContent=''פוצח! c, a, t. אפשר גם למצוא כל אות מהסוף עם מספר שלילי.''}
+  else{fb.className=''guess-feedback wrong'';fb.textContent=''יצא ''+res+''. חפשי את האותיות c, a, t ברכבת.''}
+};
+
+// ---- משימה 3: פרוסות ----
+var PZ2=''xxxSECRETyyy'',pz2Won=false;
+function pz2(){
+  var a=$(''pz2-a'').value,b=$(''pz2-b'').value,out=$(''pz2-out'');
+  if(a===''''&&b===''''){boxes($(''pz2-boxes''),PZ2,[],false);out.textContent=''...'';return}
+  var A=a===''''?undefined:+a,B=b===''''?undefined:+b,res=PZ2.slice(A,B),ok=res===''SECRET'';
+  boxes($(''pz2-boxes''),PZ2,PZ2.split('''').map(function(_,i){return i}).slice(A,B),false);
+  out.innerHTML=''<div class="line">''+highlight(''print(msg[''+a+'':''+b+''])'')+''</div><div class="line out">''+esc(res===''''?"'''' (מחרוזת ריקה)":res)+(ok?''  ✔ פוצח!'':'''')+''</div>'';
+  if(ok&&!pz2Won){pz2Won=true;if(window.EK_award)window.EK_award(out)}
+}
+$(''pz2-a'').oninput=pz2;$(''pz2-b'').oninput=pz2;pz2();
+$(''pz3-btn'').onclick=function(){
+  var v=$(''pz3-in'').value.replace(/[\s\[\]]/g,''''),fb=$(''pz3-fb'');
+  if(v===''::-1''){fb.className=''guess-feedback correct'';fb.textContent=''נכון! [::-1] הופך את כל המחרוזת: I love python!''}
+  else{fb.className=''guess-feedback wrong'';fb.textContent=''לא בדיוק. השאירי את ההתחלה והעצירה ריקות, והוסיפי צעד שהולך אחורה.''}
+};
+
+// ---- משימה 4: מחולל סיפורים ----
+var rnd=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
+function pick(a){return a[rnd(0,a.length-1)]}
+function fstr(){
+  var nm=$(''fs-name'').value,an=$(''fs-animal'').value,fd=$(''fs-food'').value,nn=$(''fs-num'').value||''0'';
+  $(''fs-code'').innerHTML=''<code>''+highlight(''name = "''+nm+''"\nanimal = "''+an+''"\nfood = "''+fd+''"\nn = ''+nn+''\nprint(f"{name} gave {n} {food} to the {animal}. The {animal} said: thank you, {name}!")'')+''</code>'';
+  $(''fs-out'').textContent=nm+'' gave ''+nn+'' ''+fd+'' to the ''+an+''. The ''+an+'' said: thank you, ''+nm+''!'';
+}
+[''fs-name'',''fs-animal'',''fs-food'',''fs-num''].forEach(function(id){$(id).oninput=fstr});
+$(''fs-rand'').onclick=function(){
+  $(''fs-name'').value=pick([''Dana'',''Noam'',''Yael'',''Ori'',''Maya'']);
+  $(''fs-animal'').value=pick([''dragon'',''penguin'',''llama'',''shark'',''owl'']);
+  $(''fs-food'').value=pick([''pizza'',''falafel'',''sushi'',''pancakes'',''popcorn'']);
+  $(''fs-num'').value=rnd(2,99);
+  fstr();
+};
+$(''fs-bad'').onclick=function(){
+  var e=$(''fs-err'');e.innerHTML='''';e.style.padding=''12px 24px'';
+  row(e,''>>> print(name + " gave " + n + " " + food)'',''TypeError: can only concatenate str (not "int") to str'',true);
+  var h=document.createElement(''div'');h.className=''empty'';h.style.marginTop=''6px'';h.textContent=''n הוא מספר, ו-+ לא מדביקה מספר למחרוזת. עם f-string אין בעיה.'';e.appendChild(h);
+};
+fstr();
 
 // ---- vowels ----
 function vw(){
@@ -708,11 +800,11 @@ pyEditor({
   onPass: function () { exSolved["ex1-btn"] = true; reportEx(); }
 });
 pyEditor({
-  el: "ex3-ed", id: "ex3", rows: 7, maxRows: 16, code: ''# כרטיס ביקור: בקשי שם מלא עם input\n'',
-  tests: [{ label: "yael levi", inputs: ["yael levi"], verify: function (r) {
-    if (r.printed.indexOf("YAEL LEVI") < 0) return "חסר השם באותיות גדולות: YAEL LEVI (upper).";
-    if (!/\b9\b/.test(r.printed)) return "חסר האורך של השם: 9 (len).";
-    if (!/[yY]/.test(r.printed.replace(/YAEL LEVI/g, ""))) return "חסרה האות הראשונה של השם (אינדקס 0).";
+  el: "ex3-ed", id: "ex3", rows: 7, maxRows: 16, code: ''# סיפור משלך: בקשי שם, חיה ואוכל עם input\n'',
+  tests: [{ label: "yonatan, dragon, pizza", inputs: ["yonatan", "dragon", "pizza"], verify: function (r) {
+    var p = r.printed;
+    if (p.indexOf("yonatan") < 0 || p.indexOf("dragon") < 0 || p.indexOf("pizza") < 0) return "הסיפור צריך לכלול את השם, החיה והאוכל שהוזנו.";
+    if (!/\b7\b/.test(p)) return "חסר האורך של השם: 7 (len).";
     return /\bf["'']/.test(r.code) ? true : "השתמשי ב-f-string (f לפני המרכאות).";
   } }]
 });
