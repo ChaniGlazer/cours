@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ברוכים הבאים לעידן התכנות החדש — שיעור ראשון</title>
+<style>
+html,body{margin:0;background:#080b1a}
+body{padding:12px}
+</style>
+</head>
+<body>
+<div class="cbl" id="cbl-1" dir="rtl" lang="he">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800;900&display=swap');
+.cbl{--bg:#080b1a;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--ink:#eef1ff;--mut:#a3abd0;--c1:#7c5cff;--c2:#22d3ee;--c3:#ff4fa3;--ok:#34e0a1;--bad:#ff6b6b;--gold:#ffd166;
+  position:relative;overflow:hidden;max-width:820px;margin:0 auto;padding:20px 18px 34px;border-radius:28px;color:var(--ink);font-family:'Heebo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:17px;line-height:1.65;box-sizing:border-box;
+  background:radial-gradient(900px 500px at 85% -5%,rgba(124,92,255,.35),transparent 60%),radial-gradient(700px 500px at 0% 35%,rgba(34,211,238,.16),transparent 60%),radial-gradient(800px 600px at 100% 75%,rgba(255,79,163,.14),transparent 60%),var(--bg)}
+.cbl *{box-sizing:border-box}
+.cbl h1,.cbl h2,.cbl h3,.cbl p{margin:0}
+.cbl button{font:inherit;cursor:pointer;color:inherit}
+.cbl code{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+/* reveal */
+.cbl.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.cbl.js .rv.in{opacity:1;transform:none}
+
+/* hero */
+.cbl .hero{position:relative;padding:34px 8px 10px;text-align:center}
+.cbl .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;animation:cblFloat 9s ease-in-out infinite}
+.cbl .b1{width:220px;height:220px;background:var(--c1);top:-40px;right:-30px}
+.cbl .b2{width:180px;height:180px;background:var(--c2);top:120px;left:-40px;animation-delay:-4s}
+.cbl .hero>*:not(.blob){position:relative;z-index:1}
+.cbl .kick{display:inline-block;background:var(--panel);border:1px solid var(--line);padding:6px 16px;border-radius:999px;font-size:14px;color:var(--c2);font-weight:600;margin-bottom:18px;backdrop-filter:blur(8px)}
+.cbl h1{font-size:clamp(34px,7vw,58px);line-height:1.08;font-weight:900;letter-spacing:-.5px}
+.cbl .grad{background:linear-gradient(90deg,var(--c2),var(--c1) 50%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.cbl .sub{color:var(--mut);font-size:19px;margin:14px auto 22px;max-width:520px}
+.cbl .nums{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0 26px}
+.cbl .num{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:10px 20px;backdrop-filter:blur(8px)}
+.cbl .num b{display:block;font-size:30px;font-weight:900;line-height:1.1}
+.cbl .num span{font-size:13px;color:var(--mut)}
+
+/* terminal */
+.cbl .term{direction:ltr;text-align:left;background:#05070f;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px rgba(124,92,255,.25);overflow:hidden;margin:0 auto;max-width:640px}
+.cbl .tbar{display:flex;gap:7px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.05)}
+.cbl .tbar i{width:12px;height:12px;border-radius:50%;display:block}
+.cbl .tbar i:nth-child(1){background:#ff5f57}.cbl .tbar i:nth-child(2){background:#febc2e}.cbl .tbar i:nth-child(3){background:#28c840}
+.cbl .tbar span{margin-left:10px;font-size:12px;color:var(--mut)}
+.cbl .tbody{padding:16px 18px;font-size:14.5px;min-height:150px;line-height:1.8;font-family:ui-monospace,Menlo,Consolas,monospace}
+.cbl .tbody .p{color:var(--c2)}
+.cbl .tbody .g{color:var(--ok)}
+.cbl .tbody .m{color:var(--mut)}
+.cbl .caret{display:inline-block;width:8px;height:16px;background:var(--c2);vertical-align:middle;animation:cblBlink 1s steps(1) infinite}
+
+/* sections */
+.cbl .sec{margin-top:64px}
+.cbl .sh{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.cbl .sn{font-size:46px;font-weight:900;line-height:1;background:linear-gradient(180deg,var(--c1),transparent);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;opacity:.95}
+.cbl .sh h2{font-size:clamp(24px,4.5vw,32px);font-weight:800;line-height:1.15}
+.cbl .lead{color:var(--mut);margin-bottom:18px}
+.cbl .glass{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;backdrop-filter:blur(10px)}
+
+/* roles */
+.cbl .vsrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cbl .role h3{font-size:22px;font-weight:800;margin-bottom:10px}
+.cbl .role ul{list-style:none;margin:0;padding:0}
+.cbl .role li{padding:5px 0;display:flex;gap:10px;align-items:flex-start}
+.cbl .role li:before{content:"";width:9px;height:9px;border-radius:50%;margin-top:11px;flex:none}
+.cbl .ai{border-color:rgba(34,211,238,.4);box-shadow:0 0 40px rgba(34,211,238,.12) inset}
+.cbl .ai li:before{background:var(--c2);box-shadow:0 0 10px var(--c2)}
+.cbl .ai li.x:before{background:var(--bad);box-shadow:0 0 10px var(--bad)}
+.cbl .me{border-color:rgba(255,79,163,.45);box-shadow:0 0 40px rgba(255,79,163,.12) inset}
+.cbl .me li:before{background:var(--c3);box-shadow:0 0 10px var(--c3)}
+.cbl .punch{margin-top:16px;text-align:center;font-size:20px;font-weight:700;padding:16px;border-radius:18px;background:linear-gradient(90deg,rgba(124,92,255,.3),rgba(34,211,238,.25))}
+
+/* demo window */
+.cbl .win{background:#05070f;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(34,211,238,.15)}
+.cbl .wbar{display:flex;gap:7px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.05);direction:ltr}
+.cbl .wbar i{width:12px;height:12px;border-radius:50%;display:block}
+.cbl .wbar i:nth-child(1){background:#ff5f57}.cbl .wbar i:nth-child(2){background:#febc2e}.cbl .wbar i:nth-child(3){background:#28c840}
+.cbl .wbody{padding:20px}
+.cbl .wbody label{font-weight:700;display:block;margin-bottom:8px}
+.cbl .row{display:flex;gap:10px;flex-wrap:wrap}
+.cbl .row input{flex:1;min-width:200px;padding:13px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font:inherit;font-size:15px;direction:ltr;text-align:left;outline:none}
+.cbl .row input:focus{border-color:var(--c2);box-shadow:0 0 0 3px rgba(34,211,238,.2)}
+.cbl .btn{border:0;border-radius:14px;padding:13px 24px;font-weight:800;color:#fff;background:linear-gradient(90deg,var(--c1),var(--c3));box-shadow:0 8px 24px rgba(124,92,255,.4);transition:transform .15s,box-shadow .15s;text-decoration:none;display:inline-block}
+.cbl .btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 12px 30px rgba(255,79,163,.45)}
+.cbl .btn.ghost{background:var(--panel);border:1px solid var(--line);box-shadow:none}
+.cbl .err{color:var(--bad);margin-top:8px;display:none}
+.cbl .res{display:none;margin-top:18px}
+.cbl .res.show{display:block;animation:cblPop .5s cubic-bezier(.2,1.4,.4,1)}
+.cbl .short{direction:ltr;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(22px,5vw,34px);font-weight:800;padding:18px;border-radius:16px;border:2px dashed var(--c2);color:var(--c2);background:rgba(34,211,238,.08);text-shadow:0 0 18px rgba(34,211,238,.6);word-break:break-all}
+.cbl .cmp{display:flex;align-items:center;justify-content:center;gap:18px;margin:16px 0;flex-wrap:wrap}
+.cbl .cmp .bx{text-align:center}
+.cbl .cmp b{display:block;font-size:38px;font-weight:900;line-height:1}
+.cbl .cmp .a b{color:var(--bad)}.cbl .cmp .z b{color:var(--ok)}
+.cbl .cmp span{font-size:13px;color:var(--mut)}
+.cbl .cmp .ar{font-size:30px;color:var(--mut)}
+.cbl .redir{display:none;margin-top:14px;padding:14px 16px;border-radius:14px;background:rgba(52,224,161,.12);border:1px solid rgba(52,224,161,.4)}
+.cbl .redir.show{display:block;animation:cblPop .4s ease}
+.cbl .redir code{direction:ltr;unicode-bidi:embed;font-size:13px;word-break:break-all;color:var(--ok)}
+
+/* modules */
+.cbl .mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cbl .mod{position:relative;text-align:right;padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);transition:all .2s}
+.cbl .mod:hover{transform:translateY(-3px);border-color:var(--c2)}
+.cbl .mod .e{font-size:26px;display:block;margin-bottom:4px}
+.cbl .mod b{display:block;font-size:12px;color:var(--c2);letter-spacing:.5px}
+.cbl .mod span{font-weight:700;font-size:15px;line-height:1.25;display:block}
+.cbl .mod.on{background:linear-gradient(135deg,var(--c1),var(--c3));border-color:transparent;box-shadow:0 10px 30px rgba(124,92,255,.45);transform:translateY(-3px)}
+.cbl .mod.on b{color:#fff;opacity:.85}
+.cbl .minfo{margin-top:12px;padding:16px 18px;border-radius:16px;background:var(--panel);border:1px solid var(--line);min-height:60px}
+
+/* loop */
+.cbl .loop{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:relative}
+.cbl .st{padding:16px 8px;border-radius:18px;background:var(--panel);border:1px solid var(--line);text-align:center;transition:all .25s;font-weight:800}
+.cbl .st .e{font-size:34px;display:block;margin-bottom:4px}
+.cbl .st small{display:block;color:var(--mut);font-weight:600}
+.cbl .st.on{background:linear-gradient(160deg,rgba(124,92,255,.5),rgba(34,211,238,.3));border-color:var(--c2);transform:translateY(-4px);box-shadow:0 12px 34px rgba(34,211,238,.25)}
+.cbl .split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.cbl .pane{padding:16px;border-radius:16px;background:var(--panel);border:1px solid var(--line);min-height:100px}
+.cbl .pane h4{margin:0 0 6px;font-size:13px;color:var(--c2);letter-spacing:.6px}
+.cbl .pane.k{background:#05070f;direction:rtl}
+.cbl .pane.k h4{color:var(--ok)}
+
+/* battle */
+.cbl .bt{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cbl .pick{text-align:right;padding:18px;border-radius:18px;background:var(--panel);border:2px solid var(--line);transition:all .2s}
+.cbl .pick:hover{transform:translateY(-3px)}
+.cbl .pick h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.cbl .pick p{color:var(--mut);font-size:15px}
+.cbl .pick.v.on{border-color:var(--bad);box-shadow:0 0 36px rgba(255,107,107,.25)}
+.cbl .pick.s.on{border-color:var(--ok);box-shadow:0 0 36px rgba(52,224,161,.25)}
+.cbl .out{margin-top:14px;padding:18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);min-height:90px}
+.cbl .out h4{margin:0 0 10px;font-size:18px}
+.cbl .tags{display:flex;flex-wrap:wrap;gap:8px}
+.cbl .tag{padding:6px 14px;border-radius:999px;font-size:14px;font-weight:600;animation:cblPop .4s cubic-bezier(.2,1.4,.4,1) both}
+.cbl .tag.bad{background:rgba(255,107,107,.15);border:1px solid rgba(255,107,107,.5);color:#ffb0b0}
+.cbl .tag.good{background:rgba(52,224,161,.15);border:1px solid rgba(52,224,161,.5);color:#a5f3d4}
+
+/* challenges */
+.cbl .chtop{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.cbl .ring{position:relative;width:64px;height:64px;flex:none}
+.cbl .ring svg{transform:rotate(-90deg)}
+.cbl .ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.cbl .ring .bg{stroke:rgba(255,255,255,.12)}
+.cbl .ring .fg{stroke:var(--ok);stroke-dasharray:163.4;stroke-dashoffset:163.4;transition:stroke-dashoffset .6s ease;filter:drop-shadow(0 0 6px var(--ok))}
+.cbl .ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+.cbl .ch{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:18px;background:var(--panel);border:1px solid var(--line);margin-bottom:10px;cursor:pointer;transition:all .25s}
+.cbl .ch:hover{border-color:var(--c2)}
+.cbl .ch input{position:absolute;opacity:0;pointer-events:none}
+.cbl .ch .ck{width:30px;height:30px;border-radius:10px;border:2px solid var(--mut);flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;color:transparent;transition:all .25s;margin-top:2px}
+.cbl .ch.done{background:rgba(52,224,161,.1);border-color:rgba(52,224,161,.5)}
+.cbl .ch.done .ck{background:var(--ok);border-color:var(--ok);color:#06251a}
+.cbl .ch b{display:block;font-size:18px;margin-bottom:2px}
+.cbl .ch.done b{text-decoration:line-through;opacity:.75}
+.cbl .ch span.t{color:var(--mut);font-size:15.5px}
+.cbl .ch code{background:rgba(255,255,255,.1);padding:1px 8px;border-radius:6px;color:var(--c2);font-size:14px;direction:ltr;display:inline-block}
+
+/* quiz */
+.cbl .q{margin-bottom:14px}
+.cbl .q h3{font-size:18px;font-weight:800;margin-bottom:12px}
+.cbl .opts{display:grid;gap:8px}
+.cbl .opt{text-align:right;padding:13px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);transition:all .2s;font-size:16px}
+.cbl .opt:hover{border-color:var(--c2);transform:translateX(-4px)}
+.cbl .opt.ok{background:rgba(52,224,161,.18);border-color:var(--ok)}
+.cbl .opt.no{background:rgba(255,107,107,.18);border-color:var(--bad)}
+.cbl .score{text-align:center;font-size:24px;font-weight:900;margin-top:10px;min-height:34px}
+
+/* summary */
+.cbl .sum{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.cbl .sum li{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:16px;background:var(--panel);border:1px solid var(--line);font-weight:600}
+.cbl .sum li i{font-style:normal;font-size:24px;flex:none}
+
+/* qa */
+.cbl details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:10px;transition:border-color .2s}
+.cbl details[open]{border-color:var(--c1)}
+.cbl summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cbl summary::-webkit-details-marker{display:none}
+.cbl summary:after{content:"+";font-size:24px;color:var(--c2);transition:transform .25s;flex:none}
+.cbl details[open] summary:after{transform:rotate(45deg)}
+.cbl details p{margin-top:10px;color:var(--mut)}
+
+.cbl a{color:var(--c2)}
+.cbl .conf{position:absolute;top:-20px;font-size:24px;pointer-events:none;z-index:50;animation:cblFall linear forwards}
+
+@keyframes cblFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,30px)}}
+@keyframes cblBlink{50%{opacity:0}}
+@keyframes cblPop{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cblFall{to{transform:translateY(1400px) rotate(540deg);opacity:0}}
+@media (max-width:640px){.cbl{font-size:16px;padding:14px 12px 28px;border-radius:20px}.cbl .vsrow,.cbl .bt,.cbl .split{grid-template-columns:1fr}.cbl .loop{grid-template-columns:1fr 1fr}.cbl .sec{margin-top:48px}}
+@media (prefers-reduced-motion:reduce){.cbl *{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <span class="kick">מודול 1 · שיעור 1</span>
+  <h1>ברוכים הבאים לעידן<br><span class="grad">התכנות החדש</span></h1>
+  <p class="sub">עוד 10 דקות תבינו מה משתנה כשמתכנתים עם AI, ותראו מה בונים בקורס.</p>
+  <div class="nums">
+    <div class="num"><b class="grad">11</b><span>מודולים</span></div>
+    <div class="num"><b class="grad">1</b><span>פרויקט אמיתי</span></div>
+    <div class="num"><b class="grad">0</b><span>ניחושים</span></div>
+  </div>
+  <div class="term">
+    <div class="tbar"><i></i><i></i><i></i><span>claude-code</span></div>
+    <div class="tbody" id="cbl-term"></div>
+  </div>
+</div>
+
+<!-- ============ 1 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">01</span><h2>מי עושה מה?</h2></div>
+  <p class="lead">דמיינו קבלן שיפוצים מהיר להפתיע, שלא מכיר את הבית שלכם.</p>
+  <div class="vsrow">
+    <div class="glass role ai">
+      <h3>🤖 ה-AI</h3>
+      <ul>
+        <li>כותב קוד תוך שניות</li>
+        <li>מכיר כמעט כל ספרייה</li>
+        <li>לא מתעייף לעולם</li>
+        <li class="x">לא מכיר את הפרויקט שלכם</li>
+        <li class="x">מנחש כשחסר מידע</li>
+        <li class="x">בטוח בעצמו גם כשהוא טועה</li>
+      </ul>
+    </div>
+    <div class="glass role me">
+      <h3>🧠 אתם</h3>
+      <ul>
+        <li>מחליטים מה בונים</li>
+        <li>נותנים הקשר ברור</li>
+        <li>בודקים כל תוצאה</li>
+        <li>אחראים על האיכות</li>
+        <li>יודעים מתי לעצור</li>
+      </ul>
+    </div>
+  </div>
+  <div class="punch">פחות הקלדה. <span class="grad">יותר הכוונה והחלטות.</span></div>
+</div>
+
+<!-- ============ 2 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">02</span><h2>מה בונים? נסו בעצמכם</h2></div>
+  <p class="lead">בקורס נבנה <b>שירות לקיצור קישורים</b>, כמו Bitly. זו הגרסה הקטנה:</p>
+  <div class="win">
+    <div class="wbar"><i></i><i></i><i></i></div>
+    <div class="wbody">
+      <label for="cbl-url">🔗 הדביקו קישור ארוך</label>
+      <div class="row">
+        <input id="cbl-url" type="text" value="https://www.example.com/blog/2025/how-to-bake-the-perfect-cake?utm_source=newsletter&id=48213">
+        <button class="btn" id="cbl-go" type="button">✂️ קצרו!</button>
+      </div>
+      <div class="err" id="cbl-err">הקישור צריך להתחיל ב-http:// או https://</div>
+      <div class="res" id="cbl-res">
+        <div class="short" id="cbl-short"></div>
+        <div class="cmp">
+          <div class="bx a"><b id="cbl-l1">0</b><span>תווים לפני</span></div>
+          <div class="ar">←</div>
+          <div class="bx z"><b id="cbl-l2">0</b><span>תווים אחרי</span></div>
+        </div>
+        <button class="btn ghost" id="cbl-visit" type="button">👆 מישהו לוחץ על הקישור הקצר</button>
+        <div class="redir" id="cbl-redir">↪ השרת מעביר אותו אל:<br><code id="cbl-target"></code></div>
+      </div>
+    </div>
+  </div>
+  <p class="lead" style="margin:14px 0 0">בהמשך נוסיף משתמשים, סטטיסטיקות, הגנה ופריסה. הטכנולוגיות: <b>Python · FastAPI · SQLite</b>. לא צריך להכיר אותן מראש.</p>
+</div>
+
+<!-- ============ 3 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">03</span><h2>מפת הקורס</h2></div>
+  <p class="lead">לחצו על מודול. אפשר ללמוד לפי הסדר או לקפוץ לנושא שמעניין אתכם.</p>
+  <div class="mods" id="cbl-mods"></div>
+  <div class="minfo" id="cbl-minfo">👆 בחרו מודול</div>
+</div>
+
+<!-- ============ 4 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">04</span><h2>הלולאה של כל עבודה עם AI</h2></div>
+  <p class="lead">ארבעה שלבים שחוזרים שוב ושוב. דוגמה: מזמינים עוגה, ואיך זה נראה בקוד.</p>
+  <div class="loop" id="cbl-loop"></div>
+  <div class="split">
+    <div class="pane"><h4>🍰 בחיים</h4><div id="cbl-life"></div></div>
+    <div class="pane k"><h4>💻 בקוד</h4><div id="cbl-code"></div></div>
+  </div>
+</div>
+
+<!-- ============ 5 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">05</span><h2>קרב בקשות</h2></div>
+  <p class="lead">אותה משימה, שתי בקשות. בחרו כל אחת וראו מה ה-AI עושה.</p>
+  <div class="bt">
+    <button class="pick v" type="button" id="cbl-bv"><h3>💬 בקשה עמומה</h3><p>״תבנה לי קיצור קישורים.״</p></button>
+    <button class="pick s" type="button" id="cbl-bs"><h3>🎯 בקשה ממוקדת</h3><p>״צרו endpoint אחד, POST /shorten, שמחזיר קוד של 6 תווים. שמרו ב-SQLite. שום דבר אחר.״</p></button>
+  </div>
+  <div class="out" id="cbl-out"><p class="lead" style="margin:0">👆 בחרו בקשה</p></div>
+</div>
+
+<!-- ============ 6 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">06</span><h2>שלושה אתגרים</h2></div>
+  <div class="chtop">
+    <div class="ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="26"/><circle class="fg" id="cbl-fg" cx="32" cy="32" r="26"/></svg><span id="cbl-pc">0/3</span></div>
+    <p class="lead" style="margin:0" id="cbl-pm">סמנו כל אתגר כשסיימתם.</p>
+  </div>
+  <label class="ch"><input type="checkbox"><span class="ck">✓</span><span><b>🔍 בדיקת סביבה</b><span class="t">פתחו טרמינל והריצו <code>python --version</code> (או <code>python3 --version</code>) ורשמו את הגרסה.</span></span></label>
+  <label class="ch"><input type="checkbox"><span class="ck">✓</span><span><b>✍️ הגדרה במילים שלכם</b><span class="t">כתבו ב-3 משפטים, בלי מונחים טכניים, מה שירות קיצור קישורים צריך לעשות.</span></span></label>
+  <label class="ch"><input type="checkbox"><span class="ck">✓</span><span><b>🧪 ניסוי עם בקשה עמומה</b><span class="t">בקשו מכל צ׳אט AI: <code>Build me a URL shortener</code>. רשמו 3 דברים שהוא החליט בלי לשאול אתכם.</span></span></label>
+</div>
+
+<!-- ============ 7 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">07</span><h2>בדקו את עצמכם</h2></div>
+  <div id="cbl-quiz"></div>
+  <div class="score" id="cbl-score"></div>
+</div>
+
+<!-- ============ 8 ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">08</span><h2>מה למדנו?</h2></div>
+  <ul class="sum">
+    <li><i>🧭</i>ה-AI מהיר אבל לא מכיר את הפרויקט, ולכן אתם מכווינים ובודקים.</li>
+    <li><i>🔗</i>בונים שירות קיצור קישורים עם Python, FastAPI ו-SQLite.</li>
+    <li><i>🔁</i>הלולאה: מגדירים, מבקשים צעד קטן, בודקים, מתקנים.</li>
+  </ul>
+</div>
+
+<!-- ============ שאלות ותשובות ============ -->
+<div class="sec rv">
+  <div class="sh"><span class="sn">?</span><h2>שאלות ותשובות</h2></div>
+  <details><summary>האם ה-AI יחליף מתכנתים?</summary><p>הוא משנה את העבודה ולא מבטל את הצורך להבין. מי שלא יודע לקרוא קוד ולבדוק אותו, לא יכול לדעת אם מה שה-AI כתב נכון.</p></details>
+  <details><summary>אפשר ללמוד עם שפה אחרת, לא Python?</summary><p>כן. הדוגמאות בפייתון, אבל השיטה (הקשר, תכנון, בדיקות, אבטחה, גיט) זהה בכל שפה.</p></details>
+  <details><summary>ומה אם הכלים ישתנו?</summary><p>הם ישתנו, ולכן הקורס בנוי סביב עקרונות ולא סביב כפתורים. פרטים של כלי ספציפי יתעדכנו, וההרגלים שתלמדו ימשיכו לעבוד.</p></details>
+  <p class="lead" style="margin:16px 0 0">🔗 חסר רקע בתכנות? התחילו מ<a href="https://course.codebloom.co.il/courses/python-ai-era/intro" target="_top">הקורס "לומדים פייתון בעידן ה-AI"</a>.</p>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('cbl-1'); if(!root) return;
+  root.classList.add('js');
+  function $(id){return document.getElementById(id);}
+  function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+
+  /* reveal on scroll */
+  var rv=root.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08});
+    Array.prototype.forEach.call(rv,function(r){io.observe(r);});
+  } else { Array.prototype.forEach.call(rv,function(r){r.classList.add('in');}); }
+
+  /* hero terminal typing */
+  var T=[
+    ['p','> Create POST /shorten that returns a 6-char code'],
+    ['m','  thinking...'],
+    ['g','  ✔ created main.py'],
+    ['g','  ✔ created database.py'],
+    ['g','  ✔ tests passed (3/3)'],
+    ['p','> POST /shorten  →  sho.rt/aB3xK9']
+  ];
+  var term=$('cbl-term'),li=0,ci=0,cur=null;
+  function typeLine(){
+    if(li>=T.length){return;}
+    if(ci===0){cur=mk('div',T[li][0]);term.appendChild(cur);}
+    var txt=T[li][1];
+    var delay=T[li][0]==='p'?28:8;
+    cur.textContent=txt.slice(0,++ci);
+    if(ci>=txt.length){li++;ci=0;setTimeout(typeLine,T[li-1][0]==='m'?600:350);}
+    else setTimeout(typeLine,delay);
+  }
+  typeLine();
+
+  /* shortener demo */
+  var CH='abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  function count(el,to){var s=0,step=Math.max(1,Math.ceil(to/25));var t=setInterval(function(){s=Math.min(to,s+step);el.textContent=s;if(s>=to)clearInterval(t);},30);}
+  $('cbl-go').addEventListener('click',function(){
+    var v=$('cbl-url').value.trim();
+    if(!/^https?:\/\/\S+$/i.test(v)){$('cbl-err').style.display='block';$('cbl-res').classList.remove('show');return;}
+    $('cbl-err').style.display='none';
+    var code='';for(var i=0;i<6;i++){code+=CH.charAt(Math.floor(Math.random()*CH.length));}
+    var short='sho.rt/'+code;
+    $('cbl-short').textContent=short;
+    $('cbl-target').textContent=v;
+    $('cbl-redir').classList.remove('show');
+    var r=$('cbl-res');r.classList.remove('show');void r.offsetWidth;r.classList.add('show');
+    count($('cbl-l1'),v.length);count($('cbl-l2'),short.length);
+  });
+  $('cbl-visit').addEventListener('click',function(){$('cbl-redir').classList.add('show');});
+
+  /* modules */
+  var MODS=[
+    ['🧭','יסודות ושיטת עבודה','הכלים, ההתקנה והמודל המנטלי: במה ה-AI חזק ואיפה הוא טועה.'],
+    ['🧠','הקשר ו-CLAUDE.md','איך גורמים ל-AI להבין את הפרויקט בלי להסביר הכול מחדש בכל פעם.'],
+    ['📐','תכנון לפני קוד','פירוק משימה לצעדים קטנים וניסוח בקשות שאפשר לבדוק.'],
+    ['🛟','Git כרשת ביטחון','קומיטים, ענפים וחזרה אחורה כשה-AI מקלקל משהו.'],
+    ['🔍','קוד קיים','להבין פרויקט זר, להוסיף פיצ׳ר ולעשות ריפקטורינג בלי לשבור.'],
+    ['🧩','הרחבת יכולות','Skills, Hooks, סוכני משנה וחיבור לשירותים חיצוניים עם MCP.'],
+    ['🧪','איכות ובדיקות','בדיקות, דיבוג וביקורת קוד: איך יודעים שזה באמת עובד.'],
+    ['🛡️','אבטחה','סודות, חבילות מומצאות, הרשאות לסוכן ופרומפט אינג׳קשן.'],
+    ['💸','עלויות ויעילות','איך מחושב השימוש, בחירת מודל וחיסכון בלי לפגוע באיכות.'],
+    ['🚀','פריסה ופרודקשן','העלאה לאוויר, לוגים, CI/CD ואוטומציה.'],
+    ['🏆','גבולות ופרויקט גמר','מתי לא להשתמש ב-AI, ופרויקט שמסכם הכול.']
+  ];
+  var mods=$('cbl-mods');
+  MODS.forEach(function(m,i){
+    var b=mk('button','mod');b.type='button';
+    b.appendChild(mk('span','e',m[0]));b.appendChild(mk('b',null,'מודול '+(i+1)));b.appendChild(mk('span',null,m[1]));
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(mods.children,function(c){c.classList.remove('on');});
+      b.classList.add('on');$('cbl-minfo').textContent=m[2];
+    });
+    mods.appendChild(b);
+  });
+
+  /* loop */
+  var ST=[
+    ['🎯','מגדירים','אני צריכה עוגת שוקולד, בלי גלוטן, ל-8 אנשים, עד יום חמישי.','שירות שמקבל קישור ארוך ומחזיר קישור קצר.'],
+    ['💬','מבקשים','מזמינים רק את העוגה ולא את כל האירוע. צעד אחד, ברור.','צרו endpoint אחד: POST /shorten. אל תוסיפו שום דבר אחר.'],
+    ['🔎','בודקים','טועמים לפני שמגישים לאורחים.','מריצים, שולחים קישור ובודקים מה חזר. לא מניחים שזה עובד.'],
+    ['🔧','מתקנים','״קצת פחות סוכר.״ תיקון מדויק, לא הזמנה מחדש של הכול.','הקוד חוזר באותיות גדולות בלבד. הוסיפו גם קטנות. ושוב בודקים.']
+  ];
+  var loop=$('cbl-loop'),auto=true,cur2=0;
+  function showStep(i){
+    cur2=i;
+    Array.prototype.forEach.call(loop.children,function(c,j){c.classList.toggle('on',i===j);});
+    $('cbl-life').textContent=ST[i][2];$('cbl-code').textContent=ST[i][3];
+  }
+  ST.forEach(function(s,i){
+    var b=mk('button','st');b.type='button';
+    b.appendChild(mk('span','e',s[0]));b.appendChild(document.createTextNode(s[1]));b.appendChild(mk('small',null,'שלב '+(i+1)));
+    b.addEventListener('click',function(){auto=false;showStep(i);});
+    loop.appendChild(b);
+  });
+  showStep(0);
+  setInterval(function(){if(auto)showStep((cur2+1)%ST.length);},3200);
+
+  /* battle */
+  var seen={v:false,s:false};
+  var VAGUE=['Flask או Django?','MongoDB?','דף התחברות שלא ביקשתם','מערכת פרסומות?','300 שורות לבדוק','אין דרך לדעת מה נבחר'];
+  var SPEC=['endpoint אחד','SQLite','קוד של 6 תווים','כ-30 שורות לבדוק','בדיקה תוך דקה'];
+  function battle(kind){
+    seen[kind]=true;
+    $('cbl-bv').classList.toggle('on',kind==='v');$('cbl-bs').classList.toggle('on',kind==='s');
+    var out=$('cbl-out');out.innerHTML='';
+    out.appendChild(mk('h4',null,kind==='v'?'😬 ה-AI ניחש בשבילכם:':'✅ בדיוק מה שביקשתם:'));
+    var tags=mk('div','tags');
+    (kind==='v'?VAGUE:SPEC).forEach(function(t,i){var g=mk('span','tag '+(kind==='v'?'bad':'good'),t);g.style.animationDelay=(i*0.12)+'s';tags.appendChild(g);});
+    out.appendChild(tags);
+    if(seen.v&&seen.s){out.appendChild(mk('p','lead','💡 הלקח: ככל שהבקשה ברורה יותר, יש פחות מה לנחש.')).style.margin='14px 0 0';}
+  }
+  $('cbl-bv').addEventListener('click',function(){battle('v');});
+  $('cbl-bs').addEventListener('click',function(){battle('s');});
+
+  /* challenges */
+  var KEY='cbl-1-ch',boxes=root.querySelectorAll('.ch input');
+  function saved(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(Array.prototype.map.call(boxes,function(b){return b.checked;})));}catch(e){}}
+  function confetti(){
+    var em=['🎉','✨','🎊','⭐','💜','🚀'];
+    for(var i=0;i<28;i++){(function(i){var c=mk('span','conf',em[i%em.length]);c.style.right=(Math.random()*95)+'%';c.style.animationDuration=(2.5+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*.6)+'s';root.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},5500);})(i);}
+  }
+  var lastN=0;
+  function upd(){
+    var n=0;Array.prototype.forEach.call(boxes,function(b){b.parentNode.classList.toggle('done',b.checked);if(b.checked)n++;});
+    $('cbl-fg').style.strokeDashoffset=163.4*(1-n/3);
+    $('cbl-pc').textContent=n+'/3';
+    $('cbl-pm').textContent=n===3?'🎉 כל הכבוד! סיימתם את כל האתגרים':'סמנו כל אתגר כשסיימתם.';
+    if(n===3&&lastN<3)confetti();
+    lastN=n;
+    if(window.reportProgress)window.reportProgress(n,boxes.length);
+  }
+  var sv=saved();
+  Array.prototype.forEach.call(boxes,function(b,i){b.checked=!!sv[i];b.addEventListener('change',function(){save();upd();});});
+  upd();
+
+  /* quiz */
+  var QS=[
+    ['מה התפקיד שלכם בעבודה עם AI?',['להקליד כמה שיותר מהר','להכווין, לבדוק ולהחליט','לחכות שהוא יסיים'],1],
+    ['ה-AI כתב קוד והכול נראה בסדר. מה עושים?',['ממשיכים לשלב הבא','מריצים ובודקים','מבקשים עוד פיצ׳ר'],1],
+    ['למה מבקשים צעד קטן בכל פעם?',['כי ה-AI לא מסוגל ליותר','כי קל לבדוק ולתקן צעד קטן','כי זה חוסך מקום בדיסק'],1]
+  ];
+  var quiz=$('cbl-quiz'),answered=0,right=0;
+  QS.forEach(function(q){
+    var box=mk('div','q glass');box.appendChild(mk('h3',null,q[0]));
+    var ops=mk('div','opts');box.appendChild(ops);var done=false;
+    q[1].forEach(function(t,i){
+      var b=mk('button','opt',t);b.type='button';
+      b.addEventListener('click',function(){
+        if(done)return;done=true;answered++;
+        ops.children[q[2]].classList.add('ok');
+        if(i===q[2])right++;else b.classList.add('no');
+        if(answered===QS.length){
+          $('cbl-score').textContent='התוצאה שלכם: '+right+' מתוך '+QS.length+(right===QS.length?' 🎉':'');
+          if(right===QS.length)confetti();
+        }
+      });
+      ops.appendChild(b);
+    });
+    quiz.appendChild(box);
+  });
+})();
+</script>
+</div>
+</body>
+</html>

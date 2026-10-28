@@ -1,10 +1,10 @@
 DELETE FROM lessons WHERE course_id='vibe-coding' AND slug='lesson-1-intro';
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('b3f1c8a24d6e4f7a9c0e5d2b81a74c36', 'vibe-coding', 'lesson-1-intro', 'שיעור 1 - מ-Vibe Coding להנדסה בעזרת AI', '', '', '<!DOCTYPE html>
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('b3f1c8a24d6e4f7a9c0e5d2b81a74c36', 'vibe-coding', 'lesson-1-intro', 'שיעור 2 - מ-Vibe Coding להנדסה בעזרת AI', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>שיעור 1 — מ-Vibe Coding להנדסה בעזרת AI</title>
+<title>שיעור 2 — מ-Vibe Coding להנדסה בעזרת AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -198,14 +198,14 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 <div class="topbar">
   <div class="wrap topbar-inner">
     <span class="course">Vibe Coding</span>
-    <span class="lesson-chip">שיעור 1</span>
+    <span class="lesson-chip">שיעור 2</span>
   </div>
 </div>
 
 <!-- ================= HERO ================= -->
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow c" style="text-align:center;">שיעור 1 · פותחים</div>
+    <div class="eyebrow c" style="text-align:center;">שיעור 2 · פותחים</div>
     <h1>מ-<span class="a1">Vibe Coding</span><br>להנדסה <span class="a2">בעזרת AI</span></h1>
     <p class="hero-sub">תבנו דף קטן בשיחה עם AI, ותלמדו לשאול את השאלה החשובה: מה בעצם קיבלתי?</p>
     <div class="time-row">
@@ -419,7 +419,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
 </main>
 
-<footer><div class="wrap">Vibe Coding · שיעור 1</div></footer>
+<footer><div class="wrap">Vibe Coding · שיעור 2</div></footer>
 
 <script>
 function $(id) { return document.getElementById(id); }
@@ -533,7 +533,7 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
     var n = 0;
     boxes.forEach(function (b) { if (b.checked) n++; });
     if (window.reportProgress) window.reportProgress(n, boxes.length);
-    $("mission-done").textContent = n === boxes.length ? "🎉 כל הכבוד! סיימתם את שיעור 1" : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
+    $("mission-done").textContent = n === boxes.length ? "🎉 כל הכבוד! סיימתם את שיעור 2" : (n ? n + " מתוך " + boxes.length + " הושלמו" : "");
   }
   boxes.forEach(function (b) { b.addEventListener("change", upd); });
   if (window.reportProgress) window.reportProgress(0, boxes.length);
@@ -542,4 +542,4 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
 
 </body>
 </html>
-', 1, '2026-10-25T00:00:00.000Z');
+', 2, '2026-10-25T00:00:00.000Z');
