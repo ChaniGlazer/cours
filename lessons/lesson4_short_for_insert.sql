@@ -379,14 +379,17 @@ for i in range(5):
       <div class="panel">
         <div class="panel-bar">
           <label for="lab-expr">מה נכנס?</label>
-          <select id="lab-expr">
-            <option>i</option><option>i * 2</option><option>i * i</option><option>i + 10</option><option>i * 3 + 1</option>
-          </select>
-          <span class="mono" style="color:var(--ink-faint)">range(</span>
-          <input type="number" id="lab-a" min="0" max="10" value="0" style="width:64px">
-          <span class="mono" style="color:var(--ink-faint)">,</span>
-          <input type="number" id="lab-b" min="0" max="14" value="5" style="width:64px">
-          <span class="mono" style="color:var(--ink-faint)">)</span>
+          <div dir="ltr" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span class="mono" style="color:var(--ink-faint)">[</span>
+            <select id="lab-expr" aria-label="מה נכנס?" style="text-align:left;">
+              <option>i</option><option>i * 2</option><option>i * i</option><option>i + 10</option><option>i * 3 + 1</option>
+            </select>
+            <span class="mono" style="color:var(--ink-faint)">for i in range(</span>
+            <input type="number" id="lab-a" min="0" max="10" value="0" style="width:64px" aria-label="התחלה">
+            <span class="mono" style="color:var(--ink-faint)">,</span>
+            <input type="number" id="lab-b" min="0" max="14" value="5" style="width:64px" aria-label="סוף">
+            <span class="mono" style="color:var(--ink-faint)">)]</span>
+          </div>
         </div>
         <div class="codeblock single" id="lab-code"></div>
         <div class="panel-pad">
