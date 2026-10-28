@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import LessonHtmlFrame from "./LessonHtmlFrame";
+import { GLOW_COURSES } from "@/lib/lessonTheme";
 import TutorWidget from "./TutorWidget";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
 import { countDone, enableServerTracking, isAuto, lessonStatus, markSeen, reportExercises, setDone, useProgress } from "./progress";
@@ -102,11 +103,12 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
     el.scrollTop += c.top - l.top - (el.clientHeight - c.height) / 2;
   }, [currentSlug]);
 
+  const glow = GLOW_COURSES.includes(course.id);
   const nextHref = next ? `/courses/${course.id}/${next.slug}` : "/courses";
   const [heroTop, heroAccent] = hero ? splitTitle(hero.title) : ["", ""];
 
   return (
-    <div className="lx">
+    <div className={glow ? "lx vibe-bg" : "lx"}>
       <div className="lx-page">
         <aside className="lx-aside">
           <nav className="lx-card" aria-label="תוכן הקורס">
@@ -227,7 +229,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           )}
 
           <section id="lesson" className="lx-content">
-            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} /> : children}
+            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} transparent={glow} /> : children}
           </section>
 
           <section className="lx-complete">

@@ -991,3 +991,15 @@ a.syl-row:hover { border-color: var(--ink); }
 .nf-wrap { max-width: 640px; text-align: center; }
 .nf-code { font-family: var(--font-mono); font-weight: 600; font-size: clamp(4rem, 14vw, 7rem); line-height: 1; color: var(--gold); margin-bottom: 8px; }
 .nf-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+
+/* קורס עם רקע צבעוני (vibe-coding): הזוהרים של הקורס על כל העמוד, קבועים בזמן גלילה. הכותרת והכרטיסים נשארים קריאים. */
+body:has(.vibe-bg) {
+  background:
+    radial-gradient(900px 560px at 85% -5%, rgba(255, 127, 150, 0.2), transparent 60%) fixed,
+    radial-gradient(760px 540px at 0% 38%, rgba(143, 184, 255, 0.14), transparent 60%) fixed,
+    radial-gradient(860px 620px at 100% 80%, rgba(255, 210, 122, 0.1), transparent 60%) fixed,
+    var(--paper);
+}
+body:has(.vibe-bg) .site-header { background: rgba(20, 18, 31, 0.7); backdrop-filter: blur(10px); }
+.vibe-bg.lx { background: transparent; }
+.vibe-bg .dark-section { background: transparent; }

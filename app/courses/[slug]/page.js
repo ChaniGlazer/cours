@@ -8,6 +8,7 @@ import { getApprovedTestimonials, getUserTestimonial } from "@/lib/testimonials"
 import TestimonialForm from "./TestimonialForm";
 import { CourseBadge } from "@/app/components/ui";
 import { CourseCta, CourseProgress, Syllabus } from "@/app/components/CourseClient";
+import { GLOW_COURSES } from "@/lib/lessonTheme";
 import { startPaymentAction } from "@/app/actions/payment";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, SITE_URL, OG_IMAGES } from "@/lib/seo";
 
@@ -74,7 +75,7 @@ export default async function CoursePage({ params, searchParams }) {
   };
 
   return (
-    <>
+    <div className={GLOW_COURSES.includes(course.id) ? "vibe-bg" : undefined}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
       <section className="section dark-section course-hero">
         <div className="container">
@@ -221,6 +222,6 @@ export default async function CoursePage({ params, searchParams }) {
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 }
