@@ -29,7 +29,7 @@ body{padding:0}
 
 /* hero */
 .cbl .hero{position:relative;padding:34px 8px 10px;text-align:center}
-.cbl .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.2;z-index:0;animation:cblFloat 9s ease-in-out infinite}
+.cbl .blob{display:none}  /* הזוהר מגיע מרקע העמוד, כדי שלא ייחתך בקצה השיעור */
 .cbl .b1{width:220px;height:220px;background:var(--c1);top:-40px;right:-30px}
 .cbl .b2{width:180px;height:180px;background:var(--c2);top:120px;left:-40px;animation-delay:-4s}
 .cbl .hero>*:not(.blob){position:relative;z-index:1}
