@@ -23,7 +23,13 @@ const GROUPS = [
       { key: "lessons", label: "שיעורים", icon: "🎬", desc: "תוכן וסדר השיעורים בכל קורס" }
     ]
   },
-  { label: "לומדות", items: [{ key: "learners", label: "לומדות והתקדמות", icon: "👩‍🎓", desc: "מי נכנסה, מה למדה וכמה התקדמה" }] },
+  {
+    label: "לומדות ותנועה",
+    items: [
+      { key: "learners", label: "לומדות והתקדמות", icon: "👩‍🎓", desc: "מי נכנסה, מה למדה וכמה התקדמה" },
+      { key: "visits", label: "כניסות לאתר", icon: "📈", desc: "כמה כניסות היו, מאיפה הגיעו ומי נכנס (גם מבקרים שלא נרשמו)" }
+    ]
+  },
   { label: "שיווק", items: [{ key: "testimonials", label: "המלצות", icon: "💬", desc: "הוכחה חברתית שמוצגת בעמודי הקורס" }] },
   { label: "האתר", items: [{ key: "settings", label: "הגדרות אתר", icon: "⚙️", desc: "מותג, פרופיל מדריך ואחריות" }] }
 ];
@@ -918,6 +924,159 @@ function LearnersPanel({ learnerData, courses, lessons, selected, setSelected })
   );
 }
 
+/* ---------- Visits ---------- */
+
+const countryName = (() => {
+  try {
+    const dn = new Intl.DisplayNames(["he"], { type: "region" });
+    return (code) => (code && /^[A-Z]{2}$/.test(code) ? dn.of(code) || code : "לא ידוע");
+  } catch {
+    return (code) => code || "לא ידוע";
+  }
+})();
+
+const DEVICE_LABELS = { mobile: "נייד", tablet: "טאבלט", desktop: "מחשב" };
+
+function VisitsTable({ title, rows, labelOf = (x) => x, total }) {
+  return (
+    <div className="adm-learner-course">
+      <h4 className="adm-subhead">{title}</h4>
+      {rows.length === 0 ? (
+        <p className="adm-hint">אין נתונים עדיין.</p>
+      ) : (
+        <table className="adm-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>צפיות</th>
+              <th>מבקרים</th>
+              <th aria-hidden="true"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.label}>
+                <td>{labelOf(r.label)}</td>
+                <td>{r.views}</td>
+                <td>{r.visitors}</td>
+                <td className="adm-table__bar">
+                  <div className="adm-bar" role="img" aria-label={`${r.views} מתוך ${total} צפיות`}>
+                    <span style={{ width: `${total ? Math.round((r.views / total) * 100) : 0}%` }} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+function VisitsPanel({ visitData }) {
+  if (!visitData) {
+    return (
+      <div className="alert alert-error">
+        טבלת הכניסות עדיין לא קיימת במסד הנתונים. צריך להריץ את המיגרציה <bdi dir="ltr">0010_site_visits.sql</bdi> (db:migrate:remote) ואז לרענן.
+      </div>
+    );
+  }
+  const { totals, daily, pages, countries, sources, devices, visitors } = visitData;
+  const maxViews = Math.max(1, ...daily.map((d) => d.views));
+  const registered = visitors.filter((v) => v.user_id).length;
+
+  return (
+    <div className="adm-learners">
+      <div className="adm-stats">
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{totals.views1}</span>
+          <span className="adm-stat__label">צפיות היום · {totals.visitors1} מבקרים</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{totals.views7}</span>
+          <span className="adm-stat__label">צפיות ב-7 ימים · {totals.visitors7} מבקרים</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{totals.views30}</span>
+          <span className="adm-stat__label">צפיות ב-{visitData.days} ימים · {totals.visitors30} מבקרים</span>
+        </div>
+      </div>
+      <p className="adm-hint">
+        צפייה = פתיחת עמוד. מבקר = דפדפן אחד (מזהה אקראי בדפדפן, לא כתובת IP), ולכן מי שנכנס מכמה מכשירים נספר כמה פעמים. המעקב מתחיל מרגע ההפעלה, והנתונים נשמרים שנה.
+      </p>
+
+      <h4 className="adm-subhead">צפיות לפי יום ({visitData.days} ימים אחרונים)</h4>
+      <div className="adm-chart" role="img" aria-label="צפיות לפי יום">
+        {daily.map((d) => (
+          <div key={d.day} className="adm-chart__col" title={`${d.day}: ${d.views} צפיות, ${d.visitors} מבקרים`}>
+            <span className="adm-chart__bar" style={{ height: `${Math.round((d.views / maxViews) * 100)}%` }} />
+          </div>
+        ))}
+      </div>
+
+      <VisitsTable title="העמודים הנצפים ביותר" rows={pages} labelOf={(p) => <bdi dir="ltr">{p}</bdi>} total={totals.views30} />
+      <VisitsTable title="מאיפה הגיעו" rows={sources} labelOf={(s) => <bdi dir="ltr">{s}</bdi>} total={totals.views30} />
+      <VisitsTable title="מדינות" rows={countries} labelOf={countryName} total={totals.views30} />
+      <VisitsTable title="מכשירים" rows={devices} labelOf={(d) => DEVICE_LABELS[d] || d} total={totals.views30} />
+
+      <h4 className="adm-subhead">
+        המבקרים האחרונים ({visitors.length}
+        {registered ? `, מהם ${registered} מחוברות עם שם` : ""})
+      </h4>
+      {visitors.length === 0 ? (
+        <p className="adm-hint">עדיין אין כניסות. הן יופיעו כאן אחרי שמישהו יפתח עמוד באתר.</p>
+      ) : (
+        <table className="adm-table">
+          <thead>
+            <tr>
+              <th>מי</th>
+              <th>מיקום</th>
+              <th>מכשיר</th>
+              <th>הגיע מ</th>
+              <th>צפיות</th>
+              <th>ימים</th>
+              <th>עמוד אחרון</th>
+              <th>כניסה אחרונה</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visitors.map((v) => (
+              <tr key={v.visitor_id}>
+                <td>
+                  {v.user_id ? (
+                    <>
+                      <strong>{v.user_name}</strong>
+                      <br />
+                      <bdi dir="ltr">{v.user_email}</bdi>
+                    </>
+                  ) : (
+                    <>
+                      מבקר אנונימי <bdi dir="ltr">#{v.visitor_id.slice(0, 6)}</bdi>
+                    </>
+                  )}
+                </td>
+                <td>{[v.city, countryName(v.country)].filter(Boolean).join(", ")}</td>
+                <td>
+                  {DEVICE_LABELS[v.device] || v.device} · {v.browser}
+                </td>
+                <td>
+                  <bdi dir="ltr">{v.source}</bdi>
+                </td>
+                <td>{v.views}</td>
+                <td>{v.days}</td>
+                <td>
+                  <bdi dir="ltr">{v.last_path}</bdi>
+                </td>
+                <td>{fmtDate(v.last_at)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
 /* ---------- Dashboard ---------- */
 
 function Stat({ value, label, onClick }) {
@@ -1012,7 +1171,7 @@ function LearnersSummary({ learnerData, courses, lessons, go }) {
   );
 }
 
-function Dashboard({ courses, lessons, testimonials, settings, learnerData, go }) {
+function Dashboard({ courses, lessons, testimonials, settings, learnerData, visitData, go }) {
   const paid = courses.filter((c) => c.is_paid).length;
   const soon = courses.filter((c) => c.coming_soon).length;
   const lessonsOf = (id) => lessons.filter((l) => l.course_id === id).length;
@@ -1036,6 +1195,17 @@ function Dashboard({ courses, lessons, testimonials, settings, learnerData, go }
         <Stat value={lessons.length} label="שיעורים" onClick={() => go("lessons")} />
         <Stat value={testimonials.length} label={`המלצות (${testimonials.filter((t) => t.status === "pending").length} ממתינות)`} onClick={() => go("testimonials")} />
       </div>
+
+      {visitData && (
+        <>
+          <h3>כניסות לאתר</h3>
+          <div className="adm-stats">
+            <Stat value={visitData.totals.views1} label={`צפיות היום (${visitData.totals.visitors1} מבקרים)`} onClick={() => go("visits")} />
+            <Stat value={visitData.totals.views7} label={`צפיות ב-7 ימים (${visitData.totals.visitors7} מבקרים)`} onClick={() => go("visits")} />
+            <Stat value={visitData.totals.visitors30} label={`מבקרים ב-${visitData.days} ימים`} onClick={() => go("visits")} />
+          </div>
+        </>
+      )}
 
       <LearnersSummary learnerData={learnerData} courses={courses} lessons={lessons} go={go} />
 
@@ -1076,7 +1246,7 @@ function Dashboard({ courses, lessons, testimonials, settings, learnerData, go }
 
 /* ---------- Root ---------- */
 
-export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, logoutAction }) {
+export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, visitData, logoutAction }) {
   const [section, setSection] = useState("dashboard");
   const [selection, setSelection] = useState({ courses: null, lessons: null, testimonials: null, learners: null });
   const [toasts, setToasts] = useState([]);
@@ -1117,7 +1287,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
       window.history.replaceState(null, "", `#${key}`);
     });
 
-  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length, learners: learnerData.learners.length };
+  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length, learners: learnerData.learners.length, visits: visitData?.totals.views7 };
   const current = SECTIONS.find((s) => s.key === section);
 
   return (
@@ -1161,7 +1331,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
           {current?.desc && <p className="adm-section-desc">{current.desc}</p>}
       <main className="adm-main">
         {section === "dashboard" && (
-          <Dashboard courses={courses} lessons={lessons} testimonials={testimonials} settings={settings} learnerData={learnerData} go={goSection} />
+          <Dashboard courses={courses} lessons={lessons} testimonials={testimonials} settings={settings} learnerData={learnerData} visitData={visitData} go={goSection} />
         )}
         {section === "courses" && (
           <CoursesPanel
@@ -1202,6 +1372,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
             setSelected={setSelectedFor("learners")}
           />
         )}
+        {section === "visits" && <VisitsPanel visitData={visitData} />}
         {section === "settings" && <SettingsPanel settings={settings} notify={notify} guard={guard} />}
       </main>
         </div>

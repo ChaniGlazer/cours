@@ -4,6 +4,7 @@ import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
 import { SITE_URL, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
 import { CONTACT_EMAIL } from "@/lib/site";
+import VisitTracker from "@/app/components/VisitTracker";
 
 const DEFAULT_DESCRIPTION =
   "קורסים בעברית ללימוד פייתון ופיתוח אפליקציות בעידן ה-AI, עם שיעורים אינטראקטיביים ותרגילים. חלק מהקורסים חינמיים.";
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }) {
         <link rel="preload" href="/fonts/secular-one-hebrew.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
+        <VisitTracker />
         <header className="site-header">
           <div className="container">
             <a className="brand" href="/courses">

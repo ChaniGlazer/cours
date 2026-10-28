@@ -2,6 +2,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import { getSettings, getAllLessons, getTestimonials } from "@/lib/settings";
 import { getCourses } from "@/lib/courses";
 import { getLearnersOverview } from "@/lib/learnerStore";
+import { getVisitsOverview } from "@/lib/visitStore";
 import { adminLoginAction, adminLogoutAction } from "@/app/actions/admin";
 import AdminApp from "./AdminApp";
 
@@ -31,12 +32,17 @@ export default async function AdminPage({ searchParams }) {
     );
   }
 
-  const [settings, courses, lessons, testimonials, learnerData] = await Promise.all([
+  const [settings, courses, lessons, testimonials, learnerData, visitData] = await Promise.all([
     getSettings(),
     getCourses(),
     getAllLessons(),
     getTestimonials(),
-    getLearnersOverview()
+    getLearnersOverview(),
+    // לפני שהמיגרציה 0010 רצה על ה-D1 אין טבלה: הפאנל מציג הודעה במקום להפיל את כל האדמין
+    getVisitsOverview().catch((err) => {
+      console.error("admin: visits overview failed", err?.message);
+      return null;
+    })
   ]);
 
   return (
@@ -46,6 +52,7 @@ export default async function AdminPage({ searchParams }) {
       lessons={lessons}
       testimonials={testimonials}
       learnerData={learnerData}
+      visitData={visitData}
       logoutAction={adminLogoutAction}
     />
   );

@@ -115,3 +115,8 @@
 .adm-subhead { font-size: 1rem; margin: 18px 0 8px; }
 .adm-table__bar { width: 30%; min-width: 90px; }
 .adm-table__bar .adm-bar { margin: 0; }
+
+/* גרף צפיות לפי יום */
+.adm-chart { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin-bottom: 24px; padding: 8px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); direction: ltr; }
+.adm-chart__col { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.adm-chart__bar { display: block; width: 100%; min-height: 2px; background: var(--moss); border-radius: 3px 3px 0 0; }
