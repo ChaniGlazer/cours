@@ -1,0 +1,316 @@
+DELETE FROM lessons WHERE course_id='vibe-coding' AND slug='lesson-5-first-project';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('0a9d3f7b2c6e4158a1b5d8e0f4c27963', 'vibe-coding', 'lesson-5-first-project', 'שיעור 5 - הפרויקט הראשון: קישור קצר תוך שעה', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הפרויקט הראשון: קישור קצר תוך שעה — שיעור 5</title>
+<style>
+html,body{margin:0;background:transparent}
+</style>
+</head>
+<body>
+<div class="cbl" id="cbl-5" dir="rtl" lang="he">
+
+<style>
+@import url(''https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap'');
+.cbl{--ink:#f4f1fa;--mut:#bdb7d3;--line:#3a3558;--card:#1d1a2d;--soft:#26223b;--brand:#ff7f96;--brand2:#8fb8ff;--ok:#6fe0a0;--okbg:rgba(111,224,160,.1);--warn:#ffd27a;--warnbg:rgba(255,210,122,.1);--note:#8fb8ff;--notebg:rgba(143,184,255,.1);--code:#0e0c17;--display:''Secular One'',''Arial Hebrew'',Arial,sans-serif;
+  position:relative;overflow:hidden;width:100%;max-width:100%;margin:0;padding:0 max(18px,calc((100% - 1000px)/2)) 64px;border-radius:0;color:var(--ink);font-family:''Assistant'',system-ui,-apple-system,''Segoe UI'',Arial,sans-serif;font-size:17px;line-height:1.65;box-sizing:border-box;
+  background:transparent}
+html,body{overflow-x:clip}
+.cbl *{box-sizing:border-box;min-width:0}
+.cbl h1,.cbl h2,.cbl h3,.cbl h4,.cbl p,.cbl ul,.cbl ol{margin:0}
+.cbl code{font-family:''JetBrains Mono'',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;unicode-bidi:isolate}
+.cbl a{color:var(--brand2);text-decoration-thickness:1px;text-underline-offset:3px}
+.cbl svg{display:block}
+.cbl.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.cbl.js .rv.in{opacity:1;transform:none}
+
+/* hero */
+.cbl .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:72px 0 40px}
+.cbl .crumb{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--brand2);background:var(--card);border:1px solid var(--line);padding:6px 14px;border-radius:99px}
+.cbl h1{font-size:clamp(34px,5.4vw,54px);line-height:1.12;margin:18px 0 14px}
+.cbl h1 em{font-style:normal;background:linear-gradient(90deg,var(--brand2),var(--brand) 50%,var(--warn));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.cbl .sub{font-size:19px;color:var(--mut);max-width:500px}
+
+/* demo card */
+.cbl .demo{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:26px;box-shadow:0 24px 50px -24px rgba(0,0,0,.6)}
+.cbl .demo .lab{font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:6px}
+.cbl .url{direction:ltr;text-align:left;font-family:''JetBrains Mono'',ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--mut);word-break:break-all;line-height:1.5}
+.cbl .url.short{background:rgba(255,127,150,.12);border-color:rgba(255,127,150,.45);color:var(--brand);font-size:22px;font-weight:600;text-align:center}
+.cbl .demo .mid{display:flex;justify-content:center;margin:12px 0;color:var(--brand)}
+.cbl .demo .go{display:flex;justify-content:center;margin-top:12px;font-size:13.5px;color:var(--mut);gap:8px;align-items:center}
+
+/* hour bar */
+.cbl .hour{display:flex;gap:6px;margin:6px 0 0}
+.cbl .hour div{border-radius:14px;padding:12px 14px;color:#14121f;font-weight:700;font-size:14px;line-height:1.35}
+.cbl .hour small{display:block;font-weight:600;opacity:.8;font-size:12.5px}
+.cbl .hour .h1{flex:10;background:#8fb8ff}.cbl .hour .h2{flex:10;background:#c4a8ff}.cbl .hour .h3{flex:15;background:#ff7f96}.cbl .hour .h4{flex:10;background:#6fe0a0}.cbl .hour .h5{flex:5;background:#ffd27a}
+
+/* sections */
+.cbl .sec{margin-top:76px}
+.cbl .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--brand2);background:rgba(143,184,255,.14);border-radius:99px;padding:4px 14px;margin-bottom:10px}
+.cbl h2{font-size:clamp(24px,3.6vw,32px);line-height:1.25;margin-bottom:8px}
+.cbl .lead{color:var(--mut);max-width:680px;margin-bottom:22px;font-size:18px}
+.cbl .two{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.cbl .two.mid{align-items:center}
+
+/* windows */
+.cbl .win{direction:ltr;text-align:left;background:var(--code);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(0,0,0,.6)}
+.cbl .wbar{display:flex;gap:7px;align-items:center;padding:11px 14px;background:rgba(244,241,250,.06)}
+.cbl .wbar i{width:11px;height:11px;border-radius:50%;display:block;background:#4d4775}
+.cbl .wbar span{margin-left:8px;font-size:12px;color:var(--mut);font-family:''JetBrains Mono'',ui-monospace,Menlo,Consolas,monospace}
+.cbl pre.cmd{margin:0;padding:16px 18px;font-family:''JetBrains Mono'',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.75;color:#f4f1fa;white-space:pre-wrap;word-break:break-word}
+.cbl pre.cmd .p{color:#8fb8ff}.cbl pre.cmd .g{color:#6fe0a0}.cbl pre.cmd .m{color:#9e97ba}.cbl pre.cmd .k{color:#c4b5fd}.cbl pre.cmd .s{color:#ffd27a}
+.cbl pre.cmd .hl{display:inline-block;width:100%;background:rgba(143,184,255,.2);border-radius:4px;box-shadow:-3px 0 0 #8fb8ff inset}
+.cbl pre.cmd .hg{display:inline-block;width:100%;background:rgba(111,224,160,.16);border-radius:4px}
+
+/* tree */
+.cbl .tree{direction:ltr;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;font-family:''JetBrains Mono'',ui-monospace,Menlo,Consolas,monospace;font-size:14px;line-height:1.9;color:#e6e1f2}
+.cbl .tree b{color:var(--brand2)}.cbl .tree .m{color:#9e97ba}
+
+/* callouts */
+.cbl .note,.cbl .warn,.cbl .ok{margin-top:14px;padding:13px 16px;border-radius:12px;font-size:15px;line-height:1.6;border-right:4px solid}
+.cbl .note{background:var(--notebg);border-color:var(--note);color:#cfe0ff}
+.cbl .warn{background:var(--warnbg);border-color:var(--warn);color:#ffe9b8}
+.cbl .ok{background:var(--okbg);border-color:var(--ok);color:#c4f2d9}
+.cbl .note b,.cbl .warn b,.cbl .ok b{font-weight:800}
+.cbl .note code,.cbl .warn code,.cbl .ok code,.cbl .lead code,.cbl .cl code{background:rgba(244,241,250,.1);border-radius:6px;padding:1px 7px;font-size:13.5px;direction:ltr}
+.cbl details.more{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:14.5px}
+.cbl details.more summary{list-style:none;cursor:pointer;padding:10px 14px;font-weight:600;color:var(--mut)}
+.cbl details.more summary::-webkit-details-marker{display:none}
+.cbl details.more summary:before{content:"+ ";font-weight:800;color:var(--brand)}
+.cbl details.more[open] summary:before{content:"− "}
+.cbl details.more div{padding:0 14px 12px}
+
+/* review */
+.cbl .cl{list-style:none;padding:0;display:grid;gap:10px}
+.cbl .cl li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;font-size:15.5px;color:#e6e1f2}
+.cbl .cl li .t{width:24px;height:24px;border-radius:50%;background:var(--ok);color:#14121f;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+.cbl .cl li small{display:block;color:var(--mut);font-size:13.5px;margin-top:1px}
+.cbl .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:var(--mut)}
+.cbl .legend span{display:inline-flex;align-items:center;gap:6px}
+.cbl .legend i{width:12px;height:12px;border-radius:3px;display:block}
+
+/* browser */
+.cbl .br{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(0,0,0,.6)}
+.cbl .br .bar{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--soft);border-bottom:1px solid var(--line)}
+.cbl .br .bar i{width:10px;height:10px;border-radius:50%;background:#4d4775;display:block}
+.cbl .br .addr{direction:ltr;flex:1;background:var(--code);border:1px solid var(--line);border-radius:99px;padding:3px 14px;font-size:13px;font-family:''JetBrains Mono'',ui-monospace,Menlo,Consolas,monospace;color:var(--mut);text-align:left}
+.cbl .br .body{padding:18px 20px;display:grid;gap:10px;direction:ltr;text-align:left}
+.cbl .br .ep{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-family:''JetBrains Mono'',ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#e6e1f2}
+.cbl .br .ep b{padding:2px 10px;border-radius:6px;color:#14121f;font-size:12px}
+.cbl .br .ep.post b{background:#6fe0a0}.cbl .br .ep.get b{background:#8fb8ff}
+.cbl .arrow{display:flex;justify-content:center;color:var(--brand);margin:10px 0}
+
+/* done */
+.cbl .done{margin-top:76px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 30px}
+.cbl .done h2{margin-bottom:16px}
+.cbl .done .row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cbl .done .row div{background:var(--okbg);border:1px solid rgba(111,224,160,.4);border-radius:14px;padding:16px;font-weight:700;display:flex;gap:12px;align-items:center;color:#c4f2d9}
+.cbl .done .row svg{flex:none;width:26px;height:26px;padding:6px;border-radius:50%;background:var(--ok);color:#14121f}
+.cbl .src{font-size:13px;color:var(--mut);margin-top:16px}
+
+/* הכותרות בגופן הכותרות של האתר (יש לו משקל אחד) */
+.cbl h1,.cbl h2,.cbl h3{font-family:var(--display);font-weight:400}
+
+@media (max-width:860px){
+  .cbl{font-size:16px}
+  .cbl .hero{grid-template-columns:1fr;gap:28px;padding:44px 0 30px}
+  .cbl .two{grid-template-columns:1fr}.cbl .done .row{grid-template-columns:1fr}
+  .cbl .hour{flex-wrap:wrap}.cbl .hour div{flex:1 1 40%!important}
+}
+@media (prefers-reduced-motion:reduce){.cbl *{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div>
+    <span class="crumb">מודול 1 · שיעור 5</span>
+    <h1>הפרויקט הראשון:<br><em>קישור קצר תוך שעה</em></h1>
+    <p class="sub">עד סוף השיעור יהיה לכם שירות עובד, עם בדיקות וקומיט ראשון. כל מה שלמדנו עד עכשיו נכנס לפעולה.</p>
+  </div>
+  <div class="demo">
+    <div class="lab">קישור ארוך</div>
+    <div class="url">https://www.example.com/blog/2026/how-to-bake-the-perfect-cake?utm_source=newsletter&amp;id=48213</div>
+    <div class="mid"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+    <div class="lab">הקישור שלכם</div>
+    <div class="url short">127.0.0.1:8000/wt9W0r</div>
+    <div class="go">לחיצה עליו מעבירה לכתובת המקורית</div>
+  </div>
+</div>
+
+<!-- ============ שעה ============ -->
+<div class="rv">
+  <div class="hour">
+    <div class="h1">הכנה<small>10 דק׳</small></div>
+    <div class="h2">הבקשה<small>10 דק׳</small></div>
+    <div class="h3">סקירה<small>15 דק׳</small></div>
+    <div class="h4">הרצה<small>10 דק׳</small></div>
+    <div class="h5">קומיט<small>5 דק׳</small></div>
+  </div>
+</div>
+
+<!-- ============ 1 הכנה ============ -->
+<div class="sec rv">
+  <span class="badge">1 · הכנה</span>
+  <h2>מכינים את הסביבה</h2>
+  <p class="lead">פותחים PowerShell בתיקיית הפרויקט מהשיעורים הקודמים.</p>
+  <div class="two">
+    <div>
+      <div class="win"><div class="wbar"><i></i><i></i><i></i><span>PowerShell</span></div>
+<pre class="cmd"><span class="p">PS C:\&gt;</span> cd url-shortener
+<span class="p">PS C:\url-shortener&gt;</span> python -m venv .venv
+<span class="p">PS C:\url-shortener&gt;</span> .venv\Scripts\Activate.ps1
+<span class="p">(.venv) PS C:\url-shortener&gt;</span> pip install fastapi uvicorn pytest httpx</pre></div>
+      <div class="warn"><b>נחסם עם "running scripts is disabled"?</b> הריצו פעם אחת בחלון הזה:<div class="win" style="margin-top:8px"><pre class="cmd" style="font-size:12px">Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</pre></div></div>
+      <details class="more"><summary>עובדים על Mac או Linux?</summary><div>במקום שורת ההפעלה: <code>source .venv/bin/activate</code></div></details>
+    </div>
+    <div>
+      <div class="tree"><b>url-shortener/</b><br>├── CLAUDE.md <span class="m">← משיעור 2</span><br>├── .venv/ <span class="m">← סביבת הפייתון</span><br>└── <span class="m">(כאן ייכנס הקוד)</span></div>
+      <div class="ok"><b>הצליח?</b> לפני שורת ההקלדה מופיע <code>(.venv)</code>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 2 הבקשה ============ -->
+<div class="sec rv">
+  <span class="badge">2 · הבקשה</span>
+  <h2>מפעילים את Claude ושולחים בקשה</h2>
+  <p class="lead">קודם Plan mode: קוראים את התוכנית ומאשרים. אחר כך הבקשה מהשיעור השני, עם תוספת אחת: <code>.gitignore</code>.</p>
+  <div class="win"><div class="wbar"><i></i><i></i><i></i><span>claude</span></div>
+<pre class="cmd"><span class="p">(.venv) PS C:\url-shortener&gt;</span> claude --permission-mode plan
+
+<span class="p">&gt;</span> Create POST /shorten in main.py.
+  It receives {"url": "..."} and returns a 6-character code.
+  Add GET /{code} that redirects to the original URL (404 if unknown).
+  Store the links in SQLite via database.py.
+  Add pytest tests in tests/.
+  Add a .gitignore for .venv, links.db and __pycache__.
+  Don''t change any other file.</pre></div>
+  <div class="note"><b>מה לבדוק בתוכנית:</b> אילו קבצים ייווצרו (צפוי: <code>main.py</code>, <code>database.py</code>, <code>tests/</code>, <code>.gitignore</code>), ושאין שינוי שלא קשור.</div>
+</div>
+
+<!-- ============ 3 סקירה ============ -->
+<div class="sec rv">
+  <span class="badge">3 · סקירה</span>
+  <h2>מה Claude בנה, ומה בודקים</h2>
+  <p class="lead">הקוד שלכם ייראה קצת אחרת, וזה בסדר. משווים לפי הרשימה, לא תו אחרי תו.</p>
+  <div class="two">
+    <div class="win"><div class="wbar"><i></i><i></i><i></i><span>main.py</span></div>
+<pre class="cmd" style="font-size:12.5px"><span class="k">import</span> secrets
+<span class="k">import</span> string
+<span class="k">from</span> contextlib <span class="k">import</span> asynccontextmanager
+
+<span class="k">from</span> fastapi <span class="k">import</span> FastAPI, HTTPException
+<span class="k">from</span> fastapi.responses <span class="k">import</span> RedirectResponse
+<span class="k">from</span> pydantic <span class="k">import</span> BaseModel, HttpUrl
+
+<span class="k">import</span> database
+
+ALPHABET = string.ascii_letters + string.digits
+
+<span class="m">@asynccontextmanager</span>
+<span class="k">async def</span> lifespan(app: FastAPI):
+    database.init_db()
+    <span class="k">yield</span>
+
+app = FastAPI(lifespan=lifespan)
+
+<span class="k">class</span> ShortenRequest(BaseModel):
+<span class="hg">    url: HttpUrl</span>
+
+<span class="k">def</span> random_code(length: int = 6) -&gt; str:
+    <span class="k">return</span> "".join(secrets.choice(ALPHABET) <span class="k">for</span> _ <span class="k">in</span> range(length))
+
+<span class="m">@app.post("/shorten")</span>
+<span class="k">def</span> shorten(request: ShortenRequest) -&gt; dict:
+    code = random_code()
+<span class="hl">    while database.code_exists(code):</span>
+<span class="hl">        code = random_code()</span>
+    database.save_link(code, str(request.url))
+    <span class="k">return</span> {"code": code}
+
+<span class="m">@app.get("/{code}")</span>
+<span class="k">def</span> redirect(code: str):
+    url = database.get_url(code)
+<span class="hg">    if url is None:</span>
+<span class="hg">        raise HTTPException(status_code=404, detail="Link not found")</span>
+    <span class="k">return</span> RedirectResponse(url)</pre></div>
+    <div>
+      <ul class="cl">
+        <li><span class="t"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><div><b>בדיקת "קוד תפוס"</b><small>השורות המסומנות בכחול: אותו באג השקט משיעור 2. בלי הלולאה, קישור אחד היה דורס אחר.</small></div></li>
+        <li><span class="t"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><div><b>בדיקת הכתובת</b><small><code>HttpUrl</code> דוחה טקסט שאינו כתובת.</small></div></li>
+        <li><span class="t"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><div><b>קוד לא קיים</b><small>מחזיר 404 ולא קורס.</small></div></li>
+        <li><span class="t"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><div><b>כל גישה למסד נתונים עוברת דרך <code>database.py</code></b><small>כמו שכתבנו ב-CLAUDE.md.</small></div></li>
+        <li><span class="t"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><div><b>אין שינוי בקבצים אחרים</b><small>רק מה שביקשתם.</small></div></li>
+      </ul>
+      <div class="legend"><span><i style="background:rgba(143,184,255,.55)"></i>חשוב לסקור</span><span><i style="background:rgba(111,224,160,.45)"></i>ולידציה והגנה</span></div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:20px"><b>זו הגרסה שבדקנו שעובדת.</b> Claude עשוי לכתוב אותה קצת אחרת, וזה בסדר. הוא יצור גם את <code>database.py</code> ואת הבדיקות ב-<code>tests/</code>. חמש בדיקות: קוד של 6 תווים, הפניה לכתובת המקורית, 404 לקוד לא קיים, דחיית כתובת לא תקינה, ובדיקה שקוד תפוס לא דורס קישור קיים.</div>
+</div>
+
+<!-- ============ 4 הרצה ============ -->
+<div class="sec rv">
+  <span class="badge">4 · הרצה</span>
+  <h2>מריצים ורואים שזה עובד</h2>
+  <div class="two">
+    <div>
+      <div class="win"><div class="wbar"><i></i><i></i><i></i><span>PowerShell</span></div>
+<pre class="cmd"><span class="p">(.venv) PS&gt;</span> pytest
+<span class="g">5 passed</span>
+
+<span class="p">(.venv) PS&gt;</span> uvicorn main:app --reload
+<span class="m">INFO:  Uvicorn running on http://127.0.0.1:8000</span></pre></div>
+      <div class="ok"><b>רואים 5 passed?</b> הבדיקות עוברות. עכשיו פותחים בדפדפן את <code>http://127.0.0.1:8000/docs</code>.</div>
+    </div>
+    <div class="br">
+      <div class="bar"><i></i><i></i><i></i><div class="addr">127.0.0.1:8000/docs</div></div>
+      <div class="body">
+        <div class="ep post"><b>POST</b>/shorten</div>
+        <div class="ep get"><b>GET</b>/{code}</div>
+        <div style="font-size:13px;color:var(--mut);direction:rtl;text-align:right">לוחצים על POST /shorten, אחר כך Try it out, מדביקים כתובת ו-Execute. מקבלים קוד. פותחים בדפדפן <code style="direction:ltr">127.0.0.1:8000/הקוד</code> ומועברים לכתובת המקורית.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 5 קומיט ============ -->
+<div class="sec rv">
+  <span class="badge">5 · קומיט</span>
+  <h2>שומרים את העבודה</h2>
+  <div class="two mid">
+    <div class="win"><div class="wbar"><i></i><i></i><i></i><span>claude</span></div>
+<pre class="cmd"><span class="p">&gt;</span> commit my changes with a descriptive message</pre></div>
+    <div>
+      <div class="warn" style="margin-top:0"><b>לפני הקומיט:</b> ודאו ש-<code>.venv</code> ו-<code>links.db</code> לא ברשימת הקבצים. הם נשארים בצד, ב-<code>.gitignore</code>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ סיום ============ -->
+<div class="done rv">
+  <h2>מה יש לכם עכשיו</h2>
+  <div class="row">
+    <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>שירות קיצור קישורים שעובד</div>
+    <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>בדיקות שעוברות</div>
+    <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>קומיט ראשון בגיט</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById(''cbl-5''); if(!root) return;
+  root.classList.add(''js'');
+  var rv=root.querySelectorAll(''.rv'');
+  if(''IntersectionObserver'' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add(''in'');io.unobserve(e.target);}});},{threshold:.02});
+    Array.prototype.forEach.call(rv,function(r){io.observe(r);});
+  } else { Array.prototype.forEach.call(rv,function(r){r.classList.add(''in'');}); }
+})();
+</script>
+</div>
+</body>
+</html>
+', 5, '2026-10-29T00:00:00.000Z');
