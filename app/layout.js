@@ -2,7 +2,7 @@ import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { logoutAction } from "@/app/actions/auth";
-import { SITE_URL, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
+import { SITE_URL, AUTHOR_NAME, OG_IMAGES, SEARCH_KEYWORDS } from "@/lib/seo";
 import { CONTACT_EMAIL } from "@/lib/site";
 import VisitTracker from "@/app/components/VisitTracker";
 
@@ -16,6 +16,7 @@ export async function generateMetadata() {
     metadataBase: new URL(SITE_URL),
     title: { default: brand, template: `%s | ${brand}` },
     description: DEFAULT_DESCRIPTION,
+    keywords: SEARCH_KEYWORDS,
     authors: [{ name: AUTHOR_NAME }],
     openGraph: {
       type: "website",

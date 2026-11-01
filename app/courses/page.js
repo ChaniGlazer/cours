@@ -1,12 +1,13 @@
 import { getCourses, getLessonsByCourse } from "@/lib/courses";
 import { CardAction, ResumeCard } from "@/app/components/CourseClient";
-import { absoluteUrl, jsonLdString } from "@/lib/seo";
+import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
 import "./courses-design.css";
 
 export const metadata = {
-  title: "קטלוג קורסים בפייתון ו-AI בעברית",
+  title: "לימוד פייתון בחינם: קורסים אינטראקטיביים בעברית",
   description:
-    "קטלוג קורסים בעברית: לימוד פייתון אינטראקטיבי בחינם ופיתוח אפליקציות מבוססות AI. שיעורים עם תרגילים ובדיקה אוטומטית.",
+    "לימוד פייתון בחינם בעידן ה-AI: קורסים אינטראקטיביים בעברית, שיעורים עם תרגילים ובדיקה אוטומטית, ופיתוח אפליקציות מבוססות AI.",
+  keywords: SEARCH_KEYWORDS,
   alternates: { canonical: "/courses" }
 };
 

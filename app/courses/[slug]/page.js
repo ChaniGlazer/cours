@@ -10,21 +10,25 @@ import { CourseBadge } from "@/app/components/ui";
 import { CourseCta, CourseProgress, Syllabus } from "@/app/components/CourseClient";
 import { GLOW_COURSES } from "@/lib/lessonTheme";
 import { startPaymentAction } from "@/app/actions/payment";
-import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, SITE_URL, OG_IMAGES } from "@/lib/seo";
+import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, SITE_URL, OG_IMAGES, SEARCH_KEYWORDS, PYTHON_COURSE_SEO } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const course = await getCourseBySlug(slug);
   if (!course) return { title: "הקורס לא נמצא", robots: { index: false } };
-  const description = toDescription(course.description, course.subtitle || course.title);
+  // קורס הפייתון מקבל כותרת/תיאור/מילות מפתח ממוקדים לחיפוש "לימוד פייתון בחינם".
+  const seo = course.id === "python-ai-era" ? PYTHON_COURSE_SEO : null;
+  const title = seo?.title || course.title;
+  const description = seo?.description || toDescription(course.description, course.subtitle || course.title);
   const path = `/courses/${course.id}`;
   return {
-    title: course.title,
+    title,
     description,
+    ...(seo ? { keywords: SEARCH_KEYWORDS } : {}),
     alternates: { canonical: path },
     // קורס "בקרוב" לא נכנס למנועי חיפוש (ואינו ב-sitemap), עד שיפתח.
     ...(course.coming_soon ? { robots: { index: false, follow: true } } : {}),
-    openGraph: { type: "website", locale: "he_IL", url: path, title: course.title, description, images: OG_IMAGES }
+    openGraph: { type: "website", locale: "he_IL", url: path, title, description, images: OG_IMAGES }
   };
 }
 
