@@ -1,5 +1,6 @@
 import { getCourses, getLessonsByCourse } from "@/lib/courses";
 import { CardAction, ResumeCard } from "@/app/components/CourseClient";
+import { getLatestApprovedTestimonials } from "@/lib/testimonials";
 import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
 import "./courses-design.css";
 
@@ -38,6 +39,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
   const allCourses = await getCourses();
   const lessonsByCourse = await getLessonsByCourse();
+  const testimonials = await getLatestApprovedTestimonials(3);
   // קורסים פתוחים קודם (כרגע קורס הפייתון), ואחריהם קורסי "בקרוב". המיון יציב, אז בתוך כל קבוצה נשמר סדר ה-position מהמסד.
   const courses = [...allCourses]
     .sort((a, b) => Number(Boolean(a.coming_soon)) - Number(Boolean(b.coming_soon)))
@@ -293,6 +295,29 @@ export default async function CoursesCatalogPage({ searchParams }) {
           </div>
         </div>
       </section>
+
+      {/* TESTIMONIALS */}
+      {testimonials.length > 0 && (
+        <section className="cx-wrap cx-testimonials">
+          <h2 className="cx-h2">מה אומרים התלמידים</h2>
+          <div className="testimonial-grid">
+            {testimonials.map((t) => (
+              <figure className="testimonial-card" key={t.id}>
+                <blockquote>“{t.quote}”</blockquote>
+                {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
+                <figcaption>
+                  {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
+                  <span>
+                    <strong>{t.name}</strong>
+                    {t.role && <small>{t.role}</small>}
+                    {t.course_title && <small>{t.course_title}</small>}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* INSTRUCTOR */}
       <section className="cx-instructor">
