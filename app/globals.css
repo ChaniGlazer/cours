@@ -816,6 +816,8 @@ body:not(:has(.theme-python-soft)) .nav-links a.btn-outline {
 .dark-section .ui-badge--free { background: var(--moss); color: var(--on-accent); }
 .dark-section .ui-badge--paid { background: var(--gold); color: var(--on-accent); }
 .dark-section .ui-badge--soon { background: rgba(189, 183, 211, 0.16); color: var(--ink); }
+.ui-badges { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ui-badge--new { background: var(--moss); color: var(--on-accent); box-shadow: 0 0 0 3px rgba(111, 224, 160, 0.18); }
 
 .ui-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 0; }
 .ui-chip {

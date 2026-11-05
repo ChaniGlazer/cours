@@ -80,6 +80,8 @@
 .cx-tag--free { border-color: var(--moss); color: var(--moss); }
 .cx-tag--paid { border-color: var(--gold); color: var(--gold); }
 .cx-tag--soon { border-color: var(--text-soft); color: var(--text-soft); }
+.cx-tag--new { border-color: var(--moss); background: var(--moss); color: var(--on-accent); box-shadow: 0 0 0 3px rgba(111, 224, 160, 0.18); }
+.cx-card__tags { display: inline-flex; align-items: center; gap: 8px; }
 .cx-card__code { font-family: var(--font-mono); font-size: 15px; line-height: 1.7; color: var(--ink); text-align: left; white-space: pre-wrap; }
 .cx-card__body { display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 26px; flex: 1; }
 .cx-card__title { font-size: 26px; line-height: 1.25; }

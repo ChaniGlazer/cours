@@ -1,6 +1,7 @@
 import { getCourses, getLessonsByCourse } from "@/lib/courses";
 import { CardAction, ResumeCard } from "@/app/components/CourseClient";
 import { getLatestApprovedTestimonials } from "@/lib/testimonials";
+import { NEW_COURSES } from "@/lib/lessonTheme";
 import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
 import "./courses-design.css";
 
@@ -183,13 +184,16 @@ export default async function CoursesCatalogPage({ searchParams }) {
                   <article className={`cx-card${soon ? " is-soon" : ""}`} key={course.id}>
                     <div className="cx-card__cover">
                       <div className="cx-card__covertop">
-                        {soon ? (
-                          <span className="cx-tag cx-tag--soon">בקרוב</span>
-                        ) : course.is_paid ? (
-                          <span className="cx-tag cx-tag--paid">₪{course.price_ils}</span>
-                        ) : (
-                          <span className="cx-tag cx-tag--free">חינם</span>
-                        )}
+                        <span className="cx-card__tags">
+                          {NEW_COURSES.includes(course.id) && !soon && <span className="cx-tag cx-tag--new">✦ חדש</span>}
+                          {soon ? (
+                            <span className="cx-tag cx-tag--soon">בקרוב</span>
+                          ) : course.is_paid ? (
+                            <span className="cx-tag cx-tag--paid">₪{course.price_ils}</span>
+                          ) : (
+                            <span className="cx-tag cx-tag--free">חינם</span>
+                          )}
+                        </span>
                       </div>
                       <pre dir="ltr" className="cx-card__code">{snippet}</pre>
                     </div>
