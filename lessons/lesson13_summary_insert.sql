@@ -438,6 +438,65 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .jr-kpis { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:12px 0 18px; }
   .jr-kpis div { background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:14px; padding:6px 20px; }
   .jr-kpis b { display:block; font:800 20px var(--display); } .jr-kpis span { font-size:12px; color:var(--ink-faint); }
+
+  /* ---------- שלב אחרון: תעודה, דרגות, תוצאות לפי תחנה, ופעולות דביקות ---------- */
+  .jr-cert { padding:34px 28px 28px; }
+  .fn-top { text-align:center; }
+  .fn-trophy { font-size:46px; line-height:1; }
+  .jr-cert .nm { font:800 30px var(--display); margin:6px 0 2px; }
+  .fn-sub { color:var(--ink-dim); font-size:14.5px; }
+  .fn-grid { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:28px; margin-top:26px; align-items:start; text-align:start; }
+  .fn-score { text-align:center; }
+  .jr-seal { width:132px; height:132px; gap:2px; }
+  .jr-seal span { font-size:38px; line-height:1; }
+  .jr-seal b { font:900 16px/1.1 var(--display); }
+  .jr-cert .big { font-size:64px; margin-top:6px; }
+  .fn-of { color:var(--ink-dim); font-size:14.5px; margin-top:4px; }
+  .fn-track { display:flex; margin:22px 4px 0; direction:rtl; }
+  .fn-step { flex:1; text-align:center; position:relative; font-size:12px; color:var(--ink-faint); }
+  .fn-step i { display:block; width:14px; height:14px; margin:0 auto 6px; border-radius:50%; background:var(--bg-panel-2); border:2px solid var(--line-strong); position:relative; z-index:1; }
+  .fn-step:not(:last-child)::before { content:""; position:absolute; top:6px; inset-inline-start:50%; width:100%; height:3px; background:var(--line-strong); }
+  .fn-step.on::before { background:var(--for); }
+  .fn-step.on i { background:var(--for); border-color:var(--for); }
+  .fn-step.me { color:var(--for); font-weight:800; }
+  .fn-step.me i { background:var(--for); border-color:#fff; box-shadow:0 0 0 4px rgba(255,210,122,.25); }
+  .fn-next { margin-top:12px; font-size:14px; color:var(--ink-dim); }
+  .fn-next b { color:var(--for); }
+  .fn-next.top { color:var(--success); font-weight:700; }
+  .jr-attempt { font-size:13.5px; color:var(--ink-faint); margin-top:12px; }
+  .fn-side h4 { margin:0 0 10px; font:800 15px var(--display); color:var(--ink-dim); }
+  .fn-side h4:not(:first-child) { margin-top:20px; }
+  .fn-sts { display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); gap:8px; }
+  .fn-st { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; border:1px solid var(--line-strong); border-inline-start:3px solid var(--c); background:rgba(255,255,255,.05); color:var(--ink); font:600 13.5px var(--sans); text-align:start; position:relative; }
+  .fn-st:hover { background:rgba(255,255,255,.1); }
+  .fn-st .ic { font-size:20px; }
+  .fn-st .tt { flex:1; }
+  .fn-st b { font:800 14px var(--display); color:var(--ink); direction:ltr; }
+  .fn-st b small { font-weight:600; color:var(--ink-faint); font-size:11px; }
+  .fn-st.full b { color:var(--success); }
+  .fn-st.full::after { content:"★"; position:absolute; top:-7px; inset-inline-end:-5px; font-size:14px; color:var(--for); text-shadow:0 0 8px rgba(255,210,122,.8); }
+  .fn-hintline { margin-top:8px; font-size:12.5px; color:var(--ink-faint); }
+  .fn-side .jr-kpis { justify-content:flex-start; margin:0; }
+  .jr-kpis div { min-width:92px; text-align:center; }
+  .fn-actions { position:sticky; bottom:12px; z-index:15; margin-top:20px; padding:14px 18px; border-radius:20px; background:rgba(20,18,31,.86); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:1px solid var(--for); box-shadow:0 14px 40px -12px rgba(0,0,0,.6); display:flex; align-items:center; justify-content:space-between; gap:14px 24px; flex-wrap:wrap; }
+  .fn-ah { display:flex; flex-direction:column; gap:2px; min-width:220px; flex:1; }
+  .fn-ah b { font:800 16px var(--display); color:var(--for); }
+  .fn-ah span { font-size:13.5px; color:var(--ink-dim); line-height:1.5; }
+  .fn-ab { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .fn-actions .run-btn { padding:12px 24px; }
+  .fn-actions .jr-fb { flex-basis:100%; min-height:0; margin:0; text-align:center; }
+  .fn-actions .jr-fb:empty { display:none; }
+  .fn-actions .exercise-answer { flex-basis:100%; }
+  .jr-leave2 { display:none; }
+  html.jr-full .jr-leave2 { display:inline-flex; }
+  @media (max-width:760px) {
+    .fn-grid { grid-template-columns:1fr; gap:22px; }
+    .jr-cert { padding:26px 16px 22px; }
+    .jr-cert .nm { font-size:26px; }
+    .fn-actions { padding:12px; bottom:8px; }
+    .fn-ab { width:100%; } .fn-ab .run-btn { flex:1 1 100%; }
+    .fn-ah { display:none; }
+  }
   .jr-confetti { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
   .jr-confetti i { position:absolute; width:9px; height:14px; border-radius:2px; animation:jrfall 1.8s ease-out forwards; }
   @keyframes jrfall { 0%{opacity:1; transform:translate(0,0) rotate(0)} 100%{opacity:0; transform:translate(var(--dx),var(--dy)) rotate(var(--rot))} }
@@ -574,6 +633,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   <section id="jr-final" hidden>
     <div class="wrap">
       <div class="jr-cert" id="jr-cert"></div>
+      <div class="fn-actions" id="jr-actions" hidden></div>
     </div>
   </section>
 </main>
@@ -742,7 +802,8 @@ function locked(i){return !!ST[i].fin&&nDoneMain()<FIN}
 ST.forEach(function(s,i){s.tasks.forEach(function(t,k){t.vs=[t].concat(VARS[i][k])})});
 function T(i,ti){return ST[i].tasks[ti].vs[S.v[i][ti]]}
 function pickVariants(prev){return ST.map(function(s,i){return s.tasks.map(function(t,k){
-  var cnt=t.vs.map(function(_,j){return prev.filter(function(r){return r.v&&r.v[i]&&r.v[i][k]===j}).length}),mn=Math.min.apply(null,cnt),c=[];
+', 13, '2026-11-08T00:00:00.000Z');
+UPDATE lessons SET html_content = html_content || '  var cnt=t.vs.map(function(_,j){return prev.filter(function(r){return r.v&&r.v[i]&&r.v[i][k]===j}).length}),mn=Math.min.apply(null,cnt),c=[];
   cnt.forEach(function(x,j){if(x===mn)c.push(j)});return c[Math.floor(Math.random()*c.length)]})})}
 var HUES=[200,40,150,330,270,20,180,95,350,235,310];
 function col(i){return ''hsl(''+HUES[i%HUES.length]+'' 88% 64%)''}
@@ -788,8 +849,7 @@ function layout(){
   var cols=matchMedia(''(max-width:760px)'').matches?2:5,map=$(''jr-map''),nodes=map.querySelectorAll(''.jr-node'');
   nodes.forEach(function(n,i){var row=Math.floor(i/cols),pos=i%cols,c=row%2===0?pos:cols-1-pos;n.style.gridColumn=(c+1);n.style.gridRow=(row+1)});
   var mr=map.getBoundingClientRect(),pts=[];
-', 13, '2026-11-08T00:00:00.000Z');
-UPDATE lessons SET html_content = html_content || '  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
+  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
   var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
   for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
     h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
@@ -883,16 +943,22 @@ function finish(){
   var pv=S.prev.length?S.prev[S.prev.length-1]:null;
   var att=''<div class="jr-attempt">ניסיון מספר ''+S.attempt+(pv?'' · בניסיון הקודם: <b>''+pv.score+''</b> נקודות, עכשיו: <b>''+sc+''</b> (''+(sc-pv.score>=0?''+'':'''')+(sc-pv.score)+'')'':'''')+''</div>'';
   $(''jr-final'').hidden=false;
-  $(''jr-cert'').innerHTML=''<div style="font-size:44px">🏆</div><h2>תעודת סיום המסע</h2><div>קורס פייתון · מגמת מחשבים</div><div class="nm">''+esc(S.name)+''</div>''+
-   ''<div class="jr-seal"><span>🏅</span>''+RANKS[ri][1]+''</div><div class="big">''+sc+''</div><div>מתוך ''+maxScore()+'' נקודות</div>''+
-   ''<div class="jr-ladder">''+RANKS.map(function(r,k){return ''<span class="''+(k===ri?''me'':'''')+''">''+r[1]+''</span>''}).join('''')+''</div>''+
-   ''<div class="jr-stampsrow">''+ST.map(function(s){return ''<span title="''+esc(s.t)+''">''+s.ic+''</span>''}).join('''')+''</div>''+
-   att+''<div class="jr-kpis"><div><b>''+fmt(el/1000)+''</b><span>זמן</span></div><div><b>''+S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.att},0)},0)+''</b><span>טעויות</span></div><div><b>''+S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.hint},0)},0)+''</b><span>רמזים</span></div></div>''+
-   ''<div class="jr-act" style="justify-content:center"><button type="button" class="run-btn" id="jr-dl">הורדת התעודה והתוצאות למורה</button><button type="button" class="pill" id="jr-dl2">📚 הורדת סיכום הקורס</button></div><div class="jr-fb" id="jr-dlfb" style="text-align:center"></div><textarea id="jr-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>'';
+  var errs=S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.att},0)},0),hints=S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.hint},0)},0);
+  var mx=maxScore(),pct=Math.round(sc/mx*100),nextR=RANKS[ri+1],need=nextR?Math.max(1,Math.ceil(nextR[0]*mx)-sc):0;
+  var track=''<div class="fn-track" aria-label="הדרגות">''+RANKS.map(function(r,k){return ''<div class="fn-step''+(k<ri?'' on'':'''')+(k===ri?'' me'':'''')+''"><i></i><span>''+r[1]+''</span></div>''}).join('''')+''</div>''+(nextR?''<div class="fn-next">עוד ''+need+'' נקודות לדרגת <b>''+nextR[1]+''</b></div>'':''<div class="fn-next top">הגעת לדרגה הגבוהה ביותר! 🎉</div>'');
+  var sts=ST.map(function(s,i){var p=S.t[i].reduce(function(a,x){return a+x.pts},0),full=s.tasks.length*BASE;
+    return ''<button type="button" class="fn-st''+(p===full?'' full'':'''')+''" style="--c:''+col(i)+''" data-i="''+i+''" title="לסיכום התחנה"><span class="ic">''+s.ic+''</span><span class="tt">''+esc(s.t)+''</span><b>''+p+''<small>/''+full+''</small></b></button>''}).join('''');
+  $(''jr-cert'').innerHTML=''<div class="fn-top"><div class="fn-trophy">🏆</div><h2>סיימת את המסע!</h2><div class="nm">''+esc(S.name)+''</div><div class="fn-sub">תעודת סיום · קורס פייתון · מגמת מחשבים</div></div>''+
+   ''<div class="fn-grid"><div class="fn-score"><div class="jr-seal"><span>🏅</span><b>''+RANKS[ri][1]+''</b></div><div class="big">''+sc+''</div><div class="fn-of">מתוך ''+mx+'' נקודות · ''+pct+''%</div>''+track+att+''</div>''+
+   ''<div class="fn-side"><h4>איך הלך בכל תחנה</h4><div class="fn-sts">''+sts+''</div><div class="fn-hintline">לחצי על תחנה כדי לחזור לסיכום שלה</div><h4>במסע שלך</h4><div class="jr-kpis"><div><b>''+fmt(el/1000)+''</b><span>זמן</span></div><div><b>''+errs+''</b><span>טעויות</span></div><div><b>''+hints+''</b><span>רמזים</span></div></div></div></div>'';
+  $(''jr-cert'').querySelectorAll(''.fn-st'').forEach(function(b){b.onclick=function(){openStation(+b.dataset.i,true)}});
+  var ac=$(''jr-actions'');ac.hidden=false;
+  ac.innerHTML=''<div class="fn-ah"><b>הצעד האחרון: שליחה למורה</b><span>מורידים קובץ אחד ושולחים אותו למורה. הניסיון הראשון הוא הקובע.</span></div><div class="fn-ab"><button type="button" class="run-btn" id="jr-dl">📨 הורדת התעודה והתוצאות למורה</button><button type="button" class="pill" id="jr-dl2">📚 סיכום הקורס</button><button type="button" class="pill jr-leave2" id="jr-leave2">✕ יציאה ממסך מלא</button></div><div class="jr-fb" id="jr-dlfb"></div><textarea id="jr-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>'';
   $(''jr-dl'').onclick=function(){dl(resultsHtml(),''python-journey-results.html'',''הקובץ ירד! שלחי אותו למורה.'')};
   $(''jr-dl2'').onclick=function(){dl(summaryHtml(),''python-course-summary.html'',''דף הסיכום ירד!'')};
+  $(''jr-leave2'').onclick=function(){setFull(false)};
   hud();try{$(''jr-final'').scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
-  setTimeout(function(){confetti($(''jr-cert''))},300);setTimeout(function(){confetti($(''jr-cert''))},900);setTimeout(function(){confetti($(''jr-cert''))},1500);
+  setTimeout(function(){confetti($(''jr-cert''))},300);setTimeout(function(){confetti($(''jr-cert''))},1000);
 }
 var CSS=''<style>body{font-family:Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 16px;line-height:1.7;color:#222}h1{font-size:26px}table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #bbb;padding:6px 10px;text-align:right}th{background:#eee}pre{background:#f3f3f3;padding:10px;direction:ltr;text-align:left;white-space:pre-wrap;border-radius:6px}code{direction:ltr;unicode-bidi:isolate;background:#eee;padding:0 4px}.c{border:1px solid #bbb;border-radius:8px;padding:6px 18px;margin:14px 0;page-break-inside:avoid}</style>'';
 function resultsHtml(){
