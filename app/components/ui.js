@@ -1,5 +1,6 @@
 // רכיבי UI משותפים (ללא state - מתאימים גם ל-server components).
 // הסגנונות נמצאים ב-globals.css תחת "Shared UI".
+import { NEW_COURSES } from "@/lib/lessonTheme";
 
 export function Badge({ kind = "free", children }) {
   return <span className={`ui-badge ui-badge--${kind}`}>{children}</span>;
@@ -7,7 +8,14 @@ export function Badge({ kind = "free", children }) {
 
 export function CourseBadge({ course }) {
   if (course.coming_soon) return <Badge kind="soon">בקרוב</Badge>;
-  return course.is_paid ? <Badge kind="paid">₪{course.price_ils}</Badge> : <Badge kind="free">חינם</Badge>;
+  const main = course.is_paid ? <Badge kind="paid">₪{course.price_ils}</Badge> : <Badge kind="free">חינם</Badge>;
+  if (!NEW_COURSES.includes(course.id)) return main;
+  return (
+    <span className="ui-badges">
+      <Badge kind="new">✦ חדש</Badge>
+      {main}
+    </span>
+  );
 }
 
 export function ProgressBar({ value, max, label, thin = false }) {

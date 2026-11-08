@@ -80,6 +80,8 @@
 .cx-tag--free { border-color: var(--moss); color: var(--moss); }
 .cx-tag--paid { border-color: var(--gold); color: var(--gold); }
 .cx-tag--soon { border-color: var(--text-soft); color: var(--text-soft); }
+.cx-tag--new { border-color: var(--moss); background: var(--moss); color: var(--on-accent); box-shadow: 0 0 0 3px rgba(111, 224, 160, 0.18); }
+.cx-card__tags { display: inline-flex; align-items: center; gap: 8px; }
 .cx-card__code { font-family: var(--font-mono); font-size: 15px; line-height: 1.7; color: var(--ink); text-align: left; white-space: pre-wrap; }
 .cx-card__body { display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 26px; flex: 1; }
 .cx-card__title { font-size: 26px; line-height: 1.25; }
@@ -109,6 +111,9 @@
 .cx-test--fail { border: 1.5px solid var(--gold); }
 .cx-tests__hint { padding: 4px 4px 0; color: var(--text-soft); font-size: 16px; }
 
+/* testimonials: הכרטיסים עצמם מ-globals.css; כאן רק הרווח של הסקשן */
+.cx-testimonials { padding-bottom: 96px; }
+
 /* instructor */
 .cx-instructor { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .cx-instructor__inner { padding-top: 80px; padding-bottom: 80px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
@@ -119,6 +124,7 @@
   .cx-hero__grid { padding-top: 48px; padding-bottom: 64px; gap: 40px; }
   .cx-catalog__inner { padding-top: 64px; padding-bottom: 64px; }
   .cx-anatomy { padding-top: 64px; padding-bottom: 64px; }
+  .cx-testimonials { padding-bottom: 64px; }
   .cx-editor { box-shadow: 8px 8px 0 var(--paper-2); }
   .cx-code { font-size: 14px; padding: 18px 16px; }
 }

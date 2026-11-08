@@ -1,0 +1,822 @@
+DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='files';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('de95a219982a0f5666496825ecb2a228', 'python-ai-era', 'files', 'שיעור 12 - קבצים (open)', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>קבצים בפייתון: open</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14121f;
+    --bg-panel: #1d1a2d;
+    --bg-panel-2: #26223b;
+    --ink: #f4f1fa;
+    --ink-dim: #bdb7d3;
+    --ink-faint: #9e97ba;
+    --for: #ffd27a;
+    --for-soft: #413739;
+    --while: #ff7f96;
+    --while-soft: #412a3e;
+    --success: #6fe0a0;
+    --success-soft: #2a3a3f;
+    --danger: #ff7f96;
+    --danger-soft: #412a3e;
+    --line: rgba(244,241,250,0.10);
+    --line-strong: rgba(244,241,250,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif;
+    --sans: "Assistant", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(600px 400px at 15% -5%, rgba(255,210,122,0.10), transparent 60%),
+      radial-gradient(600px 400px at 100% 20%, rgba(255,127,150,0.10), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--for); color: #14121f; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+
+  p { color: var(--ink-dim); margin: 0; }
+  p + p { margin-top: 14px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  code, .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; }
+  strong { color: var(--ink); }
+
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  section { padding: 68px 0; }
+  section + section { border-top: 1px solid var(--line); }
+
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; }
+  .eyebrow.for-c { color: var(--for); }
+  .eyebrow.while-c { color: var(--while); }
+
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
+  .lede { font-size: 18px; margin-top: 14px; }
+
+  /* ---------- HERO + TEASER ---------- */
+
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero h1 { font-size: clamp(2.1rem, 7vw, 3.2rem); line-height: 1.18; }
+  .hero h1 .accent-for { color: var(--for); }
+  .hero h1 .accent-while { color: var(--while); }
+  .hero-sub { max-width: 46ch; margin: 18px auto 0; font-size: 18.5px; }
+
+  /* ---------- SHELF (boxes with indexes) ---------- */
+
+  .shelf { display: flex; gap: 8px; direction: ltr; justify-content: center; flex-wrap: wrap; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .slot-idx { font-family: var(--mono); font-size: 12px; color: var(--for); min-height: 18px; }
+  .slot-neg { font-family: var(--mono); font-size: 12px; color: var(--while); min-height: 18px; }
+  .box {
+    min-width: 62px; height: 46px; padding: 0 10px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-panel-2); color: var(--ink-dim); border: 1px solid var(--line-strong);
+    font-family: var(--sans); font-weight: 700; font-size: 15px; direction: rtl;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  button.box:hover { border-color: var(--ink-dim); }
+  .box.on { background: var(--for-soft); color: var(--for); border-color: var(--for); }
+  .box.off { background: transparent; color: var(--ink-faint); border: 1px dashed var(--line-strong); }
+  .box.num { font-family: var(--mono); }
+  .box.pop { animation: pop-in 0.35s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes pop-in { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+  .shelf-label { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); text-align: center; margin: 14px 0 10px; direction: ltr; }
+  .shelf-empty { color: var(--ink-faint); font-style: italic; font-size: 14px; align-self: center; direction: rtl; min-height: 46px; display: flex; align-items: center; }
+
+  /* ---------- CODE CARDS ---------- */
+
+  .code-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .code-card-label { font-size: 13.5px; font-weight: 700; color: var(--ink-faint); padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .code-card.for-accent .code-card-label { color: var(--for); }
+  .code-card.while-accent .code-card-label { color: var(--while); }
+  .code-card pre, pre.code-static {
+    direction: ltr; text-align: left; margin: 0; padding: 16px 18px 18px; overflow-x: auto;
+    font-family: var(--mono); font-size: 14.5px; line-height: 1.7;
+  }
+  pre.code-static { background: rgba(0,0,0,0.22); border-radius: 12px; margin-top: 18px; }
+  .tok-kw { color: #ff7f96; }
+  .tok-str { color: #6fe0a0; unicode-bidi: isolate; }
+  .iso { unicode-bidi: isolate; }
+  .tok-num { color: #ffd27a; }
+  .tok-fn { color: #8fb8ff; }
+  .tok-cmt { color: var(--ink-faint); }
+  .solo-code { max-width: 460px; }
+
+  /* ---------- JAVA vs PYTHON TABLE ---------- */
+
+  .tbl-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .tbl th, .tbl td { padding: 11px 16px; border-bottom: 1px solid var(--line); text-align: left; direction: ltr; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl th { background: var(--bg-panel-2); color: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; }
+  .tbl th.py, .tbl td.py { color: var(--for); }
+  .tbl td { background: var(--bg-panel); font-family: var(--mono); font-size: 13.5px; color: var(--ink-dim); }
+
+  .diff-counter { margin-top: 18px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .diff-counter label { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .diff-counter input[type="number"] {
+    width: 60px; font-family: var(--mono); font-size: 16px; text-align: center;
+    background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 8px 10px;
+  }
+  .diff-remaining { font-size: 14.5px; font-weight: 700; color: var(--ink-dim); }
+  .diff-remaining.done { color: var(--success); }
+  .reveal-btn {
+    margin-top: 18px; font-family: var(--sans); font-weight: 600; font-size: 14px;
+    background: transparent; color: var(--ink-faint); border: 1px dashed var(--line-strong); border-radius: 8px; padding: 9px 16px;
+  }
+  .reveal-btn:hover { color: var(--ink); border-color: var(--ink-dim); }
+  .diff-answer { margin-top: 14px; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; }
+  .diff-answer-row { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+  .diff-num-badge {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--for-soft); color: var(--for); font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+
+  /* ---------- PLAYGROUND (demos) ---------- */
+
+  .playground { margin-top: 36px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .playground-controls { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .playground-controls label { font-weight: 700; font-size: 15px; }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 200px; }
+  input[type="range"] { flex: 1; accent-color: var(--for); }
+  .slider-val { font-family: var(--mono); font-weight: 700; font-size: 18px; color: var(--for); min-width: 34px; text-align: center; direction: ltr; }
+  .playground-stage { padding: 22px 24px 8px; }
+  .playground-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2; padding: 14px 0; border-top: 1px solid var(--line); margin-top: 14px; }
+  .playground-code .line { padding: 2px 22px; white-space: pre; }
+  .playground-code .line.out { color: var(--for); }
+  .playground-code .line.err { color: var(--danger); background: var(--danger-soft); box-shadow: inset 3px 0 0 var(--danger); }
+  .playground-note { padding: 0 24px 18px; font-size: 14.5px; color: var(--ink-dim); min-height: 40px; }
+  .playground-note.err { color: var(--danger); font-weight: 700; }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: var(--mono); font-size: 13px; padding: 8px 14px; border-radius: 100px; direction: ltr;
+    border: 1px solid var(--line-strong); background: var(--bg-panel-2); color: var(--ink-dim);
+  }
+  .pill:hover:not(:disabled) { border-color: var(--ink-dim); color: var(--ink); }
+  .pill.active { background: var(--for-soft); color: var(--for); border-color: var(--for); }
+  .pill.reset { font-family: var(--sans); color: var(--ink-faint); border-style: dashed; background: transparent; }
+  .pill:disabled { opacity: 0.4; cursor: default; }
+
+  .log { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; line-height: 1.8; padding: 12px 24px; background: rgba(0,0,0,0.22); border-top: 1px solid var(--line); min-height: 52px; max-height: 190px; overflow-y: auto; }
+  .log .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .log .arrow { color: var(--ink-faint); }
+  .log .res { color: var(--for); }
+  .log .bad { color: var(--danger); }
+  .log .empty { color: var(--ink-faint); font-family: var(--sans); direction: rtl; font-style: italic; }
+
+  .field-row { padding: 16px 24px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .field-row input[type="text"], .field-row input[type="number"], .num-in {
+    font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong);
+    border-radius: 8px; color: var(--ink); padding: 8px 10px; direction: ltr; text-align: center;
+  }
+  .field-row input[type="text"] { width: 120px; }
+  .field-row input[type="number"], .num-in { width: 72px; }
+
+  .tabs { display: flex; gap: 8px; margin-top: 26px; flex-wrap: wrap; }
+  .tab {
+    font-family: var(--mono); font-weight: 700; font-size: 14px; direction: ltr;
+    padding: 9px 22px; border-radius: 100px; border: 2px solid var(--line-strong); background: transparent; color: var(--ink-dim);
+  }
+  .tab.active { border-color: var(--for); color: var(--for); background: var(--for-soft); }
+
+  .names { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; direction: ltr; }
+  .name-tag { font-family: var(--mono); font-weight: 800; font-size: 15px; padding: 4px 14px; border-radius: 8px; background: var(--for-soft); color: var(--for); border: 1px solid var(--for); }
+  .name-tag.b { background: var(--while-soft); color: var(--while); border-color: var(--while); }
+  .names.two { gap: 30px; }
+  .names .group { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* guess row */
+  .guess-row { padding: 18px 24px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .guess-row input { width: 110px; font-family: var(--mono); font-size: 16px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 8px 10px; text-align: center; direction: ltr; }
+  .guess-row input[type="number"] { width: 70px; }
+  .guess-btn { background: var(--bg-panel-2); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 100px; padding: 9px 18px; font-weight: 700; font-size: 14px; }
+  .guess-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .guess-feedback.correct { color: var(--success); }
+  .guess-feedback.wrong { color: var(--danger); }
+
+  .callout { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--for); border-radius: 14px; padding: 16px 20px; font-size: 15.5px; color: var(--ink-dim); }
+  .callout.java { border-inline-start-color: var(--while); }
+
+  /* ---------- BUG HUNT (choices) ---------- */
+
+  .rescue { margin-top: 36px; background: var(--bg-panel); border: 1px solid var(--danger); border-radius: var(--radius); padding: 24px 26px 26px; }
+  .rescue.fixed { border-color: var(--success); }
+  .rescue-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .rescue-head h4 { font-family: var(--sans); font-weight: 700; font-size: 15.5px; margin: 0; color: var(--ink); }
+  .rescue-mark { font-size: 24px; color: var(--danger); }
+  .rescue.fixed .rescue-mark { color: var(--success); }
+  .rescue pre { direction: ltr; text-align: left; margin: 0 0 18px; font-family: var(--mono); font-size: 14.5px; line-height: 1.75; background: rgba(0,0,0,0.25); border-radius: 10px; padding: 16px 18px; overflow-x: auto; }
+  .rescue-choices { display: flex; gap: 12px; flex-wrap: wrap; }
+  .rescue-choice { flex: 1; min-width: 200px; text-align: right; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 14px; padding: 14px 16px; font-size: 14.5px; color: var(--ink); }
+  .rescue-choice:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .rescue-choice.right { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+  .rescue-choice.wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
+  .rescue-choice:disabled { cursor: default; }
+  .rescue-feedback { margin-top: 14px; font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .rescue-feedback.correct { color: var(--success); }
+  .rescue-feedback.wrong { color: var(--danger); }
+  .rescue-fix { margin-top: 12px; }
+
+  /* ---------- EXERCISES ---------- */
+
+  .exercises-banner { margin-bottom: 8px; background: linear-gradient(135deg, var(--for-soft), var(--while-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px; }
+  .exercises-banner .badge { display: inline-block; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--bg); background: var(--for); border-radius: 100px; padding: 4px 12px; margin-bottom: 10px; }
+  .exercises-banner h2 { font-size: clamp(1.7rem, 4.5vw, 2.3rem); }
+  .exercises-banner p { margin-top: 10px; font-size: 16px; color: var(--ink); }
+
+  .rf-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:22px; }
+  .rf { background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:8px; }
+  .rf h4 { margin:0; font-family:var(--mono); font-size:15px; direction:ltr; text-align:left; color:var(--for); font-weight:700; }
+  .rf p { margin:0; font-size:14.5px; color:var(--ink-dim); line-height:1.6; }
+  .rf .ex { font-family:var(--mono); font-size:13.5px; direction:ltr; text-align:left; background:var(--code-bg); color:var(--code-ink); border-radius:8px; padding:8px 10px; }
+  .rf .rr { display:flex; align-items:center; gap:10px; margin-top:auto; }
+  .rf .res { font-family:var(--mono); font-size:14px; direction:ltr; color:var(--while); font-weight:700; min-height:20px; }
+  .rf-title { margin-top:34px; font-size:1.25rem; font-weight:700; }
+  .exercise-card { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--line-strong); border-radius: 16px; padding: 22px 24px; }
+  .exercise-card.for-accent { border-inline-start-color: var(--for); }
+  .exercise-card.while-accent { border-inline-start-color: var(--while); }
+  .exercise-num { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+  .exercise-task { margin: 8px 0 16px; font-weight: 600; color: var(--ink); font-size: 15.5px; }
+  .exercise-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 1.9; background: rgba(0,0,0,0.22); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; overflow-x: auto; white-space: pre; }
+  .exercise-code input { font-family: var(--mono); font-size: 14px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 6px; color: var(--for); padding: 3px 4px; text-align: center; width: 52px; }
+  .exercise-code input.wide { width: 96px; }
+  .exercise-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .exercise-controls input { width: 70px; font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 7px 8px; text-align: center; }
+  .exercise-check-btn { background: var(--bg-panel-2); border: 1px solid var(--line-strong); color: var(--ink); border-radius: 100px; padding: 9px 20px; font-weight: 700; font-size: 14px; }
+  .exercise-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .exercise-feedback.correct { color: var(--success); }
+  .exercise-feedback.wrong { color: var(--danger); }
+  .exercise-output { margin-top: 12px; font-family: var(--mono); font-size: 13.5px; direction: ltr; text-align: left; background: rgba(0,0,0,0.18); border-radius: 8px; padding: 10px 12px; color: var(--ink-dim); white-space: pre-line; min-height: 20px; }
+  .exercise-divider { margin-top: 40px; display: flex; align-items: center; gap: 14px; color: var(--ink-faint); font-family: var(--mono); font-size: 13px; }
+  .exercise-divider::before, .exercise-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .exercise-hint { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13px; color: var(--ink-dim); background: rgba(0,0,0,0.18); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.7; }
+  .exercise-note { font-size: 13.5px; color: var(--ink-faint); font-style: italic; margin: 0 0 10px; }
+  .exercise-answer { width: 100%; direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; line-height: 1.7; background: rgba(0,0,0,0.22); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 12px 14px; resize: vertical; }
+  .exercise-answer.rtl { direction: rtl; text-align: right; font-family: var(--sans); font-size: 15px; }
+  .exercise-answer:focus { outline: none; border-color: var(--ink-dim); }
+  .ai-note { margin-top: 16px; background: var(--while-soft); border-radius: 12px; padding: 12px 16px; color: var(--ink); font-size: 14.5px; }
+  .ai-note strong { color: var(--while); }
+
+  /* ---------- SUMMARY ---------- */
+
+  .recap { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .recap li { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; color: var(--ink-dim); }
+  .recap li::before { content: "✓"; color: var(--success); font-weight: 800; margin-inline-end: 10px; }
+
+  /* ---------- NAME BAR ---------- */
+
+  .name-bar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .name-bar-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .name-bar-inner label { font-size: 13.5px; color: var(--ink-dim); flex-shrink: 0; }
+  .name-bar-input { flex: 1; min-width: 160px; max-width: 260px; font-family: var(--sans); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink); padding: 9px 12px; }
+  .name-bar-input:focus { outline: none; border-color: var(--for); }
+  .name-bar-jump { margin-inline-start: auto; font-family: var(--display); font-weight: 700; font-size: 13.5px; color: var(--for); background: transparent; border: 1px solid var(--for); border-radius: 100px; padding: 8px 16px; white-space: nowrap; }
+  .name-bar-jump:hover { background: var(--for-soft); }
+
+  .run-btn { font-family: var(--display); font-weight: 800; font-size: 15px; color: #14121f; background: var(--for); border: none; border-radius: 100px; padding: 12px 26px; }
+
+  /* ---------- CERTIFICATE ---------- */
+
+  .certificate-box { margin-top: 30px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 26px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cert-name-display { font-size: 15px; color: var(--ink-dim); }
+  .cert-name-display strong { color: var(--for); }
+  .cert-status { width: 100%; margin: 0; font-size: 14.5px; color: var(--ink-dim); }
+  .cert-status.correct { color: var(--success); }
+  .cert-status.wrong { color: var(--danger); }
+  .cert-fallback { margin-top: 16px; }
+  .cert-fallback-note { font-size: 13.5px; color: var(--ink-faint); margin: 0 0 10px; }
+  .cert-fallback-text { width: 100%; direction: ltr; text-align: left; font-family: var(--mono); font-size: 12px; line-height: 1.6; background: rgba(0,0,0,0.25); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink-dim); padding: 12px 14px; }
+
+  footer { padding: 48px 0 76px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+
+  .tb { background:rgba(255,127,150,.07); border-inline-start:3px solid var(--danger); padding:10px 16px; margin:4px 0; line-height:1.7; }
+  .tb span[data-p] { border-radius:4px; padding:0 3px; transition:background .2s; }
+  .tb span[data-p].on { background:rgba(255,210,122,.28); outline:1px solid var(--for); }
+  .tb-pills { display:flex; gap:8px; flex-wrap:wrap; padding:8px 0 0; direction:rtl; }
+  .tb-note { padding:12px 24px; font-size:14.5px; color:var(--ink-dim); border-top:1px solid var(--line); line-height:1.7; }
+  .net-status { padding:10px 24px; font-weight:700; font-size:15px; color:var(--ink-dim); border-top:1px solid var(--line); min-height:24px; }
+  .net-status.good { color:var(--success); } .net-status.bad { color:var(--danger); }
+  .playground-code .line { transition: background .25s; }
+  .playground-code .line.run { background:rgba(255,210,122,.14); box-shadow:inset 3px 0 0 var(--for); }
+  .playground-code .line.caught { background:var(--success-soft); box-shadow:inset 3px 0 0 var(--success); }
+  .rf .res.bad2 { color:var(--danger); font-size:13px; white-space:normal; word-break:break-word; }
+  .tok-str.he { direction:rtl; unicode-bidi:isolate; }
+  .zg-msg { font-size:14.5px; font-weight:700; line-height:1.7; min-height:24px; }
+  .zg-msg.good { color:var(--success); } .zg-msg.bad { color:var(--danger); }
+  .pill.wrong { border-color:var(--danger); color:var(--danger); opacity:.6; }
+  @keyframes shk { 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+  .shake { animation: shk .45s; }
+  @media (prefers-reduced-motion: reduce) { .shake { animation:none } }
+
+  .file-pad { margin:0; padding:12px 24px 14px; border-top:1px solid var(--line); background:rgba(255,210,122,.06); direction:ltr; font-family:var(--mono); font-size:14px; }
+  .playground > .file-pad:first-child, #rd-file { border:1px solid var(--line); border-radius:12px; margin:18px 0 6px; }
+  .fp-head { color:var(--for); font-weight:700; margin-bottom:6px; }
+  .fp-line { display:flex; align-items:center; gap:12px; line-height:1.9; }
+  .fp-n { color:var(--ink-faint); width:18px; text-align:right; }
+  .fp-t { color:var(--ink); } .fp-nl { color:var(--while); font-size:13px; }
+  .fp-empty { color:var(--ink-faint); font-style:italic; font-family:var(--sans); direction:rtl; }
+  .file-pad.flash { animation: fpf .8s; }
+  @keyframes fpf { 0%{background:rgba(255,210,122,.4)} 100%{background:rgba(255,210,122,.06)} }
+  #wr-row.is-read #wr-in, #wr-row.is-read label[for="wr-in"], #wr-row.is-read label:has(#wr-nl) { display:none; }
+  .mono, .m { direction:ltr; unicode-bidi:isolate; }
+  .rf .res { white-space:pre-wrap; word-break:break-word; }
+</style>
+<style>/* ===== engagement kit ===== */
+.ek-progress{position:fixed;top:0;right:0;left:0;height:4px;z-index:9998;background:transparent;pointer-events:none}
+.ek-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--for,#ffd27a),var(--while,#ff7f96));border-radius:0 4px 4px 0;float:right;transition:width .15s}
+.ek-hud{position:fixed;bottom:14px;right:14px;z-index:9997;display:flex;align-items:center;gap:10px;background:rgba(29,26,45,.92);backdrop-filter:blur(8px);border:1px solid var(--line-strong,rgba(255,255,255,.2));border-radius:999px;padding:8px 16px;font:700 14px var(--sans,sans-serif);color:var(--ink,#f4f1fa);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.ek-hud .ek-star{font-size:18px;display:inline-block}
+.ek-hud.pop .ek-star{animation:ekpop .6s}
+.ek-hud .ek-lvl{color:var(--for,#ffd27a)}
+@keyframes ekpop{30%{transform:scale(1.8) rotate(-15deg)}100%{transform:scale(1)}}
+.ek-toast{position:fixed;bottom:70px;right:50%;transform:translate(50%,20px);opacity:0;z-index:9999;background:linear-gradient(135deg,var(--for,#ffd27a),var(--while,#ff7f96));color:#2a1f36;font:800 17px var(--display,sans-serif);padding:12px 24px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:.35s;pointer-events:none}
+.ek-toast.show{opacity:1;transform:translate(50%,0)}
+.ek-bit{position:fixed;z-index:9999;width:9px;height:9px;border-radius:2px;pointer-events:none;animation:ekfly 1s ease-out forwards}
+@keyframes ekfly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.ek-js .ek-reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.ek-js .ek-reveal.in{opacity:1;transform:none}
+.playground,.exercise,.code-card,.callout{transition:transform .25s,box-shadow .25s}
+.playground:hover,.exercise:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.28)}
+/* insight cards */
+.ek-insight{display:flex;gap:16px;align-items:flex-start;margin:28px 0 0;padding:18px 22px;border-radius:20px;background:linear-gradient(135deg,rgba(255,210,122,.14),rgba(255,127,150,.12));border:1px dashed var(--for,#ffd27a);position:relative}
+.ek-insight .ek-ic{font-size:34px;line-height:1;flex:none;animation:ekbob 3s ease-in-out infinite}
+@keyframes ekbob{50%{transform:translateY(-5px) rotate(-6deg)}}
+.ek-insight b.ek-tag{display:block;color:var(--for,#ffd27a);font:800 13px var(--display,sans-serif);letter-spacing:.04em;margin-bottom:4px}
+.ek-insight p{margin:0;font-size:17px;line-height:1.7;color:var(--ink,#f4f1fa)}
+.ek-insight code,.ek-insight .m{font-family:var(--mono,monospace);direction:ltr;unicode-bidi:isolate;background:rgba(0,0,0,.28);padding:1px 7px;border-radius:6px;font-size:.92em}
+/* hero strip */
+.ek-strip{margin:34px auto 0;max-width:760px}
+.ek-cells{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;direction:ltr}
+.ek-cell{min-width:86px;padding:12px 10px 10px;border-radius:16px;background:var(--bg-panel-2,#26223b);border:2px solid var(--line-strong,rgba(255,255,255,.2));text-align:center;cursor:pointer;transition:.3s;font-family:var(--mono,monospace);color:var(--ink,#f4f1fa)}
+.ek-cell small{display:block;color:var(--ink-faint,#9e97ba);font-size:12px;margin-bottom:4px}
+.ek-cell strong{font-size:22px}
+.ek-cell.on{border-color:var(--for,#ffd27a);background:rgba(255,210,122,.16);transform:translateY(-8px) scale(1.07);box-shadow:0 12px 26px rgba(255,210,122,.2)}
+.ek-cell.on small{color:var(--for,#ffd27a)}
+.ek-cap{margin-top:16px;text-align:center;font:700 18px var(--mono,monospace);direction:ltr;color:var(--while,#ff7f96);min-height:28px}
+.ek-hint{text-align:center;font-size:13px;color:var(--ink-faint,#9e97ba);margin-top:6px}
+/* quiz */
+.ek-quiz{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:22px}
+.ek-q{min-width:0;background:var(--bg-panel,#1d1a2d);border:1px solid var(--line-strong,rgba(255,255,255,.2));border-radius:20px;padding:20px 22px}
+.ek-q h3{margin:0 0 4px;font:800 18px var(--display,sans-serif);color:var(--ink,#f4f1fa)}
+.ek-q pre{direction:ltr;text-align:left;background:#221F55;border-radius:14px;padding:12px 16px;margin:12px 0;overflow-x:auto;font:500 15px/1.6 var(--mono,monospace);color:#f4f1fa}
+.ek-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:10px}
+.ek-opt{padding:11px 12px;border-radius:14px;border:2px solid var(--line-strong,rgba(255,255,255,.2));background:var(--bg-panel-2,#26223b);color:var(--ink,#f4f1fa);font:600 15px var(--mono,monospace);direction:ltr;cursor:pointer;transition:.2s}
+.ek-opt:hover:not(:disabled){border-color:var(--for,#ffd27a);transform:translateY(-2px)}
+.ek-opt.good{border-color:var(--success,#6fe0a0);background:rgba(111,224,160,.16)}
+.ek-opt.bad{border-color:var(--danger,#ff7f96);background:rgba(255,127,150,.14);animation:ekshake .4s}
+@keyframes ekshake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.ek-why{margin-top:12px;font-size:15.5px;line-height:1.7;color:var(--ink-dim,#bdb7d3);min-height:0}
+.ek-why.good{color:var(--success,#6fe0a0)}
+.ek-why.bad{color:var(--danger,#ff7f96)}
+@media (max-width:600px){.ek-hud{right:8px;bottom:8px;font-size:13px;padding:6px 12px}.ek-insight{flex-direction:column;gap:8px}.ek-cell{min-width:62px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center; display:flex;">שיעור · פייתון · מגמת מחשבים</div>
+    <h1>הזיכרון של התוכנית:<br><span class="accent-for">קבצים</span> <span class="accent-while">(open)</span></h1>
+    <p class="hero-sub">עד היום, ברגע שהתוכנית נגמרה, כל מה שהיא ידעה נעלם. עם <strong>קבצים</strong> היא יכולה לכתוב דברים על המחשב ולקרוא אותם בפעם הבאה.</p>
+    <div class="code-card for-accent solo-code" style="margin:36px auto 0; text-align:left;">
+      <div class="code-card-label">Python</div>
+      <pre class="hl"><code>with open("notes.txt", "a") as f:
+    f.write("שלום!\n")</code></pre>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="write">
+    <div class="wrap">
+      <div class="eyebrow while-c">כתיבה וקריאה</div>
+      <h2 class="section-title">המחברת של התוכנית</h2>
+      <p class="lede">קובץ הוא כמו מחברת. פותחים אותה עם <span class="mono">open</span> ואומרים מה רוצים לעשות: <span class="mono">"w"</span> לכתוב מחדש, <span class="mono">"a"</span> להוסיף בסוף, <span class="mono">"r"</span> לקרוא. נסי כל אחד, והסתכלי מה קורה למחברת.</p>
+
+      <div class="playground" id="wr-box">
+        <div class="playground-controls"><label>בחרי מצב:</label><div class="pill-row" id="wr-modes"></div></div>
+        <div class="playground-code" id="wr-code" style="border-top:0;margin-top:0"></div>
+        <div class="field-row" id="wr-row"><label for="wr-in" style="font-weight:700;font-size:15px">מה לכתוב:</label>
+          <input type="text" id="wr-in" value="שלום" autocomplete="off" class="num-in" style="width:180px">
+          <button class="run-btn" id="wr-run" type="button">הריצי</button>
+          <button class="pill" id="wr-reset" type="button">↺ קובץ חדש</button></div>
+        <div class="file-pad" id="wr-file" aria-live="polite"></div>
+        <div class="log" id="wr-log" aria-live="polite"><div class="empty">בחרי מצב והריצי.</div></div>
+      </div>
+
+      <div class="ek-insight"><span class="ek-ic">⚠️</span><div><b class="ek-tag">שימי לב</b><p><span class="m">"w"</span> מוחק את כל מה שהיה בקובץ ומתחיל מחדש! כדי להוסיף בלי למחוק, משתמשים ב-<span class="m">"a"</span>. ו-<span class="m">\n</span> מסיים שורה, אחרת הכול נדבק לשורה אחת.</p></div></div>
+    </div>
+  </section>
+
+  <section id="read">
+    <div class="wrap">
+      <div class="eyebrow for-c">דרכי קריאה</div>
+      <h2 class="section-title">איך קוראים מקובץ</h2>
+      <p class="lede">נניח שיש קובץ <span class="mono">names.txt</span> עם שלוש שורות: <span class="mono">dana</span>, <span class="mono">ruth</span>, <span class="mono">sara</span>. יש כמה דרכים לקרוא אותו, ולכל אחת תוצאה אחרת. לחצי "הריצי" והשוו.</p>
+      <div class="file-pad" id="rd-file"></div>
+      <div class="rf-grid" id="rd-grid"></div>
+      <div class="ek-insight"><span class="ek-ic">✂️</span><div><b class="ek-tag">איך זוכרים</b><p>בכל שורה בקובץ יש <span class="m">\n</span> נסתר בסוף. כדי להיפטר ממנו, משתמשים ב-<span class="m">.strip()</span>, אותה שיטה שלמדנו במחרוזות.</p></div></div>
+    </div>
+  </section>
+
+  <section id="missing">
+    <div class="wrap">
+      <div class="eyebrow while-c">קבצים + שגיאות</div>
+      <h2 class="section-title">מה אם הקובץ לא קיים?</h2>
+      <p class="lede">אם מנסים לקרוא קובץ שלא קיים, פייתון זורקת <span class="mono">FileNotFoundError</span>. אפשר לתפוס אותה עם <span class="mono">try</span>, בדיוק כמו בשיעור על שגיאות. יש קובץ אחד: <span class="mono">notes.txt</span>.</p>
+      <div class="playground">
+        <div class="playground-controls"><label>בחרי גרסה:</label><div class="pill-row" id="ms-tabs"></div></div>
+        <div class="playground-code" id="ms-code" style="border-top:0;margin-top:0"></div>
+        <div class="field-row"><label for="ms-in" style="font-weight:700;font-size:15px">שם הקובץ:</label>
+          <input type="text" id="ms-in" value="notes.txt" autocomplete="off" class="num-in" style="width:160px;direction:ltr">
+          <div class="pill-row" id="ms-quick"></div>
+          <button class="run-btn" id="ms-run" type="button">הריצי</button></div>
+        <div class="net-status" id="ms-status" role="status" aria-live="polite">בחרי שם קובץ והריצי.</div>
+        <div class="log" id="ms-log" aria-live="polite"><div class="empty">הפלט יופיע כאן.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="counter">
+    <div class="wrap">
+      <div class="eyebrow for-c">הכול ביחד</div>
+      <h2 class="section-title">תוכנית שזוכרת</h2>
+      <p class="lede">התוכנית הזאת סופרת כמה פעמים הרצת אותה, והיא זוכרת גם אחרי שהיא נגמרת, כי היא שומרת את המספר בקובץ. לחצי "הרצה" כמה פעמים, ואז מחקי את הקובץ.</p>
+      <div class="playground">
+        <div class="playground-code" id="ct-code" style="border-top:0;margin-top:0"></div>
+        <div class="field-row"><button class="run-btn" id="ct-run" type="button">▶ הרצת התוכנית</button>
+          <button class="pill" id="ct-del" type="button">🗑 מחיקת count.txt</button>
+          <span class="diff-remaining" id="ct-info">count.txt לא קיים</span></div>
+        <div class="log" id="ct-log" aria-live="polite"><div class="empty">עוד לא הרצת.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bughunt">
+    <div class="wrap">
+      <div class="eyebrow while-c">תרגול</div>
+      <h2 class="section-title">מצאי את הטעות</h2>
+      <p class="lede">התוכנית שומרת שמות של בנות. אבל אחרי כל הרצה נשאר בקובץ רק השם האחרון. מה מתקנים?</p>
+      <div class="rescue" id="rescue1">
+        <div class="rescue-head"><span class="rescue-mark">✗</span><h4>בקובץ נשאר רק השם האחרון</h4></div>
+<pre class="hl">name = input("שם: ")
+with open("names.txt", "w") as f:
+    f.write(name + "\n")</pre>
+        <div class="rescue-choices">
+          <button class="rescue-choice" type="button" data-ok="0">להוסיף <span class="mono">f.close()</span> בסוף</button>
+          <button class="rescue-choice" type="button" data-ok="1">להחליף את <span class="mono">"w"</span> ב-<span class="mono">"a"</span></button>
+          <button class="rescue-choice" type="button" data-ok="0">להחליף את <span class="mono">"w"</span> ב-<span class="mono">"r"</span></button>
+        </div>
+        <div class="rescue-feedback" id="rescue1-fb" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="understanding">
+    <div class="wrap">
+      <div class="eyebrow">בדיקת הבנה</div>
+      <h2 class="section-title">בדיקת הבנה קצרה</h2>
+      <p class="lede">שלוש שאלות על מה שלמדנו. כל תשובה נכונה מוסיפה כוכב.</p>
+      <div class="ek-quiz" id="ek-quiz-host"></div>
+    </div>
+  </section>
+
+  <section id="exercises">
+    <div class="wrap">
+      <div class="exercises-banner">
+        <span class="badge">תרגילים</span>
+        <h2>תרגילים לכל הכיתה</h2>
+        <p>שני תרגילים קצרים כאן, ושני תרגילים לכתוב ב-VS Code.</p>
+      </div>
+
+      <div class="exercise-card for-accent">
+        <div class="exercise-num">תרגיל 1</div>
+        <div class="exercise-task">רוצים להוסיף שורה בסוף הקובץ בלי למחוק את מה שיש. השלימי את המצב.</div>
+        <div class="exercise-code"><span>with open("list.txt", "</span><input type="text" id="ex1-a" class="wide" style="width:70px;direction:ltr;text-align:center" autocomplete="off" aria-label="השלמה"><span>") as f:
+    f.write("milk\n")</span></div>
+        <div class="exercise-controls"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
+      </div>
+
+      <div class="exercise-card while-accent">
+        <div class="exercise-num">תרגיל 2</div>
+        <div class="exercise-task">מה יהיה בקובץ בסוף? כתבי כמה שורות יהיו בו.</div>
+        <div class="exercise-code"><span>with open("a.txt", "w") as f:
+    f.write("one\n")
+with open("a.txt", "w") as f:
+    f.write("two\n")</span></div>
+        <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" style="width:120px;direction:ltr" aria-label="התשובה" placeholder="מספר שורות"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
+      </div>
+
+      <div class="exercise-divider">ב-VS Code</div>
+
+      <div class="exercise-card for-accent">
+        <div class="exercise-num">תרגיל 3</div>
+        <div class="exercise-task">יומן קטן: התוכנית שואלת "מה קרה היום?", ושומרת את התשובה בסוף הקובץ <span class="mono">diary.txt</span> (בלי למחוק את הימים הקודמים). אחר כך היא קוראת את כל הקובץ ומדפיסה אותו.</div>
+        <p class="exercise-note">רמז: קודם מצב <span class="mono">"a"</span> לכתיבה, ואחר כך מצב <span class="mono">"r"</span> לקריאה. כדי שעברית תישמר נכון, כתבי <span class="mono">encoding="utf-8"</span> בתוך <span class="mono">open</span>.</p>
+        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 3" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+      </div>
+
+      <div class="exercise-card while-accent">
+        <div class="exercise-num">תרגיל 4 · אתגר</div>
+        <div class="exercise-task">ניקוד שיא: הקובץ <span class="mono">best.txt</span> שומר את הניקוד הכי גבוה. התוכנית מבקשת ניקוד, קוראת את השיא מהקובץ (אם אין קובץ, השיא הוא 0), ואם הניקוד החדש גבוה יותר, שומרת אותו ומדפיסה "שיא חדש!".</div>
+        <p class="exercise-note">רמז: <span class="mono">try</span> עם <span class="mono">except FileNotFoundError</span>, ו-<span class="mono">int()</span> כדי להפוך את מה שנקרא למספר.</p>
+        <textarea class="exercise-answer" rows="6" aria-label="התשובה לתרגיל 4" placeholder="הדביקי כאן את הקוד שלך"></textarea>
+      </div>
+
+      <div class="exercise-divider">הורדה ושליחה למורה</div>
+
+      <div class="exercise-card">
+        <div class="exercise-num">דף התרגילים</div>
+        <div class="exercise-task">אפשר להוריד את כל התרגילים לקובץ, כדי לפתור אותם גם מחוץ לדף הזה.</div>
+        <div class="exercise-controls"><button class="exercise-check-btn" id="sub-dl-ex" type="button">הורדת התרגילים</button></div>
+      </div>
+
+      <div class="exercise-card for-accent">
+        <div class="exercise-num">שליחה לבדיקה</div>
+        <div class="exercise-task">כשסיימת, כתבי את שמך, הורידי את קובץ התשובות ושלחי אותו למורה. הקובץ כולל את מה שכתבת בכל ארבעת התרגילים.</div>
+        <div class="exercise-controls"><input type="text" id="sub-name" autocomplete="off" placeholder="שם מלא" aria-label="שם מלא" style="width:200px"><button class="exercise-check-btn" id="sub-dl" type="button">הורדת התשובות שלי</button><span class="exercise-feedback" id="sub-fb" role="status" aria-live="polite"></span></div>
+        <textarea id="sub-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="wrapup">
+    <div class="wrap">
+      <div class="eyebrow">לסיכום</div>
+      <h2 class="section-title">מה למדנו</h2>
+      <ul class="recap">
+        <li><span class="mono">with open("שם.txt", מצב) as f:</span> פותח קובץ וסוגר אותו אוטומטית.</li>
+        <li><span class="mono">"w"</span> כותב מחדש (ומוחק), <span class="mono">"a"</span> מוסיף בסוף, <span class="mono">"r"</span> קורא.</li>
+        <li><span class="mono">f.write()</span> כותבת, ואצלה צריך <span class="mono">\n</span> לסוף שורה. קוראים עם <span class="mono">read()</span>, <span class="mono">readline()</span>, <span class="mono">readlines()</span> או לולאה.</li>
+        <li><span class="mono">FileNotFoundError</span> נתפסת עם <span class="mono">try</span> / <span class="mono">except</span>.</li>
+        <li>קובץ נשמר על המחשב, והמידע שלו נשאר גם אחרי שהתוכנית נגמרה.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">שיעור פייתון · קבצים</div></footer>
+
+<script>window.EK_CFG={"quiz": [{"t": "מה יהיה בקובץ?", "code": "with open(\"x.txt\", \"w\") as f:\n    f.write(\"A\\n\")\nwith open(\"x.txt\", \"a\") as f:\n    f.write(\"B\\n\")", "opts": ["רק A", "רק B", "A ואז B בשתי שורות", "הקובץ ריק"], "ans": 2, "why": "הראשון כותב A, והשני מוסיף B בסוף בלי למחוק.", "hint": "מה ההבדל בין w ל-a?"}, {"t": "מה יודפס אם הקובץ names.txt מכיל dana, ruth בשתי שורות?", "code": "with open(\"names.txt\") as f:\n    line = f.readline()\nprint(repr(line))", "opts": ["''dana\\n''", "''dana''", "''dana\\nruth\\n''", "[''dana'', ''ruth'']"], "ans": 0, "why": "readline קוראת שורה אחת, כולל ה-\\n שבסוף שלה.", "hint": "readline קוראת רק שורה אחת."}, {"t": "מה יקרה אם הקובץ missing.txt לא קיים?", "code": "with open(\"missing.txt\") as f:\n    print(f.read())", "opts": ["יודפס טקסט ריק", "FileNotFoundError וקריסה", "הקובץ ייווצר אוטומטית", "None"], "ans": 1, "why": "במצב קריאה (ברירת המחדל) קובץ שלא קיים גורם ל-FileNotFoundError. רק \"w\" ו-\"a\" יוצרים קובץ חדש.", "hint": "האם אפשר לקרוא מה שלא נכתב מעולם?"}]};
+(function(){
+var $=function(i){return document.getElementById(i)};
+var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
+function esc(s){return String(s).replace(/&/g,''&amp;'').replace(/</g,''&lt;'').replace(/>/g,''&gt;'')}
+function highlight(code){
+  return esc(code).replace(/(#.*$)|("[^"\n]*")|\b(try|except|with|as|while|break|True|False|if|else|for|in|import|from|def|return)\b|\b(print|int|input|open|len|range|str)\b|\b(\d+\.?\d*)\b/gm,function(m,c,s,k,f,n){
+    if(c)return ''<span class="tok-cmt">''+c+''</span>'';
+    if(s)return ''<span class="tok-str''+(/[\u0590-\u05FF]/.test(s)?'' he'':'''')+''">''+s+''</span>'';
+    if(k)return ''<span class="tok-kw">''+k+''</span>'';
+    if(f)return ''<span class="tok-fn">''+f+''</span>'';
+    return ''<span class="tok-num">''+n+''</span>''});
+}
+function hlAll(){document.querySelectorAll(''pre.hl'').forEach(function(p){var t=p.textContent;p.innerHTML=''<code>''+highlight(t)+''</code>''})}
+hlAll();
+function row(el,code,cls){var e=el.querySelector(''.empty'');if(e)e.remove();var d=document.createElement(''div'');d.className=''row'';
+  d.innerHTML=''<span class="''+(cls||'''')+''"><bdi>''+esc(code)+''</bdi></span>'';el.appendChild(d);el.scrollTop=el.scrollHeight}
+function pillRow(host,items,onclick){host.innerHTML='''';items.forEach(function(it,i){var b=document.createElement(''button'');b.type=''button'';b.className=''pill'';b.textContent=it;b.onclick=function(){onclick(i)};host.appendChild(b)})}
+function activate(host,i){host.querySelectorAll(''.pill'').forEach(function(p,j){p.classList.toggle(''active'',i===j)})}
+function codeLines(host,lines){host.innerHTML=lines.map(function(l,i){return ''<div class="line" data-i="''+i+''">''+highlight(l)+''</div>''}).join('''')}
+function pyrepr(s){return "''"+s.replace(/\\/g,''\\\\'').replace(/\n/g,''\\n'').replace(/''/g,"\\''")+"''"}
+function shake(el){if(RM)return;el.classList.remove(''shake'');void el.offsetWidth;el.classList.add(''shake'')}
+function pad(host,name,content,flash){
+  var h=''<div class="fp-head">📄 ''+esc(name)+''</div>'';
+  if(content===null){h+=''<div class="fp-empty">הקובץ לא קיים</div>''}
+  else if(content===''''){h+=''<div class="fp-empty">הקובץ ריק</div>''}
+  else{var parts=content.split(''\n''),n=0;parts.forEach(function(p,i){var last=i===parts.length-1;if(last&&p==='''')return;n++;
+    h+=''<div class="fp-line"><span class="fp-n">''+n+''</span><bdi class="fp-t">''+esc(p)+''</bdi>''+(last?'''':''<span class="fp-nl">↵</span>'')+''</div>''})}
+  host.innerHTML=h;
+  if(flash&&!RM){host.classList.remove(''flash'');void host.offsetWidth;host.classList.add(''flash'')}
+}
+
+// ---- write / append / read ----
+var FILE=''דנה\nרות\n'',MODES=[''w'',''a'',''r''],wm=1,INIT=''דנה\nרות\n'';
+function wrCode(){
+  var t=$(''wr-in'').value,nl=$(''wr-nl'').checked,m=MODES[wm];
+  if(m===''r'')codeLines($(''wr-code''),[''with open("notes.txt", "r") as f:'',''    print(f.read())'']);
+  else codeLines($(''wr-code''),[''with open("notes.txt", "''+m+''") as f:'',''    f.write("''+t+(nl?''\\n'':'''')+''")'']);
+  $(''wr-row'').classList.toggle(''is-read'',m===''r'');
+}
+function wrRun(){
+  var m=MODES[wm],t=$(''wr-in'').value,nl=$(''wr-nl'').checked,log=$(''wr-log'');log.innerHTML='''';
+  if(m===''w''){var had=FILE!=='''';FILE=t+(nl?''\n'':'''');row(log,had?''⚠️ מה שהיה בקובץ נמחק, והקובץ התחיל מחדש.'':''הקובץ נכתב.'',''bad'');shake($(''wr-file''))}
+  else if(m===''a''){FILE+=t+(nl?''\n'':'''');row(log,''הטקסט נוסף בסוף הקובץ.'',''res'')}
+  else{var c=FILE;if(c==='''')row(log,''(ריק)'');else{c.replace(/\n$/,'''').split(''\n'').forEach(function(l){row(log,l)});if(c.slice(-1)===''\n'')row(log,''(ועוד שורה ריקה, כי print מוסיפה שורה חדשה משלה)'',''res'')}}
+  pad($(''wr-file''),''notes.txt'',FILE,m!==''r'');wrCode();
+}
+pillRow($(''wr-modes''),[''"w"  כתיבה מחדש'',''"a"  הוספה'',''"r"  קריאה''],function(i){wm=i;activate($(''wr-modes''),i);wrCode()});
+activate($(''wr-modes''),1);
+// checkbox
+var nlw=document.createElement(''label'');nlw.style.cssText=''font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:6px'';nlw.innerHTML=''<input type="checkbox" id="wr-nl" checked> להוסיף <span class="mono">\\n</span> בסוף'';
+$(''wr-row'').insertBefore(nlw,$(''wr-run''));
+$(''wr-nl'').onchange=wrCode;$(''wr-in'').oninput=wrCode;
+$(''wr-run'').onclick=wrRun;$(''wr-reset'').onclick=function(){FILE=INIT;pad($(''wr-file''),''notes.txt'',FILE);$(''wr-log'').innerHTML=''<div class="empty">בחרי מצב והריצי.</div>''};
+wrCode();pad($(''wr-file''),''notes.txt'',FILE);
+
+// ---- read ways ----
+var NAMES=''dana\nruth\nsara\n'';pad($(''rd-file''),''names.txt'',NAMES);
+(function(){
+  var C=[
+   [''f.read()'',''כל הקובץ כמחרוזת אחת, כולל כל ה-\\n.'',''with open("names.txt") as f:\n    print(repr(f.read()))'',pyrepr(NAMES)],
+   [''f.readline()'',''שורה אחת בלבד, והמצביע זז לשורה הבאה.'',''with open("names.txt") as f:\n    print(repr(f.readline()))'',pyrepr(''dana\n'')],
+   [''f.readlines()'',''רשימה, ובה כל שורה כמחרוזת.'',''with open("names.txt") as f:\n    print(f.readlines())'',"[''dana\\n'', ''ruth\\n'', ''sara\\n'']"],
+   [''for line in f:'',''עוברים על הקובץ שורה אחרי שורה, והכי נוח.'',''with open("names.txt") as f:\n    for line in f:\n        print(line)'',''dana\n\nruth\n\nsara\n''],
+   [''line.strip()'',''מנקה את ה-\\n, ואז אין שורות ריקות באמצע.'',''with open("names.txt") as f:\n    for line in f:\n        print(line.strip())'',''dana\nruth\nsara''],
+   [''f.read().splitlines()'',''רשימה של שורות, כבר בלי \\n.'',''with open("names.txt") as f:\n    print(f.read().splitlines())'',"[''dana'', ''ruth'', ''sara'']"]
+  ],g=$(''rd-grid'');
+  C.forEach(function(c){var d=document.createElement(''div'');d.className=''rf'';
+    var h=document.createElement(''h4'');h.textContent=c[0];var p=document.createElement(''p'');p.textContent=c[1];
+    var ex=document.createElement(''div'');ex.className=''ex'';ex.style.whiteSpace=''pre-wrap'';ex.textContent=c[2];
+    var rr=document.createElement(''div'');rr.className=''rr'';rr.style.alignItems=''flex-start'';var b=document.createElement(''button'');b.type=''button'';b.className=''run-btn'';b.textContent=''הריצי'';
+    var r=document.createElement(''span'');r.className=''res'';r.style.whiteSpace=''pre-wrap'';r.setAttribute(''aria-live'',''polite'');b.onclick=function(){r.textContent=c[3]};
+    rr.appendChild(b);rr.appendChild(r);[h,p,ex,rr].forEach(function(x){d.appendChild(x)});g.appendChild(d)});
+})();
+
+// ---- missing file ----
+var MS=[
+ {n:''בלי try'',lines:[''with open("notes.txt") as f:'',''    print(f.read())'',''print("סיימנו!")'']},
+ {n:''עם try'',lines:[''try:'',''    with open("notes.txt") as f:'',''        print(f.read())'',''except FileNotFoundError:'',''    print("הקובץ לא נמצא")'',''print("סיימנו!")'']}
+],msCur=0;
+function msRender(){var nm=$(''ms-in'').value||''notes.txt'';var L=MS[msCur].lines.map(function(l){return l.replace(''notes.txt'',nm)});codeLines($(''ms-code''),L);$(''ms-log'').innerHTML=''<div class="empty">הפלט יופיע כאן.</div>'';$(''ms-status'').className=''net-status'';$(''ms-status'').textContent=''בחרי שם קובץ והריצי.''}
+function msRun(){
+  var nm=$(''ms-in'').value.trim()||''notes.txt'',exists=nm===''notes.txt'',log=$(''ms-log''),st=$(''ms-status'');msRender();log.innerHTML='''';
+  var L=$(''ms-code'').querySelectorAll(''.line'');
+  if(exists){L.forEach(function(l){l.classList.add(''run'')});if(msCur===1)L[3].classList.remove(''run''),L[4].classList.remove(''run'');
+    FILE.replace(/\n$/,'''').split(''\n'').forEach(function(x){row(log,x)});row(log,''סיימנו!'');st.className=''net-status good'';st.textContent=''✅ הקובץ נמצא וקראנו אותו.''}
+  else if(msCur===0){L[0].classList.add(''err'');row(log,"FileNotFoundError: [Errno 2] No such file or directory: ''"+nm+"''",''bad'');st.className=''net-status bad'';st.textContent=''💥 התוכנית קרסה, והשורה האחרונה לא הודפסה.'';shake($(''ms-code''))}
+  else{L[0].classList.add(''run'');L[1].classList.add(''err'');L[3].classList.add(''caught'');L[4].classList.add(''run'');L[5].classList.add(''run'');row(log,''הקובץ לא נמצא'');row(log,''סיימנו!'');st.className=''net-status good'';st.textContent=''🛟 FileNotFoundError נתפסה, והתוכנית המשיכה.''}
+}
+pillRow($(''ms-tabs''),MS.map(function(x){return x.n}),function(i){msCur=i;activate($(''ms-tabs''),i);msRender()});activate($(''ms-tabs''),0);
+pillRow($(''ms-quick''),[''notes.txt'',''secret.txt''],function(i){$(''ms-in'').value=[''notes.txt'',''secret.txt''][i];msRun()});
+$(''ms-run'').onclick=msRun;$(''ms-in'').oninput=msRender;msRender();
+
+// ---- counter ----
+var CT=null,ctLines=[''try:'',''    with open("count.txt") as f:'',''        n = int(f.read())'',''except FileNotFoundError:'',''    n = 0'',''n = n + 1'',''print("הרצת את התוכנית", n, "פעמים")'',''with open("count.txt", "w") as f:'',''    f.write(str(n))''];
+codeLines($(''ct-code''),ctLines);
+function ctInfo(){$(''ct-info'').textContent=CT===null?''count.txt לא קיים'':''count.txt מכיל: ''+CT}
+$(''ct-run'').onclick=function(){
+  var L=$(''ct-code'').querySelectorAll(''.line''),n,path;L.forEach(function(l){l.classList.remove(''run'',''caught'')});
+  if(CT===null){n=0;[0,1].forEach(function(i){L[i].classList.add(''run'')});L[1].classList.add(''err'');L[3].classList.add(''caught'');L[4].classList.add(''run'')}
+  else{n=parseInt(CT,10);[0,1,2].forEach(function(i){L[i].classList.add(''run'')})}
+  n++;[5,6,7,8].forEach(function(i){L[i].classList.add(''run'')});CT=String(n);
+  row($(''ct-log''),''הרצת את התוכנית ''+n+'' פעמים'');ctInfo()};
+$(''ct-del'').onclick=function(){CT=null;ctInfo();$(''ct-code'').querySelectorAll(''.line'').forEach(function(l){l.classList.remove(''run'',''err'',''caught'')});row($(''ct-log''),''(הקובץ נמחק, ובהרצה הבאה זה יתחיל מ-1)'')};
+ctInfo();
+
+// ---- bug hunt ----
+var rs=$(''rescue1'');
+rs.querySelectorAll(''.rescue-choice'').forEach(function(b){b.onclick=function(){
+  var fb=$(''rescue1-fb'');
+  if(b.dataset.ok===''1''){b.classList.add(''right'');rs.classList.add(''fixed'');rs.querySelector(''.rescue-mark'').textContent=''✓'';
+    rs.querySelectorAll(''.rescue-choice'').forEach(function(x){x.disabled=true});
+    fb.className=''rescue-feedback correct'';fb.textContent=''נכון! "w" מוחק את הקובץ בכל פתיחה, ו-"a" מוסיף בסוף ושומר את מה שהיה.''}
+  else{b.classList.add(''wrong'');b.disabled=true;fb.className=''rescue-feedback wrong'';fb.textContent=''לא בדיוק. זה לא משנה את מה שקורה למה שכבר נכתב בקובץ. תחשבי איזה מצב שומר את התוכן הקיים.''}
+}});
+
+// ---- download / submit ----
+(function(){
+  var Q=[
+    [''תרגיל 1'',''רוצים להוסיף שורה בסוף הקובץ בלי למחוק את מה שיש. השלימי את המצב.'',''with open("list.txt", "____") as f:\n    f.write("milk\\n")''],
+    [''תרגיל 2'',''מה יהיה בקובץ בסוף? כמה שורות יהיו בו?'',''with open("a.txt", "w") as f:\n    f.write("one\\n")\nwith open("a.txt", "w") as f:\n    f.write("two\\n")''],
+    [''תרגיל 3 (ב-VS Code)'',''יומן קטן: שואלים "מה קרה היום?", שומרים את התשובה בסוף diary.txt בלי למחוק ימים קודמים, ואז קוראים ומדפיסים את כל הקובץ.'',''''],
+    [''תרגיל 4 · אתגר (ב-VS Code)'',''ניקוד שיא: best.txt שומר את הניקוד הכי גבוה. מבקשים ניקוד, קוראים את השיא (אם אין קובץ השיא הוא 0), ואם החדש גבוה יותר שומרים ומדפיסים "שיא חדש!".'','''']];
+  function E(t){return String(t).replace(/[&<>"]/g,function(c){return{''&'':''&amp;'',''<'':''&lt;'',''>'':''&gt;'',''"'':''&quot;''}[c]})}
+  var CSS=''<style>body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:0 16px;line-height:1.7;color:#222}h1{font-size:24px}.q{border:1px solid #bbb;border-radius:8px;padding:12px 18px;margin:16px 0;page-break-inside:avoid}pre{background:#f3f3f3;padding:10px;direction:ltr;text-align:left;white-space:pre-wrap;border-radius:6px}.a{min-height:90px;border:1px dashed #999;border-radius:6px;margin-top:8px}.ok{color:#0a7a2f;font-weight:bold}.no{color:#b3261e;font-weight:bold}</style>'';
+  function save(html,name,fb,fbEl){
+    try{var b=new Blob([html],{type:''text/html;charset=utf-8''}),u=URL.createObjectURL(b),a=document.createElement(''a'');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);return true}
+    catch(e){return false}}
+  document.getElementById(''sub-dl-ex'').onclick=function(){
+    var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תרגילי קבצים</title>''+CSS+''</head><body><h1>תרגילי קבצים בפייתון</h1><p>שם: ______________________</p>'';
+    Q.forEach(function(q){h+=''<div class="q"><b>''+E(q[0])+''</b><br>''+E(q[1])+(q[2]?''<pre>''+E(q[2])+''</pre>'':'''')+''<div class="a"></div></div>''});
+    save(h+''</body></html>'',''python-files-exercises.html'')};
+  document.getElementById(''sub-dl'').onclick=function(){
+    var name=document.getElementById(''sub-name'').value.trim(),fb=document.getElementById(''sub-fb''),fbk=document.getElementById(''sub-fallback'');
+    if(!name){fb.className=''exercise-feedback'';fb.textContent=''קודם כתבי את שמך.'';return}
+    var a1=document.getElementById(''ex1-a'').value.trim(),a2=document.getElementById(''ex2-in'').value.trim(),
+      a3=document.querySelector(''[aria-label="התשובה לתרגיל 3"]'').value,a4=document.querySelector(''[aria-label="התשובה לתרגיל 4"]'').value,
+      ok1=a1.replace(/["'']/g,'''')===''a'',ok2=a2===''1'';
+    function mark(ok,v){return v?''<span class="''+(ok?''ok'':''no'')+''">''+(ok?''נכון'':''לא נכון'')+''</span>'':''<span class="no">לא נענה</span>''}
+    var date=new Date().toLocaleDateString(''he-IL'');
+    var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תשובות: ''+E(name)+''</title>''+CSS+''</head><body><h1>תרגילי קבצים: ''+E(name)+''</h1><p>תאריך: ''+E(date)+''</p>''
+     +''<div class="q"><b>''+Q[0][0]+''</b><pre>''+E(Q[0][2])+''</pre>תשובה (המצב): <pre>''+E(a1||''(ריק)'')+''</pre>''+mark(ok1,a1)+''</div>''
+     +''<div class="q"><b>''+Q[1][0]+''</b><pre>''+E(Q[1][2])+''</pre>תשובה: <pre>''+E(a2||''(ריק)'')+''</pre>''+mark(ok2,a2)+''</div>''
+     +''<div class="q"><b>''+Q[2][0]+''</b><pre>''+E(a3||''(לא נענה)'')+''</pre></div>''
+     +''<div class="q"><b>''+Q[3][0]+''</b><pre>''+E(a4||''(לא נענה)'')+''</pre></div></body></html>'';
+    if(save(h,''python-files-answers.html'')){fb.className=''exercise-feedback correct'';fb.textContent=''הקובץ ירד! שלחי אותו למורה.''}
+    else{fb.className=''exercise-feedback'';fb.textContent=''ההורדה לא עבדה. העתיקי את הטקסט שלמטה ושמרי כקובץ html.'';fbk.hidden=false;fbk.value=h}};
+})();
+
+
+
+// דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
+var exSolved={};
+function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
+reportEx();
+function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
+chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim().replace(/["'']/g,'''')===''a''},''ex1-feedback'',''נכון! "a" (append) מוסיף בסוף בלי למחוק.'',''לא בדיוק. איזה מצב מוסיף בסוף ולא מוחק?'');
+chk(''ex2-btn'',function(){return $(''ex2-in'').value.trim()===''1''},''ex2-feedback'',''נכון! הפתיחה השנייה עם "w" מחקה את הכול, ונשארה רק השורה two.'',''לא בדיוק. מה "w" עושה בכל פעם שפותחים את הקובץ?'');
+})();
+
+(function(){
+  var C=window.EK_CFG||{},doc=document,stars=0;
+  var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
+  doc.documentElement.classList.add(''ek-js'');
+  // progress
+  var pr=doc.createElement(''div'');pr.className=''ek-progress'';pr.innerHTML=''<i></i>'';doc.body.appendChild(pr);
+  function onScroll(){var h=doc.documentElement.scrollHeight-innerHeight;pr.firstChild.style.width=(h>0?Math.min(100,scrollY/h*100):0)+''%''}
+  addEventListener(''scroll'',onScroll,{passive:true});onScroll();
+  // hud
+  var hud=doc.createElement(''div'');hud.className=''ek-hud'';hud.setAttribute(''aria-live'',''polite'');
+  hud.innerHTML=''<span class="ek-star">⭐</span><span id="ek-n">0</span><span class="ek-lvl" id="ek-l"></span>'';doc.body.appendChild(hud);
+  var LV=[[0,''מתחילה''],[3,''חוקרת''],[6,''מפתחת''],[10,''מומחית'']];
+  function lvl(){var t='''';LV.forEach(function(l){if(stars>=l[0])t=l[1]});return t}
+  doc.getElementById(''ek-l'').textContent=lvl();
+  var toast=doc.createElement(''div'');toast.className=''ek-toast'';doc.body.appendChild(toast);
+  var PR=[''יפה מאוד! 🎉'',''בול! 👏'',''את על זה! 🚀'',''מדויק! ✨'',''כל הכבוד! 💪'',''וואו, מצוין! 🌟''],pi=0,tt;
+  function burst(x,y){
+    if(RM)return;var cols=[''#ffd27a'',''#ff7f96'',''#6fe0a0'',''#8b6bff'',''#5bd1ff''];
+    for(var i=0;i<22;i++){var b=doc.createElement(''i'');b.className=''ek-bit'';
+      var a=Math.random()*6.28,d=60+Math.random()*110;
+      b.style.cssText=''left:''+x+''px;top:''+y+''px;background:''+cols[i%5]+'';--dx:''+Math.cos(a)*d+''px;--dy:''+(Math.sin(a)*d-40)+''px;--rot:''+Math.random()*540+''deg'';
+      doc.body.appendChild(b);setTimeout(function(e){e.remove()},1100,b)}
+  }
+  function award(el){
+    stars++;doc.getElementById(''ek-n'').textContent=stars;doc.getElementById(''ek-l'').textContent=lvl();
+    hud.classList.remove(''pop'');void hud.offsetWidth;hud.classList.add(''pop'');
+    toast.textContent=PR[pi++%PR.length]+'' ⭐ ''+stars;toast.classList.add(''show'');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove(''show'')},1800);
+    var r=(el||hud).getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);
+  }
+  window.EK_award=award;
+  // watch feedback elements
+  var seen={},auto=0;
+  var SEL=''.guess-feedback,.exercise-feedback,.rescue-feedback,.gv-fb'';
+  function check(el){
+    if(!el.matches||!el.matches(SEL))return;
+    if(!(el.classList.contains(''correct'')||el.classList.contains(''good'')))return;
+    var k=el.id||el.dataset.ek||(el.dataset.ek=''a''+(auto++));
+    if(seen[k])return;seen[k]=1;award(el);
+  }
+  new MutationObserver(function(ms){ms.forEach(function(m){check(m.target)})}).observe(doc.body,{attributes:true,attributeFilter:[''class''],subtree:true});
+  // reveal
+  var targets=doc.querySelectorAll(''section .wrap > *, .hero .wrap > *'');
+  if(''IntersectionObserver'' in window&&!RM){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add(''in'');io.unobserve(e.target)}})},{threshold:.08});
+    targets.forEach(function(t){t.classList.add(''ek-reveal'');io.observe(t)});
+    setTimeout(function(){targets.forEach(function(t){t.classList.add(''in'')})},6000);
+  }
+  // hero strip
+  if(C.strip){
+    var s=C.strip,host=doc.querySelector(''.hero .wrap''),box=doc.createElement(''div'');box.className=''ek-strip'';
+    box.innerHTML=''<div class="ek-cells">''+s.cells.map(function(c,i){return ''<div class="ek-cell" tabindex="0" data-i="''+i+''"><small>''+c[0]+''</small><strong>''+c[1]+''</strong></div>''}).join('''')+''</div><div class="ek-cap" aria-live="polite"></div><div class="ek-hint">''+s.hint+''</div>'';
+    host.appendChild(box);
+    var cells=box.querySelectorAll(''.ek-cell''),cap=box.querySelector(''.ek-cap''),cur=0,timer;
+    function show(i){cells.forEach(function(c,j){c.classList.toggle(''on'',i===j)});cap.textContent=s.cap(i,s.cells[i])}
+    function loop(){clearInterval(timer);timer=setInterval(function(){cur=(cur+1)%cells.length;show(cur)},1600)}
+    cells.forEach(function(c,i){var f=function(){cur=i;show(i);loop()};c.addEventListener(''click'',f);c.addEventListener(''keydown'',function(e){if(e.key===''Enter''||e.key==='' ''){e.preventDefault();f()}})});
+    show(0);if(!RM)loop();
+  }
+  // quiz
+  var qz=doc.querySelector(''#ek-quiz-host'');
+  if(qz&&C.quiz){
+    var done=0;
+    C.quiz.forEach(function(q,qi){
+      var d=doc.createElement(''div'');d.className=''ek-q'';
+      d.innerHTML=''<h3>''+(qi+1)+''. ''+q.t+''</h3><pre>''+q.code.replace(/&/g,''&amp;'').replace(/</g,''&lt;'')+''</pre><div class="ek-opts"></div><div class="ek-why" role="status" aria-live="polite"></div>'';
+      var o=d.querySelector(''.ek-opts''),why=d.querySelector(''.ek-why''),solved=false;
+      q.opts.forEach(function(t,oi){var b=doc.createElement(''button'');b.type=''button'';b.className=''ek-opt'';b.textContent=t;
+        b.onclick=function(){
+          if(solved)return;
+          if(oi===q.ans){solved=true;b.classList.add(''good'');why.className=''ek-why good'';why.textContent=''✔ ''+q.why;o.querySelectorAll(''button'').forEach(function(x){x.disabled=true});award(b);done++}
+          else{b.classList.add(''bad'');b.disabled=true;why.className=''ek-why bad'';why.textContent=''לא בדיוק. ''+(q.hint||''נסי שוב.'')}
+        };o.appendChild(b)});
+      qz.appendChild(d);
+    });
+  }
+})();
+</script>
+</body>
+</html>
+', 12, '2026-11-08T00:00:00.000Z');

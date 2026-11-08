@@ -816,6 +816,8 @@ body:not(:has(.theme-python-soft)) .nav-links a.btn-outline {
 .dark-section .ui-badge--free { background: var(--moss); color: var(--on-accent); }
 .dark-section .ui-badge--paid { background: var(--gold); color: var(--on-accent); }
 .dark-section .ui-badge--soon { background: rgba(189, 183, 211, 0.16); color: var(--ink); }
+.ui-badges { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ui-badge--new { background: var(--moss); color: var(--on-accent); box-shadow: 0 0 0 3px rgba(111, 224, 160, 0.18); }
 
 .ui-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 0; }
 .ui-chip {
@@ -955,6 +957,7 @@ a.syl-row:hover { border-color: var(--ink); }
 }
 
 /* ===== Testimonials ===== */
+#testimonials { scroll-margin-top: 96px; } /* ה-header דביק */
 .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 28px; }
 .testimonial-card { margin: 0; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
 .testimonial-card blockquote { margin: 0; font-size: 1.05rem; line-height: 1.6; }

@@ -150,34 +150,6 @@ export default async function CoursePage({ params, searchParams }) {
         </section>
       )}
 
-      <section className="section" id="syllabus">
-        <div className="container">
-          <span className="eyebrow">סילבוס</span>
-          <h2 style={{ marginTop: 10 }}>שיעורי הקורס</h2>
-
-          {course.coming_soon && !hasAccess ? (
-            <div className="notice-soon">
-              הקורס הזה עדיין בהכנה ויפתח בקרוב. בינתיים אפשר לעבור לקורסים האחרים בקטלוג.{" "}
-              <a href="/courses">לקטלוג הקורסים</a>
-            </div>
-          ) : lessons.length === 0 ? (
-            <p className="text-soft" style={{ marginTop: 20 }}>
-              השיעורים יתעדכנו כאן בקרוב.
-            </p>
-          ) : (
-            <Syllabus
-              courseId={course.id}
-              lessons={lessons.map((l, i) => ({
-                slug: l.slug,
-                title: l.title,
-                description: l.description,
-                locked: course.is_paid && !hasAccess && i > 0
-              }))}
-            />
-          )}
-        </div>
-      </section>
-
       {(testimonials.length > 0 || canReview) && (
         <section className="section section--tight" id="testimonials">
           <div className="container">
@@ -226,6 +198,34 @@ export default async function CoursePage({ params, searchParams }) {
           </div>
         </section>
       )}
+
+      <section className="section" id="syllabus">
+        <div className="container">
+          <span className="eyebrow">סילבוס</span>
+          <h2 style={{ marginTop: 10 }}>שיעורי הקורס</h2>
+
+          {course.coming_soon && !hasAccess ? (
+            <div className="notice-soon">
+              הקורס הזה עדיין בהכנה ויפתח בקרוב. בינתיים אפשר לעבור לקורסים האחרים בקטלוג.{" "}
+              <a href="/courses">לקטלוג הקורסים</a>
+            </div>
+          ) : lessons.length === 0 ? (
+            <p className="text-soft" style={{ marginTop: 20 }}>
+              השיעורים יתעדכנו כאן בקרוב.
+            </p>
+          ) : (
+            <Syllabus
+              courseId={course.id}
+              lessons={lessons.map((l, i) => ({
+                slug: l.slug,
+                title: l.title,
+                description: l.description,
+                locked: course.is_paid && !hasAccess && i > 0
+              }))}
+            />
+          )}
+        </div>
+      </section>
     </div>
   );
 }

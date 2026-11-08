@@ -1,0 +1,1005 @@
+DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='course-summary';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('62cd2a0a3bc0066a10d94c7b75788bf6', 'python-ai-era', 'course-summary', 'שיעור סיכום - המסע בעשר תחנות', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>המסע בעשר תחנות: משימת סיום בפייתון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14121f;
+    --bg-panel: #1d1a2d;
+    --bg-panel-2: #26223b;
+    --ink: #f4f1fa;
+    --ink-dim: #bdb7d3;
+    --ink-faint: #9e97ba;
+    --for: #ffd27a;
+    --for-soft: #413739;
+    --while: #ff7f96;
+    --while-soft: #412a3e;
+    --success: #6fe0a0;
+    --success-soft: #2a3a3f;
+    --danger: #ff7f96;
+    --danger-soft: #412a3e;
+    --line: rgba(244,241,250,0.10);
+    --line-strong: rgba(244,241,250,0.22);
+    --radius: 20px;
+    --display: "Rubik", sans-serif;
+    --sans: "Assistant", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(600px 400px at 15% -5%, rgba(255,210,122,0.10), transparent 60%),
+      radial-gradient(600px 400px at 100% 20%, rgba(255,127,150,0.10), transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--for); color: #14121f; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+
+  p { color: var(--ink-dim); margin: 0; }
+  p + p { margin-top: 14px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; color: var(--ink); margin: 0; }
+  code, .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; }
+  strong { color: var(--ink); }
+
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  section { padding: 68px 0; }
+  section + section { border-top: 1px solid var(--line); }
+
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); margin-bottom: 12px; }
+  .eyebrow.for-c { color: var(--for); }
+  .eyebrow.while-c { color: var(--while); }
+
+  h2.section-title { font-size: clamp(1.6rem, 4.5vw, 2.2rem); }
+  .lede { font-size: 18px; margin-top: 14px; }
+
+  /* ---------- HERO + TEASER ---------- */
+
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero h1 { font-size: clamp(2.1rem, 7vw, 3.2rem); line-height: 1.18; }
+  .hero h1 .accent-for { color: var(--for); }
+  .hero h1 .accent-while { color: var(--while); }
+  .hero-sub { max-width: 46ch; margin: 18px auto 0; font-size: 18.5px; }
+
+  /* ---------- SHELF (boxes with indexes) ---------- */
+
+  .shelf { display: flex; gap: 8px; direction: ltr; justify-content: center; flex-wrap: wrap; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .slot-idx { font-family: var(--mono); font-size: 12px; color: var(--for); min-height: 18px; }
+  .slot-neg { font-family: var(--mono); font-size: 12px; color: var(--while); min-height: 18px; }
+  .box {
+    min-width: 62px; height: 46px; padding: 0 10px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-panel-2); color: var(--ink-dim); border: 1px solid var(--line-strong);
+    font-family: var(--sans); font-weight: 700; font-size: 15px; direction: rtl;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  button.box:hover { border-color: var(--ink-dim); }
+  .box.on { background: var(--for-soft); color: var(--for); border-color: var(--for); }
+  .box.off { background: transparent; color: var(--ink-faint); border: 1px dashed var(--line-strong); }
+  .box.num { font-family: var(--mono); }
+  .box.pop { animation: pop-in 0.35s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes pop-in { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+  .shelf-label { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); text-align: center; margin: 14px 0 10px; direction: ltr; }
+  .shelf-empty { color: var(--ink-faint); font-style: italic; font-size: 14px; align-self: center; direction: rtl; min-height: 46px; display: flex; align-items: center; }
+
+  /* ---------- CODE CARDS ---------- */
+
+  .code-card { background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .code-card-label { font-size: 13.5px; font-weight: 700; color: var(--ink-faint); padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .code-card.for-accent .code-card-label { color: var(--for); }
+  .code-card.while-accent .code-card-label { color: var(--while); }
+  .code-card pre, pre.code-static {
+    direction: ltr; text-align: left; margin: 0; padding: 16px 18px 18px; overflow-x: auto;
+    font-family: var(--mono); font-size: 14.5px; line-height: 1.7;
+  }
+  pre.code-static { background: rgba(0,0,0,0.22); border-radius: 12px; margin-top: 18px; }
+  .tok-kw { color: #ff7f96; }
+  .tok-str { color: #6fe0a0; unicode-bidi: isolate; }
+  .iso { unicode-bidi: isolate; }
+  .tok-num { color: #ffd27a; }
+  .tok-fn { color: #8fb8ff; }
+  .tok-cmt { color: var(--ink-faint); }
+  .solo-code { max-width: 460px; }
+
+  /* ---------- JAVA vs PYTHON TABLE ---------- */
+
+  .tbl-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .tbl th, .tbl td { padding: 11px 16px; border-bottom: 1px solid var(--line); text-align: left; direction: ltr; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl th { background: var(--bg-panel-2); color: var(--ink); font-family: var(--display); font-weight: 800; font-size: 14px; }
+  .tbl th.py, .tbl td.py { color: var(--for); }
+  .tbl td { background: var(--bg-panel); font-family: var(--mono); font-size: 13.5px; color: var(--ink-dim); }
+
+  .diff-counter { margin-top: 18px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .diff-counter label { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .diff-counter input[type="number"] {
+    width: 60px; font-family: var(--mono); font-size: 16px; text-align: center;
+    background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 8px 10px;
+  }
+  .diff-remaining { font-size: 14.5px; font-weight: 700; color: var(--ink-dim); }
+  .diff-remaining.done { color: var(--success); }
+  .reveal-btn {
+    margin-top: 18px; font-family: var(--sans); font-weight: 600; font-size: 14px;
+    background: transparent; color: var(--ink-faint); border: 1px dashed var(--line-strong); border-radius: 8px; padding: 9px 16px;
+  }
+  .reveal-btn:hover { color: var(--ink); border-color: var(--ink-dim); }
+  .diff-answer { margin-top: 14px; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; }
+  .diff-answer-row { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+  .diff-num-badge {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--for-soft); color: var(--for); font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+
+  /* ---------- PLAYGROUND (demos) ---------- */
+
+  .playground { margin-top: 36px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .playground-controls { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .playground-controls label { font-weight: 700; font-size: 15px; }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 200px; }
+  input[type="range"] { flex: 1; accent-color: var(--for); }
+  .slider-val { font-family: var(--mono); font-weight: 700; font-size: 18px; color: var(--for); min-width: 34px; text-align: center; direction: ltr; }
+  .playground-stage { padding: 22px 24px 8px; }
+  .playground-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2; padding: 14px 0; border-top: 1px solid var(--line); margin-top: 14px; }
+  .playground-code .line { padding: 2px 22px; white-space: pre; }
+  .playground-code .line.out { color: var(--for); }
+  .playground-code .line.err { color: var(--danger); background: var(--danger-soft); box-shadow: inset 3px 0 0 var(--danger); }
+  .playground-note { padding: 0 24px 18px; font-size: 14.5px; color: var(--ink-dim); min-height: 40px; }
+  .playground-note.err { color: var(--danger); font-weight: 700; }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: var(--mono); font-size: 13px; padding: 8px 14px; border-radius: 100px; direction: ltr;
+    border: 1px solid var(--line-strong); background: var(--bg-panel-2); color: var(--ink-dim);
+  }
+  .pill:hover:not(:disabled) { border-color: var(--ink-dim); color: var(--ink); }
+  .pill.active { background: var(--for-soft); color: var(--for); border-color: var(--for); }
+  .pill.reset { font-family: var(--sans); color: var(--ink-faint); border-style: dashed; background: transparent; }
+  .pill:disabled { opacity: 0.4; cursor: default; }
+
+  .log { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; line-height: 1.8; padding: 12px 24px; background: rgba(0,0,0,0.22); border-top: 1px solid var(--line); min-height: 52px; max-height: 190px; overflow-y: auto; }
+  .log .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .log .arrow { color: var(--ink-faint); }
+  .log .res { color: var(--for); }
+  .log .bad { color: var(--danger); }
+  .log .empty { color: var(--ink-faint); font-family: var(--sans); direction: rtl; font-style: italic; }
+
+  .field-row { padding: 16px 24px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .field-row input[type="text"], .field-row input[type="number"], .num-in {
+    font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong);
+    border-radius: 8px; color: var(--ink); padding: 8px 10px; direction: ltr; text-align: center;
+  }
+  .field-row input[type="text"] { width: 120px; }
+  .field-row input[type="number"], .num-in { width: 72px; }
+
+  .tabs { display: flex; gap: 8px; margin-top: 26px; flex-wrap: wrap; }
+  .tab {
+    font-family: var(--mono); font-weight: 700; font-size: 14px; direction: ltr;
+    padding: 9px 22px; border-radius: 100px; border: 2px solid var(--line-strong); background: transparent; color: var(--ink-dim);
+  }
+  .tab.active { border-color: var(--for); color: var(--for); background: var(--for-soft); }
+
+  .names { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; direction: ltr; }
+  .name-tag { font-family: var(--mono); font-weight: 800; font-size: 15px; padding: 4px 14px; border-radius: 8px; background: var(--for-soft); color: var(--for); border: 1px solid var(--for); }
+  .name-tag.b { background: var(--while-soft); color: var(--while); border-color: var(--while); }
+  .names.two { gap: 30px; }
+  .names .group { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+  /* guess row */
+  .guess-row { padding: 18px 24px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .guess-row input { width: 110px; font-family: var(--mono); font-size: 16px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 8px 10px; text-align: center; direction: ltr; }
+  .guess-row input[type="number"] { width: 70px; }
+  .guess-btn { background: var(--bg-panel-2); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 100px; padding: 9px 18px; font-weight: 700; font-size: 14px; }
+  .guess-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .guess-feedback.correct { color: var(--success); }
+  .guess-feedback.wrong { color: var(--danger); }
+
+  .callout { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--for); border-radius: 14px; padding: 16px 20px; font-size: 15.5px; color: var(--ink-dim); }
+  .callout.java { border-inline-start-color: var(--while); }
+
+  /* ---------- BUG HUNT (choices) ---------- */
+
+  .rescue { margin-top: 36px; background: var(--bg-panel); border: 1px solid var(--danger); border-radius: var(--radius); padding: 24px 26px 26px; }
+  .rescue.fixed { border-color: var(--success); }
+  .rescue-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .rescue-head h4 { font-family: var(--sans); font-weight: 700; font-size: 15.5px; margin: 0; color: var(--ink); }
+  .rescue-mark { font-size: 24px; color: var(--danger); }
+  .rescue.fixed .rescue-mark { color: var(--success); }
+  .rescue pre { direction: ltr; text-align: left; margin: 0 0 18px; font-family: var(--mono); font-size: 14.5px; line-height: 1.75; background: rgba(0,0,0,0.25); border-radius: 10px; padding: 16px 18px; overflow-x: auto; }
+  .rescue-choices { display: flex; gap: 12px; flex-wrap: wrap; }
+  .rescue-choice { flex: 1; min-width: 200px; text-align: right; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 14px; padding: 14px 16px; font-size: 14.5px; color: var(--ink); }
+  .rescue-choice:hover:not(:disabled) { border-color: var(--ink-dim); }
+  .rescue-choice.right { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+  .rescue-choice.wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
+  .rescue-choice:disabled { cursor: default; }
+  .rescue-feedback { margin-top: 14px; font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .rescue-feedback.correct { color: var(--success); }
+  .rescue-feedback.wrong { color: var(--danger); }
+  .rescue-fix { margin-top: 12px; }
+
+  /* ---------- EXERCISES ---------- */
+
+  .exercises-banner { margin-bottom: 8px; background: linear-gradient(135deg, var(--for-soft), var(--while-soft)); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 24px 26px; }
+  .exercises-banner .badge { display: inline-block; font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--bg); background: var(--for); border-radius: 100px; padding: 4px 12px; margin-bottom: 10px; }
+  .exercises-banner h2 { font-size: clamp(1.7rem, 4.5vw, 2.3rem); }
+  .exercises-banner p { margin-top: 10px; font-size: 16px; color: var(--ink); }
+
+  .rf-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:22px; }
+  .rf { background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:8px; }
+  .rf h4 { margin:0; font-family:var(--mono); font-size:15px; direction:ltr; text-align:left; color:var(--for); font-weight:700; }
+  .rf p { margin:0; font-size:14.5px; color:var(--ink-dim); line-height:1.6; }
+  .rf .ex { font-family:var(--mono); font-size:13.5px; direction:ltr; text-align:left; background:var(--code-bg); color:var(--code-ink); border-radius:8px; padding:8px 10px; }
+  .rf .rr { display:flex; align-items:center; gap:10px; margin-top:auto; }
+  .rf .res { font-family:var(--mono); font-size:14px; direction:ltr; color:var(--while); font-weight:700; min-height:20px; }
+  .rf-title { margin-top:34px; font-size:1.25rem; font-weight:700; }
+  .exercise-card { margin-top: 22px; background: var(--bg-panel); border: 1px solid var(--line); border-inline-start: 3px solid var(--line-strong); border-radius: 16px; padding: 22px 24px; }
+  .exercise-card.for-accent { border-inline-start-color: var(--for); }
+  .exercise-card.while-accent { border-inline-start-color: var(--while); }
+  .exercise-num { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+  .exercise-task { margin: 8px 0 16px; font-weight: 600; color: var(--ink); font-size: 15.5px; }
+  .exercise-code { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 1.9; background: rgba(0,0,0,0.22); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; overflow-x: auto; white-space: pre; }
+  .exercise-code input { font-family: var(--mono); font-size: 14px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 6px; color: var(--for); padding: 3px 4px; text-align: center; width: 52px; }
+  .exercise-code input.wide { width: 96px; }
+  .exercise-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .exercise-controls input { width: 70px; font-family: var(--mono); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 7px 8px; text-align: center; }
+  .exercise-check-btn { background: var(--bg-panel-2); border: 1px solid var(--line-strong); color: var(--ink); border-radius: 100px; padding: 9px 20px; font-weight: 700; font-size: 14px; }
+  .exercise-feedback { font-size: 14.5px; font-weight: 700; min-height: 20px; }
+  .exercise-feedback.correct { color: var(--success); }
+  .exercise-feedback.wrong { color: var(--danger); }
+  .exercise-output { margin-top: 12px; font-family: var(--mono); font-size: 13.5px; direction: ltr; text-align: left; background: rgba(0,0,0,0.18); border-radius: 8px; padding: 10px 12px; color: var(--ink-dim); white-space: pre-line; min-height: 20px; }
+  .exercise-divider { margin-top: 40px; display: flex; align-items: center; gap: 14px; color: var(--ink-faint); font-family: var(--mono); font-size: 13px; }
+  .exercise-divider::before, .exercise-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .exercise-hint { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13px; color: var(--ink-dim); background: rgba(0,0,0,0.18); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.7; }
+  .exercise-note { font-size: 13.5px; color: var(--ink-faint); font-style: italic; margin: 0 0 10px; }
+  .exercise-answer { width: 100%; direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; line-height: 1.7; background: rgba(0,0,0,0.22); border: 1px solid var(--line-strong); border-radius: 8px; color: var(--ink); padding: 12px 14px; resize: vertical; }
+  .exercise-answer.rtl { direction: rtl; text-align: right; font-family: var(--sans); font-size: 15px; }
+  .exercise-answer:focus { outline: none; border-color: var(--ink-dim); }
+  .ai-note { margin-top: 16px; background: var(--while-soft); border-radius: 12px; padding: 12px 16px; color: var(--ink); font-size: 14.5px; }
+  .ai-note strong { color: var(--while); }
+
+  /* ---------- SUMMARY ---------- */
+
+  .recap { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .recap li { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; color: var(--ink-dim); }
+  .recap li::before { content: "✓"; color: var(--success); font-weight: 800; margin-inline-end: 10px; }
+
+  /* ---------- NAME BAR ---------- */
+
+  .name-bar { background: var(--bg-panel); border-bottom: 1px solid var(--line); padding: 14px 0; }
+  .name-bar-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .name-bar-inner label { font-size: 13.5px; color: var(--ink-dim); flex-shrink: 0; }
+  .name-bar-input { flex: 1; min-width: 160px; max-width: 260px; font-family: var(--sans); font-size: 15px; background: var(--bg-panel-2); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink); padding: 9px 12px; }
+  .name-bar-input:focus { outline: none; border-color: var(--for); }
+  .name-bar-jump { margin-inline-start: auto; font-family: var(--display); font-weight: 700; font-size: 13.5px; color: var(--for); background: transparent; border: 1px solid var(--for); border-radius: 100px; padding: 8px 16px; white-space: nowrap; }
+  .name-bar-jump:hover { background: var(--for-soft); }
+
+  .run-btn { font-family: var(--display); font-weight: 800; font-size: 15px; color: #14121f; background: var(--for); border: none; border-radius: 100px; padding: 12px 26px; }
+
+  /* ---------- CERTIFICATE ---------- */
+
+  .certificate-box { margin-top: 30px; background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 26px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cert-name-display { font-size: 15px; color: var(--ink-dim); }
+  .cert-name-display strong { color: var(--for); }
+  .cert-status { width: 100%; margin: 0; font-size: 14.5px; color: var(--ink-dim); }
+  .cert-status.correct { color: var(--success); }
+  .cert-status.wrong { color: var(--danger); }
+  .cert-fallback { margin-top: 16px; }
+  .cert-fallback-note { font-size: 13.5px; color: var(--ink-faint); margin: 0 0 10px; }
+  .cert-fallback-text { width: 100%; direction: ltr; text-align: left; font-family: var(--mono); font-size: 12px; line-height: 1.6; background: rgba(0,0,0,0.25); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--ink-dim); padding: 12px 14px; }
+
+  footer { padding: 48px 0 76px; text-align: center; color: var(--ink-faint); font-size: 14px; }
+
+  .tb { background:rgba(255,127,150,.07); border-inline-start:3px solid var(--danger); padding:10px 16px; margin:4px 0; line-height:1.7; }
+  .tb span[data-p] { border-radius:4px; padding:0 3px; transition:background .2s; }
+  .tb span[data-p].on { background:rgba(255,210,122,.28); outline:1px solid var(--for); }
+  .tb-pills { display:flex; gap:8px; flex-wrap:wrap; padding:8px 0 0; direction:rtl; }
+  .tb-note { padding:12px 24px; font-size:14.5px; color:var(--ink-dim); border-top:1px solid var(--line); line-height:1.7; }
+  .net-status { padding:10px 24px; font-weight:700; font-size:15px; color:var(--ink-dim); border-top:1px solid var(--line); min-height:24px; }
+  .net-status.good { color:var(--success); } .net-status.bad { color:var(--danger); }
+  .playground-code .line { transition: background .25s; }
+  .playground-code .line.run { background:rgba(255,210,122,.14); box-shadow:inset 3px 0 0 var(--for); }
+  .playground-code .line.caught { background:var(--success-soft); box-shadow:inset 3px 0 0 var(--success); }
+  .rf .res.bad2 { color:var(--danger); font-size:13px; white-space:normal; word-break:break-word; }
+  .tok-str.he { direction:rtl; unicode-bidi:isolate; }
+  .zg-msg { font-size:14.5px; font-weight:700; line-height:1.7; min-height:24px; }
+  .zg-msg.good { color:var(--success); } .zg-msg.bad { color:var(--danger); }
+  .pill.wrong { border-color:var(--danger); color:var(--danger); opacity:.6; }
+  @keyframes shk { 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+  .shake { animation: shk .45s; }
+  @media (prefers-reduced-motion: reduce) { .shake { animation:none } }
+  #jr { position:relative; overflow:hidden; }
+  #jr-hero { padding-bottom:50px; position:relative; z-index:2; }
+  #jr-main { position:relative; z-index:2; }
+  /* הרקע היפה (כתמי הצבע והפונקציות העולות) הוא שכבה קבועה מאחורי כל השיעור: בכניסה ובמבחן כולו */
+  #jr-bg { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:radial-gradient(120% 90% at 50% 0%, #2a1f55 0%, #14121f 62%); }
+  #jr-bg::before, #jr-bg::after { content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(90px); opacity:.35; animation:jrblob 14s ease-in-out infinite alternate; z-index:0; }
+  #jr-bg::before { background:#8b6bff; top:-160px; inset-inline-start:-120px; }
+  #jr-bg::after { background:#ff7f96; bottom:-220px; inset-inline-end:-140px; animation-delay:-6s; }
+  @keyframes jrblob { to { transform:translate(60px,40px) scale(1.15); } }
+  .jr-sky { position:absolute; inset:0; z-index:1; overflow:hidden; }
+  .jr-sky span { position:absolute; bottom:-40px; font:700 15px var(--mono); direction:ltr; color:rgba(255,210,122,.38); animation:jrfloat linear infinite; white-space:nowrap; }
+  .jr-sky span.b { color:rgba(139,184,255,.34); } .jr-sky span.c { color:rgba(255,127,150,.34); }
+  @keyframes jrfloat { 0%{ transform:translateY(0) rotate(0); opacity:0 } 10%{ opacity:1 } 100%{ transform:translateY(-125vh) rotate(var(--r)); opacity:0 } }
+  .jr-title { text-shadow:0 0 40px rgba(255,210,122,.25); }
+  .jr-start { margin:30px auto 0; display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .jr-start label { font-weight:700; }
+  .jr-rocket-big { font-size:64px; animation:jrbob 2.4s ease-in-out infinite; filter:drop-shadow(0 8px 18px rgba(255,127,150,.45)); }
+  @keyframes jrbob { 0%,100%{ transform:translateY(0) rotate(-6deg) } 50%{ transform:translateY(-12px) rotate(4deg) } }
+  .jr-cta { font-size:18px; padding:13px 34px; box-shadow:0 0 0 0 rgba(255,210,122,.6); animation:jrpulse 2.2s infinite; }
+  @keyframes jrpulse { 70%{ box-shadow:0 0 0 16px rgba(255,210,122,0) } 100%{ box-shadow:0 0 0 0 rgba(255,210,122,0) } }
+  .jr-note { color:var(--danger); min-height:20px; font-size:14px; }
+
+  .jr-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:stretch; margin-bottom:26px; }
+  .jr-who { flex:1 1 120px; font:800 22px var(--display); display:flex; align-items:center; }
+  .jr-stat { position:relative; background:linear-gradient(160deg,var(--bg-panel-2),var(--bg-panel)); border:1px solid var(--line-strong); border-radius:16px; padding:8px 18px; text-align:center; min-width:92px; }
+  .jr-stat span { display:block; font-size:12px; color:var(--ink-faint); }
+  .jr-stat b { font:800 24px var(--display); color:var(--for); display:block; }
+  .jr-plus { position:absolute; top:-6px; inset-inline-end:8px; font:800 16px var(--display); font-style:normal; color:var(--success); opacity:0; pointer-events:none; }
+  .jr-plus.go { animation:jrplus 1.4s ease-out; }
+  @keyframes jrplus { 0%{ opacity:0; transform:translateY(8px) } 20%{ opacity:1 } 100%{ opacity:0; transform:translateY(-26px) } }
+
+  .jr-map { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:34px 8px; padding:22px 0 6px; }
+  @media (max-width:760px){ .jr-map { grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 8px; } }
+  .jr-path { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:0; }
+  .jr-path path { fill:none; stroke-linecap:round; }
+  .jr-path .base { stroke:rgba(255,255,255,.14); stroke-width:4; stroke-dasharray:2 10; }
+  .jr-path .done { stroke:var(--for); stroke-width:5; filter:drop-shadow(0 0 6px rgba(255,210,122,.8)); }
+  .jr-rocket { position:absolute; z-index:3; font-size:30px; pointer-events:none; transform:translate(-50%,-50%); transition:left .9s cubic-bezier(.5,.1,.2,1), top .9s cubic-bezier(.5,.1,.2,1); filter:drop-shadow(0 6px 10px rgba(0,0,0,.5)); }
+  .jr-rocket::after { content:""; }
+  .jr-node { position:relative; z-index:1; background:none; border:0; cursor:pointer; color:var(--ink); font-family:var(--sans); display:flex; flex-direction:column; align-items:center; gap:4px; padding:0; }
+  .jr-node .disc { position:relative; width:78px; height:78px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.12), var(--bg-panel)); border:3px solid var(--c); box-shadow:0 0 0 0 var(--c), inset 0 0 18px rgba(0,0,0,.35); transition:.3s; }
+  .jr-node:hover .disc { transform:scale(1.1) rotate(-4deg); }
+  .jr-node .no { position:absolute; top:-6px; inset-inline-start:calc(50% - 46px); width:24px; height:24px; border-radius:50%; background:var(--c); color:#14121f; font:800 13px var(--mono); display:flex; align-items:center; justify-content:center; }
+  .jr-node .tt { font:800 15px var(--display); margin-top:6px; }
+  .jr-node .dots { display:flex; gap:5px; }
+  .jr-node .dots i { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.2); }
+  .jr-node .dots i.on { background:var(--c); box-shadow:0 0 8px var(--c); }
+  .jr-node.cur .disc { animation:jrring 1.8s infinite; transform:scale(1.08); }
+  @keyframes jrring { 0%{ box-shadow:0 0 0 0 var(--c), inset 0 0 18px rgba(0,0,0,.35) } 100%{ box-shadow:0 0 0 18px transparent, inset 0 0 18px rgba(0,0,0,.35) } }
+  .jr-node.done .disc { background:radial-gradient(circle at 30% 25%, #fff6, var(--c)); box-shadow:0 0 22px var(--c); }
+  .jr-node.done .disc::after { content:"✔"; position:absolute; bottom:-6px; inset-inline-end:-6px; width:28px; height:28px; border-radius:50%; background:#fff; color:#14803c; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; box-shadow:0 2px 8px rgba(0,0,0,.4); transform:rotate(-10deg); }
+  .pop-stamp .disc { animation:jrpop .7s; }
+  @keyframes jrpop { 0%{ transform:scale(.5) rotate(-25deg) } 55%{ transform:scale(1.28) rotate(8deg) } 100%{ transform:scale(1) } }
+
+  .jr-panel { --c:var(--for); margin:0 0 36px; scroll-margin-top:12px; background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 140px),var(--bg-panel); border:1px solid var(--line-strong); border-top:4px solid var(--c); border-radius:24px; padding:26px 28px; box-shadow:0 24px 60px -30px var(--c); animation:jrin .45s ease-out; }
+  @keyframes jrin { from{ opacity:0; transform:translateY(14px) } to{ opacity:1; transform:none } }
+  .jr-ph { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
+  .jr-ph .ic { font-size:46px; filter:drop-shadow(0 0 14px var(--c)); }
+  .jr-ph h3 { margin:0; font:800 26px var(--display); }
+  .jr-ph small { color:var(--ink-faint); font-size:13px; display:block; }
+  .jr-ph .nm { color:var(--c); }
+  .jr-q { font-weight:700; font-size:17px; margin:18px 0 10px; line-height:1.6; }
+  .jr-win { direction:ltr; background:var(--code-bg); border:1px solid var(--line-strong); border-radius:14px; overflow:hidden; box-shadow:0 12px 30px -16px rgba(0,0,0,.7); margin-top:6px; }
+  .jr-win .bar { display:flex; align-items:center; gap:6px; padding:8px 12px; background:rgba(255,255,255,.05); font:600 12px var(--mono); color:var(--ink-faint); }
+  .jr-win .bar i { width:10px; height:10px; border-radius:50%; } .jr-win .bar i:nth-child(1){background:#ff5f57} .jr-win .bar i:nth-child(2){background:#febc2e} .jr-win .bar i:nth-child(3){background:#28c840} .jr-win .bar b { margin-inline-start:8px; font-weight:600; }
+  .jr-code { direction:ltr; text-align:left; padding:12px 16px; font:500 15px/1.85 var(--mono); white-space:pre; overflow-x:auto; color:var(--code-ink); }
+  .jr-code input { font:600 15px var(--mono); direction:ltr; unicode-bidi:bidi-override; text-align:center; width:110px; background:var(--bg-panel-2); color:var(--ink); border:2px solid var(--c); border-radius:8px; padding:3px 6px; box-shadow:0 0 12px -2px var(--c); }
+  .jr-opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:12px; margin-top:16px; }
+  .jr-opt { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:16px; border:2px solid var(--line-strong); background:var(--bg-panel-2); color:var(--ink); font:600 15.5px var(--sans); cursor:pointer; transition:.2s; text-align:start; }
+  .jr-opt .l { flex:none; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font:800 14px var(--display); }
+  .jr-opt:hover:not(:disabled) { border-color:var(--c); transform:translateY(-3px); box-shadow:0 10px 24px -14px var(--c); }
+  .jr-opt.good { border-color:var(--success); background:var(--success-soft); } .jr-opt.good .l { background:var(--success); color:#10281b; }
+  .jr-opt.bad { border-color:var(--danger); background:var(--danger-soft); animation:ekshake .4s; }
+  .jr-line { display:block; width:100%; text-align:left; direction:ltr; background:transparent; border:0; border-bottom:1px dashed var(--line); color:var(--code-ink); font:500 15px/1.9 var(--mono); white-space:pre; padding:2px 14px; cursor:pointer; transition:background .15s; }
+  .jr-line:hover:not(:disabled) { background:rgba(255,210,122,.12); }
+  .jr-line.good { background:var(--success-soft); box-shadow:inset 3px 0 0 var(--success); }
+  .jr-line.bad { background:var(--danger-soft); box-shadow:inset 3px 0 0 var(--danger); }
+  .jr-ord { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); gap:14px; margin-top:8px; }
+  .jr-ord h5 { margin:0 0 6px; font-size:13px; color:var(--ink-faint); }
+  .jr-ord .ob { background:var(--code-bg); border:2px dashed var(--line-strong); border-radius:14px; min-height:64px; padding:4px 0; }
+  .jr-act { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:18px; }
+  .jr-fb { font-weight:700; font-size:15px; line-height:1.7; margin-top:12px; min-height:24px; }
+  .jr-fb.good { color:var(--success); } .jr-fb.bad { color:var(--danger); } .jr-fb.hint { color:var(--for); }
+  .jr-sum { margin-top:18px; background:linear-gradient(160deg,rgba(255,210,122,.1),rgba(139,107,255,.08)); border:1px solid var(--c); border-radius:18px; padding:16px 22px; }
+  .jr-sum h4 { margin:0 0 6px; font:800 18px var(--display); color:var(--c); }
+  .jr-sum ul { margin:6px 0; padding-inline-start:20px; line-height:1.9; font-size:15px; }
+  .jr-sum code { font-family:var(--mono); direction:ltr; unicode-bidi:isolate; background:var(--bg-panel-2); padding:1px 6px; border-radius:5px; }
+  .jr-toast { position:fixed; top:18px; left:50%; transform:translate(-50%,-140%); z-index:60; background:linear-gradient(120deg,#ffd27a,#ff7f96); color:#2a1f08; font:800 18px var(--display); padding:12px 28px; border-radius:100px; box-shadow:0 14px 40px -10px rgba(255,127,150,.6); transition:transform .5s cubic-bezier(.3,1.5,.5,1); pointer-events:none; }
+  .jr-toast { opacity:0; visibility:hidden; transition:transform .5s cubic-bezier(.3,1.5,.5,1), opacity .3s, visibility .3s; }
+  .jr-toast.show { transform:translate(-50%,0); opacity:1; visibility:visible; }
+
+  .jr-cert { text-align:center; background:radial-gradient(120% 80% at 50% 0%,#3a2a66,#1d1a2d 70%); border:3px double var(--for); border-radius:28px; padding:40px 24px; position:relative; overflow:hidden; box-shadow:0 0 60px -10px rgba(255,210,122,.4); }
+  .jr-cert::before { content:""; position:absolute; inset:-70%; background:conic-gradient(from 0deg, transparent, rgba(255,210,122,.12), transparent 30%); animation:jrspin 9s linear infinite; }
+  @keyframes jrspin { to { transform:rotate(360deg) } }
+  .jr-cert > * { position:relative; }
+  .jr-cert h2 { font:900 clamp(26px,5vw,42px) var(--display); margin:0 0 4px; background:linear-gradient(90deg,#ffd27a,#ff9ec0,#ffd27a); background-size:200%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:jrshine 4s linear infinite; }
+  @keyframes jrshine { to { background-position:200% } }
+  .jr-cert .nm { font:800 32px var(--display); margin:10px 0; }
+  .jr-cert .big { font:900 72px var(--display); color:var(--for); line-height:1; text-shadow:0 0 30px rgba(255,210,122,.5); }
+  .jr-seal { width:120px; height:120px; margin:12px auto; border-radius:50%; background:radial-gradient(circle at 30% 25%,#fff3c4,#ffd27a 55%,#b9822a); color:#4a2f06; display:flex; flex-direction:column; align-items:center; justify-content:center; font:900 17px var(--display); box-shadow:0 10px 30px rgba(0,0,0,.5), inset 0 0 0 5px rgba(255,255,255,.35); outline:3px dashed rgba(255,210,122,.6); outline-offset:6px; }
+  .jr-seal span { font-size:34px; line-height:1; }
+  .jr-ladder { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:12px 0; }
+  .jr-ladder span { padding:3px 14px; border:1px solid var(--line-strong); border-radius:100px; font-size:14px; color:var(--ink-faint); }
+  .jr-ladder span.me { background:var(--for); color:#2a1f08; border-color:var(--for); font-weight:800; }
+  .jr-stampsrow { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; font-size:28px; margin:14px 0; }
+  .jr-kpis { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:12px 0 18px; }
+  .jr-kpis div { background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:14px; padding:6px 20px; }
+  .jr-kpis b { display:block; font:800 20px var(--display); } .jr-kpis span { font-size:12px; color:var(--ink-faint); }
+
+  /* ---------- שלב אחרון: תעודה, דרגות, תוצאות לפי תחנה, ופעולות דביקות ---------- */
+  .jr-cert { padding:34px 28px 28px; }
+  .fn-top { text-align:center; }
+  .fn-trophy { font-size:46px; line-height:1; }
+  .jr-cert .nm { font:800 30px var(--display); margin:6px 0 2px; }
+  .fn-sub { color:var(--ink-dim); font-size:14.5px; }
+  .fn-grid { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:28px; margin-top:26px; align-items:start; text-align:start; }
+  .fn-score { text-align:center; }
+  .jr-seal { width:132px; height:132px; gap:2px; }
+  .jr-seal span { font-size:38px; line-height:1; }
+  .jr-seal b { font:900 16px/1.1 var(--display); }
+  .jr-cert .big { font-size:64px; margin-top:6px; }
+  .fn-of { color:var(--ink-dim); font-size:14.5px; margin-top:4px; }
+  .fn-track { display:flex; margin:22px 4px 0; direction:rtl; }
+  .fn-step { flex:1; text-align:center; position:relative; font-size:12px; color:var(--ink-faint); }
+  .fn-step i { display:block; width:14px; height:14px; margin:0 auto 6px; border-radius:50%; background:var(--bg-panel-2); border:2px solid var(--line-strong); position:relative; z-index:1; }
+  .fn-step:not(:last-child)::before { content:""; position:absolute; top:6px; inset-inline-start:50%; width:100%; height:3px; background:var(--line-strong); }
+  .fn-step.on::before { background:var(--for); }
+  .fn-step.on i { background:var(--for); border-color:var(--for); }
+  .fn-step.me { color:var(--for); font-weight:800; }
+  .fn-step.me i { background:var(--for); border-color:#fff; box-shadow:0 0 0 4px rgba(255,210,122,.25); }
+  .fn-next { margin-top:12px; font-size:14px; color:var(--ink-dim); }
+  .fn-next b { color:var(--for); }
+  .fn-next.top { color:var(--success); font-weight:700; }
+  .jr-attempt { font-size:13.5px; color:var(--ink-faint); margin-top:12px; }
+  .fn-side h4 { margin:0 0 10px; font:800 15px var(--display); color:var(--ink-dim); }
+  .fn-side h4:not(:first-child) { margin-top:20px; }
+  .fn-sts { display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); gap:8px; }
+  .fn-st { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; border:1px solid var(--line-strong); border-inline-start:3px solid var(--c); background:rgba(255,255,255,.05); color:var(--ink); font:600 13.5px var(--sans); text-align:start; position:relative; }
+  .fn-st:hover { background:rgba(255,255,255,.1); }
+  .fn-st .ic { font-size:20px; }
+  .fn-st .tt { flex:1; }
+  .fn-st b { font:800 14px var(--display); color:var(--ink); direction:ltr; }
+  .fn-st b small { font-weight:600; color:var(--ink-faint); font-size:11px; }
+  .fn-st.full b { color:var(--success); }
+  .fn-st.full::after { content:"★"; position:absolute; top:-7px; inset-inline-end:-5px; font-size:14px; color:var(--for); text-shadow:0 0 8px rgba(255,210,122,.8); }
+  .fn-hintline { margin-top:8px; font-size:12.5px; color:var(--ink-faint); }
+  .fn-side .jr-kpis { justify-content:flex-start; margin:0; }
+  .jr-kpis div { min-width:92px; text-align:center; }
+  .fn-actions { position:sticky; bottom:12px; z-index:15; margin-top:20px; padding:14px 18px; border-radius:20px; background:rgba(20,18,31,.86); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border:1px solid var(--for); box-shadow:0 14px 40px -12px rgba(0,0,0,.6); display:flex; align-items:center; justify-content:space-between; gap:14px 24px; flex-wrap:wrap; }
+  .fn-ah { display:flex; flex-direction:column; gap:2px; min-width:220px; flex:1; }
+  .fn-ah b { font:800 16px var(--display); color:var(--for); }
+  .fn-ah span { font-size:13.5px; color:var(--ink-dim); line-height:1.5; }
+  .fn-ab { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .fn-actions .run-btn { padding:12px 24px; }
+  .fn-actions .jr-fb { flex-basis:100%; min-height:0; margin:0; text-align:center; }
+  .fn-actions .jr-fb:empty { display:none; }
+  .fn-actions .exercise-answer { flex-basis:100%; }
+  .jr-leave2 { display:none; }
+  html.jr-full .jr-leave2 { display:inline-flex; }
+  @media (max-width:760px) {
+    .fn-grid { grid-template-columns:1fr; gap:22px; }
+    .jr-cert { padding:26px 16px 22px; }
+    .jr-cert .nm { font-size:26px; }
+    .fn-actions { padding:12px; bottom:8px; }
+    .fn-ab { width:100%; } .fn-ab .run-btn { flex:1 1 100%; }
+    .fn-ah { display:none; }
+  }
+  .jr-confetti { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
+  .jr-confetti i { position:absolute; width:9px; height:14px; border-radius:2px; animation:jrfall 1.8s ease-out forwards; }
+  @keyframes jrfall { 0%{opacity:1; transform:translate(0,0) rotate(0)} 100%{opacity:0; transform:translate(var(--dx),var(--dy)) rotate(var(--rot))} }
+  [hidden] { display:none !important; }
+  @media (prefers-reduced-motion: reduce){ .jr-opt.bad,.pop-stamp .disc,.jr-cta,.jr-rocket-big,.jr-node.cur .disc,.jr-cert::before,.jr-cert h2,#jr-bg::before,#jr-bg::after,.jr-panel{animation:none} .jr-confetti,.jr-sky{display:none} .jr-rocket{transition:none} }
+
+  .jr-rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:28px auto 0; max-width:900px; text-align:start; }
+  .jr-rules div { background:rgba(255,255,255,.06); border:1px solid var(--line-strong); border-radius:16px; padding:14px 16px; backdrop-filter:blur(4px); }
+  .jr-rules span { font-size:26px; display:block; }
+  .jr-rules b { display:block; font:800 15.5px var(--display); margin:4px 0 2px; color:var(--for); }
+  .jr-rules em { font-style:normal; font-size:13px; color:var(--ink-dim); line-height:1.45; }
+  .jr-prev { background:rgba(255,210,122,.12); border:1px solid var(--for); border-radius:14px; padding:10px 18px; max-width:460px; font-size:14.5px; line-height:1.6; }
+  .jr-attempt { margin:6px auto 10px; font-size:15px; color:var(--ink-dim); }
+  .jr-attempt b { color:var(--success); }
+
+  .jr-node.lockd .disc { filter:grayscale(.8); opacity:.65; border-style:dashed; }
+  .jr-node.lockd:hover .disc { transform:none; }
+
+  .jr-sel { width:280px; text-align:center; text-align-last:center; padding:10px 12px; font:600 16px var(--sans); cursor:pointer; }
+  .jr-hint2 { font-size:13px; color:var(--ink-faint); }
+  /* המבחן כולו במסך מלא (כמו חדר הבריחה): הכניסה רגילה, ואחרי שכותבים שם כל החלון הופך למסע. Escape או כפתור היציאה משחררים */
+  html.jr-full { overflow-y:auto !important; }
+  html.jr-full { color-scheme:dark; scrollbar-width:thin; scrollbar-color:rgba(244,241,250,.28) transparent; background:var(--bg); }
+  html.jr-full body { overflow:visible !important; }
+  html.jr-full #jr-hero { display:none; }
+  html.jr-full #jr { overflow:clip; }
+  html.jr-full section { padding:14px 0 40px; }
+  html.jr-full .wrap { max-width:1000px; }
+  html.jr-full .jr-bar { position:sticky; top:0; z-index:20; margin:0 0 18px; padding:10px 0; gap:8px; background:rgba(20,18,31,.78); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  html.jr-full .jr-who { font-size:18px; }
+  html.jr-full .jr-stat { padding:4px 14px; min-width:76px; }
+  html.jr-full .jr-stat b { font-size:20px; }
+  .jr-leave { display:none; align-self:center; font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--ink-dim); background:transparent; border:1px solid var(--line-strong); border-radius:100px; padding:8px 16px; }
+  .jr-leave:hover { color:var(--ink); border-color:var(--ink-dim); }
+  html.jr-full .jr-leave { display:inline-flex; }
+  @media (max-width:600px) { html.jr-full .jr-bar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; padding:8px 0; } html.jr-full .jr-who { grid-column:1 / 4; grid-row:1; font-size:15px; } html.jr-full .jr-leave { grid-column:4; grid-row:1; justify-self:end; padding:6px 12px; } html.jr-full .jr-stat { min-width:0; padding:3px 6px; } html.jr-full .jr-stat span { font-size:11px; } html.jr-full .jr-stat b { font-size:17px; } }
+  #jr-hero.started { padding:24px 0 6px; }
+  #jr-hero.started h1 { font-size:clamp(1.5rem,4vw,2rem); }
+  #jr-hero.started .eyebrow { margin-bottom:4px; }
+  .jr-maptitle { font:800 18px var(--display); margin:0 0 4px; color:var(--ink-dim); }
+</style>
+<style>/* ===== engagement kit ===== */
+.ek-progress{position:fixed;top:0;right:0;left:0;height:4px;z-index:9998;background:transparent;pointer-events:none}
+.ek-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--for,#ffd27a),var(--while,#ff7f96));border-radius:0 4px 4px 0;float:right;transition:width .15s}
+.ek-hud{position:fixed;bottom:14px;right:14px;z-index:9997;display:flex;align-items:center;gap:10px;background:rgba(29,26,45,.92);backdrop-filter:blur(8px);border:1px solid var(--line-strong,rgba(255,255,255,.2));border-radius:999px;padding:8px 16px;font:700 14px var(--sans,sans-serif);color:var(--ink,#f4f1fa);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.ek-hud .ek-star{font-size:18px;display:inline-block}
+.ek-hud.pop .ek-star{animation:ekpop .6s}
+.ek-hud .ek-lvl{color:var(--for,#ffd27a)}
+@keyframes ekpop{30%{transform:scale(1.8) rotate(-15deg)}100%{transform:scale(1)}}
+.ek-toast{position:fixed;bottom:70px;right:50%;transform:translate(50%,20px);opacity:0;z-index:9999;background:linear-gradient(135deg,var(--for,#ffd27a),var(--while,#ff7f96));color:#2a1f36;font:800 17px var(--display,sans-serif);padding:12px 24px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:.35s;pointer-events:none}
+.ek-toast.show{opacity:1;transform:translate(50%,0)}
+.ek-bit{position:fixed;z-index:9999;width:9px;height:9px;border-radius:2px;pointer-events:none;animation:ekfly 1s ease-out forwards}
+@keyframes ekfly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.ek-js .ek-reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.ek-js .ek-reveal.in{opacity:1;transform:none}
+.playground,.exercise,.code-card,.callout{transition:transform .25s,box-shadow .25s}
+.playground:hover,.exercise:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.28)}
+/* insight cards */
+.ek-insight{display:flex;gap:16px;align-items:flex-start;margin:28px 0 0;padding:18px 22px;border-radius:20px;background:linear-gradient(135deg,rgba(255,210,122,.14),rgba(255,127,150,.12));border:1px dashed var(--for,#ffd27a);position:relative}
+.ek-insight .ek-ic{font-size:34px;line-height:1;flex:none;animation:ekbob 3s ease-in-out infinite}
+@keyframes ekbob{50%{transform:translateY(-5px) rotate(-6deg)}}
+.ek-insight b.ek-tag{display:block;color:var(--for,#ffd27a);font:800 13px var(--display,sans-serif);letter-spacing:.04em;margin-bottom:4px}
+.ek-insight p{margin:0;font-size:17px;line-height:1.7;color:var(--ink,#f4f1fa)}
+.ek-insight code,.ek-insight .m{font-family:var(--mono,monospace);direction:ltr;unicode-bidi:isolate;background:rgba(0,0,0,.28);padding:1px 7px;border-radius:6px;font-size:.92em}
+/* hero strip */
+.ek-strip{margin:34px auto 0;max-width:760px}
+.ek-cells{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;direction:ltr}
+.ek-cell{min-width:86px;padding:12px 10px 10px;border-radius:16px;background:var(--bg-panel-2,#26223b);border:2px solid var(--line-strong,rgba(255,255,255,.2));text-align:center;cursor:pointer;transition:.3s;font-family:var(--mono,monospace);color:var(--ink,#f4f1fa)}
+.ek-cell small{display:block;color:var(--ink-faint,#9e97ba);font-size:12px;margin-bottom:4px}
+.ek-cell strong{font-size:22px}
+.ek-cell.on{border-color:var(--for,#ffd27a);background:rgba(255,210,122,.16);transform:translateY(-8px) scale(1.07);box-shadow:0 12px 26px rgba(255,210,122,.2)}
+.ek-cell.on small{color:var(--for,#ffd27a)}
+.ek-cap{margin-top:16px;text-align:center;font:700 18px var(--mono,monospace);direction:ltr;color:var(--while,#ff7f96);min-height:28px}
+.ek-hint{text-align:center;font-size:13px;color:var(--ink-faint,#9e97ba);margin-top:6px}
+/* quiz */
+.ek-quiz{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:22px}
+.ek-q{min-width:0;background:var(--bg-panel,#1d1a2d);border:1px solid var(--line-strong,rgba(255,255,255,.2));border-radius:20px;padding:20px 22px}
+.ek-q h3{margin:0 0 4px;font:800 18px var(--display,sans-serif);color:var(--ink,#f4f1fa)}
+.ek-q pre{direction:ltr;text-align:left;background:#221F55;border-radius:14px;padding:12px 16px;margin:12px 0;overflow-x:auto;font:500 15px/1.6 var(--mono,monospace);color:#f4f1fa}
+.ek-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:10px}
+.ek-opt{padding:11px 12px;border-radius:14px;border:2px solid var(--line-strong,rgba(255,255,255,.2));background:var(--bg-panel-2,#26223b);color:var(--ink,#f4f1fa);font:600 15px var(--mono,monospace);direction:ltr;cursor:pointer;transition:.2s}
+.ek-opt:hover:not(:disabled){border-color:var(--for,#ffd27a);transform:translateY(-2px)}
+.ek-opt.good{border-color:var(--success,#6fe0a0);background:rgba(111,224,160,.16)}
+.ek-opt.bad{border-color:var(--danger,#ff7f96);background:rgba(255,127,150,.14);animation:ekshake .4s}
+@keyframes ekshake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.ek-why{margin-top:12px;font-size:15.5px;line-height:1.7;color:var(--ink-dim,#bdb7d3);min-height:0}
+.ek-why.good{color:var(--success,#6fe0a0)}
+.ek-why.bad{color:var(--danger,#ff7f96)}
+@media (max-width:600px){.ek-hud{right:8px;bottom:8px;font-size:13px;padding:6px 12px}.ek-insight{flex-direction:column;gap:8px}.ek-cell{min-width:62px}}
+</style>
+</head>
+<body>
+<div id="jr">
+<div id="jr-bg" aria-hidden="true"><div class="jr-sky" id="jr-sky"></div></div>
+<header class="hero" id="jr-hero">
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="eyebrow" style="justify-content:center; display:flex;">משימת סיום · פייתון · מגמת מחשבים</div>
+    <h1 class="jr-title">המסע ב<span class="accent-for">עשר</span> <span class="accent-while">תחנות</span></h1>
+    <p class="hero-sub">עשר תחנות, כל אחת על נושא מהקורס, ובסופן תחנת גמר עם שאלות כלליות. בכל תחנה שתי משימות קצרות. מי שמסיימת תחנה מקבלת חותמת בדרכון, ובסוף מחכה לך <strong>תעודה אישית</strong> וגם <strong>דף סיכום של כל הקורס</strong>.</p>
+    <div class="jr-rules" aria-label="איך מנקדים">
+      <div><span>💯</span><b>כל משימה שווה 50 נקודות</b><em>20 משימות בתחנות ועוד 6 שאלות בתחנת הגמר: 1,300 נקודות</em></div>
+      <div><span>✖️</span><b>טעות או רמז מורידים 10</b><em>אפשר לטעות ולהמשיך! משימה שנפתרה שווה תמיד לפחות 10 נקודות</em></div>
+      <div><span>🏅</span><b>הניקוד קובע דרגה</b><em>מתלמדת, חוקרת, בלשית, מהנדסת ופרופסורית</em></div>
+      <div><span>📨</span><b>הציון נשלח אלייך למורה</b><em>בסוף מורידים קובץ ושולחים. הניסיון הראשון הוא הקובע</em></div>
+    </div>
+    <div class="jr-start">
+      <div class="jr-rocket-big" aria-hidden="true">🚀</div>
+      <label for="jr-name">איך קוראים לך?</label>
+      <input type="text" id="jr-name" autocomplete="off" placeholder="שם מלא" class="num-in" style="width:260px;text-align:center" maxlength="40">
+      <div class="jr-hint2">כתבי את שמך המלא, כדי שהמורה תדע של מי התוצאה.</div>
+      <button class="run-btn jr-cta" id="jr-go" type="button">יוצאות למסע</button>
+      <div class="jr-note" id="jr-start-note"></div>
+      <div class="jr-prev" id="jr-prev" hidden></div>
+    </div>
+  </div>
+</header>
+
+<main id="jr-main" hidden>
+  <section>
+    <div class="wrap">
+      <div class="jr-bar">
+        <div class="jr-who" id="jr-who"></div>
+        <div class="jr-stat"><span>ניקוד</span><b id="jr-score">0</b><em class="jr-plus" id="jr-plus"></em></div>
+        <div class="jr-stat"><span>דרגה</span><b id="jr-rank">מתלמדת</b></div>
+        <div class="jr-stat"><span>רצף 🔥</span><b id="jr-streak">0</b></div>
+        <div class="jr-stat"><span>חותמות</span><b id="jr-stamps">0/11</b></div>
+        <button type="button" class="jr-leave" id="jr-leave">✕ יציאה</button>
+      </div>
+      <div class="jr-panel" id="jr-panel" hidden aria-live="polite"></div>
+      <h3 class="jr-maptitle">🗺️ מפת המסע</h3>
+      <div class="jr-map" id="jr-map" role="list"><svg class="jr-path" id="jr-path" aria-hidden="true"></svg><div class="jr-rocket" id="jr-rocket" aria-hidden="true">🚀</div></div>
+    </div>
+  </section>
+  <section id="jr-final" hidden>
+    <div class="wrap">
+      <div class="jr-cert" id="jr-cert"></div>
+      <div class="fn-actions" id="jr-actions" hidden></div>
+    </div>
+  </section>
+</main>
+<div class="jr-toast" id="jr-toast" role="status" aria-live="polite"></div>
+<div class="jr-confetti" id="jr-conf" aria-hidden="true"></div>
+</div>
+
+<script>
+var ST=[
+{ic:''🖨️'',nm:''שער הכניסה'',t:''פלט וקלט'',sub:''print ו-input'',
+ tasks:[
+  {k:''mc'',q:''המשתמשת מקלידה Dana. מה יודפס?'',code:''name = input("שם: ")\nprint("שלום", name)'',opts:[''שלום Dana'',''שלום name'',''שלוםDana'',''שגיאה''],ans:0,why:''print מדפיסה את שני הערכים עם רווח ביניהם, ו-name מחזיק את מה שהוקלד.'',hint:''קראי שוב את print: כמה דברים יש בתוכה, ומה מפריד ביניהם?''},
+  {k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 16)'',lines:[''age = input("גיל: ")'',''print(age + 1)''],ans:1,why:''input מחזירה תמיד טקסט, ולכן age + 1 הוא טקסט + מספר, ופייתון זורקת TypeError. צריך int(input(...)).'',hint:''איזה סוגי מידע מופיעים בשורה 2? האם אפשר לחבר אותם?''}],
+ sum:''<li><code>print()</code> מדפיסה, <code>input()</code> שואלת ומחזירה <b>טקסט</b>.</li><li>כדי לחשב עם מספר: <code>int(input())</code>.</li>'',ex:''age = int(input("גיל: "))\nprint("בשנה הבאה:", age + 1)''},
+{ic:''🚦'',nm:''צומת הדרכים'',t:''תנאים'',sub:''if / elif / else'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''x = 15\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")'',opts:[''A'',''B'',''C'',''A ואז B''],ans:0,why:''פייתון בודקת מלמעלה ועוצרת בתנאי הראשון שנכון. x > 10 נכון, ולכן רק A.'',hint:''עברי על התנאים מלמעלה, אחד אחרי השני.''},
+  {k:''fill'',q:''השלימי כך שיודפס "עבר" גם כשהציון הוא בדיוק 56.'',code:''score = 56\nif score ___ 56:\n    print("עבר")'',acc:[''>=''],why:''>= אומר "גדול או שווה", ולכן גם 56 עובר. עם > בלבד 56 היה נכשל.'',hint:''מה ההבדל בין "גדול מ" לבין "לפחות"?''}],
+ sum:''<li><code>if</code> בודק, <code>elif</code> בודק עוד, <code>else</code> תופס את השאר.</li><li>רק הענף הראשון שנכון מורץ.</li><li>השוואות: <code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code>.</li>'',ex:''if score >= 56:\n    print("עבר")\nelse:\n    print("לא עבר")''},
+{ic:''🔁'',nm:''המעגל המסתובב'',t:''לולאות'',sub:''for ו-while'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''for i in range(3):\n    print(i)'',opts:[''0 ואז 1 ואז 2'',''1 ואז 2 ואז 3'',''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2''],ans:0,why:''range(3) נותנת 0, 1, 2. היא מתחילה מאפס ולא כוללת את 3.'',hint:''מאיפה range מתחילה לספור, ואיפה היא עוצרת?''},
+  {k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס את הסכום 6.'',lines:[''total = 0'',''for n in [1, 2, 3]:'',''    total = total + n'',''print(total)''],why:''קודם מאפסים, אחר כך הלולאה מוסיפה בכל סיבוב, ורק בסוף מדפיסים. השורה בתוך הלולאה מוזחת.'',hint:''מה צריך לקרות לפני שמתחילים לסכם, ומתי כדאי להדפיס?''}],
+ sum:''<li><code>for</code> עוברת על רשימה או על <code>range</code>.</li><li><code>while</code> חוזרת כל עוד התנאי נכון.</li><li>מה שמוזח מתחת ללולאה הוא מה שחוזר.</li>'',ex:''for i in range(1, 4):\n    print(i)''},
+{ic:''📋'',nm:''ארון המגירות'',t:''רשימות'',sub:''list'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''colors = ["red", "blue", "green"]\ncolors.append("pink")\nprint(len(colors))'',opts:[''3'',''4'',''"pink"'',''שגיאה''],ans:1,why:''append מוסיפה פריט בסוף, ו-len סופרת: עכשיו יש 4.'',hint:''מה הפעולה בשורה 2 עושה לרשימה, לפני שסופרים?''},
+  {k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''nums = [10, 20, 30, 40]\nprint(nums[-1])'',ph:''מספר'',acc:[''40''],why:''-1 הוא האיבר האחרון ברשימה.'',hint:''איך אפשר להסתכל על רשימה מהצד ההפוך?'',blank:false}],
+ sum:''<li>אינדקס מתחיל ב-<code>0</code>, ו-<code>-1</code> הוא האחרון.</li><li><code>append</code> מוסיפה, <code>len</code> סופרת, <code>[a:b]</code> חותכת.</li>'',ex:''nums = [10, 20, 30]\nnums.append(40)\nprint(nums[0], nums[-1])''},
+{ic:''📖'',nm:''ספריית המפתחות'',t:''מילונים'',sub:''dict'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''ages = {"dan": 16, "rut": 17}\nprint(ages["rut"])'',opts:[''16'',''17'',''"rut"'',''KeyError''],ans:1,why:''במילון ניגשים לערך דרך המפתח, וערך המפתח "rut" הוא 17.'',hint:''במילון מחפשים לפי שם, לא לפי מקום. איזה שם מחפשים כאן?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''ages = {"dan": 16}'',''ages["rut"] = 17'',''print(ages["noa"])''],ans:2,why:''המפתח "noa" לא קיים במילון, ולכן KeyError. שורה 2 רק מוסיפה מפתח חדש.'',hint:''בדקי אילו שמות באמת נכנסו למילון עד השורה האחרונה.''}],
+ sum:''<li>מילון הוא זוגות <code>מפתח: ערך</code> בסוגריים מסולסלים.</li><li><code>d["key"] = value</code> מוסיפה או משנה. מפתח שלא קיים גורם ל-<code>KeyError</code>.</li>'',ex:''ages = {"dan": 16}\nages["rut"] = 17\nprint(ages["rut"])''},
+{ic:''🧰'',nm:''מכונת הקסמים'',t:''פונקציות'',sub:''def ו-return'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''def double(x):\n    return x * 2\n\nprint(double(5) + 1)'',opts:[''10'',''11'',''12'',''double(5) + 1''],ans:1,why:''double(5) מחזירה 10, ואז מוסיפים 1 ומקבלים 11.'',hint:''פתרי מבפנים החוצה: קודם הקריאה, אחר כך שאר החישוב.''},
+  {k:''mc'',q:''מה יודפס?'',code:''def greet(name):\n    print("Hi", name)\n\nresult = greet("Dana")\nprint(result)'',opts:[''Hi Dana ואז Hi Dana'',''Hi Dana ואז None'',''Hi Dana בלבד'',''שגיאה''],ans:1,why:''greet מדפיסה אבל לא מחזירה כלום, ולכן result הוא None. print זה לא return!'',hint:''מה שווה result אחרי שורה 4?''}],
+ sum:''<li><code>def שם(פרמטרים):</code> מגדירה, ו-<code>שם(ערכים)</code> קוראת.</li><li><code>return</code> מחזירה ערך החוצה, ו-<code>print</code> רק מציגה.</li>'',ex:''def double(x):\n    return x * 2\n\nprint(double(5))''},
+{ic:''📦'',nm:''ארגז הכלים'',t:''מודולים'',sub:''import'',
+ tasks:[
+  {k:''fill'',q:''השלימי את המילה החסרה כדי להביא את המודול.'',code:''___ random\nprint(random.randint(1, 6))'',acc:[''import''],why:''import מביאה ארגז כלים, ואז random.randint בוחרת כלי ממנו.'',hint:''איך מתחילה שורה שמביאה מודול?''},
+  {k:''mc'',q:''מה יקרה?'',code:''from math import sqrt\nprint(math.sqrt(9))'',opts:[''3.0'',''NameError'',''3'',''SyntaxError''],ans:1,why:''ה-from הביא רק את sqrt, ואת השם math אף אחד לא הביא, ולכן NameError.'',hint:''בדקי איזה שם באמת הובא בשורה הראשונה.''}],
+ sum:''<li><code>import math</code> ואז <code>math.sqrt(9)</code>.</li><li><code>from math import sqrt</code> ואז <code>sqrt(9)</code>.</li><li>ב-<code>random</code>: <code>randint</code> בוחרת מספר, <code>choice</code> בוחרת פריט.</li>'',ex:''import random\nprint(random.choice(["a", "b", "c"]))''},
+{ic:''🔤'',nm:''שרשרת האותיות'',t:''מחרוזות'',sub:''str'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''word = "python"\nprint(word[0].upper() + word[1:])'',opts:[''Python'',''PYTHON'',''python'',''ython''],ans:0,why:''word[0].upper() הופכת את האות הראשונה לגדולה, ו-word[1:] היא כל השאר.'',hint:''פצלי את הביטוי לשני חלקים וחשבי כל אחד לחוד.''},
+  {k:''fill'',q:''השלימי את שם השיטה שמסירה רווחים מההתחלה ומהסוף.'',code:''text = "  hi  "\nprint(text.___())'',acc:[''strip'',''strip()''],why:''strip() מוחקת רווחים בקצוות, ולכן יודפס hi.'',hint:''חשבי על שיטה שמנקה את קצוות המחרוזת.''}],
+ sum:''<li>מחרוזת היא שרשרת תווים עם אינדקסים: <code>word[0]</code>, <code>word[-1]</code>, <code>word[1:3]</code>.</li><li>שיטות כמו <code>upper</code>, <code>strip</code>, <code>replace</code> מחזירות מחרוזת חדשה.</li><li>f-string: <code>f"Hi {name}"</code>.</li>'',ex:''name = "dana"\nprint(f"Hi {name.upper()}!")''},
+{ic:''🛟'',nm:''רשת הביטחון'',t:''שגיאות'',sub:''try / except'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''try:\n    n = int("abc")\n    print("A")\nexcept ValueError:\n    print("B")\nprint("C")'',opts:[''A ואז C'',''B ואז C'',''B בלבד'',''שגיאה''],ans:1,why:''int("abc") נופלת עם ValueError לפני ש-A מודפס. ה-except מדפיס B, והתוכנית ממשיכה ל-C.'',hint:''באיזו שורה התוכנית נופלת, ומה קורה אחרי הנפילה?''},
+  {k:''order'',q:''סדרי את השורות: התוכנית מחלקת, ותופסת חילוק ב-0.'',lines:[''try:'',''    x = int(input())'',''    print(10 / x)'',''except ZeroDivisionError:'',''    print("אי אפשר")''],why:''קודם try עם הקוד המסוכן, ואחריו except שתופס את סוג השגיאה המתאים.'',hint:''מה בא קודם: הקוד שמנסים, או התפיסה?''}],
+ sum:''<li>שגיאה נקראת מלמטה: סוג ההודעה בשורה האחרונה.</li><li><code>try</code> מנסה, <code>except סוג:</code> תופס, והתוכנית ממשיכה.</li><li>כל סוג שגיאה צריך <code>except</code> משלו.</li>'',ex:''try:\n    x = int(input())\nexcept ValueError:\n    print("לא מספר")''},
+{ic:''📄'',nm:''המחברת הגדולה'',t:''קבצים'',sub:''open'',
+ tasks:[
+  {k:''mc'',q:''כמה שורות יהיו בקובץ a.txt בסוף?'',code:''with open("a.txt", "w") as f:\n    f.write("one\\n")\nwith open("a.txt", "a") as f:\n    f.write("two\\n")'',opts:[''0'',''1'',''2'',''שגיאה''],ans:2,why:''"w" כותב את one, ו-"a" מוסיף את two בסוף בלי למחוק. סך הכול שתי שורות.'',hint:''מה כל אחת משתי הפתיחות עושה למה שכבר כתוב בקובץ?''},
+  {k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("data.txt", "r") as f:'',''    f.write("hello")''],ans:1,why:''"r" פותח לקריאה בלבד, ולכן אי אפשר לכתוב בו. לכתיבה צריך "w" או "a".'',hint:''קראי שוב את מצב הפתיחה: מה מותר לעשות איתו?''}],
+ sum:''<li><code>with open(name, mode) as f:</code> פותח וסוגר אוטומטית.</li><li><code>"w"</code> כותב מחדש, <code>"a"</code> מוסיף, <code>"r"</code> קורא.</li><li><code>FileNotFoundError</code> נתפסת עם <code>try</code>.</li>'',ex:''with open("notes.txt", "a") as f:\n    f.write("hello\\n")''},
+{ic:''🏁'',nm:''תחנת הגמר'',t:''שאלות כלליות'',sub:''כל הקורס'',fin:true,
+ tasks:[
+  {k:''mc'',q:''מה ההבדל בין = ל-== בפייתון?'',code:''x = 5\nif x == 5:\n    print("yes")'',opts:[''= מכניס ערך למשתנה, ו-== משווה בין שני ערכים'',''= משווה, ו-== מכניס ערך'',''אין הבדל, שניהם עושים אותו דבר'',''== משמש רק בלולאות''],ans:0,why:''סימן = הוא השמה (שומר ערך במשתנה), ו-== שואל "האם שווה?" ומחזיר True או False.'',hint:''אחד מהם נותן ערך, והשני שואל שאלה.''},
+  {k:''mc'',q:''איזה סוג מידע מחזירה הפונקציה input()?'',code:''age = input("גיל: ")\nprint(type(age))'',opts:[''טקסט (str), תמיד'',''מספר שלם (int)'',''מספר עשרוני (float)'',''תלוי במה שהוקלד''],ans:0,why:''input תמיד מחזירה טקסט, גם אם הוקלדו ספרות. כדי לחשב צריך להמיר עם int או float.'',hint:''האם פייתון מנחשת מה התכוונת?''},
+  {k:''mc'',q:''מה יודפס?'',code:''x = "5"\ny = 3\nprint(x * y)'',opts:[''15'',''555'',''שגיאה'',''8''],ans:1,why:''כפל של מחרוזת במספר חוזר על המחרוזת: "5" שלוש פעמים נותן "555".'',hint:''שימי לב איזה סוג מידע הוא x.''},
+  {k:''mc'',q:''מה עושה break בתוך לולאה?'',code:''for i in range(10):\n    if i == 3:\n        break\n    print(i)'',opts:[''יוצאת מהלולאה מיד'',''מדלגת לסיבוב הבא'',''עוצרת את כל התוכנית'',''מאפסת את i''],ans:0,why:''break מפסיקה את הלולאה מיד. כאן יודפס 0, 1, 2 ואז הלולאה נגמרת.'',hint:''מה קורה כש-i מגיע ל-3?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''total = 0'',''for i in range(3):'',''    total += i'',''print("Total: " + total)''],ans:3,why:''אי אפשר לחבר טקסט ומספר עם +, וזו TypeError. צריך str(total) או f-string.'',hint:''חפשי חיבור בין שני סוגי מידע שונים.''},
+  {k:''fill'',q:''השלימי את המילה שמגדירה פונקציה.'',code:''___ add(a, b):\n    return a + b'',acc:[''def''],why:''def מגדירה פונקציה חדשה, ואחריה שם, פרמטרים ונקודתיים.'',hint:''הפועל באנגלית שמקצרים ל-3 אותיות.''}],
+ sum:''<li><code>=</code> שומר ערך, <code>==</code> משווה.</li><li><code>input</code> מחזירה תמיד טקסט.</li><li>הזחה קובעת מה שייך לבלוק.</li><li>שגיאה קוראים מלמטה: סוג ההודעה בשורה האחרונה.</li><li>הדרך הכי טובה ללמוד: להריץ, לטעות ולתקן.</li>'',ex:''name = input("name: ")\nif name == "dana":\n    print("hello!")''}
+];
+
+var VARS=[
+[ /* 1 print/input */
+ [{k:''mc'',q:''המשתמשת מקלידה Haifa. מה יודפס?'',code:''city = input("עיר: ")\nprint("אני גרה ב", city)'',opts:[''אני גרה ב Haifa'',''אני גרה ב city'',''אני גרה בHaifa'',''שגיאה''],ans:0,exp:''אני גרה ב Haifa'',inp:''Haifa'',why:''print מדפיסה את הטקסט ואת הערך שהוקלד, עם רווח ביניהם.'',hint:''city הוא משתנה, לא המילה city.''},
+  {k:''mc'',q:''המשתמשת מקלידה Blue. מה יודפס?'',code:''color = input("צבע: ")\nprint("הצבע הוא", color)'',opts:[''הצבע הוא Blue'',''הצבע הוא color'',''הצבע הואBlue'',''שגיאה''],ans:0,exp:''הצבע הוא Blue'',inp:''Blue'',why:''print מחברת את הטקסט עם מה שנשמר במשתנה, ומוסיפה רווח.'',hint:''קראי מה כתוב בתוך הסוגריים של print.''}],
+ [{k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 10)'',lines:[''num = input("מספר: ")'',''print(num - 1)''],ans:1,why:''input מחזירה טקסט, ואי אפשר לחסר מספר מטקסט. צריך int(input(...)).'',hint:''איזה סוג מידע נשמר ב-num?''},
+  {k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 20)'',lines:[''age = input("גיל: ")'',''if age > 18:'',''    print("בוגרת")''],ans:1,why:''age הוא טקסט, ואי אפשר להשוות טקסט למספר עם >. צריך int(input(...)).'',hint:''מה מושווה למה בשורה 2?''}]
+],
+[ /* 2 conditions */
+ [{k:''mc'',q:''מה יודפס?'',code:''x = 7\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")'',opts:[''A'',''B'',''C'',''B ואז C''],ans:1,exp:''B'',why:''x > 10 לא נכון, אבל x > 5 נכון, ולכן יודפס B, ושאר הענפים מדולגים.'',hint:''עברי על התנאים מלמעלה.''},
+  {k:''mc'',q:''מה יודפס?'',code:''x = 4\nif x > 10:\n    print("A")\nelif x > 3:\n    print("B")\nelif x > 1:\n    print("C")\nelse:\n    print("D")'',opts:[''A'',''B'',''C'',''D''],ans:1,exp:''B'',why:''התנאי הראשון שנכון הוא x > 3, ולכן יודפס B, גם אם התנאי הבא נכון גם כן.'',hint:''מה קורה אחרי שמצאנו תנאי נכון?''}],
+ [{k:''fill'',q:''השלימי כך שיודפס "נכון" רק כשהתשובה שווה ל-7.'',code:''answer = 7\nif answer ___ 7:\n    print("נכון")'',acc:[''==''],why:''== בודק שוויון. סימן = אחד הוא השמה ולא השוואה.'',hint:''איזה סימן שואל "האם שווה?"''},
+  {k:''fill'',q:''השלימי כך שיודפס "צריך לשפר" גם כשהציון הוא בדיוק 60.'',code:''grade = 60\nif grade ___ 60:\n    print("צריך לשפר")'',acc:[''<=''],why:''<= אומר "קטן או שווה", ולכן גם 60 נכלל.'',hint:''הציון קטן מ-60, וגם שווה לו.''}]
+],
+[ /* 3 loops */
+ [{k:''mc'',q:''מה יודפס?'',code:''for i in range(4):\n    print(i)'',opts:[''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2 ואז 3 ואז 4'',''0 ואז 1 ואז 2'',''1 ואז 2 ואז 3''],ans:0,exp:''0\n1\n2\n3'',why:''range(4) נותנת 0, 1, 2, 3. היא מתחילה מאפס ולא כוללת את 4.'',hint:''כמה מספרים יוצאים מ-range(4)?''},
+  {k:''mc'',q:''מה יודפס?'',code:''for i in range(1, 4):\n    print(i)'',opts:[''1 ואז 2 ואז 3'',''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2 ואז 3 ואז 4'',''2 ואז 3''],ans:0,exp:''1\n2\n3'',why:''range(1, 4) מתחילה מ-1 ועוצרת לפני 4.'',hint:''ב-range עם שני מספרים, הראשון הוא התחלה.''}],
+ [{k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס את המכפלה 24.'',lines:[''result = 1'',''for n in [2, 3, 4]:'',''    result = result * n'',''print(result)''],why:''מתחילים ב-1 (לא ב-0, אחרת הכול נהיה 0), מכפילים בכל סיבוב, ומדפיסים בסוף.'',hint:''מאיזה מספר מתחילים כשמכפילים?''},
+  {k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס כמה מספרים גדולים מ-2 יש ברשימה.'',lines:[''count = 0'',''for n in [1, 2, 3, 4]:'',''    if n > 2:'',''        count = count + 1'',''print(count)''],why:''קודם מאפסים, אחר כך בכל סיבוב בודקים תנאי ומוסיפים, ובסוף מדפיסים. ההזחה מראה מה בתוך מה.'',hint:''השורה עם count + 1 תלויה בתנאי.''}]
+],
+[ /* 4 lists */
+ [{k:''mc'',q:''מה יודפס?'',code:''fruits = ["apple", "banana"]\nfruits.append("kiwi")\nprint(len(fruits))'',opts:[''2'',''3'',''"kiwi"'',''שגיאה''],ans:1,exp:''3'',why:''append מוסיפה פריט, ולכן יש 3 פריטים.'',hint:''כמה פריטים היו, וכמה נוספו?''},
+  {k:''mc'',q:''מה יודפס?'',code:''nums = [1, 2, 3]\nnums.append(4)\nnums.append(5)\nprint(len(nums))'',opts:[''3'',''4'',''5'',''6''],ans:2,exp:''5'',why:''התחלנו ב-3 פריטים והוספנו שניים, ולכן 5.'',hint:''ספרי כמה פעמים הוספנו.''}],
+ [{k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''letters = ["a", "b", "c", "d"]\nprint(letters[-1])'',ph:''תשובה'',acc:[''d''],why:''-1 הוא האיבר האחרון ברשימה.'',hint:''סופרים מהסוף.''},
+  {k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''nums = [5, 6, 7, 8]\nprint(nums[1])'',ph:''מספר'',acc:[''6''],why:''האינדקס מתחיל ב-0, ולכן nums[1] הוא האיבר השני.'',hint:''מאיזה מספר מתחילים לספור אינדקסים?''}]
+],
+[ /* 5 dicts */
+ [{k:''mc'',q:''מה יודפס?'',code:''prices = {"milk": 6, "bread": 9}\nprint(prices["bread"])'',opts:[''6'',''9'',''"bread"'',''KeyError''],ans:1,exp:''9'',why:''ניגשים לערך דרך המפתח, והערך של "bread" הוא 9.'',hint:''מחפשים לפי שם המפתח.''},
+  {k:''mc'',q:''מה יודפס?'',code:''colors = {"sky": "blue", "grass": "green"}\nprint(colors["sky"])'',opts:[''blue'',''sky'',''green'',''KeyError''],ans:0,exp:''blue'',why:''הערך של המפתח "sky" הוא "blue".'',hint:''מה מצד שמאל של הנקודתיים, ומה מצד ימין?''}],
+ [{k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''scores = {"dana": 90}'',''scores["ruth"] = 85'',''print(scores["noa"])''],ans:2,why:''המפתח "noa" לא קיים במילון, ולכן KeyError.'',hint:''אילו שמות נכנסו למילון?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''stock = {"pen": 5, "book": 3}'',''print(stock["pencil"])'',''print(stock["book"])''],ans:1,why:''"pencil" אינו מפתח במילון (יש "pen"), ולכן KeyError.'',hint:''בדקי את האיות של המפתח.''}]
+],
+[ /* 6 functions */
+ [{k:''mc'',q:''מה יודפס?'',code:''def triple(x):\n    return x * 3\n\nprint(triple(4) - 2)'',opts:[''10'',''12'',''14'',''triple(4) - 2''],ans:0,exp:''10'',why:''triple(4) מחזירה 12, ואז מחסירים 2 ומקבלים 10.'',hint:''קודם מחשבים את הקריאה לפונקציה.''},
+  {k:''mc'',q:''מה יודפס?'',code:''def add(a, b):\n    return a + b\n\nprint(add(2, 3) * 4)'',opts:[''14'',''20'',''9'',''23''],ans:1,exp:''20'',why:''add(2, 3) מחזירה 5, ואז 5 * 4 = 20.'',hint:''פתרי את הסוגריים הפנימיים קודם.''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''def say(msg):\n    print(msg)\n\nvalue = say("hi")\nprint(value)'',opts:[''hi ואז hi'',''hi ואז None'',''hi בלבד'',''שגיאה''],ans:1,exp:''hi\nNone'',why:''say מדפיסה אבל לא מחזירה כלום, ולכן value הוא None.'',hint:''מה שווה value אחרי שורה 4?''},
+  {k:''mc'',q:''מה יודפס?'',code:''def show(x):\n    print(x * 2)\n\nresult = show(5)\nprint(result)'',opts:[''10 ואז 10'',''10 ואז None'',''None בלבד'',''שגיאה''],ans:1,exp:''10\nNone'',why:''show מדפיסה 10 אבל לא מחזירה ערך, ולכן result הוא None.'',hint:''האם יש return בפונקציה?''}]
+],
+[ /* 7 modules */
+ [{k:''fill'',q:''השלימי את המילה החסרה כדי להביא רק את sqrt.'',code:''___ math import sqrt\nprint(sqrt(25))'',acc:[''from''],why:''from math import sqrt מביאה רק את הכלי sqrt, ואז קוראים לו בלי math.'',hint:''המילה שפותחת שורה של "מתוך המודול".''},
+  {k:''fill'',q:''השלימי את הכינוי כך שהקוד ירוץ.'',code:''import math as ___\nprint(m.floor(2.7))'',acc:[''m''],why:''הכינוי שנכתב אחרי as הוא השם שחייבים להשתמש בו, ובקוד כתוב m.floor.'',hint:''איזה שם משתמשים בשורה השנייה?''}],
+ [{k:''mc'',q:''מה יקרה?'',code:''import math\nprint(sqrt(9))'',opts:[''3.0'',''NameError'',''3'',''SyntaxError''],ans:1,exp:null,why:''המודול הובא כולו, ולכן צריך לכתוב math.sqrt. השם sqrt לבד לא מוכר.'',hint:''איפה נמצא הכלי sqrt אחרי import math?''},
+  {k:''mc'',q:''מה יקרה?'',code:''import math as m\nprint(math.floor(2.5))'',opts:[''2'',''3'',''NameError'',''2.5''],ans:2,exp:null,why:''המודול הובא בכינוי m, ולכן השם math כבר לא מוכר.'',hint:''באיזה שם הובא המודול?''}]
+],
+[ /* 8 strings */
+ [{k:''mc'',q:''מה יודפס?'',code:''word = "hello"\nprint(word[0].upper() + word[1:])'',opts:[''Hello'',''HELLO'',''hello'',''ello''],ans:0,exp:''Hello'',why:''האות הראשונה הופכת לגדולה, ושאר המילה נשארת כמו שהיא.'',hint:''פצלי את הביטוי לשני חלקים.''},
+  {k:''mc'',q:''מה יודפס?'',code:''word = "python"\nprint(word[-1] + word[:2])'',opts:[''npy'',''pyn'',''ypn'',''python''],ans:0,exp:''npy'',why:''word[-1] היא האות האחרונה (n), ו-word[:2] היא שתי האותיות הראשונות (py).'',hint:''מה אומר האינדקס -1, ומה אומר [:2]?''}],
+ [{k:''fill'',q:''השלימי את שם השיטה שהופכת את כל האותיות לגדולות.'',code:''text = "hello"\nprint(text.___())'',acc:[''upper'',''upper()''],why:''upper() הופכת לאותיות גדולות, ולכן יודפס HELLO.'',hint:''שם השיטה הוא "למעלה" באנגלית.''},
+  {k:''fill'',q:''השלימי את שם השיטה שמחליפה כל "-" ברווח.'',code:''text = "a-b-c"\nprint(text.___("-", " "))'',acc:[''replace''],why:''replace מחליפה חלק אחד בטקסט באחר, ולכן יודפס a b c.'',hint:''איזו שיטה "מחליפה"?''}]
+],
+[ /* 9 errors */
+ [{k:''mc'',q:''מה יודפס?'',code:''try:\n    x = 10 / 0\n    print("A")\nexcept ZeroDivisionError:\n    print("B")\nprint("C")'',opts:[''A ואז C'',''B ואז C'',''B בלבד'',''שגיאה''],ans:1,exp:''B\nC'',why:''החילוק ב-0 נופל לפני ש-A מודפס. ה-except מדפיס B, והתוכנית ממשיכה ל-C.'',hint:''כשנופלים, שאר הקוד בתוך try מדולג.''},
+  {k:''mc'',q:''מה יודפס?'',code:''try:\n    print("A")\n    n = int("x")\n    print("B")\nexcept ValueError:\n    print("C")\nprint("D")'',opts:[''A ואז C ואז D'',''A ואז B ואז D'',''C ואז D'',''A ואז B ואז C ואז D''],ans:0,exp:''A\nC\nD'',why:''A מודפס לפני הנפילה, ואז int("x") זורקת ValueError, ה-except מדפיס C, והתוכנית ממשיכה ל-D. B מדולג.'',hint:''מה כבר הודפס לפני הנפילה?''}],
+ [{k:''order'',q:''סדרי את השורות: התוכנית ממירה למספר, ותופסת קלט שאינו מספר.'',lines:[''try:'',''    x = int(input())'',''    print(x + 1)'',''except ValueError:'',''    print("שגיאה")''],why:''try עם הקוד המסוכן, ואחריו except שתופס ValueError.'',hint:''try לפני except.''},
+  {k:''order'',q:''סדרי את השורות: התוכנית ניגשת לרשימה, ותופסת מקום שלא קיים.'',lines:[''try:'',''    nums = [1, 2, 3]'',''    print(nums[5])'',''except IndexError:'',''    print("אין מקום כזה")''],why:''try עם הקוד שעלול ליפול, ואחריו except שתופס IndexError.'',hint:''אחרי try בא except.''}]
+],
+[ /* 10 files */
+ [{k:''mc'',q:''כמה שורות יהיו בקובץ b.txt בסוף?'',code:''with open("b.txt", "w") as f:\n    f.write("x\\n")\nwith open("b.txt", "w") as f:\n    f.write("y\\n")'',opts:[''0'',''1'',''2'',''שגיאה''],ans:1,why:''הפתיחה השנייה ב-"w" מוחקת את מה שהיה, ונשארת רק y.'',hint:''מה "w" עושה בכל פתיחה?''},
+  {k:''mc'',q:''כמה שורות יהיו בקובץ c.txt בסוף?'',code:''with open("c.txt", "w") as f:\n    f.write("a\\n")\nwith open("c.txt", "a") as f:\n    f.write("b\\n")\nwith open("c.txt", "a") as f:\n    f.write("c\\n")'',opts:[''1'',''2'',''3'',''שגיאה''],ans:2,why:''"w" כותב את a, ושתי הפתיחות ב-"a" מוסיפות בסוף את b ואת c.'',hint:''מה קורה למה שכבר כתוב כשפותחים ב-"a"?''}],
+ [{k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("notes.txt", "w") as f:'',''    text = f.read()''],ans:1,why:''"w" פותח לכתיבה בלבד, ולכן אי אפשר לקרוא ממנו. לקריאה צריך "r".'',hint:''מה אפשר לעשות במצב "w"?''},
+  {k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("a.txt", "a") as f:'',''    f.write("hi")'',''    print(f.read())''],ans:2,why:''"a" פותח להוספה בלבד, ולכן אי אפשר לקרוא ממנו.'',hint:''איזו פעולה לא מותרת במצב "a"?''}]
+],
+[ /* finale */
+ [{k:''mc'',q:''מה המשמעות של השורה score = 90?'',code:''score = 90'',opts:[''שומרים את הערך 90 במשתנה score'',''בודקים אם score שווה ל-90'',''מדפיסים את המספר 90'',''מגדירים פונקציה בשם score''],ans:0,why:''סימן = הוא השמה: שומר ערך במשתנה. לבדיקת שוויון משתמשים ב-==.'',hint:''האם זו שאלה, או פעולה של שמירה?''},
+  {k:''mc'',q:''באיזה סימן בודקים אם שני ערכים שווים?'',code:''if a ___ b:\n    print("equal")'',opts:[''=='',''='',''=>'',''!=''],ans:0,why:''== בודק שוויון, והוא מחזיר True או False.'',hint:''צריך סימן שמורכב משתי תווים.''}],
+ [{k:''mc'',q:''המשתמשת מקלידה 4. מה יודפס?'',code:''n = input("מספר: ")\nprint(n + n)'',opts:[''44'',''8'',''שגיאה'',''4n''],ans:0,exp:''44'',inp:''4'',why:''input מחזירה טקסט, ולכן + מחבר שתי מחרוזות: "4" ו-"4" נותנים "44".'',hint:''איזה סוג מידע מחזירה input?''},
+  {k:''mc'',q:''המשתמשת מקלידה 12. מה יודפס?'',code:''a = input()\nprint(type(a))'',opts:[''<class \''str\''>'',''<class \''int\''>'',''<class \''float\''>'',''<class \''bool\''>''],ans:0,exp:''<class \''str\''>'',inp:''12'',why:''input תמיד מחזירה טקסט (str), גם אם הוקלדו ספרות.'',hint:''האם פייתון מנחשת שהתכוונת למספר?''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''s = "ab"\nprint(s * 3)'',opts:[''ababab'',''ab3'',''שגיאה'',''aaabbb''],ans:0,exp:''ababab'',why:''כפל של מחרוזת במספר חוזר על המחרוזת כמה פעמים.'',hint:''מה עושה * על טקסט?''},
+  {k:''mc'',q:''מה יודפס?'',code:''a = "2"\nb = "3"\nprint(a + b)'',opts:[''23'',''5'',''שגיאה'',''2 3''],ans:0,exp:''23'',why:''a ו-b הם טקסט (בגלל המרכאות), ולכן + מחבר אותם ל-"23".'',hint:''שימי לב למרכאות.''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''for i in range(5):\n    if i == 2:\n        break\n    print(i)'',opts:[''0 ואז 1'',''0 ואז 1 ואז 2'',''0 ואז 1 ואז 2 ואז 3 ואז 4'',''לא יודפס כלום''],ans:0,exp:''0\n1'',why:''כש-i מגיע ל-2, break מפסיקה את הלולאה לפני ההדפסה.'',hint:''מה קורה כש-i שווה 2?''},
+  {k:''mc'',q:''כמה פעמים יודפס hi?'',code:''while True:\n    print("hi")\n    break'',opts:[''פעם אחת'',''אינסוף פעמים'',''אף פעם'',''פעמיים''],ans:0,why:''הלולאה מתחילה, מדפיסה פעם אחת, וה-break יוצא מיד.'',hint:''מה השורה השנייה בתוך הלולאה עושה?''}],
+ [{k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''count = 5'',''message = "Items: " + count'',''print(message)''],ans:1,why:''אי אפשר לחבר טקסט ומספר עם +, וזו TypeError. צריך str(count).'',hint:''חפשי חיבור בין שני סוגי מידע שונים.''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''name = "dana"'',''age = 16'',''print(name + " is " + age)''],ans:2,why:''age הוא מספר, ואי אפשר לחבר אותו לטקסט עם +. צריך str(age).'',hint:''מה הסוג של כל חלק בשורה 3?''}],
+ [{k:''fill'',q:''השלימי את המילה שמגדירה פונקציה.'',code:''___ hello():\n    print("hi")'',acc:[''def''],why:''def מגדירה פונקציה חדשה.'',hint:''מילה של 3 אותיות באנגלית.''},
+  {k:''fill'',q:''השלימי את המילה שמחזירה את התוצאה החוצה.'',code:''def total(a, b):\n    ___ a + b'',acc:[''return''],why:''return מחזירה את הערך למי שקרא לפונקציה.'',hint:''איך מחזירים ערך מפונקציה?''}]
+]
+];
+
+(function(){
+var $=function(i){return document.getElementById(i)};
+var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
+function esc(s){return String(s).replace(/&/g,''&amp;'').replace(/</g,''&lt;'').replace(/>/g,''&gt;'')}
+function highlight(code){
+  return esc(code).replace(/(#.*$)|("[^"\n]*")|\b(try|except|with|as|while|break|True|False|if|elif|else|for|in|import|from|def|return)\b|\b(print|int|input|open|len|range|str|append)\b|\b(\d+\.?\d*)\b/gm,function(m,c,s,k,f,n){
+    if(c)return ''<span class="tok-cmt">''+c+''</span>'';
+    if(s)return ''<span class="tok-str''+(/[֐-׿]/.test(s)?'' he'':'''')+''">''+s+''</span>'';
+    if(k)return ''<span class="tok-kw">''+k+''</span>'';
+    if(f)return ''<span class="tok-fn">''+f+''</span>'';
+    return ''<span class="tok-num">''+n+''</span>''});
+}
+function shuffle(a){var r=a.slice();for(var i=r.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=r[i];r[i]=r[j];r[j]=t}return r}
+var BASE=50,RANKS=[[0,''מתלמדת''],[.5,''חוקרת''],[.7,''בלשית''],[.85,''מהנדסת''],[.95,''פרופסורית'']];
+function maxScore(){var n=0;ST.forEach(function(s){n+=s.tasks.length*BASE});return n}
+function rankIdx(sc){var r=0,f=sc/maxScore();RANKS.forEach(function(x,i){if(f>=x[0])r=i});return r}
+var FIN=ST.length-1;
+function locked(i){return !!ST[i].fin&&nDoneMain()<FIN}
+ST.forEach(function(s,i){s.tasks.forEach(function(t,k){t.vs=[t].concat(VARS[i][k])})});
+function T(i,ti){return ST[i].tasks[ti].vs[S.v[i][ti]]}
+function pickVariants(prev){return ST.map(function(s,i){return s.tasks.map(function(t,k){
+', 13, '2026-11-08T00:00:00.000Z');
+UPDATE lessons SET html_content = html_content || '  var cnt=t.vs.map(function(_,j){return prev.filter(function(r){return r.v&&r.v[i]&&r.v[i][k]===j}).length}),mn=Math.min.apply(null,cnt),c=[];
+  cnt.forEach(function(x,j){if(x===mn)c.push(j)});return c[Math.floor(Math.random()*c.length)]})})}
+var HUES=[200,40,150,330,270,20,180,95,350,235,310];
+function col(i){return ''hsl(''+HUES[i%HUES.length]+'' 88% 64%)''}
+var LET=[''א'',''ב'',''ג'',''ד''];
+function winHtml(inner,name){return ''<div class="jr-win"><div class="bar"><i></i><i></i><i></i><b>''+(name||''main.py'')+''</b></div>''+inner+''</div>''}
+var toastT;function toast(t){var e=$(''jr-toast'');e.textContent=t;e.classList.add(''show'');clearTimeout(toastT);toastT=setTimeout(function(){e.classList.remove(''show'')},2600)}
+function countUp(el,to){var from=parseInt(el.textContent,10)||0;el._tok=(el._tok||0)+1;var tok=el._tok;if(RM||from===to){el.textContent=to;return}var t0=performance.now();(function f(t){if(el._tok!==tok)return;var k=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*k);if(k<1)requestAnimationFrame(f)})(t0)}
+var LSK=''py-journey-runs-v2'';
+function lsAll(){try{return JSON.parse(localStorage.getItem(LSK)||''{}'')}catch(e){return {}}}
+function nk(n){return String(n||'''').trim().replace(/\s+/g,'' '')}
+function lsRuns(name){return (lsAll()[nk(name)]||[])}
+function lsSave(name,r){try{var o=lsAll(),k=nk(name);(o[k]=o[k]||[]).push(r);localStorage.setItem(LSK,JSON.stringify(o))}catch(e){}}
+function rid(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+var SVK=''py-journey-save-v1'';
+function persist(){if(!S)return;try{if(S.end)localStorage.removeItem(SVK);else localStorage.setItem(SVK,JSON.stringify(S))}catch(e){}}
+function loadSaved(){try{var s=JSON.parse(localStorage.getItem(SVK)||''null'');
+  if(!s||s.end||!s.t||s.t.length!==ST.length||!s.v||s.v.length!==ST.length)return null;
+  for(var i=0;i<ST.length;i++){if(s.t[i].length!==ST[i].tasks.length||s.v[i].length!==ST[i].tasks.length)return null;
+    for(var k=0;k<s.v[i].length;k++)if(!(s.v[i][k]>=0&&s.v[i][k]<ST[i].tasks[k].vs.length))return null}
+  if(!s.name)return null;return s}catch(e){return null}}
+function clearSaved(){try{localStorage.removeItem(SVK)}catch(e){}}
+var S=null;
+function newState(name){var prev=lsRuns(name);return {id:rid(),v:pickVariants(prev),attempt:prev.length+1,prev:prev,saved:false,name:name,start:Date.now(),end:null,cur:null,streak:0,rk:0,shown:0,t:ST.map(function(s){return s.tasks.map(function(){return {done:false,pts:0,att:0,hint:0}})})}}
+function stDone(i){return S.t[i].every(function(x){return x.done})}
+function score(){var n=0;S.t.forEach(function(a){a.forEach(function(x){n+=x.pts})});return n}
+function nDoneMain(){var n=0;for(var i=0;i<FIN;i++)if(stDone(i))n++;return n}
+function nDone(){return ST.filter(function(_,i){return stDone(i)}).length}
+function fmt(sec){sec=Math.max(0,Math.floor(sec));var m=Math.floor(sec/60),s=sec%60;return (m<10?''0'':'''')+m+'':''+(s<10?''0'':'''')+s}
+function confetti(el){
+  if(RM)return;var host=$(''jr-conf''),r=el.getBoundingClientRect(),cols=[''#ffd27a'',''#ff7f96'',''#6fe0a0'',''#8b6bff'',''#5bd1ff''];
+  for(var i=0;i<46;i++){var b=document.createElement(''i''),a=Math.random()*6.28,d=80+Math.random()*190;
+    b.style.cssText=''left:''+(r.left+r.width/2)+''px;top:''+(r.top+r.height/2)+''px;background:''+cols[i%5]+'';--dx:''+Math.cos(a)*d+''px;--dy:''+(Math.sin(a)*d-50)+''px;--rot:''+Math.random()*700+''deg'';
+    host.appendChild(b);setTimeout(function(e){e.remove()},1700,b)}
+}
+function hud(gain){persist();
+  if(S&&window.reportProgress)window.reportProgress(nDone(),ST.length);
+  var sc=score(),ri=rankIdx(sc);countUp($(''jr-score''),sc);$(''jr-rank'').textContent=RANKS[ri][1];$(''jr-stamps'').textContent=nDone()+''/''+ST.length;$(''jr-streak'').textContent=S.streak;
+  $(''jr-who'').textContent=''🧭 ''+S.name;
+  if(gain){var p=$(''jr-plus'');p.textContent=''+''+gain;p.classList.remove(''go'');void p.offsetWidth;p.classList.add(''go'')}
+  if(ri>S.rk){S.rk=ri;toast(''🎉 עלית לדרגה: ''+RANKS[ri][1]+''!'')}
+}
+function layout(){
+  var cols=matchMedia(''(max-width:760px)'').matches?2:5,map=$(''jr-map''),nodes=map.querySelectorAll(''.jr-node'');
+  nodes.forEach(function(n,i){var row=Math.floor(i/cols),pos=i%cols,c=row%2===0?pos:cols-1-pos;n.style.gridColumn=(c+1);n.style.gridRow=(row+1)});
+  var mr=map.getBoundingClientRect(),pts=[];
+  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
+  var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
+  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
+    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
+  svg.innerHTML=h;
+  var cur=S&&S.cur!=null?S.cur:0,pt=pts[Math.min(cur,pts.length-1)],r=$(''jr-rocket'');if(pt){r.style.left=(pt[0]+34)+''px'';r.style.top=(pt[1]-44)+''px''}
+}
+function renderMap(){
+  var h='''';ST.forEach(function(s,i){var d=stDone(i),n=S.t[i].filter(function(x){return x.done}).length;
+    h+=''<button type="button" class="jr-node''+(d?'' done'':'''')+(S.cur===i?'' cur'':'''')+(locked(i)?'' lockd'':'''')+''" style="--c:''+col(i)+''" data-i="''+i+''" role="listitem" aria-label="תחנה ''+(i+1)+'': ''+esc(s.t)+(d?'' (הושלמה)'':'''')+''"><span class="disc"><span class="ic">''+(locked(i)?''🔒'':s.ic)+''</span><span class="no">''+(i+1)+''</span></span><span class="tt">''+esc(s.t)+''</span><span class="dots">''+s.tasks.map(function(_,k){return ''<i class="''+(k<n?''on'':'''')+''"></i>''}).join('''')+''</span></button>''});
+  var map=$(''jr-map'');map.querySelectorAll(''.jr-node'').forEach(function(x){x.remove()});
+  map.insertAdjacentHTML(''beforeend'',h);
+  map.querySelectorAll(''.jr-node'').forEach(function(b){b.onclick=function(){openStation(+b.dataset.i,true)}});
+  layout();
+}
+addEventListener(''resize'',function(){if(S)layout()});
+function firstUndone(from){for(var k=0;k<ST.length;k++){var i=(from+k)%ST.length;if(!stDone(i)&&!locked(i))return i}return -1}
+// גוללים אל המשימה; במסך מלא יש פס עליון דביק, ולכן משאירים לו מקום
+function toPanel(){var p=$(''jr-panel''),bar=document.querySelector(''.jr-bar'');if(p.hidden)return;p.style.scrollMarginTop=(document.documentElement.classList.contains(''jr-full'')&&bar?bar.offsetHeight+12:12)+''px'';try{p.scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}}
+function openStation(i,scroll){
+  if(locked(i)){toast(''🔒 קודם משלימות את עשר התחנות, ואז נפתחת תחנת הגמר'');return}
+  S.cur=i;renderMap();var p=$(''jr-panel'');p.hidden=false;p.style.setProperty(''--c'',col(i));p.style.animation=''none'';void p.offsetWidth;p.style.animation='''';
+  if(stDone(i))return renderSummary(i,false);
+  var ti=S.t[i].findIndex(function(x){return !x.done});renderTask(i,ti);
+  if(scroll!==false)toPanel();
+}
+function head(i,ti){var s=ST[i];return ''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' מתוך ''+ST.length+'' · משימה ''+(ti+1)+'' מתוך ''+s.tasks.length+''</small><h3><span class="nm">''+esc(s.nm)+''</span> <span style="font-size:15px;color:var(--ink-faint);font-weight:500">· ''+esc(s.t)+'' (''+esc(s.sub)+'')</span></h3></div></div>''}
+function award(i,ti,fbEl){
+  var r=S.t[i][ti];r.done=true;r.pts=Math.max(10,BASE-10*(r.att+r.hint));S.streak=(r.att===0&&r.hint===0)?S.streak+1:0;hud(r.pts);return r.pts}
+function renderTask(i,ti){
+  var s=ST[i],t=T(i,ti),r=S.t[i][ti],p=$(''jr-panel''),solved=false;
+  var h=head(i,ti)+''<div class="jr-q">''+esc(t.q)+''</div><div id="jr-body"></div><div class="jr-act" id="jr-act"></div><div class="jr-fb" id="jr-fb" role="status"></div>'';
+  p.innerHTML=h;var body=$(''jr-body''),act=$(''jr-act''),fb=$(''jr-fb'');
+  function win(){
+    solved=true;var pts=award(i,ti);fb.className=''jr-fb good'';fb.textContent=''✔ ''+t.why+'' (+''+pts+'' נקודות)'';
+    renderMap();confetti(fb);act.innerHTML='''';
+    var nb=document.createElement(''button'');nb.type=''button'';nb.className=''run-btn'';
+    var more=S.t[i].some(function(x){return !x.done});nb.textContent=more?''למשימה הבאה ›'':''לסיכום התחנה ›'';
+    nb.onclick=function(){if(more)renderTask(i,S.t[i].findIndex(function(x){return !x.done}));else stationDone(i)};act.appendChild(nb);nb.focus()}
+  function wrong(msg){r.att++;persist();fb.className=''jr-fb bad'';fb.textContent=msg||''לא בדיוק. נסי שוב.''}
+  function hintBtn(){var b=document.createElement(''button'');b.type=''button'';b.className=''pill'';b.textContent=''💡 רמז (-10)'';
+    b.onclick=function(){if(!r.hint){r.hint=1;persist()}fb.className=''jr-fb hint'';fb.textContent=''💡 ''+t.hint;b.disabled=true};act.appendChild(b)}
+  if(t.k===''mc''){
+    body.innerHTML=winHtml(''<div class="jr-code">''+highlight(t.code)+''</div>'')+''<div class="jr-opts" id="jr-opts"></div>'';
+    shuffle(t.opts.map(function(o,k){return {o:o,k:k}})).forEach(function(x,pos){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-opt'';b.innerHTML=''<span class="l">''+LET[pos]+''</span><span></span>'';b.lastChild.textContent=x.o;
+      b.onclick=function(){if(solved)return;if(x.k===t.ans){b.classList.add(''good'');$(''jr-opts'').querySelectorAll(''button'').forEach(function(y){y.disabled=true});win()}else{b.classList.add(''bad'');b.disabled=true;wrong()}};$(''jr-opts'').appendChild(b)});
+    hintBtn();
+  }else if(t.k===''bug''){
+    body.innerHTML=winHtml(''<div id="jr-bug"></div>'');
+    t.lines.forEach(function(l,k){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-line'';b.innerHTML=''<span style="color:var(--ink-faint)">''+(k+1)+''  </span>''+highlight(l);
+      b.onclick=function(){if(solved)return;if(k===t.ans){b.classList.add(''good'');$(''jr-bug'').querySelectorAll(''button'').forEach(function(y){y.disabled=true});win()}else{b.classList.add(''bad'');b.disabled=true;wrong(''זו לא השורה הבעייתית. נסי שוב.'')}};$(''jr-bug'').appendChild(b)});
+    hintBtn();
+  }else if(t.k===''fill''){
+    var parts=t.code.indexOf(''___'')>-1?t.code.split(''___''):null;
+    body.innerHTML=parts?winHtml(''<div class="jr-code">''+highlight(parts[0])+''<input type="text" id="jr-in" autocomplete="off" aria-label="השלמה">''+highlight(parts[1])+''</div>''):winHtml(''<div class="jr-code">''+highlight(t.code)+''</div>'')+''<div style="margin-top:12px"><input type="text" id="jr-in" class="num-in" autocomplete="off" placeholder="''+esc(t.ph||''התשובה'')+''" style="width:160px;direction:ltr" aria-label="התשובה"></div>'';
+    var chk=function(){if(solved)return;var v=$(''jr-in'').value.replace(/\s+/g,'''');if(!v)return;
+      if(t.acc.indexOf(v)>-1||t.acc.indexOf(v.replace(/["'']/g,''''))>-1){$(''jr-in'').disabled=true;win()}else wrong()};
+    var cb=document.createElement(''button'');cb.type=''button'';cb.className=''run-btn'';cb.textContent=''בדקי'';cb.onclick=chk;act.appendChild(cb);hintBtn();
+    $(''jr-in'').onkeydown=function(e){if(e.key===''Enter'')chk()};
+  }else if(t.k===''order''){
+    var src=t.lines.map(function(l,k){return {l:l,k:k}}),pool,ans=[];
+    do{pool=shuffle(src)}while(pool.every(function(x,k){return x.k===k}));
+    body.innerHTML=''<div class="jr-ord"><div><h5>השורות (לחצי כדי להוסיף)</h5><div class="ob" id="jr-pool"></div></div><div><h5>הסדר שלך (לחצי כדי להחזיר)</h5><div class="ob" id="jr-ans"></div></div></div>'';
+    var draw=function(){
+      [[''jr-pool'',pool,function(x){pool.splice(pool.indexOf(x),1);ans.push(x);draw()}],[''jr-ans'',ans,function(x){ans.splice(ans.indexOf(x),1);pool.push(x);draw()}]].forEach(function(z){
+        var h=$(z[0]);h.innerHTML='''';z[1].forEach(function(x){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-line'';b.innerHTML=highlight(x.l);b.disabled=solved;b.onclick=function(){z[2](x)};h.appendChild(b)})})};
+    draw();
+    var cb2=document.createElement(''button'');cb2.type=''button'';cb2.className=''run-btn'';cb2.textContent=''בדקי'';
+    cb2.onclick=function(){if(solved)return;if(ans.length<src.length){fb.className=''jr-fb bad'';fb.textContent=''צריך להניח את כל השורות.'';return}
+      var okN=ans.filter(function(x,k){return x.k===k}).length;
+      if(okN===src.length){draw();win()}else wrong(''עדיין לא. ''+okN+'' מתוך ''+src.length+'' שורות במקום הנכון.'')};
+    act.appendChild(cb2);hintBtn();
+  }
+}
+function stationDone(i){
+  renderMap();renderSummary(i,true);
+  var node=$(''jr-map'').querySelector(''[data-i="''+i+''"]'');if(node){node.classList.add(''pop-stamp'');confetti(node)}
+}
+function renderSummary(i,fresh){
+  var s=ST[i],p=$(''jr-panel''),pts=S.t[i].reduce(function(a,x){return a+x.pts},0);
+  var nxt=firstUndone(i+1);
+  p.innerHTML=''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' הושלמה · ''+pts+'' נקודות</small><h3><span class="nm">''+esc(s.nm)+''</span> · ''+esc(s.t)+''</h3></div></div>''+
+   ''<div class="jr-sum"><h4>📌 מה לזכור מהתחנה</h4><ul>''+s.sum+''</ul>''+winHtml(''<div class="jr-code">''+highlight(s.ex)+''</div>'',''example.py'')+''</div><div class="jr-act" id="jr-act"></div>'';
+  var act=$(''jr-act''),b=document.createElement(''button'');b.type=''button'';b.className=''run-btn'';
+  if(nxt===-1){b.textContent=''לתעודה שלי 🏆'';b.onclick=finish}else{b.textContent=''לתחנה הבאה: ''+ST[nxt].t+'' ›'';b.onclick=function(){openStation(nxt,true)}}
+  act.appendChild(b);if(fresh)b.focus();
+}
+function finish(){
+  if(!S.end)S.end=Date.now();
+  var sc=score(),ri=rankIdx(sc),el=S.end-S.start;
+  if(!S.saved){S.saved=true;clearSaved();lsSave(S.name,{id:S.id,v:S.v,score:sc,sec:Math.round(el/1000),date:new Date().toISOString()})}
+  var pv=S.prev.length?S.prev[S.prev.length-1]:null;
+  var att=''<div class="jr-attempt">ניסיון מספר ''+S.attempt+(pv?'' · בניסיון הקודם: <b>''+pv.score+''</b> נקודות, עכשיו: <b>''+sc+''</b> (''+(sc-pv.score>=0?''+'':'''')+(sc-pv.score)+'')'':'''')+''</div>'';
+  $(''jr-final'').hidden=false;
+  var errs=S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.att},0)},0),hints=S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.hint},0)},0);
+  var mx=maxScore(),pct=Math.round(sc/mx*100),nextR=RANKS[ri+1],need=nextR?Math.max(1,Math.ceil(nextR[0]*mx)-sc):0;
+  var track=''<div class="fn-track" aria-label="הדרגות">''+RANKS.map(function(r,k){return ''<div class="fn-step''+(k<ri?'' on'':'''')+(k===ri?'' me'':'''')+''"><i></i><span>''+r[1]+''</span></div>''}).join('''')+''</div>''+(nextR?''<div class="fn-next">עוד ''+need+'' נקודות לדרגת <b>''+nextR[1]+''</b></div>'':''<div class="fn-next top">הגעת לדרגה הגבוהה ביותר! 🎉</div>'');
+  var sts=ST.map(function(s,i){var p=S.t[i].reduce(function(a,x){return a+x.pts},0),full=s.tasks.length*BASE;
+    return ''<button type="button" class="fn-st''+(p===full?'' full'':'''')+''" style="--c:''+col(i)+''" data-i="''+i+''" title="לסיכום התחנה"><span class="ic">''+s.ic+''</span><span class="tt">''+esc(s.t)+''</span><b>''+p+''<small>/''+full+''</small></b></button>''}).join('''');
+  $(''jr-cert'').innerHTML=''<div class="fn-top"><div class="fn-trophy">🏆</div><h2>סיימת את המסע!</h2><div class="nm">''+esc(S.name)+''</div><div class="fn-sub">תעודת סיום · קורס פייתון · מגמת מחשבים</div></div>''+
+   ''<div class="fn-grid"><div class="fn-score"><div class="jr-seal"><span>🏅</span><b>''+RANKS[ri][1]+''</b></div><div class="big">''+sc+''</div><div class="fn-of">מתוך ''+mx+'' נקודות · ''+pct+''%</div>''+track+att+''</div>''+
+   ''<div class="fn-side"><h4>איך הלך בכל תחנה</h4><div class="fn-sts">''+sts+''</div><div class="fn-hintline">לחצי על תחנה כדי לחזור לסיכום שלה</div><h4>במסע שלך</h4><div class="jr-kpis"><div><b>''+fmt(el/1000)+''</b><span>זמן</span></div><div><b>''+errs+''</b><span>טעויות</span></div><div><b>''+hints+''</b><span>רמזים</span></div></div></div></div>'';
+  $(''jr-cert'').querySelectorAll(''.fn-st'').forEach(function(b){b.onclick=function(){openStation(+b.dataset.i,true)}});
+  var ac=$(''jr-actions'');ac.hidden=false;
+  ac.innerHTML=''<div class="fn-ah"><b>הצעד האחרון: שליחה למורה</b><span>מורידים קובץ אחד ושולחים אותו למורה. הניסיון הראשון הוא הקובע.</span></div><div class="fn-ab"><button type="button" class="run-btn" id="jr-dl">📨 הורדת התעודה והתוצאות למורה</button><button type="button" class="pill" id="jr-dl2">📚 סיכום הקורס</button><button type="button" class="pill jr-leave2" id="jr-leave2">✕ יציאה ממסך מלא</button></div><div class="jr-fb" id="jr-dlfb"></div><textarea id="jr-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>'';
+  $(''jr-dl'').onclick=function(){dl(resultsHtml(),''python-journey-results.html'',''הקובץ ירד! שלחי אותו למורה.'')};
+  $(''jr-dl2'').onclick=function(){dl(summaryHtml(),''python-course-summary.html'',''דף הסיכום ירד!'')};
+  $(''jr-leave2'').onclick=function(){setFull(false)};
+  hud();try{$(''jr-final'').scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
+  setTimeout(function(){confetti($(''jr-cert''))},300);setTimeout(function(){confetti($(''jr-cert''))},1000);
+}
+var CSS=''<style>body{font-family:Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 16px;line-height:1.7;color:#222}h1{font-size:26px}table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #bbb;padding:6px 10px;text-align:right}th{background:#eee}pre{background:#f3f3f3;padding:10px;direction:ltr;text-align:left;white-space:pre-wrap;border-radius:6px}code{direction:ltr;unicode-bidi:isolate;background:#eee;padding:0 4px}.c{border:1px solid #bbb;border-radius:8px;padding:6px 18px;margin:14px 0;page-break-inside:avoid}</style>'';
+function resultsHtml(){
+  var sc=score(),ri=rankIdx(sc),rows='''';
+  ST.forEach(function(s,i){S.t[i].forEach(function(r,k){rows+=''<tr><td>''+(i+1)+''. ''+esc(s.t)+''</td><td>''+(k+1)+''</td><td>''+[''א'',''ב'',''ג''][S.v[i][k]]+''</td><td>''+(r.done?''✔'':''✘'')+''</td><td>''+r.pts+''</td><td>''+r.att+''</td><td>''+r.hint+''</td></tr>''})});
+  return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תוצאות: ''+esc(S.name)+''</title>''+CSS+''</head><body><h1>המסע בעשר תחנות: ''+esc(S.name)+''</h1><p>תאריך: ''+esc(new Date().toLocaleDateString(''he-IL''))+'' · זמן: ''+fmt(((S.end||Date.now())-S.start)/1000)+''</p><p><b>ניקוד: ''+sc+'' מתוך ''+maxScore()+'' · דרגה: ''+RANKS[ri][1]+''</b></p><p>ניסיון מספר <b>''+S.attempt+''</b> במחשב הזה · מזהה ריצה: ''+S.id+'' · התחלה: ''+esc(new Date(S.start).toLocaleString(''he-IL''))+'' · סיום: ''+esc(new Date(S.end||Date.now()).toLocaleString(''he-IL''))+''</p>''+(S.prev.length?''<p>ניסיונות קודמים במחשב הזה: ''+S.prev.map(function(r,k){return (k+1)+'') ''+r.score+'' נק׳, ''+fmt(r.sec)}).join('' · '')+''</p>'':'''')+''<table><tr><th>תחנה</th><th>משימה</th><th>גרסה</th><th>נפתרה</th><th>נקודות</th><th>טעויות</th><th>רמזים</th></tr>''+rows+''</table></body></html>''}
+function summaryHtml(){
+  var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>סיכום קורס פייתון</title>''+CSS+''</head><body><h1>סיכום קורס פייתון</h1><p>''+esc(S.name)+''</p>'';
+  ST.forEach(function(s,i){h+=''<div class="c"><h2>''+s.ic+'' ''+(i+1)+''. ''+esc(s.t)+'' (''+esc(s.sub)+'')</h2><ul>''+s.sum+''</ul><pre>''+esc(s.ex)+''</pre></div>''});
+  return h+''</body></html>''}
+function dl(html,name,okMsg){
+  var fb=$(''jr-dlfb''),fk=$(''jr-fallback'');
+  try{var b=new Blob([html],{type:''text/html;charset=utf-8''}),u=URL.createObjectURL(b),a=document.createElement(''a'');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);fb.className=''jr-fb good'';fb.textContent=okMsg}
+  catch(e){fb.className=''jr-fb bad'';fb.textContent=''ההורדה לא עבדה. העתיקי את הטקסט למטה ושמרי כקובץ html.'';fk.hidden=false;fk.value=html}
+}
+(function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()'',''def f():'',''elif'',''range()'',''input()'',''{"a": 1}'',''except'',''open()'',''append()'',''str()'',''break''],cl=['''',''b'',''c''];
+  for(var i=0;i<34;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
+// כמו חדר הבריחה: הכניסה רגילה, ואחרי שכותבים שם ויוצאים למסע האתר מציג את ה-iframe על כל החלון. Escape או כפתור היציאה משחררים.
+function setFull(on){document.documentElement.classList.toggle(''jr-full'',on);try{parent.postMessage({type:''lesson-fullscreen'',on:on},''*'')}catch(e){}}
+addEventListener(''message'',function(e){if(e.source===parent&&e.data&&e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''jr-full'',!!e.data.on)});
+$(''jr-leave'').onclick=function(){setFull(false)};
+function begin(){setFull(true);$(''jr-start-note'').textContent='''';var hh=$(''jr-hero'');hh.querySelector(''.jr-start'').hidden=true;hh.querySelector(''.hero-sub'').hidden=true;hh.querySelector(''.jr-rules'').hidden=true;hh.classList.add(''started'');$(''jr-main'').hidden=false;hud();renderMap();
+  if(S.end&&nDone()===ST.length){finish();return}
+  var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100);setTimeout(function(){if(!S.end)toPanel()},700)}
+addEventListener(''beforeunload'',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''''}});
+(function(){var sv=loadSaved();if(!sv)return;var box=document.createElement(''div'');box.className=''jr-prev'';box.id=''jr-resume'';
+  box.innerHTML=''<div>יש מסע שהתחלת ולא סיימת (<b></b>, ''+sv.t.filter(function(a){return a.every(function(x){return x.done})}).length+'' תחנות הושלמו). להמשיך מאיפה שעצרת?</div><div class="jr-act" style="justify-content:center;margin-top:8px"><button type="button" class="run-btn" id="jr-resume-go">המשיכי</button><button type="button" class="pill" id="jr-resume-new">מסע חדש</button></div>'';
+  box.querySelector(''b'').textContent=sv.name;
+  $(''jr-start-note'').parentNode.appendChild(box);
+  $(''jr-resume-go'').onclick=function(){S=sv;begin()};
+  $(''jr-resume-new'').onclick=function(){clearSaved();box.remove()}})();
+$(''jr-go'').onclick=function(){var n=nk($(''jr-name'').value);if(!n){$(''jr-start-note'').textContent=''קודם כתבי את שמך.'';return}
+  $(''jr-start-note'').textContent='''';S=newState(n);clearSaved();begin()};
+(function(){var inp=$(''jr-name'');
+  var upd=function(){var e=$(''jr-prev''),p=nk(inp.value)?lsRuns(inp.value):[];if(p.length){e.hidden=false;e.textContent=''זה יהיה הניסיון מספר ''+(p.length+1)+''. הניסיון הראשון (הציון ''+p[0].score+'') הוא הקובע.''}else e.hidden=true;$(''jr-start-note'').textContent=''''};
+  inp.oninput=upd;inp.onchange=upd;inp.onkeydown=function(e){if(e.key===''Enter'')$(''jr-go'').click()}})();
+
+window.__JR={get S(){return S},ST:ST,T:T};
+})();
+
+</script>
+</body>
+</html>
+' WHERE id='62cd2a0a3bc0066a10d94c7b75788bf6';
