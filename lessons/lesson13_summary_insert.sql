@@ -331,15 +331,18 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .shake { animation: shk .45s; }
   @media (prefers-reduced-motion: reduce) { .shake { animation:none } }
   #jr { position:relative; overflow:hidden; }
-  #jr-hero { padding-bottom:50px; position:relative; overflow:hidden; background:radial-gradient(120% 90% at 50% 0%, #2a1f55 0%, #14121f 62%); }
-  #jr-hero::before, #jr-hero::after { content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(90px); opacity:.35; animation:jrblob 14s ease-in-out infinite alternate; z-index:0; }
-  #jr-hero::before { background:#8b6bff; top:-160px; inset-inline-start:-120px; }
-  #jr-hero::after { background:#ff7f96; bottom:-220px; inset-inline-end:-140px; animation-delay:-6s; }
+  #jr-hero { padding-bottom:50px; position:relative; z-index:2; }
+  #jr-main { position:relative; z-index:2; }
+  /* הרקע היפה (כתמי הצבע והפונקציות העולות) הוא שכבה קבועה מאחורי כל השיעור: בכניסה ובמבחן כולו */
+  #jr-bg { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:radial-gradient(120% 90% at 50% 0%, #2a1f55 0%, #14121f 62%); }
+  #jr-bg::before, #jr-bg::after { content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(90px); opacity:.35; animation:jrblob 14s ease-in-out infinite alternate; z-index:0; }
+  #jr-bg::before { background:#8b6bff; top:-160px; inset-inline-start:-120px; }
+  #jr-bg::after { background:#ff7f96; bottom:-220px; inset-inline-end:-140px; animation-delay:-6s; }
   @keyframes jrblob { to { transform:translate(60px,40px) scale(1.15); } }
   .jr-sky { position:absolute; inset:0; z-index:1; overflow:hidden; }
   .jr-sky span { position:absolute; bottom:-40px; font:700 15px var(--mono); direction:ltr; color:rgba(255,210,122,.38); animation:jrfloat linear infinite; white-space:nowrap; }
   .jr-sky span.b { color:rgba(139,184,255,.34); } .jr-sky span.c { color:rgba(255,127,150,.34); }
-  @keyframes jrfloat { 0%{ transform:translateY(0) rotate(0); opacity:0 } 10%{ opacity:1 } 100%{ transform:translateY(-720px) rotate(var(--r)); opacity:0 } }
+  @keyframes jrfloat { 0%{ transform:translateY(0) rotate(0); opacity:0 } 10%{ opacity:1 } 100%{ transform:translateY(-125vh) rotate(var(--r)); opacity:0 } }
   .jr-title { text-shadow:0 0 40px rgba(255,210,122,.25); }
   .jr-start { margin:30px auto 0; display:flex; flex-direction:column; align-items:center; gap:12px; }
   .jr-start label { font-weight:700; }
@@ -439,7 +442,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .jr-confetti i { position:absolute; width:9px; height:14px; border-radius:2px; animation:jrfall 1.8s ease-out forwards; }
   @keyframes jrfall { 0%{opacity:1; transform:translate(0,0) rotate(0)} 100%{opacity:0; transform:translate(var(--dx),var(--dy)) rotate(var(--rot))} }
   [hidden] { display:none !important; }
-  @media (prefers-reduced-motion: reduce){ .jr-opt.bad,.pop-stamp .disc,.jr-cta,.jr-rocket-big,.jr-node.cur .disc,.jr-cert::before,.jr-cert h2,#jr-hero::before,#jr-hero::after,.jr-panel{animation:none} .jr-confetti,.jr-sky{display:none} .jr-rocket{transition:none} }
+  @media (prefers-reduced-motion: reduce){ .jr-opt.bad,.pop-stamp .disc,.jr-cta,.jr-rocket-big,.jr-node.cur .disc,.jr-cert::before,.jr-cert h2,#jr-bg::before,#jr-bg::after,.jr-panel{animation:none} .jr-confetti,.jr-sky{display:none} .jr-rocket{transition:none} }
 
   .jr-rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:28px auto 0; max-width:900px; text-align:start; }
   .jr-rules div { background:rgba(255,255,255,.06); border:1px solid var(--line-strong); border-radius:16px; padding:14px 16px; backdrop-filter:blur(4px); }
@@ -463,7 +466,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   html.jr-full #jr { overflow:clip; }
   html.jr-full section { padding:14px 0 40px; }
   html.jr-full .wrap { max-width:1000px; }
-  html.jr-full .jr-bar { position:sticky; top:0; z-index:20; margin:0 0 18px; padding:10px 0; gap:8px; background:var(--bg); border-bottom:1px solid var(--line); }
+  html.jr-full .jr-bar { position:sticky; top:0; z-index:20; margin:0 0 18px; padding:10px 0; gap:8px; background:rgba(20,18,31,.78); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
   html.jr-full .jr-who { font-size:18px; }
   html.jr-full .jr-stat { padding:4px 14px; min-width:76px; }
   html.jr-full .jr-stat b { font-size:20px; }
@@ -471,8 +474,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .jr-leave:hover { color:var(--ink); border-color:var(--ink-dim); }
   html.jr-full .jr-leave { display:inline-flex; }
   @media (max-width:600px) { html.jr-full .jr-bar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; padding:8px 0; } html.jr-full .jr-who { grid-column:1 / 4; grid-row:1; font-size:15px; } html.jr-full .jr-leave { grid-column:4; grid-row:1; justify-self:end; padding:6px 12px; } html.jr-full .jr-stat { min-width:0; padding:3px 6px; } html.jr-full .jr-stat span { font-size:11px; } html.jr-full .jr-stat b { font-size:17px; } }
-  #jr-hero.started { background:none; padding:24px 0 6px; }
-  #jr-hero.started::before, #jr-hero.started::after, #jr-hero.started .jr-sky { display:none; }
+  #jr-hero.started { padding:24px 0 6px; }
   #jr-hero.started h1 { font-size:clamp(1.5rem,4vw,2rem); }
   #jr-hero.started .eyebrow { margin-bottom:4px; }
   .jr-maptitle { font:800 18px var(--display); margin:0 0 4px; color:var(--ink-dim); }
@@ -529,8 +531,8 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 </head>
 <body>
 <div id="jr">
+<div id="jr-bg" aria-hidden="true"><div class="jr-sky" id="jr-sky"></div></div>
 <header class="hero" id="jr-hero">
-  <div class="jr-sky" id="jr-sky" aria-hidden="true"></div>
   <div class="wrap" style="position:relative;z-index:2">
     <div class="eyebrow" style="justify-content:center; display:flex;">משימת סיום · פייתון · מגמת מחשבים</div>
     <h1 class="jr-title">המסע ב<span class="accent-for">עשר</span> <span class="accent-while">תחנות</span></h1>
@@ -786,10 +788,10 @@ function layout(){
   var cols=matchMedia(''(max-width:760px)'').matches?2:5,map=$(''jr-map''),nodes=map.querySelectorAll(''.jr-node'');
   nodes.forEach(function(n,i){var row=Math.floor(i/cols),pos=i%cols,c=row%2===0?pos:cols-1-pos;n.style.gridColumn=(c+1);n.style.gridRow=(row+1)});
   var mr=map.getBoundingClientRect(),pts=[];
-  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
-  var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
 ', 13, '2026-11-08T00:00:00.000Z');
-UPDATE lessons SET html_content = html_content || '  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
+UPDATE lessons SET html_content = html_content || '  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
+  var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
+  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
     h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
   svg.innerHTML=h;
   var cur=S&&S.cur!=null?S.cur:0,pt=pts[Math.min(cur,pts.length-1)],r=$(''jr-rocket'');if(pt){r.style.left=(pt[0]+34)+''px'';r.style.top=(pt[1]-44)+''px''}
@@ -906,8 +908,8 @@ function dl(html,name,okMsg){
   try{var b=new Blob([html],{type:''text/html;charset=utf-8''}),u=URL.createObjectURL(b),a=document.createElement(''a'');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);fb.className=''jr-fb good'';fb.textContent=okMsg}
   catch(e){fb.className=''jr-fb bad'';fb.textContent=''ההורדה לא עבדה. העתיקי את הטקסט למטה ושמרי כקובץ html.'';fk.hidden=false;fk.value=html}
 }
-(function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()''],cl=['''',''b'',''c''];
-  for(var i=0;i<18;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
+(function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()'',''def f():'',''elif'',''range()'',''input()'',''{"a": 1}'',''except'',''open()'',''append()'',''str()'',''break''],cl=['''',''b'',''c''];
+  for(var i=0;i<34;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
 // כמו חדר הבריחה: הכניסה רגילה, ואחרי שכותבים שם ויוצאים למסע האתר מציג את ה-iframe על כל החלון. Escape או כפתור היציאה משחררים.
 function setFull(on){document.documentElement.classList.toggle(''jr-full'',on);try{parent.postMessage({type:''lesson-fullscreen'',on:on},''*'')}catch(e){}}
 addEventListener(''message'',function(e){if(e.source===parent&&e.data&&e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''jr-full'',!!e.data.on)});
