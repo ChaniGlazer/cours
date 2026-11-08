@@ -457,6 +457,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   .jr-hint2 { font-size:13px; color:var(--ink-faint); }
   /* המבחן כולו במסך מלא (כמו חדר הבריחה): הכניסה רגילה, ואחרי שכותבים שם כל החלון הופך למסע. Escape או כפתור היציאה משחררים */
   html.jr-full { overflow-y:auto !important; }
+  html.jr-full { color-scheme:dark; scrollbar-width:thin; scrollbar-color:rgba(244,241,250,.28) transparent; background:var(--bg); }
   html.jr-full body { overflow:visible !important; }
   html.jr-full #jr-hero { display:none; }
   html.jr-full #jr { overflow:clip; }
@@ -787,9 +788,9 @@ function layout(){
   var mr=map.getBoundingClientRect(),pts=[];
   nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
   var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
-  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
 ', 13, '2026-11-08T00:00:00.000Z');
-UPDATE lessons SET html_content = html_content || '    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
+UPDATE lessons SET html_content = html_content || '  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
+    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
   svg.innerHTML=h;
   var cur=S&&S.cur!=null?S.cur:0,pt=pts[Math.min(cur,pts.length-1)],r=$(''jr-rocket'');if(pt){r.style.left=(pt[0]+34)+''px'';r.style.top=(pt[1]-44)+''px''}
 }
