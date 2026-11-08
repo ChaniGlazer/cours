@@ -380,7 +380,7 @@
   .pop-stamp .disc { animation:jrpop .7s; }
   @keyframes jrpop { 0%{ transform:scale(.5) rotate(-25deg) } 55%{ transform:scale(1.28) rotate(8deg) } 100%{ transform:scale(1) } }
 
-  .jr-panel { --c:var(--for); margin-top:30px; background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 140px),var(--bg-panel); border:1px solid var(--line-strong); border-top:4px solid var(--c); border-radius:24px; padding:26px 28px; box-shadow:0 24px 60px -30px var(--c); animation:jrin .45s ease-out; }
+  .jr-panel { --c:var(--for); margin:0 0 36px; scroll-margin-top:12px; background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 140px),var(--bg-panel); border:1px solid var(--line-strong); border-top:4px solid var(--c); border-radius:24px; padding:26px 28px; box-shadow:0 24px 60px -30px var(--c); animation:jrin .45s ease-out; }
   @keyframes jrin { from{ opacity:0; transform:translateY(14px) } to{ opacity:1; transform:none } }
   .jr-ph { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
   .jr-ph .ic { font-size:46px; filter:drop-shadow(0 0 14px var(--c)); }
@@ -414,7 +414,8 @@
   .jr-sum ul { margin:6px 0; padding-inline-start:20px; line-height:1.9; font-size:15px; }
   .jr-sum code { font-family:var(--mono); direction:ltr; unicode-bidi:isolate; background:var(--bg-panel-2); padding:1px 6px; border-radius:5px; }
   .jr-toast { position:fixed; top:18px; left:50%; transform:translate(-50%,-140%); z-index:60; background:linear-gradient(120deg,#ffd27a,#ff7f96); color:#2a1f08; font:800 18px var(--display); padding:12px 28px; border-radius:100px; box-shadow:0 14px 40px -10px rgba(255,127,150,.6); transition:transform .5s cubic-bezier(.3,1.5,.5,1); pointer-events:none; }
-  .jr-toast.show { transform:translate(-50%,0); }
+  .jr-toast { opacity:0; visibility:hidden; transition:transform .5s cubic-bezier(.3,1.5,.5,1), opacity .3s, visibility .3s; }
+  .jr-toast.show { transform:translate(-50%,0); opacity:1; visibility:visible; }
 
   .jr-cert { text-align:center; background:radial-gradient(120% 80% at 50% 0%,#3a2a66,#1d1a2d 70%); border:3px double var(--for); border-radius:28px; padding:40px 24px; position:relative; overflow:hidden; box-shadow:0 0 60px -10px rgba(255,210,122,.4); }
   .jr-cert::before { content:""; position:absolute; inset:-70%; background:conic-gradient(from 0deg, transparent, rgba(255,210,122,.12), transparent 30%); animation:jrspin 9s linear infinite; }
@@ -456,6 +457,26 @@
   /* מסך הכניסה תופס את כל חלון הדפדפן (מצב מסך מלא של האתר), ומשתחרר ברגע שהמסע מתחיל */
   html.jr-full #jr-hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:40px; padding-bottom:40px; }
   html.jr-full #jr-hero > .wrap { width:100%; }
+  html.jr-full #jr-hero h1 { font-size:clamp(1.9rem,5.5vw,2.7rem); }
+  html.jr-full .hero-sub { font-size:16.5px; margin-top:10px; }
+  html.jr-full .jr-rules { margin-top:18px; gap:10px; }
+  html.jr-full .jr-rules div { padding:10px 14px; }
+  html.jr-full .jr-rules span { font-size:22px; }
+  html.jr-full .jr-start { margin-top:18px; gap:8px; }
+  html.jr-full .jr-rocket-big { font-size:44px; }
+  @media (max-height:860px), (max-width:600px) {
+    html.jr-full .jr-rules em, html.jr-full .jr-hint2 { display:none; }
+    html.jr-full .jr-rules { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    html.jr-full #jr-hero { padding-top:48px; padding-bottom:24px; }
+    html.jr-full .hero-sub { font-size:15.5px; line-height:1.6; }
+  }
+  @media (max-height:720px) { html.jr-full .jr-rocket-big { display:none; } html.jr-full .hero-sub { display:none; } html.jr-full .jr-rules { margin-top:14px; } }
+  @media (max-width:600px) { html.jr-full .hero-sub { display:none; } html.jr-full .jr-rocket-big { font-size:38px; } }
+  #jr-hero.started { background:none; padding:24px 0 6px; }
+  #jr-hero.started::before, #jr-hero.started::after, #jr-hero.started .jr-sky { display:none; }
+  #jr-hero.started h1 { font-size:clamp(1.5rem,4vw,2rem); }
+  #jr-hero.started .eyebrow { margin-bottom:4px; }
+  .jr-maptitle { font:800 18px var(--display); margin:0 0 4px; color:var(--ink-dim); }
   .jr-exit { display:none; position:absolute; top:14px; inset-inline-end:14px; z-index:5; font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--ink-dim); background:rgba(20,18,31,.6); border:1px solid var(--line-strong); border-radius:100px; padding:8px 16px; }
   .jr-exit:hover { color:var(--ink); border-color:var(--ink-dim); }
   html.jr-full .jr-exit { display:inline-flex; }
@@ -547,8 +568,9 @@
         <div class="jr-stat"><span>רצף 🔥</span><b id="jr-streak">0</b></div>
         <div class="jr-stat"><span>חותמות</span><b id="jr-stamps">0/11</b></div>
       </div>
-      <div class="jr-map" id="jr-map" role="list"><svg class="jr-path" id="jr-path" aria-hidden="true"></svg><div class="jr-rocket" id="jr-rocket" aria-hidden="true">🚀</div></div>
       <div class="jr-panel" id="jr-panel" hidden aria-live="polite"></div>
+      <h3 class="jr-maptitle">🗺️ מפת המסע</h3>
+      <div class="jr-map" id="jr-map" role="list"><svg class="jr-path" id="jr-path" aria-hidden="true"></svg><div class="jr-rocket" id="jr-rocket" aria-hidden="true">🚀</div></div>
     </div>
   </section>
   <section id="jr-final" hidden>
@@ -894,7 +916,7 @@ addEventListener('message',function(e){if(e.source!==parent||!e.data)return;
   else if(e.data.type==='lesson-parent-ready'&&!S)setFull(true)});
 $('jr-exit').onclick=function(){setFull(false)};
 setFull(true);
-function begin(){setFull(false);$('jr-start-note').textContent='';var hh=$('jr-hero');hh.querySelector('.jr-start').hidden=true;hh.querySelector('.hero-sub').hidden=true;hh.querySelector('.jr-rules').hidden=true;hh.style.padding='36px 0 18px';$('jr-main').hidden=false;hud();renderMap();
+function begin(){setFull(false);$('jr-start-note').textContent='';var hh=$('jr-hero');hh.querySelector('.jr-start').hidden=true;hh.querySelector('.hero-sub').hidden=true;hh.querySelector('.jr-rules').hidden=true;hh.classList.add('started');$('jr-main').hidden=false;hud();renderMap();
   if(S.end&&nDone()===ST.length){finish();return}
   var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100)}
 addEventListener('beforeunload',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''}});
