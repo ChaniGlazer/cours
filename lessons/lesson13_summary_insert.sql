@@ -1,10 +1,10 @@
 DELETE FROM lessons WHERE course_id='python-ai-era' AND slug='course-summary';
-INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('62cd2a0a3bc0066a10d94c7b75788bf6', 'python-ai-era', 'course-summary', 'שיעור סיכום - כל הקורס במקום אחד', '', '', '<!DOCTYPE html>
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('62cd2a0a3bc0066a10d94c7b75788bf6', 'python-ai-era', 'course-summary', 'שיעור סיכום - המסע בעשר תחנות', '', '', '<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>סיכום הקורס: כל מה שלמדנו</title>
+<title>המסע בעשר תחנות: משימת סיום בפייתון</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -330,6 +330,130 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   @keyframes shk { 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
   .shake { animation: shk .45s; }
   @media (prefers-reduced-motion: reduce) { .shake { animation:none } }
+  #jr { position:relative; overflow:hidden; }
+  #jr-hero { padding-bottom:50px; position:relative; overflow:hidden; background:radial-gradient(120% 90% at 50% 0%, #2a1f55 0%, #14121f 62%); }
+  #jr-hero::before, #jr-hero::after { content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(90px); opacity:.35; animation:jrblob 14s ease-in-out infinite alternate; z-index:0; }
+  #jr-hero::before { background:#8b6bff; top:-160px; inset-inline-start:-120px; }
+  #jr-hero::after { background:#ff7f96; bottom:-220px; inset-inline-end:-140px; animation-delay:-6s; }
+  @keyframes jrblob { to { transform:translate(60px,40px) scale(1.15); } }
+  .jr-sky { position:absolute; inset:0; z-index:1; overflow:hidden; }
+  .jr-sky span { position:absolute; bottom:-40px; font:700 15px var(--mono); direction:ltr; color:rgba(255,210,122,.38); animation:jrfloat linear infinite; white-space:nowrap; }
+  .jr-sky span.b { color:rgba(139,184,255,.34); } .jr-sky span.c { color:rgba(255,127,150,.34); }
+  @keyframes jrfloat { 0%{ transform:translateY(0) rotate(0); opacity:0 } 10%{ opacity:1 } 100%{ transform:translateY(-720px) rotate(var(--r)); opacity:0 } }
+  .jr-title { text-shadow:0 0 40px rgba(255,210,122,.25); }
+  .jr-start { margin:30px auto 0; display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .jr-start label { font-weight:700; }
+  .jr-rocket-big { font-size:64px; animation:jrbob 2.4s ease-in-out infinite; filter:drop-shadow(0 8px 18px rgba(255,127,150,.45)); }
+  @keyframes jrbob { 0%,100%{ transform:translateY(0) rotate(-6deg) } 50%{ transform:translateY(-12px) rotate(4deg) } }
+  .jr-cta { font-size:18px; padding:13px 34px; box-shadow:0 0 0 0 rgba(255,210,122,.6); animation:jrpulse 2.2s infinite; }
+  @keyframes jrpulse { 70%{ box-shadow:0 0 0 16px rgba(255,210,122,0) } 100%{ box-shadow:0 0 0 0 rgba(255,210,122,0) } }
+  .jr-note { color:var(--danger); min-height:20px; font-size:14px; }
+
+  .jr-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:stretch; margin-bottom:26px; }
+  .jr-who { flex:1 1 120px; font:800 22px var(--display); display:flex; align-items:center; }
+  .jr-stat { position:relative; background:linear-gradient(160deg,var(--bg-panel-2),var(--bg-panel)); border:1px solid var(--line-strong); border-radius:16px; padding:8px 18px; text-align:center; min-width:92px; }
+  .jr-stat span { display:block; font-size:12px; color:var(--ink-faint); }
+  .jr-stat b { font:800 24px var(--display); color:var(--for); display:block; }
+  .jr-plus { position:absolute; top:-6px; inset-inline-end:8px; font:800 16px var(--display); font-style:normal; color:var(--success); opacity:0; pointer-events:none; }
+  .jr-plus.go { animation:jrplus 1.4s ease-out; }
+  @keyframes jrplus { 0%{ opacity:0; transform:translateY(8px) } 20%{ opacity:1 } 100%{ opacity:0; transform:translateY(-26px) } }
+
+  .jr-map { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:34px 8px; padding:22px 0 6px; }
+  @media (max-width:760px){ .jr-map { grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 8px; } }
+  .jr-path { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:0; }
+  .jr-path path { fill:none; stroke-linecap:round; }
+  .jr-path .base { stroke:rgba(255,255,255,.14); stroke-width:4; stroke-dasharray:2 10; }
+  .jr-path .done { stroke:var(--for); stroke-width:5; filter:drop-shadow(0 0 6px rgba(255,210,122,.8)); }
+  .jr-rocket { position:absolute; z-index:3; font-size:30px; pointer-events:none; transform:translate(-50%,-50%); transition:left .9s cubic-bezier(.5,.1,.2,1), top .9s cubic-bezier(.5,.1,.2,1); filter:drop-shadow(0 6px 10px rgba(0,0,0,.5)); }
+  .jr-rocket::after { content:""; }
+  .jr-node { position:relative; z-index:1; background:none; border:0; cursor:pointer; color:var(--ink); font-family:var(--sans); display:flex; flex-direction:column; align-items:center; gap:4px; padding:0; }
+  .jr-node .disc { position:relative; width:78px; height:78px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.12), var(--bg-panel)); border:3px solid var(--c); box-shadow:0 0 0 0 var(--c), inset 0 0 18px rgba(0,0,0,.35); transition:.3s; }
+  .jr-node:hover .disc { transform:scale(1.1) rotate(-4deg); }
+  .jr-node .no { position:absolute; top:-6px; inset-inline-start:calc(50% - 46px); width:24px; height:24px; border-radius:50%; background:var(--c); color:#14121f; font:800 13px var(--mono); display:flex; align-items:center; justify-content:center; }
+  .jr-node .tt { font:800 15px var(--display); margin-top:6px; }
+  .jr-node .dots { display:flex; gap:5px; }
+  .jr-node .dots i { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.2); }
+  .jr-node .dots i.on { background:var(--c); box-shadow:0 0 8px var(--c); }
+  .jr-node.cur .disc { animation:jrring 1.8s infinite; transform:scale(1.08); }
+  @keyframes jrring { 0%{ box-shadow:0 0 0 0 var(--c), inset 0 0 18px rgba(0,0,0,.35) } 100%{ box-shadow:0 0 0 18px transparent, inset 0 0 18px rgba(0,0,0,.35) } }
+  .jr-node.done .disc { background:radial-gradient(circle at 30% 25%, #fff6, var(--c)); box-shadow:0 0 22px var(--c); }
+  .jr-node.done .disc::after { content:"✔"; position:absolute; bottom:-6px; inset-inline-end:-6px; width:28px; height:28px; border-radius:50%; background:#fff; color:#14803c; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; box-shadow:0 2px 8px rgba(0,0,0,.4); transform:rotate(-10deg); }
+  .pop-stamp .disc { animation:jrpop .7s; }
+  @keyframes jrpop { 0%{ transform:scale(.5) rotate(-25deg) } 55%{ transform:scale(1.28) rotate(8deg) } 100%{ transform:scale(1) } }
+
+  .jr-panel { --c:var(--for); margin-top:30px; background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 140px),var(--bg-panel); border:1px solid var(--line-strong); border-top:4px solid var(--c); border-radius:24px; padding:26px 28px; box-shadow:0 24px 60px -30px var(--c); animation:jrin .45s ease-out; }
+  @keyframes jrin { from{ opacity:0; transform:translateY(14px) } to{ opacity:1; transform:none } }
+  .jr-ph { display:flex; align-items:center; gap:16px; margin-bottom:6px; }
+  .jr-ph .ic { font-size:46px; filter:drop-shadow(0 0 14px var(--c)); }
+  .jr-ph h3 { margin:0; font:800 26px var(--display); }
+  .jr-ph small { color:var(--ink-faint); font-size:13px; display:block; }
+  .jr-ph .nm { color:var(--c); }
+  .jr-q { font-weight:700; font-size:17px; margin:18px 0 10px; line-height:1.6; }
+  .jr-win { direction:ltr; background:var(--code-bg); border:1px solid var(--line-strong); border-radius:14px; overflow:hidden; box-shadow:0 12px 30px -16px rgba(0,0,0,.7); margin-top:6px; }
+  .jr-win .bar { display:flex; align-items:center; gap:6px; padding:8px 12px; background:rgba(255,255,255,.05); font:600 12px var(--mono); color:var(--ink-faint); }
+  .jr-win .bar i { width:10px; height:10px; border-radius:50%; } .jr-win .bar i:nth-child(1){background:#ff5f57} .jr-win .bar i:nth-child(2){background:#febc2e} .jr-win .bar i:nth-child(3){background:#28c840} .jr-win .bar b { margin-inline-start:8px; font-weight:600; }
+  .jr-code { direction:ltr; text-align:left; padding:12px 16px; font:500 15px/1.85 var(--mono); white-space:pre; overflow-x:auto; color:var(--code-ink); }
+  .jr-code input { font:600 15px var(--mono); direction:ltr; unicode-bidi:bidi-override; text-align:center; width:110px; background:var(--bg-panel-2); color:var(--ink); border:2px solid var(--c); border-radius:8px; padding:3px 6px; box-shadow:0 0 12px -2px var(--c); }
+  .jr-opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:12px; margin-top:16px; }
+  .jr-opt { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:16px; border:2px solid var(--line-strong); background:var(--bg-panel-2); color:var(--ink); font:600 15.5px var(--sans); cursor:pointer; transition:.2s; text-align:start; }
+  .jr-opt .l { flex:none; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font:800 14px var(--display); }
+  .jr-opt:hover:not(:disabled) { border-color:var(--c); transform:translateY(-3px); box-shadow:0 10px 24px -14px var(--c); }
+  .jr-opt.good { border-color:var(--success); background:var(--success-soft); } .jr-opt.good .l { background:var(--success); color:#10281b; }
+  .jr-opt.bad { border-color:var(--danger); background:var(--danger-soft); animation:ekshake .4s; }
+  .jr-line { display:block; width:100%; text-align:left; direction:ltr; background:transparent; border:0; border-bottom:1px dashed var(--line); color:var(--code-ink); font:500 15px/1.9 var(--mono); white-space:pre; padding:2px 14px; cursor:pointer; transition:background .15s; }
+  .jr-line:hover:not(:disabled) { background:rgba(255,210,122,.12); }
+  .jr-line.good { background:var(--success-soft); box-shadow:inset 3px 0 0 var(--success); }
+  .jr-line.bad { background:var(--danger-soft); box-shadow:inset 3px 0 0 var(--danger); }
+  .jr-ord { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); gap:14px; margin-top:8px; }
+  .jr-ord h5 { margin:0 0 6px; font-size:13px; color:var(--ink-faint); }
+  .jr-ord .ob { background:var(--code-bg); border:2px dashed var(--line-strong); border-radius:14px; min-height:64px; padding:4px 0; }
+  .jr-act { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:18px; }
+  .jr-fb { font-weight:700; font-size:15px; line-height:1.7; margin-top:12px; min-height:24px; }
+  .jr-fb.good { color:var(--success); } .jr-fb.bad { color:var(--danger); } .jr-fb.hint { color:var(--for); }
+  .jr-sum { margin-top:18px; background:linear-gradient(160deg,rgba(255,210,122,.1),rgba(139,107,255,.08)); border:1px solid var(--c); border-radius:18px; padding:16px 22px; }
+  .jr-sum h4 { margin:0 0 6px; font:800 18px var(--display); color:var(--c); }
+  .jr-sum ul { margin:6px 0; padding-inline-start:20px; line-height:1.9; font-size:15px; }
+  .jr-sum code { font-family:var(--mono); direction:ltr; unicode-bidi:isolate; background:var(--bg-panel-2); padding:1px 6px; border-radius:5px; }
+  .jr-toast { position:fixed; top:18px; left:50%; transform:translate(-50%,-140%); z-index:60; background:linear-gradient(120deg,#ffd27a,#ff7f96); color:#2a1f08; font:800 18px var(--display); padding:12px 28px; border-radius:100px; box-shadow:0 14px 40px -10px rgba(255,127,150,.6); transition:transform .5s cubic-bezier(.3,1.5,.5,1); pointer-events:none; }
+  .jr-toast.show { transform:translate(-50%,0); }
+
+  .jr-cert { text-align:center; background:radial-gradient(120% 80% at 50% 0%,#3a2a66,#1d1a2d 70%); border:3px double var(--for); border-radius:28px; padding:40px 24px; position:relative; overflow:hidden; box-shadow:0 0 60px -10px rgba(255,210,122,.4); }
+  .jr-cert::before { content:""; position:absolute; inset:-70%; background:conic-gradient(from 0deg, transparent, rgba(255,210,122,.12), transparent 30%); animation:jrspin 9s linear infinite; }
+  @keyframes jrspin { to { transform:rotate(360deg) } }
+  .jr-cert > * { position:relative; }
+  .jr-cert h2 { font:900 clamp(26px,5vw,42px) var(--display); margin:0 0 4px; background:linear-gradient(90deg,#ffd27a,#ff9ec0,#ffd27a); background-size:200%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:jrshine 4s linear infinite; }
+  @keyframes jrshine { to { background-position:200% } }
+  .jr-cert .nm { font:800 32px var(--display); margin:10px 0; }
+  .jr-cert .big { font:900 72px var(--display); color:var(--for); line-height:1; text-shadow:0 0 30px rgba(255,210,122,.5); }
+  .jr-seal { width:120px; height:120px; margin:12px auto; border-radius:50%; background:radial-gradient(circle at 30% 25%,#fff3c4,#ffd27a 55%,#b9822a); color:#4a2f06; display:flex; flex-direction:column; align-items:center; justify-content:center; font:900 17px var(--display); box-shadow:0 10px 30px rgba(0,0,0,.5), inset 0 0 0 5px rgba(255,255,255,.35); outline:3px dashed rgba(255,210,122,.6); outline-offset:6px; }
+  .jr-seal span { font-size:34px; line-height:1; }
+  .jr-ladder { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:12px 0; }
+  .jr-ladder span { padding:3px 14px; border:1px solid var(--line-strong); border-radius:100px; font-size:14px; color:var(--ink-faint); }
+  .jr-ladder span.me { background:var(--for); color:#2a1f08; border-color:var(--for); font-weight:800; }
+  .jr-stampsrow { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; font-size:28px; margin:14px 0; }
+  .jr-kpis { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:12px 0 18px; }
+  .jr-kpis div { background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:14px; padding:6px 20px; }
+  .jr-kpis b { display:block; font:800 20px var(--display); } .jr-kpis span { font-size:12px; color:var(--ink-faint); }
+  .jr-confetti { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
+  .jr-confetti i { position:absolute; width:9px; height:14px; border-radius:2px; animation:jrfall 1.8s ease-out forwards; }
+  @keyframes jrfall { 0%{opacity:1; transform:translate(0,0) rotate(0)} 100%{opacity:0; transform:translate(var(--dx),var(--dy)) rotate(var(--rot))} }
+  [hidden] { display:none !important; }
+  @media (prefers-reduced-motion: reduce){ .jr-opt.bad,.pop-stamp .disc,.jr-cta,.jr-rocket-big,.jr-node.cur .disc,.jr-cert::before,.jr-cert h2,#jr-hero::before,#jr-hero::after,.jr-panel{animation:none} .jr-confetti,.jr-sky{display:none} .jr-rocket{transition:none} }
+
+  .jr-rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:28px auto 0; max-width:900px; text-align:start; }
+  .jr-rules div { background:rgba(255,255,255,.06); border:1px solid var(--line-strong); border-radius:16px; padding:14px 16px; backdrop-filter:blur(4px); }
+  .jr-rules span { font-size:26px; display:block; }
+  .jr-rules b { display:block; font:800 15.5px var(--display); margin:4px 0 2px; color:var(--for); }
+  .jr-rules em { font-style:normal; font-size:13px; color:var(--ink-dim); line-height:1.45; }
+  .jr-prev { background:rgba(255,210,122,.12); border:1px solid var(--for); border-radius:14px; padding:10px 18px; max-width:460px; font-size:14.5px; line-height:1.6; }
+  .jr-attempt { margin:6px auto 10px; font-size:15px; color:var(--ink-dim); }
+  .jr-attempt b { color:var(--success); }
+
+  .jr-node.lockd .disc { filter:grayscale(.8); opacity:.65; border-style:dashed; }
+  .jr-node.lockd:hover .disc { transform:none; }
+
+  .jr-sel { width:280px; text-align:center; text-align-last:center; padding:10px 12px; font:600 16px var(--sans); cursor:pointer; }
+  .jr-hint2 { font-size:13px; color:var(--ink-faint); }
 </style>
 <style>/* ===== engagement kit ===== */
 .ek-progress{position:fixed;top:0;right:0;left:0;height:4px;z-index:9998;background:transparent;pointer-events:none}
@@ -382,400 +506,402 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 </style>
 </head>
 <body>
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow" style="justify-content:center; display:flex;">שיעור סיכום · פייתון · מגמת מחשבים</div>
-    <h1>סיכום הקורס:<br><span class="accent-for">כל מה שלמדנו</span> <span class="accent-while">במקום אחד</span></h1>
-    <p class="hero-sub">התחלנו ב-<span class="mono">print</span> אחד, ועכשיו אפשר לכתוב תוכניות שמחליטות, חוזרות, זוכרות ולא קורסות. בשיעור הזה <strong>מחברים הכול</strong>, בודקים מה נשאר, ומתרגלים את מה שחשוב באמת.</p>
-    <div class="code-card for-accent solo-code" style="margin:36px auto 0; text-align:left;">
-      <div class="code-card-label">Python</div>
-      <pre class="hl"><code>topics = ["print", "if", "for", "list", "dict", "def", "str", "import", "try", "open"]
-for t in topics:
-    print("✓", t)</code></pre>
+<div id="jr">
+<header class="hero" id="jr-hero">
+  <div class="jr-sky" id="jr-sky" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="eyebrow" style="justify-content:center; display:flex;">משימת סיום · פייתון · מגמת מחשבים</div>
+    <h1 class="jr-title">המסע ב<span class="accent-for">עשר</span> <span class="accent-while">תחנות</span></h1>
+    <p class="hero-sub">עשר תחנות, כל אחת על נושא מהקורס, ובסופן תחנת גמר עם שאלות כלליות. בכל תחנה שתי משימות קצרות. מי שמסיימת תחנה מקבלת חותמת בדרכון, ובסוף מחכה לך <strong>תעודה אישית</strong> וגם <strong>דף סיכום של כל הקורס</strong>.</p>
+    <div class="jr-rules" aria-label="איך מנקדים">
+      <div><span>💯</span><b>כל משימה שווה 50 נקודות</b><em>20 משימות בתחנות ועוד 6 שאלות בתחנת הגמר: 1,300 נקודות</em></div>
+      <div><span>✖️</span><b>טעות או רמז מורידים 10</b><em>אפשר לטעות ולהמשיך! משימה שנפתרה שווה תמיד לפחות 10 נקודות</em></div>
+      <div><span>🏅</span><b>הניקוד קובע דרגה</b><em>מתלמדת, חוקרת, בלשית, מהנדסת ופרופסורית</em></div>
+      <div><span>📨</span><b>הציון נשלח אלייך למורה</b><em>בסוף מורידים קובץ ושולחים. הניסיון הראשון הוא הקובע</em></div>
+    </div>
+    <div class="jr-start">
+      <div class="jr-rocket-big" aria-hidden="true">🚀</div>
+      <label for="jr-name">איך קוראים לך?</label>
+      <input type="text" id="jr-name" autocomplete="off" placeholder="שם מלא" class="num-in" style="width:260px;text-align:center" maxlength="40">
+      <div class="jr-hint2">כתבי את שמך המלא, כדי שהמורה תדע של מי התוצאה.</div>
+      <button class="run-btn jr-cta" id="jr-go" type="button">יוצאות למסע</button>
+      <div class="jr-note" id="jr-start-note"></div>
+      <div class="jr-prev" id="jr-prev" hidden></div>
     </div>
   </div>
 </header>
 
-<main>
-
-  <section id="map">
+<main id="jr-main" hidden>
+  <section>
     <div class="wrap">
-      <div class="eyebrow for-c">מפת הקורס</div>
-      <h2 class="section-title">אחד עשר כלים בארגז</h2>
-      <p class="lede">כל שיעור הוסיף לארגז כלי אחד. לכל כלי יש כאן כרטיס עם דוגמה קצרה. נסי לנחש מה היא תדפיס, ואז לחצי "הריצי" כדי לבדוק.</p>
-      <div class="rf-grid" id="map-grid"></div>
-      <div class="ek-insight"><span class="ek-ic">🧰</span><div><b class="ek-tag">איך זוכרים</b><p>אין צורך לשנן הכול. צריך לדעת <b>שהכלי קיים</b> ומה הוא עושה, ואת הפרטים אפשר תמיד לבדוק. מי שיודעת שיש <span class="m">try</span> יודעת לחפש אותו.</p></div></div>
+      <div class="jr-bar">
+        <div class="jr-who" id="jr-who"></div>
+        <div class="jr-stat"><span>ניקוד</span><b id="jr-score">0</b><em class="jr-plus" id="jr-plus"></em></div>
+        <div class="jr-stat"><span>דרגה</span><b id="jr-rank">מתלמדת</b></div>
+        <div class="jr-stat"><span>רצף 🔥</span><b id="jr-streak">0</b></div>
+        <div class="jr-stat"><span>חותמות</span><b id="jr-stamps">0/11</b></div>
+      </div>
+      <div class="jr-map" id="jr-map" role="list"><svg class="jr-path" id="jr-path" aria-hidden="true"></svg><div class="jr-rocket" id="jr-rocket" aria-hidden="true">🚀</div></div>
+      <div class="jr-panel" id="jr-panel" hidden aria-live="polite"></div>
     </div>
   </section>
-
-  <section id="program">
+  <section id="jr-final" hidden>
     <div class="wrap">
-      <div class="eyebrow while-c">הכול ביחד</div>
-      <h2 class="section-title">תוכנית אחת, כל הנושאים</h2>
-      <p class="lede">תוכנית אמיתית כמעט אף פעם לא משתמשת בכלי אחד. זו תוכנית קצרה שנותנת ציונים לתלמידות. לחצי על נושא כדי לראות אילו שורות שייכות לו, ואז הריצי אותה.</p>
-
-      <div class="playground">
-        <div class="playground-controls"><label>הדגישי נושא:</label><div class="pill-row" id="pg-topics"></div></div>
-        <div class="playground-code" id="pg-code" style="border-top:0;margin-top:0"></div>
-        <div class="tb-note" id="pg-note">בחרי נושא כדי לראות את השורות שלו.</div>
-        <div class="field-row"><button class="run-btn" id="pg-run" type="button">▶ הרצת התוכנית</button></div>
-        <div class="log" id="pg-log" aria-live="polite"><div class="empty">הפלט יופיע כאן.</div></div>
-      </div>
-
-      <div class="ek-insight"><span class="ek-ic">🧩</span><div><b class="ek-tag">שימי לב</b><p>שורה אחת יכולה להשתייך לכמה נושאים. למשל <span class="m">scores[name]</span> היא גם מילון וגם חלק מ-<span class="m">try</span>. מתכנתות לא חושבות "איזה שיעור זה", אלא "איזה כלי פותר את הבעיה".</p></div></div>
-    </div>
-  </section>
-
-  <section id="choose">
-    <div class="wrap">
-      <div class="eyebrow for-c">איזה כלי?</div>
-      <h2 class="section-title">מה בוחרים?</h2>
-      <p class="lede">הקושי האמיתי בתכנות הוא לא לכתוב את הקוד, אלא לדעת באיזה כלי להשתמש. מופיעה בעיה. בחרי את הכלי שהכי מתאים לה. תשע שאלות.</p>
-      <div class="playground" id="ch">
-        <div class="playground-controls"><label id="ch-title">שאלה 1 מתוך 9</label></div>
-        <div class="playground-note" id="ch-q" style="font-size:17px;color:var(--ink);padding-top:18px;min-height:64px"></div>
-        <div class="field-row"><div class="pill-row" id="ch-opts"></div></div>
-        <div class="guess-row"><span class="zg-msg" id="ch-msg" role="status" aria-live="polite"></span></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="bughunt">
-    <div class="wrap">
-      <div class="eyebrow while-c">תרגול</div>
-      <h2 class="section-title">מצאי את הטעות</h2>
-      <p class="lede">התוכנית אמורה להדפיס את הסכום של הרשימה, כלומר 60. במקום זה היא מדפיסה 30. מה מתקנים?</p>
-      <div class="rescue" id="rescue1">
-        <div class="rescue-head"><span class="rescue-mark">✗</span><h4>מודפס 30 במקום 60</h4></div>
-<pre class="hl">nums = [10, 20, 30]
-total = 0
-for n in nums:
-    total = n
-print(total)</pre>
-        <div class="rescue-choices">
-          <button class="rescue-choice" type="button" data-ok="0">להחליף את <span class="mono">0</span> ב-<span class="mono">1</span> בשורה השנייה</button>
-          <button class="rescue-choice" type="button" data-ok="1">לכתוב <span class="mono">total = total + n</span> בתוך הלולאה</button>
-          <button class="rescue-choice" type="button" data-ok="0">להזיז את ה-<span class="mono">print</span> לתוך הלולאה</button>
-        </div>
-        <div class="rescue-feedback" id="rescue1-fb" role="status" aria-live="polite"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="understanding">
-    <div class="wrap">
-      <div class="eyebrow">בדיקת הבנה</div>
-      <h2 class="section-title">בדיקת הבנה קצרה</h2>
-      <p class="lede">חמש שאלות מכל הקורס. כל תשובה נכונה מוסיפה כוכב.</p>
-      <div class="ek-quiz" id="ek-quiz-host"></div>
-    </div>
-  </section>
-
-  <section id="exercises">
-    <div class="wrap">
-      <div class="exercises-banner">
-        <span class="badge">תרגילים</span>
-        <h2>תרגילי סיכום</h2>
-        <p>שני תרגילים קצרים כאן, ושני תרגילים לכתוב ב-VS Code. בתרגיל 3 משתמשים כמעט בכל מה שלמדנו.</p>
-      </div>
-
-      <div class="exercise-card for-accent">
-        <div class="exercise-num">תרגיל 1</div>
-        <div class="exercise-task">השלימי את המילה החסרה כדי להגדיר פונקציה.</div>
-        <div class="exercise-code"><input type="text" id="ex1-a" class="wide" style="width:70px;direction:ltr;text-align:center" autocomplete="off" aria-label="השלמה"><span> square(x):
-    return x * x</span></div>
-        <div class="exercise-controls"><button class="exercise-check-btn" id="ex1-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex1-feedback" role="status" aria-live="polite"></span></div>
-      </div>
-
-      <div class="exercise-card while-accent">
-        <div class="exercise-num">תרגיל 2</div>
-        <div class="exercise-task">מה יודפס? כתבי מספר.</div>
-        <div class="exercise-code"><span>d = {"a": 1, "b": 2}
-d["c"] = 3
-d["a"] = 10
-print(len(d))</span></div>
-        <div class="exercise-controls"><input type="text" id="ex2-in" autocomplete="off" style="width:120px;direction:ltr" aria-label="התשובה" placeholder="מספר"><button class="exercise-check-btn" id="ex2-btn" type="button">בדקי</button><span class="exercise-feedback" id="ex2-feedback" role="status" aria-live="polite"></span></div>
-      </div>
-
-      <div class="exercise-divider">ב-VS Code</div>
-
-      <div class="exercise-card for-accent">
-        <div class="exercise-num">תרגיל 3</div>
-        <div class="exercise-task">מחברת ציונים: התוכנית שואלת שם ואחר כך ציון, שוב ושוב, עד שהמשתמשת מקלידה <span class="mono">stop</span> בתור שם. הציונים נשמרים במילון. אם הציון אינו מספר, מדפיסים הודעה ושואלים שוב. בסוף עוברים על המילון, ולכל תלמידה מדפיסים את שמה (אות ראשונה גדולה) ואת הדרגה שלה לפי פונקציה: 90 ומעלה A, 56 ומעלה pass, אחרת fail.</div>
-        <p class="exercise-note">רמז: <span class="mono">while True</span>, <span class="mono">try</span> עם <span class="mono">except ValueError</span>, <span class="mono">def grade(score)</span>, ו-<span class="mono">.title()</span> לשם.</p>
-        <textarea class="exercise-answer" rows="8" aria-label="התשובה לתרגיל 3" placeholder="הדביקי כאן את הקוד שלך"></textarea>
-      </div>
-
-      <div class="exercise-card while-accent">
-        <div class="exercise-num">תרגיל 4 · אתגר</div>
-        <div class="exercise-task">הוסיפי לתרגיל 3 עוד שני דברים בסוף התוכנית: הדפיסי את שם התלמידה עם הציון הגבוה ביותר, ובחרי תלמידה אחת באקראי עם <span class="mono">random.choice</span> שתהיה "התלמידה של היום".</div>
-        <p class="exercise-note">רמז: משתנים <span class="mono">best_name</span> ו-<span class="mono">best_score</span> שמתעדכנים בתוך הלולאה כשמוצאים ציון גבוה יותר. לבחירה אקראית צריך רשימה, ואפשר להשיג אותה עם <span class="mono">list(scores)</span>.</p>
-        <textarea class="exercise-answer" rows="8" aria-label="התשובה לתרגיל 4" placeholder="הדביקי כאן את הקוד שלך"></textarea>
-      </div>
-
-      <div class="exercise-divider">הורדה ושליחה למורה</div>
-
-      <div class="exercise-card">
-        <div class="exercise-num">דף התרגילים</div>
-        <div class="exercise-task">אפשר להוריד את כל התרגילים לקובץ, כדי לפתור אותם גם מחוץ לדף הזה.</div>
-        <div class="exercise-controls"><button class="exercise-check-btn" id="sub-dl-ex" type="button">הורדת התרגילים</button></div>
-      </div>
-
-      <div class="exercise-card for-accent">
-        <div class="exercise-num">שליחה לבדיקה</div>
-        <div class="exercise-task">כשסיימת, כתבי את שמך, הורידי את קובץ התשובות ושלחי אותו למורה. הקובץ כולל את מה שכתבת בכל ארבעת התרגילים.</div>
-        <div class="exercise-controls"><input type="text" id="sub-name" autocomplete="off" placeholder="שם מלא" aria-label="שם מלא" style="width:200px"><button class="exercise-check-btn" id="sub-dl" type="button">הורדת התשובות שלי</button><span class="exercise-feedback" id="sub-fb" role="status" aria-live="polite"></span></div>
-        <textarea id="sub-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>
-      </div>
-    </div>
-  </section>
-
-  <section id="wrapup">
-    <div class="wrap">
-      <div class="eyebrow">לסיכום</div>
-      <h2 class="section-title">דף עזר לכל הקורס</h2>
-      <ul class="recap">
-        <li><span class="mono">print()</span> מדפיסה, ו-<span class="mono">input()</span> שואלת ומחזירה תמיד טקסט. כדי לחשב עם מספר: <span class="mono">int(input())</span>.</li>
-        <li><span class="mono">if</span> / <span class="mono">elif</span> / <span class="mono">else</span>: פייתון בודקת מלמעלה ומריצה רק את הענף הראשון שנכון.</li>
-        <li><span class="mono">for</span> עוברת על רשימה או על <span class="mono">range</span>, ו-<span class="mono">while</span> חוזרת כל עוד התנאי נכון. מה שמוזח מתחתיהן הוא מה שחוזר.</li>
-        <li>for מקוצר: <span class="mono">[n * 2 for n in nums if n &gt; 2]</span> בונה רשימה בשורה אחת.</li>
-        <li>רשימה: <span class="mono">[ ]</span>, אינדקס מ-0, <span class="mono">-1</span> האחרון, <span class="mono">append</span> מוסיפה, <span class="mono">len</span> סופרת.</li>
-        <li>מילון: זוגות <span class="mono">מפתח: ערך</span>. מפתח שלא קיים גורם ל-<span class="mono">KeyError</span>.</li>
-        <li>פונקציה: <span class="mono">def</span> מגדירה, <span class="mono">return</span> מחזירה ערך החוצה, ו-<span class="mono">print</span> רק מציגה.</li>
-        <li>מחרוזת: אינדקסים ופרוסות, שיטות כמו <span class="mono">upper</span>, <span class="mono">strip</span>, <span class="mono">replace</span>, ו-f-string כמו <span class="mono">f"Hi {name}"</span>.</li>
-        <li>מודולים: <span class="mono">import</span> מביא ארגז כלים (<span class="mono">random</span>, <span class="mono">math</span>), ו-<span class="mono">pip</span> מתקין מודולים חדשים.</li>
-        <li>שגיאות: קוראים מלמטה. <span class="mono">try</span> מנסה, <span class="mono">except</span> תופס את הסוג שכתבנו, והתוכנית ממשיכה.</li>
-        <li>קבצים: <span class="mono">with open("שם.txt", מצב) as f:</span> עם <span class="mono">"w"</span> לכתיבה מחדש, <span class="mono">"a"</span> להוספה ו-<span class="mono">"r"</span> לקריאה. כך המידע נשאר אחרי שהתוכנית נגמרת.</li>
-        <li>הדרך הכי טובה ללמוד: להריץ, לטעות, לקרוא את השגיאה ולתקן.</li>
-      </ul>
+      <div class="jr-cert" id="jr-cert"></div>
     </div>
   </section>
 </main>
+<div class="jr-toast" id="jr-toast" role="status" aria-live="polite"></div>
+<div class="jr-confetti" id="jr-conf" aria-hidden="true"></div>
+</div>
 
-<footer><div class="wrap">שיעור פייתון · סיכום הקורס</div></footer>
+<script>
+var ST=[
+{ic:''🖨️'',nm:''שער הכניסה'',t:''פלט וקלט'',sub:''print ו-input'',
+ tasks:[
+  {k:''mc'',q:''המשתמשת מקלידה Dana. מה יודפס?'',code:''name = input("שם: ")\nprint("שלום", name)'',opts:[''שלום Dana'',''שלום name'',''שלוםDana'',''שגיאה''],ans:0,why:''print מדפיסה את שני הערכים עם רווח ביניהם, ו-name מחזיק את מה שהוקלד.'',hint:''קראי שוב את print: כמה דברים יש בתוכה, ומה מפריד ביניהם?''},
+  {k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 16)'',lines:[''age = input("גיל: ")'',''print(age + 1)''],ans:1,why:''input מחזירה תמיד טקסט, ולכן age + 1 הוא טקסט + מספר, ופייתון זורקת TypeError. צריך int(input(...)).'',hint:''איזה סוגי מידע מופיעים בשורה 2? האם אפשר לחבר אותם?''}],
+ sum:''<li><code>print()</code> מדפיסה, <code>input()</code> שואלת ומחזירה <b>טקסט</b>.</li><li>כדי לחשב עם מספר: <code>int(input())</code>.</li>'',ex:''age = int(input("גיל: "))\nprint("בשנה הבאה:", age + 1)''},
+{ic:''🚦'',nm:''צומת הדרכים'',t:''תנאים'',sub:''if / elif / else'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''x = 15\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")'',opts:[''A'',''B'',''C'',''A ואז B''],ans:0,why:''פייתון בודקת מלמעלה ועוצרת בתנאי הראשון שנכון. x > 10 נכון, ולכן רק A.'',hint:''עברי על התנאים מלמעלה, אחד אחרי השני.''},
+  {k:''fill'',q:''השלימי כך שיודפס "עבר" גם כשהציון הוא בדיוק 56.'',code:''score = 56\nif score ___ 56:\n    print("עבר")'',acc:[''>=''],why:''>= אומר "גדול או שווה", ולכן גם 56 עובר. עם > בלבד 56 היה נכשל.'',hint:''מה ההבדל בין "גדול מ" לבין "לפחות"?''}],
+ sum:''<li><code>if</code> בודק, <code>elif</code> בודק עוד, <code>else</code> תופס את השאר.</li><li>רק הענף הראשון שנכון מורץ.</li><li>השוואות: <code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code>.</li>'',ex:''if score >= 56:\n    print("עבר")\nelse:\n    print("לא עבר")''},
+{ic:''🔁'',nm:''המעגל המסתובב'',t:''לולאות'',sub:''for ו-while'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''for i in range(3):\n    print(i)'',opts:[''0 ואז 1 ואז 2'',''1 ואז 2 ואז 3'',''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2''],ans:0,why:''range(3) נותנת 0, 1, 2. היא מתחילה מאפס ולא כוללת את 3.'',hint:''מאיפה range מתחילה לספור, ואיפה היא עוצרת?''},
+  {k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס את הסכום 6.'',lines:[''total = 0'',''for n in [1, 2, 3]:'',''    total = total + n'',''print(total)''],why:''קודם מאפסים, אחר כך הלולאה מוסיפה בכל סיבוב, ורק בסוף מדפיסים. השורה בתוך הלולאה מוזחת.'',hint:''מה צריך לקרות לפני שמתחילים לסכם, ומתי כדאי להדפיס?''}],
+ sum:''<li><code>for</code> עוברת על רשימה או על <code>range</code>.</li><li><code>while</code> חוזרת כל עוד התנאי נכון.</li><li>מה שמוזח מתחת ללולאה הוא מה שחוזר.</li>'',ex:''for i in range(1, 4):\n    print(i)''},
+{ic:''📋'',nm:''ארון המגירות'',t:''רשימות'',sub:''list'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''colors = ["red", "blue", "green"]\ncolors.append("pink")\nprint(len(colors))'',opts:[''3'',''4'',''"pink"'',''שגיאה''],ans:1,why:''append מוסיפה פריט בסוף, ו-len סופרת: עכשיו יש 4.'',hint:''מה הפעולה בשורה 2 עושה לרשימה, לפני שסופרים?''},
+  {k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''nums = [10, 20, 30, 40]\nprint(nums[-1])'',ph:''מספר'',acc:[''40''],why:''-1 הוא האיבר האחרון ברשימה.'',hint:''איך אפשר להסתכל על רשימה מהצד ההפוך?'',blank:false}],
+ sum:''<li>אינדקס מתחיל ב-<code>0</code>, ו-<code>-1</code> הוא האחרון.</li><li><code>append</code> מוסיפה, <code>len</code> סופרת, <code>[a:b]</code> חותכת.</li>'',ex:''nums = [10, 20, 30]\nnums.append(40)\nprint(nums[0], nums[-1])''},
+{ic:''📖'',nm:''ספריית המפתחות'',t:''מילונים'',sub:''dict'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''ages = {"dan": 16, "rut": 17}\nprint(ages["rut"])'',opts:[''16'',''17'',''"rut"'',''KeyError''],ans:1,why:''במילון ניגשים לערך דרך המפתח, וערך המפתח "rut" הוא 17.'',hint:''במילון מחפשים לפי שם, לא לפי מקום. איזה שם מחפשים כאן?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''ages = {"dan": 16}'',''ages["rut"] = 17'',''print(ages["noa"])''],ans:2,why:''המפתח "noa" לא קיים במילון, ולכן KeyError. שורה 2 רק מוסיפה מפתח חדש.'',hint:''בדקי אילו שמות באמת נכנסו למילון עד השורה האחרונה.''}],
+ sum:''<li>מילון הוא זוגות <code>מפתח: ערך</code> בסוגריים מסולסלים.</li><li><code>d["key"] = value</code> מוסיפה או משנה. מפתח שלא קיים גורם ל-<code>KeyError</code>.</li>'',ex:''ages = {"dan": 16}\nages["rut"] = 17\nprint(ages["rut"])''},
+{ic:''🧰'',nm:''מכונת הקסמים'',t:''פונקציות'',sub:''def ו-return'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''def double(x):\n    return x * 2\n\nprint(double(5) + 1)'',opts:[''10'',''11'',''12'',''double(5) + 1''],ans:1,why:''double(5) מחזירה 10, ואז מוסיפים 1 ומקבלים 11.'',hint:''פתרי מבפנים החוצה: קודם הקריאה, אחר כך שאר החישוב.''},
+  {k:''mc'',q:''מה יודפס?'',code:''def greet(name):\n    print("Hi", name)\n\nresult = greet("Dana")\nprint(result)'',opts:[''Hi Dana ואז Hi Dana'',''Hi Dana ואז None'',''Hi Dana בלבד'',''שגיאה''],ans:1,why:''greet מדפיסה אבל לא מחזירה כלום, ולכן result הוא None. print זה לא return!'',hint:''מה שווה result אחרי שורה 4?''}],
+ sum:''<li><code>def שם(פרמטרים):</code> מגדירה, ו-<code>שם(ערכים)</code> קוראת.</li><li><code>return</code> מחזירה ערך החוצה, ו-<code>print</code> רק מציגה.</li>'',ex:''def double(x):\n    return x * 2\n\nprint(double(5))''},
+{ic:''📦'',nm:''ארגז הכלים'',t:''מודולים'',sub:''import'',
+ tasks:[
+  {k:''fill'',q:''השלימי את המילה החסרה כדי להביא את המודול.'',code:''___ random\nprint(random.randint(1, 6))'',acc:[''import''],why:''import מביאה ארגז כלים, ואז random.randint בוחרת כלי ממנו.'',hint:''איך מתחילה שורה שמביאה מודול?''},
+  {k:''mc'',q:''מה יקרה?'',code:''from math import sqrt\nprint(math.sqrt(9))'',opts:[''3.0'',''NameError'',''3'',''SyntaxError''],ans:1,why:''ה-from הביא רק את sqrt, ואת השם math אף אחד לא הביא, ולכן NameError.'',hint:''בדקי איזה שם באמת הובא בשורה הראשונה.''}],
+ sum:''<li><code>import math</code> ואז <code>math.sqrt(9)</code>.</li><li><code>from math import sqrt</code> ואז <code>sqrt(9)</code>.</li><li>ב-<code>random</code>: <code>randint</code> בוחרת מספר, <code>choice</code> בוחרת פריט.</li>'',ex:''import random\nprint(random.choice(["a", "b", "c"]))''},
+{ic:''🔤'',nm:''שרשרת האותיות'',t:''מחרוזות'',sub:''str'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''word = "python"\nprint(word[0].upper() + word[1:])'',opts:[''Python'',''PYTHON'',''python'',''ython''],ans:0,why:''word[0].upper() הופכת את האות הראשונה לגדולה, ו-word[1:] היא כל השאר.'',hint:''פצלי את הביטוי לשני חלקים וחשבי כל אחד לחוד.''},
+  {k:''fill'',q:''השלימי את שם השיטה שמסירה רווחים מההתחלה ומהסוף.'',code:''text = "  hi  "\nprint(text.___())'',acc:[''strip'',''strip()''],why:''strip() מוחקת רווחים בקצוות, ולכן יודפס hi.'',hint:''חשבי על שיטה שמנקה את קצוות המחרוזת.''}],
+ sum:''<li>מחרוזת היא שרשרת תווים עם אינדקסים: <code>word[0]</code>, <code>word[-1]</code>, <code>word[1:3]</code>.</li><li>שיטות כמו <code>upper</code>, <code>strip</code>, <code>replace</code> מחזירות מחרוזת חדשה.</li><li>f-string: <code>f"Hi {name}"</code>.</li>'',ex:''name = "dana"\nprint(f"Hi {name.upper()}!")''},
+{ic:''🛟'',nm:''רשת הביטחון'',t:''שגיאות'',sub:''try / except'',
+ tasks:[
+  {k:''mc'',q:''מה יודפס?'',code:''try:\n    n = int("abc")\n    print("A")\nexcept ValueError:\n    print("B")\nprint("C")'',opts:[''A ואז C'',''B ואז C'',''B בלבד'',''שגיאה''],ans:1,why:''int("abc") נופלת עם ValueError לפני ש-A מודפס. ה-except מדפיס B, והתוכנית ממשיכה ל-C.'',hint:''באיזו שורה התוכנית נופלת, ומה קורה אחרי הנפילה?''},
+  {k:''order'',q:''סדרי את השורות: התוכנית מחלקת, ותופסת חילוק ב-0.'',lines:[''try:'',''    x = int(input())'',''    print(10 / x)'',''except ZeroDivisionError:'',''    print("אי אפשר")''],why:''קודם try עם הקוד המסוכן, ואחריו except שתופס את סוג השגיאה המתאים.'',hint:''מה בא קודם: הקוד שמנסים, או התפיסה?''}],
+ sum:''<li>שגיאה נקראת מלמטה: סוג ההודעה בשורה האחרונה.</li><li><code>try</code> מנסה, <code>except סוג:</code> תופס, והתוכנית ממשיכה.</li><li>כל סוג שגיאה צריך <code>except</code> משלו.</li>'',ex:''try:\n    x = int(input())\nexcept ValueError:\n    print("לא מספר")''},
+{ic:''📄'',nm:''המחברת הגדולה'',t:''קבצים'',sub:''open'',
+ tasks:[
+  {k:''mc'',q:''כמה שורות יהיו בקובץ a.txt בסוף?'',code:''with open("a.txt", "w") as f:\n    f.write("one\\n")\nwith open("a.txt", "a") as f:\n    f.write("two\\n")'',opts:[''0'',''1'',''2'',''שגיאה''],ans:2,why:''"w" כותב את one, ו-"a" מוסיף את two בסוף בלי למחוק. סך הכול שתי שורות.'',hint:''מה כל אחת משתי הפתיחות עושה למה שכבר כתוב בקובץ?''},
+  {k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("data.txt", "r") as f:'',''    f.write("hello")''],ans:1,why:''"r" פותח לקריאה בלבד, ולכן אי אפשר לכתוב בו. לכתיבה צריך "w" או "a".'',hint:''קראי שוב את מצב הפתיחה: מה מותר לעשות איתו?''}],
+ sum:''<li><code>with open(name, mode) as f:</code> פותח וסוגר אוטומטית.</li><li><code>"w"</code> כותב מחדש, <code>"a"</code> מוסיף, <code>"r"</code> קורא.</li><li><code>FileNotFoundError</code> נתפסת עם <code>try</code>.</li>'',ex:''with open("notes.txt", "a") as f:\n    f.write("hello\\n")''},
+{ic:''🏁'',nm:''תחנת הגמר'',t:''שאלות כלליות'',sub:''כל הקורס'',fin:true,
+ tasks:[
+  {k:''mc'',q:''מה ההבדל בין = ל-== בפייתון?'',code:''x = 5\nif x == 5:\n    print("yes")'',opts:[''= מכניס ערך למשתנה, ו-== משווה בין שני ערכים'',''= משווה, ו-== מכניס ערך'',''אין הבדל, שניהם עושים אותו דבר'',''== משמש רק בלולאות''],ans:0,why:''סימן = הוא השמה (שומר ערך במשתנה), ו-== שואל "האם שווה?" ומחזיר True או False.'',hint:''אחד מהם נותן ערך, והשני שואל שאלה.''},
+  {k:''mc'',q:''איזה סוג מידע מחזירה הפונקציה input()?'',code:''age = input("גיל: ")\nprint(type(age))'',opts:[''טקסט (str), תמיד'',''מספר שלם (int)'',''מספר עשרוני (float)'',''תלוי במה שהוקלד''],ans:0,why:''input תמיד מחזירה טקסט, גם אם הוקלדו ספרות. כדי לחשב צריך להמיר עם int או float.'',hint:''האם פייתון מנחשת מה התכוונת?''},
+  {k:''mc'',q:''מה יודפס?'',code:''x = "5"\ny = 3\nprint(x * y)'',opts:[''15'',''555'',''שגיאה'',''8''],ans:1,why:''כפל של מחרוזת במספר חוזר על המחרוזת: "5" שלוש פעמים נותן "555".'',hint:''שימי לב איזה סוג מידע הוא x.''},
+  {k:''mc'',q:''מה עושה break בתוך לולאה?'',code:''for i in range(10):\n    if i == 3:\n        break\n    print(i)'',opts:[''יוצאת מהלולאה מיד'',''מדלגת לסיבוב הבא'',''עוצרת את כל התוכנית'',''מאפסת את i''],ans:0,why:''break מפסיקה את הלולאה מיד. כאן יודפס 0, 1, 2 ואז הלולאה נגמרת.'',hint:''מה קורה כש-i מגיע ל-3?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''total = 0'',''for i in range(3):'',''    total += i'',''print("Total: " + total)''],ans:3,why:''אי אפשר לחבר טקסט ומספר עם +, וזו TypeError. צריך str(total) או f-string.'',hint:''חפשי חיבור בין שני סוגי מידע שונים.''},
+  {k:''fill'',q:''השלימי את המילה שמגדירה פונקציה.'',code:''___ add(a, b):\n    return a + b'',acc:[''def''],why:''def מגדירה פונקציה חדשה, ואחריה שם, פרמטרים ונקודתיים.'',hint:''הפועל באנגלית שמקצרים ל-3 אותיות.''}],
+ sum:''<li><code>=</code> שומר ערך, <code>==</code> משווה.</li><li><code>input</code> מחזירה תמיד טקסט.</li><li>הזחה קובעת מה שייך לבלוק.</li><li>שגיאה קוראים מלמטה: סוג ההודעה בשורה האחרונה.</li><li>הדרך הכי טובה ללמוד: להריץ, לטעות ולתקן.</li>'',ex:''name = input("name: ")\nif name == "dana":\n    print("hello!")''}
+];
 
-<script>window.EK_CFG={"quiz": [{"t": "מה יודפס?", "code": "word = \"ha\"\nprint(word * 3)", "opts": ["hahaha", "ha3", "ha ha ha", "שגיאה"], "ans": 0, "why": "כפל של מחרוזת במספר חוזר על המחרוזת: \"ha\" שלוש פעמים נותן hahaha.", "hint": "איזה סוג מידע הוא word?"}, {"t": "מה יקרה?", "code": "ages = {\"dan\": 16}\nprint(ages[\"rut\"])", "opts": ["יודפס 16", "יודפס None", "KeyError וקריסה", "יודפס 0"], "ans": 2, "why": "המפתח \"rut\" לא קיים במילון, ולכן פייתון זורקת KeyError. אפשר לתפוס אותה עם try / except.", "hint": "אילו מפתחות יש במילון?"}, {"t": "מה יודפס?", "code": "def add(a, b):\n    print(a + b)\n\nr = add(2, 3)\nprint(r)", "opts": ["5 ואז 5", "5 ואז None", "None ואז 5", "שגיאה"], "ans": 1, "why": "add מדפיסה 5 אבל לא מחזירה כלום, ולכן r הוא None. print זה לא return!", "hint": "מה שווה r אחרי שורה 4?"}, {"t": "מה יודפס?", "code": "nums = [1, 2, 3, 4]\nprint([n * 2 for n in nums if n > 2])", "opts": ["[2, 4, 6, 8]", "[6, 8]", "[3, 4]", "[8]"], "ans": 1, "why": "ה-if מסנן רק את 3 ו-4, וה-n * 2 מכפיל אותם: [6, 8].", "hint": "קודם בודקים את ה-if, ורק אחר כך מכפילים."}, {"t": "מה יודפס?", "code": "try:\n    print(int(\"7\") + 1)\n    print(1 / 0)\nexcept ZeroDivisionError:\n    print(\"oops\")\nprint(\"end\")", "opts": ["8 ואז oops ואז end", "oops ואז end", "8 ואז end", "שגיאה"], "ans": 0, "why": "השורה הראשונה מצליחה ומדפיסה 8. החילוק ב-0 נופל, ה-except מדפיס oops, והתוכנית ממשיכה ל-end.", "hint": "מה מודפס לפני שהתוכנית נופלת?"}]};
+var VARS=[
+[ /* 1 print/input */
+ [{k:''mc'',q:''המשתמשת מקלידה Haifa. מה יודפס?'',code:''city = input("עיר: ")\nprint("אני גרה ב", city)'',opts:[''אני גרה ב Haifa'',''אני גרה ב city'',''אני גרה בHaifa'',''שגיאה''],ans:0,exp:''אני גרה ב Haifa'',inp:''Haifa'',why:''print מדפיסה את הטקסט ואת הערך שהוקלד, עם רווח ביניהם.'',hint:''city הוא משתנה, לא המילה city.''},
+  {k:''mc'',q:''המשתמשת מקלידה Blue. מה יודפס?'',code:''color = input("צבע: ")\nprint("הצבע הוא", color)'',opts:[''הצבע הוא Blue'',''הצבע הוא color'',''הצבע הואBlue'',''שגיאה''],ans:0,exp:''הצבע הוא Blue'',inp:''Blue'',why:''print מחברת את הטקסט עם מה שנשמר במשתנה, ומוסיפה רווח.'',hint:''קראי מה כתוב בתוך הסוגריים של print.''}],
+ [{k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 10)'',lines:[''num = input("מספר: ")'',''print(num - 1)''],ans:1,why:''input מחזירה טקסט, ואי אפשר לחסר מספר מטקסט. צריך int(input(...)).'',hint:''איזה סוג מידע נשמר ב-num?''},
+  {k:''bug'',q:''באיזו שורה הבעיה? (המשתמשת מקלידה 20)'',lines:[''age = input("גיל: ")'',''if age > 18:'',''    print("בוגרת")''],ans:1,why:''age הוא טקסט, ואי אפשר להשוות טקסט למספר עם >. צריך int(input(...)).'',hint:''מה מושווה למה בשורה 2?''}]
+],
+[ /* 2 conditions */
+ [{k:''mc'',q:''מה יודפס?'',code:''x = 7\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")'',opts:[''A'',''B'',''C'',''B ואז C''],ans:1,exp:''B'',why:''x > 10 לא נכון, אבל x > 5 נכון, ולכן יודפס B, ושאר הענפים מדולגים.'',hint:''עברי על התנאים מלמעלה.''},
+  {k:''mc'',q:''מה יודפס?'',code:''x = 4\nif x > 10:\n    print("A")\nelif x > 3:\n    print("B")\nelif x > 1:\n    print("C")\nelse:\n    print("D")'',opts:[''A'',''B'',''C'',''D''],ans:1,exp:''B'',why:''התנאי הראשון שנכון הוא x > 3, ולכן יודפס B, גם אם התנאי הבא נכון גם כן.'',hint:''מה קורה אחרי שמצאנו תנאי נכון?''}],
+ [{k:''fill'',q:''השלימי כך שיודפס "נכון" רק כשהתשובה שווה ל-7.'',code:''answer = 7\nif answer ___ 7:\n    print("נכון")'',acc:[''==''],why:''== בודק שוויון. סימן = אחד הוא השמה ולא השוואה.'',hint:''איזה סימן שואל "האם שווה?"''},
+  {k:''fill'',q:''השלימי כך שיודפס "צריך לשפר" גם כשהציון הוא בדיוק 60.'',code:''grade = 60\nif grade ___ 60:\n    print("צריך לשפר")'',acc:[''<=''],why:''<= אומר "קטן או שווה", ולכן גם 60 נכלל.'',hint:''הציון קטן מ-60, וגם שווה לו.''}]
+],
+[ /* 3 loops */
+ [{k:''mc'',q:''מה יודפס?'',code:''for i in range(4):\n    print(i)'',opts:[''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2 ואז 3 ואז 4'',''0 ואז 1 ואז 2'',''1 ואז 2 ואז 3''],ans:0,exp:''0\n1\n2\n3'',why:''range(4) נותנת 0, 1, 2, 3. היא מתחילה מאפס ולא כוללת את 4.'',hint:''כמה מספרים יוצאים מ-range(4)?''},
+  {k:''mc'',q:''מה יודפס?'',code:''for i in range(1, 4):\n    print(i)'',opts:[''1 ואז 2 ואז 3'',''0 ואז 1 ואז 2 ואז 3'',''1 ואז 2 ואז 3 ואז 4'',''2 ואז 3''],ans:0,exp:''1\n2\n3'',why:''range(1, 4) מתחילה מ-1 ועוצרת לפני 4.'',hint:''ב-range עם שני מספרים, הראשון הוא התחלה.''}],
+ [{k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס את המכפלה 24.'',lines:[''result = 1'',''for n in [2, 3, 4]:'',''    result = result * n'',''print(result)''],why:''מתחילים ב-1 (לא ב-0, אחרת הכול נהיה 0), מכפילים בכל סיבוב, ומדפיסים בסוף.'',hint:''מאיזה מספר מתחילים כשמכפילים?''},
+  {k:''order'',q:''סדרי את השורות כך שהתוכנית תדפיס כמה מספרים גדולים מ-2 יש ברשימה.'',lines:[''count = 0'',''for n in [1, 2, 3, 4]:'',''    if n > 2:'',''        count = count + 1'',''print(count)''],why:''קודם מאפסים, אחר כך בכל סיבוב בודקים תנאי ומוסיפים, ובסוף מדפיסים. ההזחה מראה מה בתוך מה.'',hint:''השורה עם count + 1 תלויה בתנאי.''}]
+],
+[ /* 4 lists */
+ [{k:''mc'',q:''מה יודפס?'',code:''fruits = ["apple", "banana"]\nfruits.append("kiwi")\nprint(len(fruits))'',opts:[''2'',''3'',''"kiwi"'',''שגיאה''],ans:1,exp:''3'',why:''append מוסיפה פריט, ולכן יש 3 פריטים.'',hint:''כמה פריטים היו, וכמה נוספו?''},
+  {k:''mc'',q:''מה יודפס?'',code:''nums = [1, 2, 3]\nnums.append(4)\nnums.append(5)\nprint(len(nums))'',opts:[''3'',''4'',''5'',''6''],ans:2,exp:''5'',why:''התחלנו ב-3 פריטים והוספנו שניים, ולכן 5.'',hint:''ספרי כמה פעמים הוספנו.''}],
+ [{k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''letters = ["a", "b", "c", "d"]\nprint(letters[-1])'',ph:''תשובה'',acc:[''d''],why:''-1 הוא האיבר האחרון ברשימה.'',hint:''סופרים מהסוף.''},
+  {k:''fill'',q:''מה יודפס? כתבי את התוצאה.'',code:''nums = [5, 6, 7, 8]\nprint(nums[1])'',ph:''מספר'',acc:[''6''],why:''האינדקס מתחיל ב-0, ולכן nums[1] הוא האיבר השני.'',hint:''מאיזה מספר מתחילים לספור אינדקסים?''}]
+],
+[ /* 5 dicts */
+ [{k:''mc'',q:''מה יודפס?'',code:''prices = {"milk": 6, "bread": 9}\nprint(prices["bread"])'',opts:[''6'',''9'',''"bread"'',''KeyError''],ans:1,exp:''9'',why:''ניגשים לערך דרך המפתח, והערך של "bread" הוא 9.'',hint:''מחפשים לפי שם המפתח.''},
+  {k:''mc'',q:''מה יודפס?'',code:''colors = {"sky": "blue", "grass": "green"}\nprint(colors["sky"])'',opts:[''blue'',''sky'',''green'',''KeyError''],ans:0,exp:''blue'',why:''הערך של המפתח "sky" הוא "blue".'',hint:''מה מצד שמאל של הנקודתיים, ומה מצד ימין?''}],
+ [{k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''scores = {"dana": 90}'',''scores["ruth"] = 85'',''print(scores["noa"])''],ans:2,why:''המפתח "noa" לא קיים במילון, ולכן KeyError.'',hint:''אילו שמות נכנסו למילון?''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''stock = {"pen": 5, "book": 3}'',''print(stock["pencil"])'',''print(stock["book"])''],ans:1,why:''"pencil" אינו מפתח במילון (יש "pen"), ולכן KeyError.'',hint:''בדקי את האיות של המפתח.''}]
+],
+[ /* 6 functions */
+ [{k:''mc'',q:''מה יודפס?'',code:''def triple(x):\n    return x * 3\n\nprint(triple(4) - 2)'',opts:[''10'',''12'',''14'',''triple(4) - 2''],ans:0,exp:''10'',why:''triple(4) מחזירה 12, ואז מחסירים 2 ומקבלים 10.'',hint:''קודם מחשבים את הקריאה לפונקציה.''},
+  {k:''mc'',q:''מה יודפס?'',code:''def add(a, b):\n    return a + b\n\nprint(add(2, 3) * 4)'',opts:[''14'',''20'',''9'',''23''],ans:1,exp:''20'',why:''add(2, 3) מחזירה 5, ואז 5 * 4 = 20.'',hint:''פתרי את הסוגריים הפנימיים קודם.''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''def say(msg):\n    print(msg)\n\nvalue = say("hi")\nprint(value)'',opts:[''hi ואז hi'',''hi ואז None'',''hi בלבד'',''שגיאה''],ans:1,exp:''hi\nNone'',why:''say מדפיסה אבל לא מחזירה כלום, ולכן value הוא None.'',hint:''מה שווה value אחרי שורה 4?''},
+  {k:''mc'',q:''מה יודפס?'',code:''def show(x):\n    print(x * 2)\n\nresult = show(5)\nprint(result)'',opts:[''10 ואז 10'',''10 ואז None'',''None בלבד'',''שגיאה''],ans:1,exp:''10\nNone'',why:''show מדפיסה 10 אבל לא מחזירה ערך, ולכן result הוא None.'',hint:''האם יש return בפונקציה?''}]
+],
+[ /* 7 modules */
+ [{k:''fill'',q:''השלימי את המילה החסרה כדי להביא רק את sqrt.'',code:''___ math import sqrt\nprint(sqrt(25))'',acc:[''from''],why:''from math import sqrt מביאה רק את הכלי sqrt, ואז קוראים לו בלי math.'',hint:''המילה שפותחת שורה של "מתוך המודול".''},
+  {k:''fill'',q:''השלימי את הכינוי כך שהקוד ירוץ.'',code:''import math as ___\nprint(m.floor(2.7))'',acc:[''m''],why:''הכינוי שנכתב אחרי as הוא השם שחייבים להשתמש בו, ובקוד כתוב m.floor.'',hint:''איזה שם משתמשים בשורה השנייה?''}],
+ [{k:''mc'',q:''מה יקרה?'',code:''import math\nprint(sqrt(9))'',opts:[''3.0'',''NameError'',''3'',''SyntaxError''],ans:1,exp:null,why:''המודול הובא כולו, ולכן צריך לכתוב math.sqrt. השם sqrt לבד לא מוכר.'',hint:''איפה נמצא הכלי sqrt אחרי import math?''},
+  {k:''mc'',q:''מה יקרה?'',code:''import math as m\nprint(math.floor(2.5))'',opts:[''2'',''3'',''NameError'',''2.5''],ans:2,exp:null,why:''המודול הובא בכינוי m, ולכן השם math כבר לא מוכר.'',hint:''באיזה שם הובא המודול?''}]
+],
+[ /* 8 strings */
+ [{k:''mc'',q:''מה יודפס?'',code:''word = "hello"\nprint(word[0].upper() + word[1:])'',opts:[''Hello'',''HELLO'',''hello'',''ello''],ans:0,exp:''Hello'',why:''האות הראשונה הופכת לגדולה, ושאר המילה נשארת כמו שהיא.'',hint:''פצלי את הביטוי לשני חלקים.''},
+  {k:''mc'',q:''מה יודפס?'',code:''word = "python"\nprint(word[-1] + word[:2])'',opts:[''npy'',''pyn'',''ypn'',''python''],ans:0,exp:''npy'',why:''word[-1] היא האות האחרונה (n), ו-word[:2] היא שתי האותיות הראשונות (py).'',hint:''מה אומר האינדקס -1, ומה אומר [:2]?''}],
+ [{k:''fill'',q:''השלימי את שם השיטה שהופכת את כל האותיות לגדולות.'',code:''text = "hello"\nprint(text.___())'',acc:[''upper'',''upper()''],why:''upper() הופכת לאותיות גדולות, ולכן יודפס HELLO.'',hint:''שם השיטה הוא "למעלה" באנגלית.''},
+  {k:''fill'',q:''השלימי את שם השיטה שמחליפה כל "-" ברווח.'',code:''text = "a-b-c"\nprint(text.___("-", " "))'',acc:[''replace''],why:''replace מחליפה חלק אחד בטקסט באחר, ולכן יודפס a b c.'',hint:''איזו שיטה "מחליפה"?''}]
+],
+[ /* 9 errors */
+ [{k:''mc'',q:''מה יודפס?'',code:''try:\n    x = 10 / 0\n    print("A")\nexcept ZeroDivisionError:\n    print("B")\nprint("C")'',opts:[''A ואז C'',''B ואז C'',''B בלבד'',''שגיאה''],ans:1,exp:''B\nC'',why:''החילוק ב-0 נופל לפני ש-A מודפס. ה-except מדפיס B, והתוכנית ממשיכה ל-C.'',hint:''כשנופלים, שאר הקוד בתוך try מדולג.''},
+  {k:''mc'',q:''מה יודפס?'',code:''try:\n    print("A")\n    n = int("x")\n    print("B")\nexcept ValueError:\n    print("C")\nprint("D")'',opts:[''A ואז C ואז D'',''A ואז B ואז D'',''C ואז D'',''A ואז B ואז C ואז D''],ans:0,exp:''A\nC\nD'',why:''A מודפס לפני הנפילה, ואז int("x") זורקת ValueError, ה-except מדפיס C, והתוכנית ממשיכה ל-D. B מדולג.'',hint:''מה כבר הודפס לפני הנפילה?''}],
+ [{k:''order'',q:''סדרי את השורות: התוכנית ממירה למספר, ותופסת קלט שאינו מספר.'',lines:[''try:'',''    x = int(input())'',''    print(x + 1)'',''except ValueError:'',''    print("שגיאה")''],why:''try עם הקוד המסוכן, ואחריו except שתופס ValueError.'',hint:''try לפני except.''},
+  {k:''order'',q:''סדרי את השורות: התוכנית ניגשת לרשימה, ותופסת מקום שלא קיים.'',lines:[''try:'',''    nums = [1, 2, 3]'',''    print(nums[5])'',''except IndexError:'',''    print("אין מקום כזה")''],why:''try עם הקוד שעלול ליפול, ואחריו except שתופס IndexError.'',hint:''אחרי try בא except.''}]
+],
+[ /* 10 files */
+ [{k:''mc'',q:''כמה שורות יהיו בקובץ b.txt בסוף?'',code:''with open("b.txt", "w") as f:\n    f.write("x\\n")\nwith open("b.txt", "w") as f:\n    f.write("y\\n")'',opts:[''0'',''1'',''2'',''שגיאה''],ans:1,why:''הפתיחה השנייה ב-"w" מוחקת את מה שהיה, ונשארת רק y.'',hint:''מה "w" עושה בכל פתיחה?''},
+  {k:''mc'',q:''כמה שורות יהיו בקובץ c.txt בסוף?'',code:''with open("c.txt", "w") as f:\n    f.write("a\\n")\nwith open("c.txt", "a") as f:\n    f.write("b\\n")\nwith open("c.txt", "a") as f:\n    f.write("c\\n")'',opts:[''1'',''2'',''3'',''שגיאה''],ans:2,why:''"w" כותב את a, ושתי הפתיחות ב-"a" מוסיפות בסוף את b ואת c.'',hint:''מה קורה למה שכבר כתוב כשפותחים ב-"a"?''}],
+ [{k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("notes.txt", "w") as f:'',''    text = f.read()''],ans:1,why:''"w" פותח לכתיבה בלבד, ולכן אי אפשר לקרוא ממנו. לקריאה צריך "r".'',hint:''מה אפשר לעשות במצב "w"?''},
+  {k:''bug'',q:''באיזו שורה הבעיה?'',lines:[''with open("a.txt", "a") as f:'',''    f.write("hi")'',''    print(f.read())''],ans:2,why:''"a" פותח להוספה בלבד, ולכן אי אפשר לקרוא ממנו.'',hint:''איזו פעולה לא מותרת במצב "a"?''}]
+],
+[ /* finale */
+ [{k:''mc'',q:''מה המשמעות של השורה score = 90?'',code:''score = 90'',opts:[''שומרים את הערך 90 במשתנה score'',''בודקים אם score שווה ל-90'',''מדפיסים את המספר 90'',''מגדירים פונקציה בשם score''],ans:0,why:''סימן = הוא השמה: שומר ערך במשתנה. לבדיקת שוויון משתמשים ב-==.'',hint:''האם זו שאלה, או פעולה של שמירה?''},
+  {k:''mc'',q:''באיזה סימן בודקים אם שני ערכים שווים?'',code:''if a ___ b:\n    print("equal")'',opts:[''=='',''='',''=>'',''!=''],ans:0,why:''== בודק שוויון, והוא מחזיר True או False.'',hint:''צריך סימן שמורכב משתי תווים.''}],
+ [{k:''mc'',q:''המשתמשת מקלידה 4. מה יודפס?'',code:''n = input("מספר: ")\nprint(n + n)'',opts:[''44'',''8'',''שגיאה'',''4n''],ans:0,exp:''44'',inp:''4'',why:''input מחזירה טקסט, ולכן + מחבר שתי מחרוזות: "4" ו-"4" נותנים "44".'',hint:''איזה סוג מידע מחזירה input?''},
+  {k:''mc'',q:''המשתמשת מקלידה 12. מה יודפס?'',code:''a = input()\nprint(type(a))'',opts:[''<class \''str\''>'',''<class \''int\''>'',''<class \''float\''>'',''<class \''bool\''>''],ans:0,exp:''<class \''str\''>'',inp:''12'',why:''input תמיד מחזירה טקסט (str), גם אם הוקלדו ספרות.'',hint:''האם פייתון מנחשת שהתכוונת למספר?''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''s = "ab"\nprint(s * 3)'',opts:[''ababab'',''ab3'',''שגיאה'',''aaabbb''],ans:0,exp:''ababab'',why:''כפל של מחרוזת במספר חוזר על המחרוזת כמה פעמים.'',hint:''מה עושה * על טקסט?''},
+  {k:''mc'',q:''מה יודפס?'',code:''a = "2"\nb = "3"\nprint(a + b)'',opts:[''23'',''5'',''שגיאה'',''2 3''],ans:0,exp:''23'',why:''a ו-b הם טקסט (בגלל המרכאות), ולכן + מחבר אותם ל-"23".'',hint:''שימי לב למרכאות.''}],
+ [{k:''mc'',q:''מה יודפס?'',code:''for i in range(5):\n    if i == 2:\n        break\n    print(i)'',opts:[''0 ואז 1'',''0 ואז 1 ואז 2'',''0 ואז 1 ואז 2 ואז 3 ואז 4'',''לא יודפס כלום''],ans:0,exp:''0\n1'',why:''כש-i מגיע ל-2, break מפסיקה את הלולאה לפני ההדפסה.'',hint:''מה קורה כש-i שווה 2?''},
+  {k:''mc'',q:''כמה פעמים יודפס hi?'',code:''while True:\n    print("hi")\n    break'',opts:[''פעם אחת'',''אינסוף פעמים'',''אף פעם'',''פעמיים''],ans:0,why:''הלולאה מתחילה, מדפיסה פעם אחת, וה-break יוצא מיד.'',hint:''מה השורה השנייה בתוך הלולאה עושה?''}],
+ [{k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''count = 5'',''message = "Items: " + count'',''print(message)''],ans:1,why:''אי אפשר לחבר טקסט ומספר עם +, וזו TypeError. צריך str(count).'',hint:''חפשי חיבור בין שני סוגי מידע שונים.''},
+  {k:''bug'',q:''באיזו שורה התוכנית תקרוס?'',lines:[''name = "dana"'',''age = 16'',''print(name + " is " + age)''],ans:2,why:''age הוא מספר, ואי אפשר לחבר אותו לטקסט עם +. צריך str(age).'',hint:''מה הסוג של כל חלק בשורה 3?''}],
+ [{k:''fill'',q:''השלימי את המילה שמגדירה פונקציה.'',code:''___ hello():\n    print("hi")'',acc:[''def''],why:''def מגדירה פונקציה חדשה.'',hint:''מילה של 3 אותיות באנגלית.''},
+  {k:''fill'',q:''השלימי את המילה שמחזירה את התוצאה החוצה.'',code:''def total(a, b):\n    ___ a + b'',acc:[''return''],why:''return מחזירה את הערך למי שקרא לפונקציה.'',hint:''איך מחזירים ערך מפונקציה?''}]
+]
+];
+
 (function(){
 var $=function(i){return document.getElementById(i)};
 var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
 function esc(s){return String(s).replace(/&/g,''&amp;'').replace(/</g,''&lt;'').replace(/>/g,''&gt;'')}
 function highlight(code){
-  return esc(code).replace(/(#.*$)|("[^"\n]*")|\b(try|except|while|break|True|False|if|elif|else|for|in|import|from|as|def|return)\b|\b(print|int|input|float|len|range|str|list)\b|\b(\d+\.?\d*)\b/gm,function(m,c,s,k,f,n){
+  return esc(code).replace(/(#.*$)|("[^"\n]*")|\b(try|except|with|as|while|break|True|False|if|elif|else|for|in|import|from|def|return)\b|\b(print|int|input|open|len|range|str|append)\b|\b(\d+\.?\d*)\b/gm,function(m,c,s,k,f,n){
     if(c)return ''<span class="tok-cmt">''+c+''</span>'';
     if(s)return ''<span class="tok-str''+(/[֐-׿]/.test(s)?'' he'':'''')+''">''+s+''</span>'';
     if(k)return ''<span class="tok-kw">''+k+''</span>'';
     if(f)return ''<span class="tok-fn">''+f+''</span>'';
     return ''<span class="tok-num">''+n+''</span>''});
 }
-function hlAll(){document.querySelectorAll(''pre.hl'').forEach(function(p){var t=p.textContent;p.innerHTML=''<code>''+highlight(t)+''</code>''})}
-hlAll();
-function row(el,code){var e=el.querySelector(''.empty'');if(e)e.remove();var d=document.createElement(''div'');d.className=''row'';
-  d.innerHTML=''<span><bdi>''+esc(code)+''</bdi></span>'';el.appendChild(d);el.scrollTop=el.scrollHeight}
-function pillRow(host,items,onclick){host.innerHTML='''';items.forEach(function(it,i){var b=document.createElement(''button'');b.type=''button'';b.className=''pill'';b.textContent=it;b.onclick=function(){onclick(i)};host.appendChild(b)})}
-function activate(host,i){host.querySelectorAll(''.pill'').forEach(function(p,j){p.classList.toggle(''active'',i===j)})}
-function codeLines(host,lines){host.innerHTML=lines.map(function(l,i){return ''<div class="line" data-i="''+i+''">''+highlight(l)+''</div>''}).join('''')}
-
-// ---- course map ----
-(function(){
-  var C=[
-   [''print / input'',''שיעור 1. print מדפיסה, ו-input שואלת את המשתמשת ומחזירה תמיד טקסט.'',''# המשתמשת מקלידה Dana\nname = input("name: ")\nprint("hello", name)'',''hello Dana''],
-   [''if / elif / else'',''שיעור 2. התוכנית מחליטה. רק הענף הראשון שנכון מורץ.'',''x = 7\nif x > 10:\n    print("big")\nelif x > 5:\n    print("medium")\nelse:\n    print("small")'',''medium''],
-   [''for / while'',''שיעורים 3 ו-4. חוזרים על קוד. for לפי רשימה או range, ו-while כל עוד התנאי נכון.'',''for i in range(3):\n    print(i)'',''0\n1\n2''],
-   [''[n * n for n in ...]'',''שיעור 4. for מקוצר: בונים רשימה שלמה בשורה אחת.'',''squares = [n * n for n in range(4)]\nprint(squares)'',''[0, 1, 4, 9]''],
-   [''list'',''שיעור 5. רשימה: הרבה ערכים במשתנה אחד. האינדקס מתחיל ב-0, ו-1- הוא האחרון.'',''nums = [10, 20, 30]\nnums.append(40)\nprint(nums[-1], len(nums))'',''40 4''],
-   [''dict'',''שיעור 6. מילון: ערכים לפי מפתח, ולא לפי מקום.'',''ages = {"dan": 16}\nages["rut"] = 17\nprint(ages["rut"])'',''17''],
-   [''def / return'',''שיעור 7. פונקציה: קוד עם שם שאפשר להריץ שוב ושוב. return מחזירה ערך.'',''def double(x):\n    return x * 2\n\nprint(double(5))'',''10''],
-   [''str'',''שיעור 8. מחרוזת: שרשרת תווים עם אינדקסים, פרוסות ושיטות.'',''name = "dana"\nprint(name.upper(), name[0], len(name))'',''DANA d 4''],
-   [''import'',''שיעורים 9 ו-10. מודול הוא ארגז כלים מוכן שמביאים עם import.'',''import math\nprint(math.sqrt(16))'',''4.0''],
-   [''try / except'',''שיעור 11. תופסים שגיאה במקום ליפול, והתוכנית ממשיכה.'',''try:\n    n = int("abc")\nexcept ValueError:\n    print("not a number")'',''not a number''],
-   [''open'',''שיעור 12. קבצים: התוכנית כותבת וקוראת מהמחשב, והמידע נשאר גם אחרי שהיא נגמרת.'',''with open("notes.txt", "a") as f:\n    f.write("hi\\n")'',''added "hi" to notes.txt'']
-  ],g=$(''map-grid'');
-  C.forEach(function(c){var d=document.createElement(''div'');d.className=''rf'';
-    var h=document.createElement(''h4'');h.textContent=c[0];var p=document.createElement(''p'');p.textContent=c[1];
-    var ex=document.createElement(''div'');ex.className=''ex'';ex.style.whiteSpace=''pre-wrap'';ex.textContent=c[2];
-    var rr=document.createElement(''div'');rr.className=''rr'';rr.style.alignItems=''flex-start'';var b=document.createElement(''button'');b.type=''button'';b.className=''run-btn'';b.textContent=''הריצי'';
-    var r=document.createElement(''span'');r.className=''res'';r.setAttribute(''aria-live'',''polite'');b.onclick=function(){r.textContent=c[3]};
-    rr.appendChild(b);rr.appendChild(r);[h,p,ex,rr].forEach(function(x){d.appendChild(x)});g.appendChild(d)});
-})();
-
-// ---- one program, all topics ----
-var PG=[''import random'',''def grade(score):'',''    if score >= 90:'',''        return "A"'',''    elif score >= 56:'',''        return "pass"'',''    return "fail"'',''scores = {"dana": 95, "ruth": 60, "noa": 40}'',''names = ["dana", "ruth", "noa", "tal"]'',''for name in names:'',''    try:'',''        s = scores[name]'',''        print(f"{name.title()}: {grade(s)}")'',''    except KeyError:'',''        print(name, "has no score")'',''print("lucky:", random.choice(names).upper())''];
-var PT=[
- [''מודולים'',[0,15],''import random מביאה את ארגז הכלים, ו-random.choice בוחרת פריט אקראי מהרשימה.''],
- [''פונקציות'',[1,3,5,6],''def grade מגדירה פונקציה, ו-return מחזירה ממנה את הדרגה. אפשר לקרוא לה שוב ושוב.''],
- [''תנאים'',[2,4],''if ו-elif בודקים את הציון מלמעלה למטה. אם שניהם לא נכונים, מגיעים ל-return "fail".''],
- [''מילונים'',[7,11],''scores מחבר שם לציון, ו-scores[name] שולף את הציון לפי המפתח.''],
- [''רשימות'',[8],''names היא רשימה של שמות, והלולאה עוברת עליה לפי הסדר.''],
- [''לולאות'',[9],''for עוברת על כל שם ברשימה, והשורות המוזחות מתחתיה רצות בכל סיבוב.''],
- [''שגיאות'',[10,13,14],''ל-"tal" אין ציון, ולכן scores[name] זורקת KeyError. ה-except תופס אותה, והתוכנית ממשיכה.''],
- [''מחרוזות'',[12,15],''name.title() הופכת את האות הראשונה לגדולה, f-string מדביקה ערכים בתוך טקסט, ו-upper הופכת הכול לגדול.'']
-];
-codeLines($(''pg-code''),PG);
-pillRow($(''pg-topics''),PT.map(function(t){return t[0]}),function(i){
-  activate($(''pg-topics''),i);
-  $(''pg-code'').querySelectorAll(''.line'').forEach(function(l,j){l.classList.toggle(''run'',PT[i][1].indexOf(j)>-1)});
-  $(''pg-note'').textContent=PT[i][2]});
-$(''pg-run'').onclick=function(){
-  var log=$(''pg-log''),names=[''dana'',''ruth'',''noa'',''tal''];log.innerHTML='''';
-  row(log,''Dana: A'');row(log,''Ruth: pass'');row(log,''Noa: fail'');row(log,''tal has no score'');
-  row(log,''lucky: ''+names[Math.floor(Math.random()*names.length)].toUpperCase())};
-
-// ---- which tool ----
-var CH=[
- [''צריך לבדוק אם הציון מספיק גבוה כדי לעבור.'',''if''],
- [''צריך להדפיס את השם של כל תלמידה ברשימה, אחת אחרי השנייה.'',''for''],
- [''צריך לשאול סיסמה שוב ושוב עד שהמשתמשת מקלידה את הנכונה, ואין לדעת כמה פעמים זה ייקח.'',''while''],
- [''צריך לשמור את הגיל של כל תלמידה ולמצוא אותו לפי השם שלה.'',''dict''],
- [''צריך לשמור 30 ציונים בסדר מסוים בתוך משתנה אחד.'',''list''],
- [''יש קוד שרוצים להריץ בחמישה מקומות בתוכנית, בלי להעתיק אותו חמש פעמים.'',''def''],
- [''המשתמשת עלולה להקליד אותיות במקום מספר, ולא רוצים שהתוכנית תקרוס.'',''try / except''],
- [''צריך להגריל מספר בין 1 ל-6, וזה כבר כתוב בפייתון.'',''import''],
- [''צריך לשמור את הציונים כך שיישארו גם אחרי שהתוכנית נגמרת.'',''open'']
-],CN=[''if'',''for'',''while'',''list'',''dict'',''def'',''try / except'',''import'',''open''],ci=0,cscore=0,ctry=0;
-function cround(){
-  if(ci>=CH.length){$(''ch-title'').textContent=''סיימת!'';$(''ch-q'').textContent='''';$(''ch-opts'').innerHTML='''';
-    $(''ch-msg'').className=''zg-msg good'';$(''ch-msg'').textContent=''בחרת נכון בניסיון ראשון ''+cscore+'' מתוך ''+CH.length+''.'';return}
-  $(''ch-title'').textContent=''שאלה ''+(ci+1)+'' מתוך ''+CH.length;ctry=0;$(''ch-msg'').className=''zg-msg'';$(''ch-msg'').textContent='''';
-  $(''ch-q'').textContent=CH[ci][0];
-  pillRow($(''ch-opts''),CN,function(j){
-    var btn=$(''ch-opts'').children[j];
-    if(CN[j]===CH[ci][1]){$(''ch-msg'').className=''zg-msg good'';$(''ch-msg'').textContent=''✔ נכון, ''+CH[ci][1]+''.'';
-      if(ctry===0){cscore++;if(window.EK_award)EK_award(btn)}
-      $(''ch-opts'').querySelectorAll(''button'').forEach(function(x){x.disabled=true});ci++;setTimeout(cround,RM?1000:1700)}
-    else{ctry++;btn.disabled=true;btn.classList.add(''wrong'');$(''ch-msg'').className=''zg-msg bad'';$(''ch-msg'').textContent=''לא ''+CN[j]+''. חשבי איזה כלי מתאים לבעיה, ונסי שוב.''}
-  });
+function shuffle(a){var r=a.slice();for(var i=r.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=r[i];r[i]=r[j];r[j]=t}return r}
+var BASE=50,RANKS=[[0,''מתלמדת''],[.5,''חוקרת''],[.7,''בלשית''],[.85,''מהנדסת''],[.95,''פרופסורית'']];
+function maxScore(){var n=0;ST.forEach(function(s){n+=s.tasks.length*BASE});return n}
+function rankIdx(sc){var r=0,f=sc/maxScore();RANKS.forEach(function(x,i){if(f>=x[0])r=i});return r}
+var FIN=ST.length-1;
+function locked(i){return !!ST[i].fin&&nDoneMain()<FIN}
+ST.forEach(function(s,i){s.tasks.forEach(function(t,k){t.vs=[t].concat(VARS[i][k])})});
+function T(i,ti){return ST[i].tasks[ti].vs[S.v[i][ti]]}
+function pickVariants(prev){return ST.map(function(s,i){return s.tasks.map(function(t,k){
+  var cnt=t.vs.map(function(_,j){return prev.filter(function(r){return r.v&&r.v[i]&&r.v[i][k]===j}).length}),mn=Math.min.apply(null,cnt),c=[];
+  cnt.forEach(function(x,j){if(x===mn)c.push(j)});return c[Math.floor(Math.random()*c.length)]})})}
+var HUES=[200,40,150,330,270,20,180,95,350,235,310];
+function col(i){return ''hsl(''+HUES[i%HUES.length]+'' 88% 64%)''}
+var LET=[''א'',''ב'',''ג'',''ד''];
+function winHtml(inner,name){return ''<div class="jr-win"><div class="bar"><i></i><i></i><i></i><b>''+(name||''main.py'')+''</b></div>''+inner+''</div>''}
+var toastT;function toast(t){var e=$(''jr-toast'');e.textContent=t;e.classList.add(''show'');clearTimeout(toastT);toastT=setTimeout(function(){e.classList.remove(''show'')},2600)}
+function countUp(el,to){var from=parseInt(el.textContent,10)||0;el._tok=(el._tok||0)+1;var tok=el._tok;if(RM||from===to){el.textContent=to;return}var t0=performance.now();(function f(t){if(el._tok!==tok)return;var k=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*k);if(k<1)requestAnimationFrame(f)})(t0)}
+var LSK=''py-journey-runs-v2'';
+function lsAll(){try{return JSON.parse(localStorage.getItem(LSK)||''{}'')}catch(e){return {}}}
+function nk(n){return String(n||'''').trim().replace(/\s+/g,'' '')}
+function lsRuns(name){return (lsAll()[nk(name)]||[])}
+function lsSave(name,r){try{var o=lsAll(),k=nk(name);(o[k]=o[k]||[]).push(r);localStorage.setItem(LSK,JSON.stringify(o))}catch(e){}}
+function rid(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+var SVK=''py-journey-save-v1'';
+function persist(){if(!S)return;try{if(S.end)localStorage.removeItem(SVK);else localStorage.setItem(SVK,JSON.stringify(S))}catch(e){}}
+function loadSaved(){try{var s=JSON.parse(localStorage.getItem(SVK)||''null'');
+  if(!s||s.end||!s.t||s.t.length!==ST.length||!s.v||s.v.length!==ST.length)return null;
+  for(var i=0;i<ST.length;i++){if(s.t[i].length!==ST[i].tasks.length||s.v[i].length!==ST[i].tasks.length)return null;
+    for(var k=0;k<s.v[i].length;k++)if(!(s.v[i][k]>=0&&s.v[i][k]<ST[i].tasks[k].vs.length))return null}
+  if(!s.name)return null;return s}catch(e){return null}}
+function clearSaved(){try{localStorage.removeItem(SVK)}catch(e){}}
+var S=null;
+function newState(name){var prev=lsRuns(name);return {id:rid(),v:pickVariants(prev),attempt:prev.length+1,prev:prev,saved:false,name:name,start:Date.now(),end:null,cur:null,streak:0,rk:0,shown:0,t:ST.map(function(s){return s.tasks.map(function(){return {done:false,pts:0,att:0,hint:0}})})}}
+function stDone(i){return S.t[i].every(function(x){return x.done})}
+function score(){var n=0;S.t.forEach(function(a){a.forEach(function(x){n+=x.pts})});return n}
+function nDoneMain(){var n=0;for(var i=0;i<FIN;i++)if(stDone(i))n++;return n}
+function nDone(){return ST.filter(function(_,i){return stDone(i)}).length}
+function fmt(sec){sec=Math.max(0,Math.floor(sec));var m=Math.floor(sec/60),s=sec%60;return (m<10?''0'':'''')+m+'':''+(s<10?''0'':'''')+s}
+function confetti(el){
+  if(RM)return;var host=$(''jr-conf''),r=el.getBoundingClientRect(),cols=[''#ffd27a'',''#ff7f96'',''#6fe0a0'',''#8b6bff'',''#5bd1ff''];
+  for(var i=0;i<46;i++){var b=document.createElement(''i''),a=Math.random()*6.28,d=80+Math.random()*190;
+    b.style.cssText=''left:''+(r.left+r.width/2)+''px;top:''+(r.top+r.height/2)+''px;background:''+cols[i%5]+'';--dx:''+Math.cos(a)*d+''px;--dy:''+(Math.sin(a)*d-50)+''px;--rot:''+Math.random()*700+''deg'';
+    host.appendChild(b);setTimeout(function(e){e.remove()},1700,b)}
 }
-cround();
+function hud(gain){persist();
+  if(S&&window.reportProgress)window.reportProgress(nDone(),ST.length);
+  var sc=score(),ri=rankIdx(sc);countUp($(''jr-score''),sc);$(''jr-rank'').textContent=RANKS[ri][1];$(''jr-stamps'').textContent=nDone()+''/''+ST.length;$(''jr-streak'').textContent=S.streak;
+  $(''jr-who'').textContent=''🧭 ''+S.name;
+  if(gain){var p=$(''jr-plus'');p.textContent=''+''+gain;p.classList.remove(''go'');void p.offsetWidth;p.classList.add(''go'')}
+  if(ri>S.rk){S.rk=ri;toast(''🎉 עלית לדרגה: ''+RANKS[ri][1]+''!'')}
+}
+function layout(){
+  var cols=matchMedia(''(max-width:760px)'').matches?2:5,map=$(''jr-map''),nodes=map.querySelectorAll(''.jr-node'');
+  nodes.forEach(function(n,i){var row=Math.floor(i/cols),pos=i%cols,c=row%2===0?pos:cols-1-pos;n.style.gridColumn=(c+1);n.style.gridRow=(row+1)});
+  var mr=map.getBoundingClientRect(),pts=[];
+  nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
+  var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
+  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
+    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
+  svg.innerHTML=h;
+  var cur=S&&S.cur!=null?S.cur:0,pt=pts[Math.min(cur,pts.length-1)],r=$(''jr-rocket'');if(pt){r.style.left=(pt[0]+34)+''px'';r.style.top=(pt[1]-44)+''px''}
+}
+function renderMap(){
+  var h='''';ST.forEach(function(s,i){var d=stDone(i),n=S.t[i].filter(function(x){return x.done}).length;
+    h+=''<button type="button" class="jr-node''+(d?'' done'':'''')+(S.cur===i?'' cur'':'''')+(locked(i)?'' lockd'':'''')+''" style="--c:''+col(i)+''" data-i="''+i+''" role="listitem" aria-label="תחנה ''+(i+1)+'': ''+esc(s.t)+(d?'' (הושלמה)'':'''')+''"><span class="disc"><span class="ic">''+(locked(i)?''🔒'':s.ic)+''</span><span class="no">''+(i+1)+''</span></span><span class="tt">''+esc(s.t)+''</span><span class="dots">''+s.tasks.map(function(_,k){return ''<i class="''+(k<n?''on'':'''')+''"></i>''}).join('''')+''</span></button>''});
+  var map=$(''jr-map'');map.querySelectorAll(''.jr-node'').forEach(function(x){x.remove()});
+  map.insertAdjacentHTML(''beforeend'',h);
+  map.querySelectorAll(''.jr-node'').forEach(function(b){b.onclick=function(){openStation(+b.dataset.i,true)}});
+  layout();
+}
+addEventListener(''resize'',function(){if(S)layout()});
+function firstUndone(from){for(var k=0;k<ST.length;k++){var i=(from+k)%ST.length;if(!stDone(i)&&!locked(i))return i}return -1}
+function openStation(i,scroll){
+  if(locked(i)){toast(''🔒 קודם משלימות את עשר התחנות, ואז נפתחת תחנת הגמר'');return}
+  S.cur=i;renderMap();var p=$(''jr-panel'');p.hidden=false;p.style.setProperty(''--c'',col(i));p.style.animation=''none'';void p.offsetWidth;p.style.animation='''';
+  if(stDone(i))return renderSummary(i,false);
+  var ti=S.t[i].findIndex(function(x){return !x.done});renderTask(i,ti);
+  if(scroll!==false)try{p.scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
+}
+', 13, '2026-11-08T00:00:00.000Z');
+UPDATE lessons SET html_content = html_content || 'function head(i,ti){var s=ST[i];return ''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' מתוך ''+ST.length+'' · משימה ''+(ti+1)+'' מתוך ''+s.tasks.length+''</small><h3><span class="nm">''+esc(s.nm)+''</span> <span style="font-size:15px;color:var(--ink-faint);font-weight:500">· ''+esc(s.t)+'' (''+esc(s.sub)+'')</span></h3></div></div>''}
+function award(i,ti,fbEl){
+  var r=S.t[i][ti];r.done=true;r.pts=Math.max(10,BASE-10*(r.att+r.hint));S.streak=(r.att===0&&r.hint===0)?S.streak+1:0;hud(r.pts);return r.pts}
+function renderTask(i,ti){
+  var s=ST[i],t=T(i,ti),r=S.t[i][ti],p=$(''jr-panel''),solved=false;
+  var h=head(i,ti)+''<div class="jr-q">''+esc(t.q)+''</div><div id="jr-body"></div><div class="jr-act" id="jr-act"></div><div class="jr-fb" id="jr-fb" role="status"></div>'';
+  p.innerHTML=h;var body=$(''jr-body''),act=$(''jr-act''),fb=$(''jr-fb'');
+  function win(){
+    solved=true;var pts=award(i,ti);fb.className=''jr-fb good'';fb.textContent=''✔ ''+t.why+'' (+''+pts+'' נקודות)'';
+    renderMap();confetti(fb);act.innerHTML='''';
+    var nb=document.createElement(''button'');nb.type=''button'';nb.className=''run-btn'';
+    var more=S.t[i].some(function(x){return !x.done});nb.textContent=more?''למשימה הבאה ›'':''לסיכום התחנה ›'';
+    nb.onclick=function(){if(more)renderTask(i,S.t[i].findIndex(function(x){return !x.done}));else stationDone(i)};act.appendChild(nb);nb.focus()}
+  function wrong(msg){r.att++;persist();fb.className=''jr-fb bad'';fb.textContent=msg||''לא בדיוק. נסי שוב.''}
+  function hintBtn(){var b=document.createElement(''button'');b.type=''button'';b.className=''pill'';b.textContent=''💡 רמז (-10)'';
+    b.onclick=function(){if(!r.hint){r.hint=1;persist()}fb.className=''jr-fb hint'';fb.textContent=''💡 ''+t.hint;b.disabled=true};act.appendChild(b)}
+  if(t.k===''mc''){
+    body.innerHTML=winHtml(''<div class="jr-code">''+highlight(t.code)+''</div>'')+''<div class="jr-opts" id="jr-opts"></div>'';
+    shuffle(t.opts.map(function(o,k){return {o:o,k:k}})).forEach(function(x,pos){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-opt'';b.innerHTML=''<span class="l">''+LET[pos]+''</span><span></span>'';b.lastChild.textContent=x.o;
+      b.onclick=function(){if(solved)return;if(x.k===t.ans){b.classList.add(''good'');$(''jr-opts'').querySelectorAll(''button'').forEach(function(y){y.disabled=true});win()}else{b.classList.add(''bad'');b.disabled=true;wrong()}};$(''jr-opts'').appendChild(b)});
+    hintBtn();
+  }else if(t.k===''bug''){
+    body.innerHTML=winHtml(''<div id="jr-bug"></div>'');
+    t.lines.forEach(function(l,k){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-line'';b.innerHTML=''<span style="color:var(--ink-faint)">''+(k+1)+''  </span>''+highlight(l);
+      b.onclick=function(){if(solved)return;if(k===t.ans){b.classList.add(''good'');$(''jr-bug'').querySelectorAll(''button'').forEach(function(y){y.disabled=true});win()}else{b.classList.add(''bad'');b.disabled=true;wrong(''זו לא השורה הבעייתית. נסי שוב.'')}};$(''jr-bug'').appendChild(b)});
+    hintBtn();
+  }else if(t.k===''fill''){
+    var parts=t.code.indexOf(''___'')>-1?t.code.split(''___''):null;
+    body.innerHTML=parts?winHtml(''<div class="jr-code">''+highlight(parts[0])+''<input type="text" id="jr-in" autocomplete="off" aria-label="השלמה">''+highlight(parts[1])+''</div>''):winHtml(''<div class="jr-code">''+highlight(t.code)+''</div>'')+''<div style="margin-top:12px"><input type="text" id="jr-in" class="num-in" autocomplete="off" placeholder="''+esc(t.ph||''התשובה'')+''" style="width:160px;direction:ltr" aria-label="התשובה"></div>'';
+    var chk=function(){if(solved)return;var v=$(''jr-in'').value.replace(/\s+/g,'''');if(!v)return;
+      if(t.acc.indexOf(v)>-1||t.acc.indexOf(v.replace(/["'']/g,''''))>-1){$(''jr-in'').disabled=true;win()}else wrong()};
+    var cb=document.createElement(''button'');cb.type=''button'';cb.className=''run-btn'';cb.textContent=''בדקי'';cb.onclick=chk;act.appendChild(cb);hintBtn();
+    $(''jr-in'').onkeydown=function(e){if(e.key===''Enter'')chk()};
+  }else if(t.k===''order''){
+    var src=t.lines.map(function(l,k){return {l:l,k:k}}),pool,ans=[];
+    do{pool=shuffle(src)}while(pool.every(function(x,k){return x.k===k}));
+    body.innerHTML=''<div class="jr-ord"><div><h5>השורות (לחצי כדי להוסיף)</h5><div class="ob" id="jr-pool"></div></div><div><h5>הסדר שלך (לחצי כדי להחזיר)</h5><div class="ob" id="jr-ans"></div></div></div>'';
+    var draw=function(){
+      [[''jr-pool'',pool,function(x){pool.splice(pool.indexOf(x),1);ans.push(x);draw()}],[''jr-ans'',ans,function(x){ans.splice(ans.indexOf(x),1);pool.push(x);draw()}]].forEach(function(z){
+        var h=$(z[0]);h.innerHTML='''';z[1].forEach(function(x){var b=document.createElement(''button'');b.type=''button'';b.className=''jr-line'';b.innerHTML=highlight(x.l);b.disabled=solved;b.onclick=function(){z[2](x)};h.appendChild(b)})})};
+    draw();
+    var cb2=document.createElement(''button'');cb2.type=''button'';cb2.className=''run-btn'';cb2.textContent=''בדקי'';
+    cb2.onclick=function(){if(solved)return;if(ans.length<src.length){fb.className=''jr-fb bad'';fb.textContent=''צריך להניח את כל השורות.'';return}
+      var okN=ans.filter(function(x,k){return x.k===k}).length;
+      if(okN===src.length){draw();win()}else wrong(''עדיין לא. ''+okN+'' מתוך ''+src.length+'' שורות במקום הנכון.'')};
+    act.appendChild(cb2);hintBtn();
+  }
+}
+function stationDone(i){
+  renderMap();renderSummary(i,true);
+  var node=$(''jr-map'').querySelector(''[data-i="''+i+''"]'');if(node){node.classList.add(''pop-stamp'');confetti(node)}
+}
+function renderSummary(i,fresh){
+  var s=ST[i],p=$(''jr-panel''),pts=S.t[i].reduce(function(a,x){return a+x.pts},0);
+  var nxt=firstUndone(i+1);
+  p.innerHTML=''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' הושלמה · ''+pts+'' נקודות</small><h3><span class="nm">''+esc(s.nm)+''</span> · ''+esc(s.t)+''</h3></div></div>''+
+   ''<div class="jr-sum"><h4>📌 מה לזכור מהתחנה</h4><ul>''+s.sum+''</ul>''+winHtml(''<div class="jr-code">''+highlight(s.ex)+''</div>'',''example.py'')+''</div><div class="jr-act" id="jr-act"></div>'';
+  var act=$(''jr-act''),b=document.createElement(''button'');b.type=''button'';b.className=''run-btn'';
+  if(nxt===-1){b.textContent=''לתעודה שלי 🏆'';b.onclick=finish}else{b.textContent=''לתחנה הבאה: ''+ST[nxt].t+'' ›'';b.onclick=function(){openStation(nxt,true)}}
+  act.appendChild(b);if(fresh)b.focus();
+}
+function finish(){
+  if(!S.end)S.end=Date.now();
+  var sc=score(),ri=rankIdx(sc),el=S.end-S.start;
+  if(!S.saved){S.saved=true;clearSaved();lsSave(S.name,{id:S.id,v:S.v,score:sc,sec:Math.round(el/1000),date:new Date().toISOString()})}
+  var pv=S.prev.length?S.prev[S.prev.length-1]:null;
+  var att=''<div class="jr-attempt">ניסיון מספר ''+S.attempt+(pv?'' · בניסיון הקודם: <b>''+pv.score+''</b> נקודות, עכשיו: <b>''+sc+''</b> (''+(sc-pv.score>=0?''+'':'''')+(sc-pv.score)+'')'':'''')+''</div>'';
+  $(''jr-final'').hidden=false;
+  $(''jr-cert'').innerHTML=''<div style="font-size:44px">🏆</div><h2>תעודת סיום המסע</h2><div>קורס פייתון · מגמת מחשבים</div><div class="nm">''+esc(S.name)+''</div>''+
+   ''<div class="jr-seal"><span>🏅</span>''+RANKS[ri][1]+''</div><div class="big">''+sc+''</div><div>מתוך ''+maxScore()+'' נקודות</div>''+
+   ''<div class="jr-ladder">''+RANKS.map(function(r,k){return ''<span class="''+(k===ri?''me'':'''')+''">''+r[1]+''</span>''}).join('''')+''</div>''+
+   ''<div class="jr-stampsrow">''+ST.map(function(s){return ''<span title="''+esc(s.t)+''">''+s.ic+''</span>''}).join('''')+''</div>''+
+   att+''<div class="jr-kpis"><div><b>''+fmt(el/1000)+''</b><span>זמן</span></div><div><b>''+S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.att},0)},0)+''</b><span>טעויות</span></div><div><b>''+S.t.reduce(function(a,x){return a+x.reduce(function(b,y){return b+y.hint},0)},0)+''</b><span>רמזים</span></div></div>''+
+   ''<div class="jr-act" style="justify-content:center"><button type="button" class="run-btn" id="jr-dl">הורדת התעודה והתוצאות למורה</button><button type="button" class="pill" id="jr-dl2">📚 הורדת סיכום הקורס</button></div><div class="jr-fb" id="jr-dlfb" style="text-align:center"></div><textarea id="jr-fallback" class="exercise-answer" rows="6" hidden readonly aria-label="העתקה ידנית"></textarea>'';
+  $(''jr-dl'').onclick=function(){dl(resultsHtml(),''python-journey-results.html'',''הקובץ ירד! שלחי אותו למורה.'')};
+  $(''jr-dl2'').onclick=function(){dl(summaryHtml(),''python-course-summary.html'',''דף הסיכום ירד!'')};
+  hud();try{$(''jr-final'').scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
+  setTimeout(function(){confetti($(''jr-cert''))},300);setTimeout(function(){confetti($(''jr-cert''))},900);setTimeout(function(){confetti($(''jr-cert''))},1500);
+}
+var CSS=''<style>body{font-family:Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 16px;line-height:1.7;color:#222}h1{font-size:26px}table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #bbb;padding:6px 10px;text-align:right}th{background:#eee}pre{background:#f3f3f3;padding:10px;direction:ltr;text-align:left;white-space:pre-wrap;border-radius:6px}code{direction:ltr;unicode-bidi:isolate;background:#eee;padding:0 4px}.c{border:1px solid #bbb;border-radius:8px;padding:6px 18px;margin:14px 0;page-break-inside:avoid}</style>'';
+function resultsHtml(){
+  var sc=score(),ri=rankIdx(sc),rows='''';
+  ST.forEach(function(s,i){S.t[i].forEach(function(r,k){rows+=''<tr><td>''+(i+1)+''. ''+esc(s.t)+''</td><td>''+(k+1)+''</td><td>''+[''א'',''ב'',''ג''][S.v[i][k]]+''</td><td>''+(r.done?''✔'':''✘'')+''</td><td>''+r.pts+''</td><td>''+r.att+''</td><td>''+r.hint+''</td></tr>''})});
+  return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תוצאות: ''+esc(S.name)+''</title>''+CSS+''</head><body><h1>המסע בעשר תחנות: ''+esc(S.name)+''</h1><p>תאריך: ''+esc(new Date().toLocaleDateString(''he-IL''))+'' · זמן: ''+fmt(((S.end||Date.now())-S.start)/1000)+''</p><p><b>ניקוד: ''+sc+'' מתוך ''+maxScore()+'' · דרגה: ''+RANKS[ri][1]+''</b></p><p>ניסיון מספר <b>''+S.attempt+''</b> במחשב הזה · מזהה ריצה: ''+S.id+'' · התחלה: ''+esc(new Date(S.start).toLocaleString(''he-IL''))+'' · סיום: ''+esc(new Date(S.end||Date.now()).toLocaleString(''he-IL''))+''</p>''+(S.prev.length?''<p>ניסיונות קודמים במחשב הזה: ''+S.prev.map(function(r,k){return (k+1)+'') ''+r.score+'' נק׳, ''+fmt(r.sec)}).join('' · '')+''</p>'':'''')+''<table><tr><th>תחנה</th><th>משימה</th><th>גרסה</th><th>נפתרה</th><th>נקודות</th><th>טעויות</th><th>רמזים</th></tr>''+rows+''</table></body></html>''}
+function summaryHtml(){
+  var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>סיכום קורס פייתון</title>''+CSS+''</head><body><h1>סיכום קורס פייתון</h1><p>''+esc(S.name)+''</p>'';
+  ST.forEach(function(s,i){h+=''<div class="c"><h2>''+s.ic+'' ''+(i+1)+''. ''+esc(s.t)+'' (''+esc(s.sub)+'')</h2><ul>''+s.sum+''</ul><pre>''+esc(s.ex)+''</pre></div>''});
+  return h+''</body></html>''}
+function dl(html,name,okMsg){
+  var fb=$(''jr-dlfb''),fk=$(''jr-fallback'');
+  try{var b=new Blob([html],{type:''text/html;charset=utf-8''}),u=URL.createObjectURL(b),a=document.createElement(''a'');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);fb.className=''jr-fb good'';fb.textContent=okMsg}
+  catch(e){fb.className=''jr-fb bad'';fb.textContent=''ההורדה לא עבדה. העתיקי את הטקסט למטה ושמרי כקובץ html.'';fk.hidden=false;fk.value=html}
+}
+(function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()''],cl=['''',''b'',''c''];
+  for(var i=0;i<18;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
+function begin(){$(''jr-start-note'').textContent='''';$(''jr-hero'').querySelector(''.jr-start'').hidden=true;$(''jr-main'').hidden=false;hud();renderMap();
+  if(S.end&&nDone()===ST.length){finish();return}
+  var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100)}
+addEventListener(''beforeunload'',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''''}});
+(function(){var sv=loadSaved();if(!sv)return;var box=document.createElement(''div'');box.className=''jr-prev'';box.id=''jr-resume'';
+  box.innerHTML=''<div>יש מסע שהתחלת ולא סיימת (<b></b>, ''+sv.t.filter(function(a){return a.every(function(x){return x.done})}).length+'' תחנות הושלמו). להמשיך מאיפה שעצרת?</div><div class="jr-act" style="justify-content:center;margin-top:8px"><button type="button" class="run-btn" id="jr-resume-go">המשיכי</button><button type="button" class="pill" id="jr-resume-new">מסע חדש</button></div>'';
+  box.querySelector(''b'').textContent=sv.name;
+  $(''jr-start-note'').parentNode.appendChild(box);
+  $(''jr-resume-go'').onclick=function(){S=sv;begin()};
+  $(''jr-resume-new'').onclick=function(){clearSaved();box.remove()}})();
+$(''jr-go'').onclick=function(){var n=nk($(''jr-name'').value);if(!n){$(''jr-start-note'').textContent=''קודם כתבי את שמך.'';return}
+  $(''jr-start-note'').textContent='''';S=newState(n);clearSaved();begin()};
+(function(){var inp=$(''jr-name'');
+  var upd=function(){var e=$(''jr-prev''),p=nk(inp.value)?lsRuns(inp.value):[];if(p.length){e.hidden=false;e.textContent=''זה יהיה הניסיון מספר ''+(p.length+1)+''. הניסיון הראשון (הציון ''+p[0].score+'') הוא הקובע.''}else e.hidden=true;$(''jr-start-note'').textContent=''''};
+  inp.oninput=upd;inp.onchange=upd;inp.onkeydown=function(e){if(e.key===''Enter'')$(''jr-go'').click()}})();
 
-// ---- bug hunt ----
-var rs=$(''rescue1'');
-rs.querySelectorAll(''.rescue-choice'').forEach(function(b){b.onclick=function(){
-  var fb=$(''rescue1-fb'');
-  if(b.dataset.ok===''1''){b.classList.add(''right'');rs.classList.add(''fixed'');rs.querySelector(''.rescue-mark'').textContent=''✓'';
-    rs.querySelectorAll(''.rescue-choice'').forEach(function(x){x.disabled=true});
-    fb.className=''rescue-feedback correct'';fb.textContent=''נכון! total = n מחליפה את הסכום בכל סיבוב, ולכן נשאר רק האחרון (30). כדי לצבור צריך total = total + n.''}
-  else{b.classList.add(''wrong'');b.disabled=true;fb.className=''rescue-feedback wrong'';fb.textContent=''לא בדיוק. תסתכלי מה קורה ל-total בתוך הלולאה בכל סיבוב: האם הוא צובר, או מוחלף?''}
-}});
-
-// ---- download / submit ----
-(function(){
-  var Q=[
-    [''תרגיל 1'',''השלימי את המילה החסרה כדי להגדיר פונקציה.'',''______ square(x):\n    return x * x''],
-    [''תרגיל 2'',''מה יודפס?'',''d = {"a": 1, "b": 2}\nd["c"] = 3\nd["a"] = 10\nprint(len(d))''],
-    [''תרגיל 3 (ב-VS Code)'',''מחברת ציונים: שואלים שם וציון שוב ושוב עד ש-stop בתור שם. שומרים במילון. ציון שאינו מספר: הודעה ושואלים שוב. בסוף לכל תלמידה מדפיסים שם (אות ראשונה גדולה) ודרגה לפי פונקציה: 90 ומעלה A, 56 ומעלה pass, אחרת fail.'',''''],
-    [''תרגיל 4 · אתגר (ב-VS Code)'',''מדפיסים את שם התלמידה עם הציון הגבוה ביותר, ובוחרים תלמידה אחת באקראי עם random.choice.'','''']];
-  function E(t){return String(t).replace(/[&<>"]/g,function(c){return{''&'':''&amp;'',''<'':''&lt;'',''>'':''&gt;'',''"'':''&quot;''}[c]})}
-  var CSS=''<style>body{font-family:Arial,sans-serif;max-width:760px;margin:30px auto;padding:0 16px;line-height:1.7;color:#222}h1{font-size:24px}.q{border:1px solid #bbb;border-radius:8px;padding:12px 18px;margin:16px 0;page-break-inside:avoid}pre{background:#f3f3f3;padding:10px;direction:ltr;text-align:left;white-space:pre-wrap;border-radius:6px}.a{min-height:90px;border:1px dashed #999;border-radius:6px;margin-top:8px}.ok{color:#0a7a2f;font-weight:bold}.no{color:#b3261e;font-weight:bold}</style>'';
-  function save(html,name){
-    try{var b=new Blob([html],{type:''text/html;charset=utf-8''}),u=URL.createObjectURL(b),a=document.createElement(''a'');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500);return true}
-    catch(e){return false}}
-  document.getElementById(''sub-dl-ex'').onclick=function(){
-    var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תרגילי סיכום</title>''+CSS+''</head><body><h1>תרגילי סיכום בפייתון</h1><p>שם: ______________________</p>'';
-    Q.forEach(function(q){h+=''<div class="q"><b>''+E(q[0])+''</b><br>''+E(q[1])+(q[2]?''<pre>''+E(q[2])+''</pre>'':'''')+''<div class="a"></div></div>''});
-    save(h+''</body></html>'',''python-summary-exercises.html'')};
-  document.getElementById(''sub-dl'').onclick=function(){
-    var name=document.getElementById(''sub-name'').value.trim(),fb=document.getElementById(''sub-fb''),fbk=document.getElementById(''sub-fallback'');
-    if(!name){fb.className=''exercise-feedback'';fb.textContent=''קודם כתבי את שמך.'';return}
-    var a1=document.getElementById(''ex1-a'').value.trim(),a2=document.getElementById(''ex2-in'').value.trim(),
-      a3=document.querySelector(''[aria-label="התשובה לתרגיל 3"]'').value,a4=document.querySelector(''[aria-label="התשובה לתרגיל 4"]'').value,
-      ok1=a1===''def'',ok2=a2===''3'';
-    function mark(ok,v){return v?''<span class="''+(ok?''ok'':''no'')+''">''+(ok?''נכון'':''לא נכון'')+''</span>'':''<span class="no">לא נענה</span>''}
-    var date=new Date().toLocaleDateString(''he-IL'');
-    var h=''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תשובות: ''+E(name)+''</title>''+CSS+''</head><body><h1>תרגילי סיכום: ''+E(name)+''</h1><p>תאריך: ''+E(date)+''</p>''
-     +''<div class="q"><b>''+Q[0][0]+''</b><pre>''+E(Q[0][2])+''</pre>תשובה (המילה החסרה): <pre>''+E(a1||''(ריק)'')+''</pre>''+mark(ok1,a1)+''</div>''
-     +''<div class="q"><b>''+Q[1][0]+''</b><pre>''+E(Q[1][2])+''</pre>תשובה: <pre>''+E(a2||''(ריק)'')+''</pre>''+mark(ok2,a2)+''</div>''
-     +''<div class="q"><b>''+Q[2][0]+''</b><pre>''+E(a3||''(לא נענה)'')+''</pre></div>''
-     +''<div class="q"><b>''+Q[3][0]+''</b><pre>''+E(a4||''(לא נענה)'')+''</pre></div></body></html>'';
-    if(save(h,''python-summary-answers.html'')){fb.className=''exercise-feedback correct'';fb.textContent=''הקובץ ירד! שלחי אותו למורה.''}
-    else{fb.className=''exercise-feedback'';fb.textContent=''ההורדה לא עבדה. העתיקי את הטקסט שלמטה ושמרי כקובץ html.'';fbk.hidden=false;fbk.value=h}};
+window.__JR={get S(){return S},ST:ST,T:T};
 })();
 
-// דיווח התקדמות לאתר שמציג את השיעור (window.reportProgress מוזרק על ידיו; בקובץ שנפתח לבד אין אותו). תרגילי החובה: 1 ו-2.
-var exSolved={};
-function reportEx(){if(window.reportProgress)window.reportProgress(Object.keys(exSolved).length,2)}
-reportEx();
-function chk(btn,fn,fbId,okMsg,badMsg){$(btn).onclick=function(){var f=$(fbId);if(fn()){f.className=''exercise-feedback correct'';f.textContent=okMsg;exSolved[btn]=true;reportEx()}else{f.className=''exercise-feedback wrong'';f.textContent=badMsg}}}
-chk(''ex1-btn'',function(){return $(''ex1-a'').value.trim()===''def''},''ex1-feedback'',''נכון! def מגדירה פונקציה חדשה.'',''לא בדיוק. איזו מילה פותחת הגדרה של פונקציה?'');
-chk(''ex2-btn'',function(){return $(''ex2-in'').value.trim()===''3''},''ex2-feedback'',''נכון! נוספו a, b ו-c, ושינוי הערך של a לא מוסיף מפתח. בסך הכול 3.'',''לא בדיוק. כמה מפתחות שונים יש במילון בסוף? האם d["a"] = 10 מוסיפה מפתח חדש?'');
-})();
-
-(function(){
-  var C=window.EK_CFG||{},doc=document,stars=0;
-  var RM=window.matchMedia&&matchMedia(''(prefers-reduced-motion: reduce)'').matches;
-  doc.documentElement.classList.add(''ek-js'');
-  // progress
-  var pr=doc.createElement(''div'');pr.className=''ek-progress'';pr.innerHTML=''<i></i>'';doc.body.appendChild(pr);
-  function onScroll(){var h=doc.documentElement.scrollHeight-innerHeight;pr.firstChild.style.width=(h>0?Math.min(100,scrollY/h*100):0)+''%''}
-  addEventListener(''scroll'',onScroll,{passive:true});onScroll();
-  // hud
-  var hud=doc.createElement(''div'');hud.className=''ek-hud'';hud.setAttribute(''aria-live'',''polite'');
-  hud.innerHTML=''<span class="ek-star">⭐</span><span id="ek-n">0</span><span class="ek-lvl" id="ek-l"></span>'';doc.body.appendChild(hud);
-  var LV=[[0,''מתחילה''],[3,''חוקרת''],[6,''מפתחת''],[10,''מומחית'']];
-  function lvl(){var t='''';LV.forEach(function(l){if(stars>=l[0])t=l[1]});return t}
-  doc.getElementById(''ek-l'').textContent=lvl();
-  var toast=doc.createElement(''div'');toast.className=''ek-toast'';doc.body.appendChild(toast);
-  var PR=[''יפה מאוד! 🎉'',''בול! 👏'',''את על זה! 🚀'',''מדויק! ✨'',''כל הכבוד! 💪'',''וואו, מצוין! 🌟''],pi=0,tt;
-  function burst(x,y){
-    if(RM)return;var cols=[''#ffd27a'',''#ff7f96'',''#6fe0a0'',''#8b6bff'',''#5bd1ff''];
-    for(var i=0;i<22;i++){var b=doc.createElement(''i'');b.className=''ek-bit'';
-      var a=Math.random()*6.28,d=60+Math.random()*110;
-      b.style.cssText=''left:''+x+''px;top:''+y+''px;background:''+cols[i%5]+'';--dx:''+Math.cos(a)*d+''px;--dy:''+(Math.sin(a)*d-40)+''px;--rot:''+Math.random()*540+''deg'';
-      doc.body.appendChild(b);setTimeout(function(e){e.remove()},1100,b)}
-  }
-  function award(el){
-    stars++;doc.getElementById(''ek-n'').textContent=stars;doc.getElementById(''ek-l'').textContent=lvl();
-    hud.classList.remove(''pop'');void hud.offsetWidth;hud.classList.add(''pop'');
-    toast.textContent=PR[pi++%PR.length]+'' ⭐ ''+stars;toast.classList.add(''show'');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove(''show'')},1800);
-    var r=(el||hud).getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);
-  }
-  window.EK_award=award;
-  // watch feedback elements
-  var seen={},auto=0;
-  var SEL=''.guess-feedback,.exercise-feedback,.rescue-feedback,.gv-fb'';
-  function check(el){
-    if(!el.matches||!el.matches(SEL))return;
-    if(!(el.classList.contains(''correct'')||el.classList.contains(''good'')))return;
-    var k=el.id||el.dataset.ek||(el.dataset.ek=''a''+(auto++));
-    if(seen[k])return;seen[k]=1;award(el);
-  }
-  new MutationObserver(function(ms){ms.forEach(function(m){check(m.target)})}).observe(doc.body,{attributes:true,attributeFilter:[''class''],subtree:true});
-  // reveal
-  var targets=doc.querySelectorAll(''section .wrap > *, .hero .wrap > *'');
-  if(''IntersectionObserver'' in window&&!RM){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add(''in'');io.unobserve(e.target)}})},{threshold:.08});
-    targets.forEach(function(t){t.classList.add(''ek-reveal'');io.observe(t)});
-    setTimeout(function(){targets.forEach(function(t){t.classList.add(''in'')})},6000);
-  }
-  // hero strip
-  if(C.strip){
-    var s=C.strip,host=doc.querySelector(''.hero .wrap''),box=doc.createElement(''div'');box.className=''ek-strip'';
-    box.innerHTML=''<div class="ek-cells">''+s.cells.map(function(c,i){return ''<div class="ek-cell" tabindex="0" data-i="''+i+''"><small>''+c[0]+''</small><strong>''+c[1]+''</strong></div>''}).join('''')+''</div><div class="ek-cap" aria-live="polite"></div><div class="ek-hint">''+s.hint+''</div>'';
-    host.appendChild(box);
-    var cells=box.querySelectorAll(''.ek-cell''),cap=box.querySelector(''.ek-cap''),cur=0,timer;
-    function show(i){cells.forEach(function(c,j){c.classList.toggle(''on'',i===j)});cap.textContent=s.cap(i,s.cells[i])}
-    function loop(){clearInterval(timer);timer=setInterval(function(){cur=(cur+1)%cells.length;show(cur)},1600)}
-    cells.forEach(function(c,i){var f=function(){cur=i;show(i);loop()};c.addEventListener(''click'',f);c.addEventListener(''keydown'',function(e){if(e.key===''Enter''||e.key==='' ''){e.preventDefault();f()}})});
-    show(0);if(!RM)loop();
-  }
-  // quiz
-  var qz=doc.querySelector(''#ek-quiz-host'');
-  if(qz&&C.quiz){
-    var done=0;
-    C.quiz.forEach(function(q,qi){
-      var d=doc.createElement(''div'');d.className=''ek-q'';
-      d.innerHTML=''<h3>''+(qi+1)+''. ''+q.t+''</h3><pre>''+q.code.replace(/&/g,''&amp;'').replace(/</g,''&lt;'')+''</pre><div class="ek-opts"></div><div class="ek-why" role="status" aria-live="polite"></div>'';
-      var o=d.querySelector(''.ek-opts''),why=d.querySelector(''.ek-why''),solved=false;
-      q.opts.forEach(function(t,oi){var b=doc.createElement(''button'');b.type=''button'';b.className=''ek-opt'';b.textContent=t;
-        b.onclick=function(){
-          if(solved)return;
-          if(oi===q.ans){solved=true;b.classList.add(''good'');why.className=''ek-why good'';why.textContent=''✔ ''+q.why;o.querySelectorAll(''button'').forEach(function(x){x.disabled=true});award(b);done++}
-          else{b.classList.add(''bad'');b.disabled=true;why.className=''ek-why bad'';why.textContent=''לא בדיוק. ''+(q.hint||''נסי שוב.'')}
-        };o.appendChild(b)});
-      qz.appendChild(d);
-    });
-  }
-})();
 </script>
 </body>
 </html>
-', 13, '2026-11-08T00:00:00.000Z');
+' WHERE id='62cd2a0a3bc0066a10d94c7b75788bf6';
