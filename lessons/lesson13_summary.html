@@ -388,7 +388,7 @@
     <p class="hero-sub">התחלנו ב-<span class="mono">print</span> אחד, ועכשיו אפשר לכתוב תוכניות שמחליטות, חוזרות, זוכרות ולא קורסות. בשיעור הזה <strong>מחברים הכול</strong>, בודקים מה נשאר, ומתרגלים את מה שחשוב באמת.</p>
     <div class="code-card for-accent solo-code" style="margin:36px auto 0; text-align:left;">
       <div class="code-card-label">Python</div>
-      <pre class="hl"><code>topics = ["print", "if", "for", "list", "dict", "def", "str", "import", "try"]
+      <pre class="hl"><code>topics = ["print", "if", "for", "list", "dict", "def", "str", "import", "try", "open"]
 for t in topics:
     print("✓", t)</code></pre>
     </div>
@@ -400,7 +400,7 @@ for t in topics:
   <section id="map">
     <div class="wrap">
       <div class="eyebrow for-c">מפת הקורס</div>
-      <h2 class="section-title">עשרה כלים בארגז</h2>
+      <h2 class="section-title">אחד עשר כלים בארגז</h2>
       <p class="lede">כל שיעור הוסיף לארגז כלי אחד. לכל כלי יש כאן כרטיס עם דוגמה קצרה. נסי לנחש מה היא תדפיס, ואז לחצי "הריצי" כדי לבדוק.</p>
       <div class="rf-grid" id="map-grid"></div>
       <div class="ek-insight"><span class="ek-ic">🧰</span><div><b class="ek-tag">איך זוכרים</b><p>אין צורך לשנן הכול. צריך לדעת <b>שהכלי קיים</b> ומה הוא עושה, ואת הפרטים אפשר תמיד לבדוק. מי שיודעת שיש <span class="m">try</span> יודעת לחפש אותו.</p></div></div>
@@ -429,9 +429,9 @@ for t in topics:
     <div class="wrap">
       <div class="eyebrow for-c">איזה כלי?</div>
       <h2 class="section-title">מה בוחרים?</h2>
-      <p class="lede">הקושי האמיתי בתכנות הוא לא לכתוב את הקוד, אלא לדעת באיזה כלי להשתמש. מופיעה בעיה. בחרי את הכלי שהכי מתאים לה. שמונה שאלות.</p>
+      <p class="lede">הקושי האמיתי בתכנות הוא לא לכתוב את הקוד, אלא לדעת באיזה כלי להשתמש. מופיעה בעיה. בחרי את הכלי שהכי מתאים לה. תשע שאלות.</p>
       <div class="playground" id="ch">
-        <div class="playground-controls"><label id="ch-title">שאלה 1 מתוך 8</label></div>
+        <div class="playground-controls"><label id="ch-title">שאלה 1 מתוך 9</label></div>
         <div class="playground-note" id="ch-q" style="font-size:17px;color:var(--ink);padding-top:18px;min-height:64px"></div>
         <div class="field-row"><div class="pill-row" id="ch-opts"></div></div>
         <div class="guess-row"><span class="zg-msg" id="ch-msg" role="status" aria-live="polite"></span></div>
@@ -544,6 +544,7 @@ print(len(d))</span></div>
         <li>מחרוזת: אינדקסים ופרוסות, שיטות כמו <span class="mono">upper</span>, <span class="mono">strip</span>, <span class="mono">replace</span>, ו-f-string כמו <span class="mono">f"Hi {name}"</span>.</li>
         <li>מודולים: <span class="mono">import</span> מביא ארגז כלים (<span class="mono">random</span>, <span class="mono">math</span>), ו-<span class="mono">pip</span> מתקין מודולים חדשים.</li>
         <li>שגיאות: קוראים מלמטה. <span class="mono">try</span> מנסה, <span class="mono">except</span> תופס את הסוג שכתבנו, והתוכנית ממשיכה.</li>
+        <li>קבצים: <span class="mono">with open("שם.txt", מצב) as f:</span> עם <span class="mono">"w"</span> לכתיבה מחדש, <span class="mono">"a"</span> להוספה ו-<span class="mono">"r"</span> לקריאה. כך המידע נשאר אחרי שהתוכנית נגמרת.</li>
         <li>הדרך הכי טובה ללמוד: להריץ, לטעות, לקרוא את השגיאה ולתקן.</li>
       </ul>
     </div>
@@ -585,7 +586,8 @@ function codeLines(host,lines){host.innerHTML=lines.map(function(l,i){return '<d
    ['def / return','שיעור 7. פונקציה: קוד עם שם שאפשר להריץ שוב ושוב. return מחזירה ערך.','def double(x):\n    return x * 2\n\nprint(double(5))','10'],
    ['str','שיעור 8. מחרוזת: שרשרת תווים עם אינדקסים, פרוסות ושיטות.','name = "dana"\nprint(name.upper(), name[0], len(name))','DANA d 4'],
    ['import','שיעורים 9 ו-10. מודול הוא ארגז כלים מוכן שמביאים עם import.','import math\nprint(math.sqrt(16))','4.0'],
-   ['try / except','שיעור 11. תופסים שגיאה במקום ליפול, והתוכנית ממשיכה.','try:\n    n = int("abc")\nexcept ValueError:\n    print("not a number")','not a number']
+   ['try / except','שיעור 11. תופסים שגיאה במקום ליפול, והתוכנית ממשיכה.','try:\n    n = int("abc")\nexcept ValueError:\n    print("not a number")','not a number'],
+   ['open','שיעור 12. קבצים: התוכנית כותבת וקוראת מהמחשב, והמידע נשאר גם אחרי שהיא נגמרת.','with open("notes.txt", "a") as f:\n    f.write("hi\\n")','added "hi" to notes.txt']
   ],g=$('map-grid');
   C.forEach(function(c){var d=document.createElement('div');d.className='rf';
     var h=document.createElement('h4');h.textContent=c[0];var p=document.createElement('p');p.textContent=c[1];
@@ -626,8 +628,9 @@ var CH=[
  ['צריך לשמור 30 ציונים בסדר מסוים בתוך משתנה אחד.','list'],
  ['יש קוד שרוצים להריץ בחמישה מקומות בתוכנית, בלי להעתיק אותו חמש פעמים.','def'],
  ['המשתמשת עלולה להקליד אותיות במקום מספר, ולא רוצים שהתוכנית תקרוס.','try / except'],
- ['צריך להגריל מספר בין 1 ל-6, וזה כבר כתוב בפייתון.','import']
-],CN=['if','for','while','list','dict','def','try / except','import'],ci=0,cscore=0,ctry=0;
+ ['צריך להגריל מספר בין 1 ל-6, וזה כבר כתוב בפייתון.','import'],
+ ['צריך לשמור את הציונים כך שיישארו גם אחרי שהתוכנית נגמרת.','open']
+],CN=['if','for','while','list','dict','def','try / except','import','open'],ci=0,cscore=0,ctry=0;
 function cround(){
   if(ci>=CH.length){$('ch-title').textContent='סיימת!';$('ch-q').textContent='';$('ch-opts').innerHTML='';
     $('ch-msg').className='zg-msg good';$('ch-msg').textContent='בחרת נכון בניסיון ראשון '+cscore+' מתוך '+CH.length+'.';return}
