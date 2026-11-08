@@ -880,7 +880,7 @@ function dl(html,name,okMsg){
 }
 (function(){var sky=$('jr-sky'),T=['def','if','for','[ ]','{ }','try','print()','import','return','"w"','while','int()','x = 1','# ...','0','1','==','len()'],cl=['','b','c'];
   for(var i=0;i<18;i++){var s=document.createElement('span');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+'%';s.style.fontSize=(13+Math.random()*10)+'px';s.style.animationDuration=(11+Math.random()*10)+'s';s.style.animationDelay=(-Math.random()*16)+'s';s.style.setProperty('--r',(Math.random()*40-20)+'deg');sky.appendChild(s)}})();
-function begin(){$('jr-start-note').textContent='';$('jr-hero').querySelector('.jr-start').hidden=true;$('jr-main').hidden=false;hud();renderMap();
+function begin(){$('jr-start-note').textContent='';var hh=$('jr-hero');hh.querySelector('.jr-start').hidden=true;hh.querySelector('.hero-sub').hidden=true;hh.querySelector('.jr-rules').hidden=true;hh.style.padding='36px 0 18px';$('jr-main').hidden=false;hud();renderMap();
   if(S.end&&nDone()===ST.length){finish();return}
   var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100)}
 addEventListener('beforeunload',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''}});
