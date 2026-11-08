@@ -454,6 +454,12 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
   .jr-sel { width:280px; text-align:center; text-align-last:center; padding:10px 12px; font:600 16px var(--sans); cursor:pointer; }
   .jr-hint2 { font-size:13px; color:var(--ink-faint); }
+  /* מסך הכניסה תופס את כל חלון הדפדפן (מצב מסך מלא של האתר), ומשתחרר ברגע שהמסע מתחיל */
+  html.jr-full #jr-hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:40px; padding-bottom:40px; }
+  html.jr-full #jr-hero > .wrap { width:100%; }
+  .jr-exit { display:none; position:absolute; top:14px; inset-inline-end:14px; z-index:5; font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--ink-dim); background:rgba(20,18,31,.6); border:1px solid var(--line-strong); border-radius:100px; padding:8px 16px; }
+  .jr-exit:hover { color:var(--ink); border-color:var(--ink-dim); }
+  html.jr-full .jr-exit { display:inline-flex; }
 </style>
 <style>/* ===== engagement kit ===== */
 .ek-progress{position:fixed;top:0;right:0;left:0;height:4px;z-index:9998;background:transparent;pointer-events:none}
@@ -509,6 +515,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 <div id="jr">
 <header class="hero" id="jr-hero">
   <div class="jr-sky" id="jr-sky" aria-hidden="true"></div>
+  <button type="button" class="jr-exit" id="jr-exit">✕ יציאה ממסך מלא</button>
   <div class="wrap" style="position:relative;z-index:2">
     <div class="eyebrow" style="justify-content:center; display:flex;">משימת סיום · פייתון · מגמת מחשבים</div>
     <h1 class="jr-title">המסע ב<span class="accent-for">עשר</span> <span class="accent-while">תחנות</span></h1>
@@ -780,14 +787,14 @@ function renderMap(){
 addEventListener(''resize'',function(){if(S)layout()});
 function firstUndone(from){for(var k=0;k<ST.length;k++){var i=(from+k)%ST.length;if(!stDone(i)&&!locked(i))return i}return -1}
 function openStation(i,scroll){
-  if(locked(i)){toast(''🔒 קודם משלימות את עשר התחנות, ואז נפתחת תחנת הגמר'');return}
+', 13, '2026-11-08T00:00:00.000Z');
+UPDATE lessons SET html_content = html_content || '  if(locked(i)){toast(''🔒 קודם משלימות את עשר התחנות, ואז נפתחת תחנת הגמר'');return}
   S.cur=i;renderMap();var p=$(''jr-panel'');p.hidden=false;p.style.setProperty(''--c'',col(i));p.style.animation=''none'';void p.offsetWidth;p.style.animation='''';
   if(stDone(i))return renderSummary(i,false);
   var ti=S.t[i].findIndex(function(x){return !x.done});renderTask(i,ti);
   if(scroll!==false)try{p.scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
 }
-', 13, '2026-11-08T00:00:00.000Z');
-UPDATE lessons SET html_content = html_content || 'function head(i,ti){var s=ST[i];return ''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' מתוך ''+ST.length+'' · משימה ''+(ti+1)+'' מתוך ''+s.tasks.length+''</small><h3><span class="nm">''+esc(s.nm)+''</span> <span style="font-size:15px;color:var(--ink-faint);font-weight:500">· ''+esc(s.t)+'' (''+esc(s.sub)+'')</span></h3></div></div>''}
+function head(i,ti){var s=ST[i];return ''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' מתוך ''+ST.length+'' · משימה ''+(ti+1)+'' מתוך ''+s.tasks.length+''</small><h3><span class="nm">''+esc(s.nm)+''</span> <span style="font-size:15px;color:var(--ink-faint);font-weight:500">· ''+esc(s.t)+'' (''+esc(s.sub)+'')</span></h3></div></div>''}
 function award(i,ti,fbEl){
   var r=S.t[i][ti];r.done=true;r.pts=Math.max(10,BASE-10*(r.att+r.hint));S.streak=(r.att===0&&r.hint===0)?S.streak+1:0;hud(r.pts);return r.pts}
 function renderTask(i,ti){
@@ -882,7 +889,14 @@ function dl(html,name,okMsg){
 }
 (function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()''],cl=['''',''b'',''c''];
   for(var i=0;i<18;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
-function begin(){$(''jr-start-note'').textContent='''';var hh=$(''jr-hero'');hh.querySelector(''.jr-start'').hidden=true;hh.querySelector(''.hero-sub'').hidden=true;hh.querySelector(''.jr-rules'').hidden=true;hh.style.padding=''36px 0 18px'';$(''jr-main'').hidden=false;hud();renderMap();
+// מסך הכניסה במסך מלא: האתר מציג את ה-iframe על כל החלון (Escape או כפתור היציאה משחררים), והוא משתחרר כשהמסע מתחיל.
+function setFull(on){document.documentElement.classList.toggle(''jr-full'',on);try{parent.postMessage({type:''lesson-fullscreen'',on:on},''*'')}catch(e){}}
+addEventListener(''message'',function(e){if(e.source!==parent||!e.data)return;
+  if(e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''jr-full'',!!e.data.on);
+  else if(e.data.type===''lesson-parent-ready''&&!S)setFull(true)});
+$(''jr-exit'').onclick=function(){setFull(false)};
+setFull(true);
+function begin(){setFull(false);$(''jr-start-note'').textContent='''';var hh=$(''jr-hero'');hh.querySelector(''.jr-start'').hidden=true;hh.querySelector(''.hero-sub'').hidden=true;hh.querySelector(''.jr-rules'').hidden=true;hh.style.padding=''36px 0 18px'';$(''jr-main'').hidden=false;hud();renderMap();
   if(S.end&&nDone()===ST.length){finish();return}
   var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100)}
 addEventListener(''beforeunload'',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''''}});
