@@ -455,32 +455,26 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 
   .jr-sel { width:280px; text-align:center; text-align-last:center; padding:10px 12px; font:600 16px var(--sans); cursor:pointer; }
   .jr-hint2 { font-size:13px; color:var(--ink-faint); }
-  /* מסך הכניסה תופס את כל חלון הדפדפן (מצב מסך מלא של האתר), ומשתחרר ברגע שהמסע מתחיל */
-  html.jr-full #jr-hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:40px; padding-bottom:40px; }
-  html.jr-full #jr-hero > .wrap { width:100%; }
-  html.jr-full #jr-hero h1 { font-size:clamp(1.9rem,5.5vw,2.7rem); }
-  html.jr-full .hero-sub { font-size:16.5px; margin-top:10px; }
-  html.jr-full .jr-rules { margin-top:18px; gap:10px; }
-  html.jr-full .jr-rules div { padding:10px 14px; }
-  html.jr-full .jr-rules span { font-size:22px; }
-  html.jr-full .jr-start { margin-top:18px; gap:8px; }
-  html.jr-full .jr-rocket-big { font-size:44px; }
-  @media (max-height:860px), (max-width:600px) {
-    html.jr-full .jr-rules em, html.jr-full .jr-hint2 { display:none; }
-    html.jr-full .jr-rules { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    html.jr-full #jr-hero { padding-top:48px; padding-bottom:24px; }
-    html.jr-full .hero-sub { font-size:15.5px; line-height:1.6; }
-  }
-  @media (max-height:720px) { html.jr-full .jr-rocket-big { display:none; } html.jr-full .hero-sub { display:none; } html.jr-full .jr-rules { margin-top:14px; } }
-  @media (max-width:600px) { html.jr-full .hero-sub { display:none; } html.jr-full .jr-rocket-big { font-size:38px; } }
+  /* המבחן כולו במסך מלא (כמו חדר הבריחה): הכניסה רגילה, ואחרי שכותבים שם כל החלון הופך למסע. Escape או כפתור היציאה משחררים */
+  html.jr-full { overflow-y:auto !important; }
+  html.jr-full body { overflow:visible !important; }
+  html.jr-full #jr-hero { display:none; }
+  html.jr-full #jr { overflow:clip; }
+  html.jr-full section { padding:14px 0 40px; }
+  html.jr-full .wrap { max-width:1000px; }
+  html.jr-full .jr-bar { position:sticky; top:0; z-index:20; margin:0 0 18px; padding:10px 0; gap:8px; background:var(--bg); border-bottom:1px solid var(--line); }
+  html.jr-full .jr-who { font-size:18px; }
+  html.jr-full .jr-stat { padding:4px 14px; min-width:76px; }
+  html.jr-full .jr-stat b { font-size:20px; }
+  .jr-leave { display:none; align-self:center; font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--ink-dim); background:transparent; border:1px solid var(--line-strong); border-radius:100px; padding:8px 16px; }
+  .jr-leave:hover { color:var(--ink); border-color:var(--ink-dim); }
+  html.jr-full .jr-leave { display:inline-flex; }
+  @media (max-width:600px) { html.jr-full .jr-bar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; padding:8px 0; } html.jr-full .jr-who { grid-column:1 / 4; grid-row:1; font-size:15px; } html.jr-full .jr-leave { grid-column:4; grid-row:1; justify-self:end; padding:6px 12px; } html.jr-full .jr-stat { min-width:0; padding:3px 6px; } html.jr-full .jr-stat span { font-size:11px; } html.jr-full .jr-stat b { font-size:17px; } }
   #jr-hero.started { background:none; padding:24px 0 6px; }
   #jr-hero.started::before, #jr-hero.started::after, #jr-hero.started .jr-sky { display:none; }
   #jr-hero.started h1 { font-size:clamp(1.5rem,4vw,2rem); }
   #jr-hero.started .eyebrow { margin-bottom:4px; }
   .jr-maptitle { font:800 18px var(--display); margin:0 0 4px; color:var(--ink-dim); }
-  .jr-exit { display:none; position:absolute; top:14px; inset-inline-end:14px; z-index:5; font-family:var(--sans); font-weight:700; font-size:13.5px; color:var(--ink-dim); background:rgba(20,18,31,.6); border:1px solid var(--line-strong); border-radius:100px; padding:8px 16px; }
-  .jr-exit:hover { color:var(--ink); border-color:var(--ink-dim); }
-  html.jr-full .jr-exit { display:inline-flex; }
 </style>
 <style>/* ===== engagement kit ===== */
 .ek-progress{position:fixed;top:0;right:0;left:0;height:4px;z-index:9998;background:transparent;pointer-events:none}
@@ -536,7 +530,6 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 <div id="jr">
 <header class="hero" id="jr-hero">
   <div class="jr-sky" id="jr-sky" aria-hidden="true"></div>
-  <button type="button" class="jr-exit" id="jr-exit">✕ יציאה ממסך מלא</button>
   <div class="wrap" style="position:relative;z-index:2">
     <div class="eyebrow" style="justify-content:center; display:flex;">משימת סיום · פייתון · מגמת מחשבים</div>
     <h1 class="jr-title">המסע ב<span class="accent-for">עשר</span> <span class="accent-while">תחנות</span></h1>
@@ -568,6 +561,7 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
         <div class="jr-stat"><span>דרגה</span><b id="jr-rank">מתלמדת</b></div>
         <div class="jr-stat"><span>רצף 🔥</span><b id="jr-streak">0</b></div>
         <div class="jr-stat"><span>חותמות</span><b id="jr-stamps">0/11</b></div>
+        <button type="button" class="jr-leave" id="jr-leave">✕ יציאה</button>
       </div>
       <div class="jr-panel" id="jr-panel" hidden aria-live="polite"></div>
       <h3 class="jr-maptitle">🗺️ מפת המסע</h3>
@@ -793,9 +787,9 @@ function layout(){
   var mr=map.getBoundingClientRect(),pts=[];
   nodes.forEach(function(n){var d=n.querySelector(''.disc'').getBoundingClientRect();pts.push([d.left+d.width/2-mr.left,d.top+d.height/2-mr.top])});
   var svg=$(''jr-path''),h='''';svg.setAttribute(''viewBox'',''0 0 ''+mr.width+'' ''+mr.height);
+  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
 ', 13, '2026-11-08T00:00:00.000Z');
-UPDATE lessons SET html_content = html_content || '  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1],my=(a[1]+b[1])/2,d=''M''+a[0]+'',''+a[1]+'' C''+a[0]+'',''+my+'' ''+b[0]+'',''+my+'' ''+b[0]+'',''+b[1];
-    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
+UPDATE lessons SET html_content = html_content || '    h+=''<path class="base" d="''+d+''"/>''+(stDone(i)?''<path class="done" d="''+d+''"/>'':'''')}
   svg.innerHTML=h;
   var cur=S&&S.cur!=null?S.cur:0,pt=pts[Math.min(cur,pts.length-1)],r=$(''jr-rocket'');if(pt){r.style.left=(pt[0]+34)+''px'';r.style.top=(pt[1]-44)+''px''}
 }
@@ -809,12 +803,14 @@ function renderMap(){
 }
 addEventListener(''resize'',function(){if(S)layout()});
 function firstUndone(from){for(var k=0;k<ST.length;k++){var i=(from+k)%ST.length;if(!stDone(i)&&!locked(i))return i}return -1}
+// גוללים אל המשימה; במסך מלא יש פס עליון דביק, ולכן משאירים לו מקום
+function toPanel(){var p=$(''jr-panel''),bar=document.querySelector(''.jr-bar'');if(p.hidden)return;p.style.scrollMarginTop=(document.documentElement.classList.contains(''jr-full'')&&bar?bar.offsetHeight+12:12)+''px'';try{p.scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}}
 function openStation(i,scroll){
   if(locked(i)){toast(''🔒 קודם משלימות את עשר התחנות, ואז נפתחת תחנת הגמר'');return}
   S.cur=i;renderMap();var p=$(''jr-panel'');p.hidden=false;p.style.setProperty(''--c'',col(i));p.style.animation=''none'';void p.offsetWidth;p.style.animation='''';
   if(stDone(i))return renderSummary(i,false);
   var ti=S.t[i].findIndex(function(x){return !x.done});renderTask(i,ti);
-  if(scroll!==false)try{p.scrollIntoView({behavior:RM?''auto'':''smooth'',block:''start''})}catch(e){}
+  if(scroll!==false)toPanel();
 }
 function head(i,ti){var s=ST[i];return ''<div class="jr-ph"><span class="ic">''+s.ic+''</span><div><small>תחנה ''+(i+1)+'' מתוך ''+ST.length+'' · משימה ''+(ti+1)+'' מתוך ''+s.tasks.length+''</small><h3><span class="nm">''+esc(s.nm)+''</span> <span style="font-size:15px;color:var(--ink-faint);font-weight:500">· ''+esc(s.t)+'' (''+esc(s.sub)+'')</span></h3></div></div>''}
 function award(i,ti,fbEl){
@@ -911,16 +907,13 @@ function dl(html,name,okMsg){
 }
 (function(){var sky=$(''jr-sky''),T=[''def'',''if'',''for'',''[ ]'',''{ }'',''try'',''print()'',''import'',''return'',''"w"'',''while'',''int()'',''x = 1'',''# ...'',''0'',''1'',''=='',''len()''],cl=['''',''b'',''c''];
   for(var i=0;i<18;i++){var s=document.createElement(''span'');s.textContent=T[i%T.length];s.className=cl[i%3];s.style.left=(3+Math.random()*92)+''%'';s.style.fontSize=(13+Math.random()*10)+''px'';s.style.animationDuration=(11+Math.random()*10)+''s'';s.style.animationDelay=(-Math.random()*16)+''s'';s.style.setProperty(''--r'',(Math.random()*40-20)+''deg'');sky.appendChild(s)}})();
-// מסך הכניסה במסך מלא: האתר מציג את ה-iframe על כל החלון (Escape או כפתור היציאה משחררים), והוא משתחרר כשהמסע מתחיל.
+// כמו חדר הבריחה: הכניסה רגילה, ואחרי שכותבים שם ויוצאים למסע האתר מציג את ה-iframe על כל החלון. Escape או כפתור היציאה משחררים.
 function setFull(on){document.documentElement.classList.toggle(''jr-full'',on);try{parent.postMessage({type:''lesson-fullscreen'',on:on},''*'')}catch(e){}}
-addEventListener(''message'',function(e){if(e.source!==parent||!e.data)return;
-  if(e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''jr-full'',!!e.data.on);
-  else if(e.data.type===''lesson-parent-ready''&&!S)setFull(true)});
-$(''jr-exit'').onclick=function(){setFull(false)};
-setFull(true);
-function begin(){setFull(false);$(''jr-start-note'').textContent='''';var hh=$(''jr-hero'');hh.querySelector(''.jr-start'').hidden=true;hh.querySelector(''.hero-sub'').hidden=true;hh.querySelector(''.jr-rules'').hidden=true;hh.classList.add(''started'');$(''jr-main'').hidden=false;hud();renderMap();
+addEventListener(''message'',function(e){if(e.source===parent&&e.data&&e.data.type===''lesson-fullscreen-state'')document.documentElement.classList.toggle(''jr-full'',!!e.data.on)});
+$(''jr-leave'').onclick=function(){setFull(false)};
+function begin(){setFull(true);$(''jr-start-note'').textContent='''';var hh=$(''jr-hero'');hh.querySelector(''.jr-start'').hidden=true;hh.querySelector(''.hero-sub'').hidden=true;hh.querySelector(''.jr-rules'').hidden=true;hh.classList.add(''started'');$(''jr-main'').hidden=false;hud();renderMap();
   if(S.end&&nDone()===ST.length){finish();return}
-  var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100)}
+  var nx=S.cur!=null&&!stDone(S.cur)?S.cur:firstUndone(0);if(nx===-1)finish();else openStation(nx,true);setTimeout(layout,100);setTimeout(function(){if(!S.end)toPanel()},700)}
 addEventListener(''beforeunload'',function(e){if(S&&!S.end&&nDone()<ST.length){e.preventDefault();e.returnValue=''''}});
 (function(){var sv=loadSaved();if(!sv)return;var box=document.createElement(''div'');box.className=''jr-prev'';box.id=''jr-resume'';
   box.innerHTML=''<div>יש מסע שהתחלת ולא סיימת (<b></b>, ''+sv.t.filter(function(a){return a.every(function(x){return x.done})}).length+'' תחנות הושלמו). להמשיך מאיפה שעצרת?</div><div class="jr-act" style="justify-content:center;margin-top:8px"><button type="button" class="run-btn" id="jr-resume-go">המשיכי</button><button type="button" class="pill" id="jr-resume-new">מסע חדש</button></div>'';
