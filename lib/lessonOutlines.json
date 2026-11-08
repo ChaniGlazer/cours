@@ -108,7 +108,89 @@
     ]
   },
   "python-ai-era/course-summary": {
-    "sections": []
+    "sections": [
+      {
+        "heading": "מפת הנושאים",
+        "text": "נושא שפתרת במלואו מקבל וי. כשכל הנושאים פתורים, התעודה נפתחת בסוף העמוד."
+      },
+      {
+        "heading": "פלט וקלט",
+        "text": "הכלים הראשונים שלמדנו: print מדפיסה למסך, ו-input שואלת את המשתמשת. שתי משימות קצרות.",
+        "code": [
+          "age = int(input(\"גיל: \"))\nprint(\"בשנה הבאה:\", age + 1)"
+        ]
+      },
+      {
+        "heading": "תנאים",
+        "text": "if, elif ו-else: התוכנית מחליטה מה לעשות. פייתון בודקת מלמעלה ומריצה את הענף הראשון שנכון.",
+        "code": [
+          "if score >= 56:\n    print(\"עבר\")\nelse:\n    print(\"לא עבר\")"
+        ]
+      },
+      {
+        "heading": "לולאות",
+        "text": "for ו-while: חוזרים על קוד כמה פעמים שצריך. מה שמוזח מתחת ללולאה הוא מה שחוזר.",
+        "code": [
+          "for i in range(1, 4):\n    print(i)"
+        ]
+      },
+      {
+        "heading": "רשימות",
+        "text": "רשימות: הרבה ערכים במשתנה אחד, עם אינדקסים שמתחילים מאפס.",
+        "code": [
+          "nums = [10, 20, 30]\nnums.append(40)\nprint(nums[0], nums[-1])"
+        ]
+      },
+      {
+        "heading": "מילונים",
+        "text": "מילונים: ערכים לפי מפתח, ולא לפי מקום. מפתח שלא קיים זורק KeyError.",
+        "code": [
+          "ages = {\"dan\": 16}\nages[\"rut\"] = 17\nprint(ages[\"rut\"])"
+        ]
+      },
+      {
+        "heading": "פונקציות",
+        "text": "פונקציות: קוד עם שם שאפשר להריץ שוב ושוב.",
+        "code": [
+          "def double(x):\n    return x * 2\n\nprint(double(5))"
+        ]
+      },
+      {
+        "heading": "מודולים",
+        "text": "מודולים: ארגז כלים מוכן שמביאים עם import. איך קוראים לכלי שבתוכו?",
+        "code": [
+          "import random\nprint(random.choice([\"a\", \"b\", \"c\"]))"
+        ]
+      },
+      {
+        "heading": "מחרוזות",
+        "text": "מחרוזות: שרשרת תווים עם אינדקסים, פרוסות ושיטות כמו upper ו-strip.",
+        "code": [
+          "name = \"dana\"\nprint(f\"Hi {name.upper()}!\")"
+        ]
+      },
+      {
+        "heading": "שגיאות",
+        "text": "שגיאות: try ו-except תופסים שגיאה, והתוכנית ממשיכה במקום ליפול.",
+        "code": [
+          "try:\n    x = int(input())\nexcept ValueError:\n    print(\"לא מספר\")"
+        ]
+      },
+      {
+        "heading": "קבצים",
+        "text": "קבצים: open כותב וקורא מהמחשב, והמידע נשאר גם אחרי שהתוכנית נגמרת.",
+        "code": [
+          "with open(\"notes.txt\", \"a\") as f:\n    f.write(\"hello\\n\")"
+        ]
+      },
+      {
+        "heading": "שאלות כלליות",
+        "text": "שאלות מכל הקורס, כולל הטעויות הנפוצות ביותר. שש שאלות.",
+        "code": [
+          "name = input(\"name: \")\nif name == \"dana\":\n    print(\"hello!\")"
+        ]
+      }
+    ]
   },
   "python-ai-era/files": {
     "sections": [
