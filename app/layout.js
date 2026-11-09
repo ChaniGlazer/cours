@@ -87,6 +87,7 @@ export default async function RootLayout({ children }) {
             <nav aria-label="קישורי תחתית">
               <a href="/courses">קטלוג קורסים</a>
               <a href="/topics">נושאים</a>
+              <a href="/courses#order">הזמנות ופיתוח</a>
               <a href="/about">אודות</a>
               <a href="/privacy">פרטיות</a>
               {user ? (

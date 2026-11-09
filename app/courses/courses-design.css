@@ -112,7 +112,33 @@
 .cx-tests__hint { padding: 4px 4px 0; color: var(--text-soft); font-size: 16px; }
 
 /* testimonials: הכרטיסים עצמם מ-globals.css; כאן רק הרווח של הסקשן */
-.cx-testimonials { padding-bottom: 96px; }
+.cx-testimonials { padding-bottom: 96px; scroll-margin-top: 72px; }
+.cx-testimonials .cx-h2 { margin-bottom: 28px; }
+html { scroll-behavior: smooth; }
+
+/* כפתור "המלצות" בראש הדף: מסגרת מדורגת זוהרת, כוכב מסתובב, ברק שעובר עליו */
+.cx-reco-btn { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; border: 2px solid transparent; background: linear-gradient(var(--white), var(--white)) padding-box, linear-gradient(120deg, var(--gold), var(--cx-yellow), var(--moss), var(--cx-blue), var(--gold)) border-box; color: var(--ink); font-size: 20px; font-weight: 700; text-decoration: none; box-shadow: 0 0 22px rgba(255, 127, 150, 0.35); transition: transform .2s ease, box-shadow .2s ease; }
+.cx-reco-btn svg { color: var(--cx-yellow); animation: cx-star 3.2s ease-in-out infinite; }
+.cx-reco-btn::after { content: ""; position: absolute; inset: 0; z-index: -1; width: 40%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent); transform: translateX(-160%) skewX(-20deg); animation: cx-shine 4s ease-in-out infinite; }
+.cx-reco-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 34px rgba(255, 210, 122, 0.55); }
+@keyframes cx-star { 0%, 100% { transform: rotate(0) scale(1); } 50% { transform: rotate(144deg) scale(1.2); } }
+@keyframes cx-shine { 0%, 60% { transform: translateX(-160%) skewX(-20deg); } 100% { transform: translateX(420%) skewX(-20deg); } }
+
+/* order / contact */
+.cx-order { background: var(--white); border-top: 1px solid var(--border); scroll-margin-top: 72px; }
+.cx-order__inner { padding-top: 88px; padding-bottom: 88px; display: flex; flex-direction: column; gap: 40px; }
+.cx-order__head { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
+.cx-order__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px; }
+.cx-order__card { display: flex; flex-direction: column; gap: 10px; padding: 26px; border: 1px solid var(--border); border-radius: 20px; background: var(--paper); transition: transform .2s ease, border-color .2s ease; }
+.cx-order__card:hover { transform: translateY(-4px); border-color: var(--gold); }
+.cx-order__card h3 { font-size: 26px; }
+.cx-order__card p { color: var(--text-soft); font-size: 17px; }
+.cx-order__icon { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: var(--paper-2); font-size: 26px; }
+.cx-order__contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 32px; border: 1px solid var(--border); border-radius: 24px; background: var(--paper-2); }
+.cx-order__who { display: flex; flex-direction: column; font-size: 20px; }
+.cx-order__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.cx-order__link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--ink); font-size: 18px; font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--border); }
+.cx-order__link:hover { border-bottom-color: var(--gold); }
 
 /* instructor */
 .cx-instructor { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -125,7 +151,14 @@
   .cx-catalog__inner { padding-top: 64px; padding-bottom: 64px; }
   .cx-anatomy { padding-top: 64px; padding-bottom: 64px; }
   .cx-testimonials { padding-bottom: 64px; }
+  .cx-order__inner { padding-top: 64px; padding-bottom: 64px; }
+  .cx-order__contact { padding: 22px 20px; }
+  .cx-reco-btn { padding: 0 22px; font-size: 18px; }
   .cx-editor { box-shadow: 8px 8px 0 var(--paper-2); }
   .cx-code { font-size: 14px; padding: 18px 16px; }
 }
-@media (prefers-reduced-motion: reduce) { .cx * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  .cx * { transition: none !important; }
+  .cx-reco-btn svg, .cx-reco-btn::after { animation: none !important; }
+  html { scroll-behavior: auto; }
+}

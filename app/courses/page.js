@@ -3,6 +3,7 @@ import { CardAction, ResumeCard } from "@/app/components/CourseClient";
 import { getLatestApprovedTestimonials } from "@/lib/testimonials";
 import { NEW_COURSES } from "@/lib/lessonTheme";
 import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_WHATSAPP } from "@/lib/site";
 import "./courses-design.css";
 
 export const metadata = {
@@ -103,6 +104,12 @@ export default async function CoursesCatalogPage({ searchParams }) {
               <a href={startHref} className="cx-btn cx-btn--lg">
                 התחל ללמוד פייתון בחינם
                 <Arrow size={22} />
+              </a>
+              <a href="#testimonials" className="cx-reco-btn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8L12 2.5z" />
+                </svg>
+                המלצות
               </a>
               <a href="#courses" className="cx-link-under">
                 לכל הקורסים
@@ -301,9 +308,11 @@ export default async function CoursesCatalogPage({ searchParams }) {
       </section>
 
       {/* TESTIMONIALS */}
-      {testimonials.length > 0 && (
-        <section className="cx-wrap cx-testimonials">
-          <h2 className="cx-h2">מה אומרים התלמידים</h2>
+      <section id="testimonials" className="cx-wrap cx-testimonials">
+        <h2 className="cx-h2">מה אומרים התלמידים</h2>
+        {testimonials.length === 0 ? (
+          <p className="cx-empty">ההמלצות הראשונות יופיעו כאן בקרוב.</p>
+        ) : (
           <div className="testimonial-grid">
             {testimonials.map((t) => (
               <figure className="testimonial-card" key={t.id}>
@@ -320,8 +329,57 @@ export default async function CoursesCatalogPage({ searchParams }) {
               </figure>
             ))}
           </div>
-        </section>
-      )}
+        )}
+      </section>
+
+      {/* ORDER / CONTACT */}
+      <section id="order" className="cx-order">
+        <div className="cx-wrap cx-order__inner">
+          <div className="cx-order__head">
+            <span className="cx-accent cx-strong">הזמנות ופיתוח</span>
+            <h2 className="cx-h2">רוצים קורס, שיעורים או משהו שנבנה במיוחד בשבילכם?</h2>
+            <p className="cx-lede">
+              אפשר להזמין אצלי קורס מותאם, שיעורים פרטיים או קבוצתיים, ופיתוח של אתרים, אפליקציות וכלים מבוססי AI. ספרו לי מה אתם צריכים ונחזור אליכם.
+            </p>
+          </div>
+
+          <div className="cx-order__cards">
+            <div className="cx-order__card">
+              <span className="cx-order__icon" aria-hidden="true">🎓</span>
+              <h3>קורסים</h3>
+              <p>קורס אינטראקטיבי בעברית, מותאם לקבוצה, לבית ספר או לארגון.</p>
+            </div>
+            <div className="cx-order__card">
+              <span className="cx-order__icon" aria-hidden="true">💬</span>
+              <h3>שיעורים</h3>
+              <p>שיעורים פרטיים או קבוצתיים בפייתון, בתכנות ובעבודה עם כלי AI.</p>
+            </div>
+            <div className="cx-order__card">
+              <span className="cx-order__icon" aria-hidden="true">🛠️</span>
+              <h3>פיתוח</h3>
+              <p>בניית אתרים, אפליקציות ומערכות לפי הצורך שלכם, מהרעיון ועד שזה עובד.</p>
+            </div>
+          </div>
+
+          <div className="cx-order__contact">
+            <div className="cx-order__who">
+              <strong>חני שטיינמץ</strong>
+              <span className="cx-muted">מפתחת ומורה למדעי המחשב</span>
+            </div>
+            <div className="cx-order__actions">
+              <a href={`https://wa.me/${CONTACT_WHATSAPP}`} className="cx-btn" target="_blank" rel="noopener noreferrer">
+                שלחו הודעה בוואטסאפ
+              </a>
+              <a href={`tel:${CONTACT_PHONE}`} className="cx-order__link" dir="ltr">
+                <span aria-hidden="true">📞</span> {CONTACT_PHONE}
+              </a>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="cx-order__link" dir="ltr">
+                <span aria-hidden="true">✉️</span> {CONTACT_EMAIL}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* INSTRUCTOR */}
       <section className="cx-instructor">
