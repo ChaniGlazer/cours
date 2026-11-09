@@ -2,7 +2,7 @@
 
 // כרטיס הזמנה להרשמה למבקרים שאינם מחוברים. מוצג ב-layout רק כשאין משתמשת מחוברת.
 // קצב: הצגה ראשונה דקה וחצי אחרי הכניסה הראשונה לאתר (לא מיד), אחר כך פעם ביום (הצגות 2 עד 4), ואז פעם בשלושה ימים.
-// הדקה וחצי נספרות מטעינת האתר ולא מכל עמוד מחדש, כדי שמי שמדפדפת בין עמודים תקבל את ההזמנה בזמן. לא מציגים באמצע הקלדה או כתיבת קוד.
+// הדקה וחצי נספרות רק בזמן שהלשונית נראית, ומתחילת הביקור ולא מכל עמוד מחדש, כדי שמי שמדפדפת בין עמודים תקבל את ההזמנה בזמן. לא מציגים באמצע הקלדה או כתיבת קוד.
 // מצב נשמר ב-localStorage (מקומי לדפדפן): { last: זמן ההצגה האחרונה, shown: כמה פעמים הוצג, off: ביקשו לא להציג }.
 // אחרי 3 הצגות מופיע קישור "אל תציגו שוב", כדי שהכרטיס לא יציק למי שלא מעוניינת.
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -13,7 +13,7 @@ const KEY = "signup-prompt-v1";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DELAY_MS = 90 * 1000;
 const DAILY_SHOWS = 4; // עד ההצגה הרביעית כולל: פעם ביום. אחריה: פעם בשלושה ימים.
-const RETRY_MS = 15 * 1000;
+const PAGE_MIN_MS = 8 * 1000; // לפחות כמה שניות בעמוד הנוכחי לפני שמציגים
 const OFFER_OPT_OUT_AFTER = 3;
 
 // כמה זמן מחכים אחרי שכבר הוצג shown פעמים, עד ההצגה הבאה.
@@ -87,7 +87,8 @@ export default function SignupPrompt() {
   const [open, setOpen] = useState(false);
   const [offerOptOut, setOfferOptOut] = useState(false);
   const cardRef = useRef(null);
-  const startedAt = useRef(Date.now()); // ה-layout נשאר טעון בין עמודים, אז זו תחילת הביקור
+  const visibleMs = useRef(0); // ה-layout נשאר טעון בין עמודים, אז זה סך הזמן הנראה בביקור
+  const pageMs = useRef(0);
 
   const hidden = HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
@@ -107,21 +108,27 @@ export default function SignupPrompt() {
     if (st.off) return;
     if (tooSoon(st)) return;
 
-    let timer;
-    const attempt = () => {
+    // סופרים שניות שבהן הלשונית פתוחה ונראית (לא ברקע), מתחילת הביקור. מציגים כשצבר 90 שניות, וגם רק אחרי כמה שניות בעמוד הנוכחי,
+    // כדי שהכרטיס לא יקפוץ ברגע שחוזרים ללשונית או עוברים עמוד.
+    pageMs.current = 0;
+    const tick = setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      visibleMs.current += 1000;
+      pageMs.current += 1000;
+      if (visibleMs.current < DELAY_MS || pageMs.current < PAGE_MIN_MS) return;
       const fresh = readState();
-      if (fresh.off || tooSoon(fresh)) return; // לשונית אחרת כבר הציגה
-      if (document.visibilityState !== "visible" || userIsBusy()) {
-        timer = setTimeout(attempt, RETRY_MS);
+      if (fresh.off || tooSoon(fresh)) {
+        clearInterval(tick); // לשונית אחרת כבר הציגה
         return;
       }
+      if (userIsBusy()) return; // מנסים שוב בשנייה הבאה
+      clearInterval(tick);
       const shown = (fresh.shown || 0) + 1;
       writeState({ last: Date.now(), shown });
       setOfferOptOut(shown > OFFER_OPT_OUT_AFTER);
       setOpen(true);
-    };
-    timer = setTimeout(attempt, Math.max(0, startedAt.current + DELAY_MS - Date.now()));
-    return () => clearTimeout(timer);
+    }, 1000);
+    return () => clearInterval(tick);
   }, [pathname, hidden]);
 
   const close = useCallback(() => setOpen(false), []);
