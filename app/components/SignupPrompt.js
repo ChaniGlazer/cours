@@ -1,7 +1,8 @@
 "use client";
 
 // כרטיס הזמנה להרשמה למבקרים שאינם מחוברים. מוצג ב-layout רק כשאין משתמשת מחוברת.
-// קצב: פעם בכל 48 שעות לכל היותר, 20 שניות אחרי הכניסה לעמוד (לא מיד), ולא באמצע הקלדה או כתיבת קוד.
+// קצב: הצגה ראשונה דקה וחצי אחרי הכניסה הראשונה לאתר (לא מיד), אחר כך פעם ביום (הצגות 2 עד 4), ואז פעם בשלושה ימים.
+// הדקה וחצי נספרות מטעינת האתר ולא מכל עמוד מחדש, כדי שמי שמדפדפת בין עמודים תקבל את ההזמנה בזמן. לא מציגים באמצע הקלדה או כתיבת קוד.
 // מצב נשמר ב-localStorage (מקומי לדפדפן): { last: זמן ההצגה האחרונה, shown: כמה פעמים הוצג, off: ביקשו לא להציג }.
 // אחרי 3 הצגות מופיע קישור "אל תציגו שוב", כדי שהכרטיס לא יציק למי שלא מעוניינת.
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -9,10 +10,15 @@ import { usePathname } from "next/navigation";
 import "./signup-prompt.css";
 
 const KEY = "signup-prompt-v1";
-const EVERY_MS = 48 * 60 * 60 * 1000;
-const DELAY_MS = 20 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+const DELAY_MS = 90 * 1000;
+const DAILY_SHOWS = 4; // עד ההצגה הרביעית כולל: פעם ביום. אחריה: פעם בשלושה ימים.
 const RETRY_MS = 15 * 1000;
 const OFFER_OPT_OUT_AFTER = 3;
+
+// כמה זמן מחכים אחרי שכבר הוצג shown פעמים, עד ההצגה הבאה.
+const gapAfter = (shown) => (shown < DAILY_SHOWS ? DAY_MS : 3 * DAY_MS);
+const tooSoon = (st) => Boolean(st.last) && Date.now() - st.last < gapAfter(st.shown || 1);
 // עמודים שבהם ההזמנה מיותרת או מפריעה: הרשמה/כניסה/איפוס, תשלום ופאנל הניהול.
 const HIDDEN_ON = ["/register", "/login", "/forgot-password", "/reset-password", "/payment", "/admin"];
 
@@ -80,6 +86,7 @@ export default function SignupPrompt() {
   const [open, setOpen] = useState(false);
   const [offerOptOut, setOfferOptOut] = useState(false);
   const cardRef = useRef(null);
+  const startedAt = useRef(Date.now()); // ה-layout נשאר טעון בין עמודים, אז זו תחילת הביקור
 
   const hidden = HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
@@ -91,12 +98,12 @@ export default function SignupPrompt() {
     }
     const st = readState();
     if (st.off) return;
-    if (st.last && Date.now() - st.last < EVERY_MS) return;
+    if (tooSoon(st)) return;
 
     let timer;
     const attempt = () => {
       const fresh = readState();
-      if (fresh.off || (fresh.last && Date.now() - fresh.last < EVERY_MS)) return; // לשונית אחרת כבר הציגה
+      if (fresh.off || tooSoon(fresh)) return; // לשונית אחרת כבר הציגה
       if (document.visibilityState !== "visible" || userIsBusy()) {
         timer = setTimeout(attempt, RETRY_MS);
         return;
@@ -106,7 +113,7 @@ export default function SignupPrompt() {
       setOfferOptOut(shown > OFFER_OPT_OUT_AFTER);
       setOpen(true);
     };
-    timer = setTimeout(attempt, DELAY_MS);
+    timer = setTimeout(attempt, Math.max(0, startedAt.current + DELAY_MS - Date.now()));
     return () => clearTimeout(timer);
   }, [pathname, hidden]);
 
