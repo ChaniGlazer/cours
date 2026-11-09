@@ -115,6 +115,13 @@
 /* testimonials: הכרטיסים עצמם מ-globals.css; כאן רק הרווח של הסקשן */
 .cx-testimonials { padding-bottom: 96px; scroll-margin-top: 72px; }
 .cx-testimonials .cx-h2 { margin-bottom: 28px; }
+/* רצועת המלצות נעה: כל ההמלצות עוברות ברצף, נעצרת במעבר עכבר/פוקוס */
+.cx-marquee { direction: ltr; overflow: hidden; margin-inline: calc(var(--cx-pad) * -1); padding: 8px 0 14px; -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+.cx-marquee__track { display: flex; width: max-content; animation: cx-marquee var(--cx-marquee-time, 40s) linear infinite; }
+.cx-marquee__copy { display: contents; }
+.cx-marquee .testimonial-card { direction: rtl; flex: none; width: min(360px, 82vw); margin-inline: 10px; box-sizing: border-box; }
+.cx-marquee:hover .cx-marquee__track, .cx-marquee:focus-within .cx-marquee__track { animation-play-state: paused; }
+@keyframes cx-marquee { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 html { scroll-behavior: smooth; }
 
 /* כפתור "המלצות" בראש הדף: מסגרת מדורגת זוהרת, כוכב מסתובב, ברק שעובר עליו */
@@ -161,5 +168,8 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   .cx * { transition: none !important; }
   .cx-reco-btn svg, .cx-reco-btn::after { animation: none !important; }
+  .cx-marquee { overflow-x: auto; }
+  .cx-marquee__track { animation: none; }
+  .cx-marquee__copy { display: none; }
   html { scroll-behavior: auto; }
 }

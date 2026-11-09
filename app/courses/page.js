@@ -41,7 +41,23 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
   const allCourses = await getCourses();
   const lessonsByCourse = await getLessonsByCourse();
-  const testimonials = await getLatestApprovedTestimonials(3);
+  const testimonials = await getLatestApprovedTestimonials(60);
+  // מעט המלצות: חוזרים עליהן עד שהרצועה ארוכה מספיק כדי שלא יופיעו רווחים בלולאה
+  const marqueeBase = testimonials.length >= 3 ? Array.from({ length: Math.ceil(8 / testimonials.length) * testimonials.length }, (_, k) => testimonials[k % testimonials.length]) : [];
+  const renderTestimonial = (t, key) => (
+    <figure className="testimonial-card" key={key || t.id}>
+      <blockquote>“{t.quote}”</blockquote>
+      {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
+      <figcaption>
+        {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
+        <span>
+          <strong>{t.name}</strong>
+          {t.role && <small>{t.role}</small>}
+          {t.course_title && <small>{t.course_title}</small>}
+        </span>
+      </figcaption>
+    </figure>
+  );
   // קורסים פתוחים קודם (כרגע קורס הפייתון), ואחריהם קורסי "בקרוב". המיון יציב, אז בתוך כל קבוצה נשמר סדר ה-position מהמסד.
   const courses = [...allCourses]
     .sort((a, b) => Number(Boolean(a.coming_soon)) - Number(Boolean(b.coming_soon)))
@@ -312,22 +328,17 @@ export default async function CoursesCatalogPage({ searchParams }) {
         <h2 className="cx-h2">מה אומרים התלמידים</h2>
         {testimonials.length === 0 ? (
           <p className="cx-empty">ההמלצות הראשונות יופיעו כאן בקרוב.</p>
+        ) : testimonials.length < 3 ? (
+          <div className="testimonial-grid">{testimonials.map((t) => renderTestimonial(t))}</div>
         ) : (
-          <div className="testimonial-grid">
-            {testimonials.map((t) => (
-              <figure className="testimonial-card" key={t.id}>
-                <blockquote>“{t.quote}”</blockquote>
-                {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
-                <figcaption>
-                  {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
-                  <span>
-                    <strong>{t.name}</strong>
-                    {t.role && <small>{t.role}</small>}
-                    {t.course_title && <small>{t.course_title}</small>}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
+          // כל ההמלצות עוברות ברצף (גלילה אוטומטית ואינסופית). הרצועה משוכפלת פעמיים כדי שהלולאה תהיה חלקה; העותק השני מוסתר מקוראי מסך.
+          <div className="cx-marquee" role="region" aria-label="המלצות תלמידים">
+            <div className="cx-marquee__track" style={{ "--cx-marquee-time": `${Math.max(30, marqueeBase.length * 7)}s` }}>
+              {marqueeBase.map((t, i) => renderTestimonial(t, `a${i}`))}
+              <div className="cx-marquee__copy" aria-hidden="true">
+                {marqueeBase.map((t, i) => renderTestimonial(t, `b${i}`))}
+              </div>
+            </div>
           </div>
         )}
       </section>
