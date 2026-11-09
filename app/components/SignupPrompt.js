@@ -10,6 +10,23 @@ import { usePathname } from "next/navigation";
 import "./signup-prompt.css";
 
 const KEY = "signup-prompt-v1";
+// סך שניות הצפייה בביקור הנוכחי (sessionStorage = לשונית אחת). הקישורים באתר טוענים עמוד מלא, אז בלי שמירה הספירה הייתה מתאפסת בכל מעבר עמוד.
+const VISIBLE_KEY = "signup-visible-ms";
+
+function readVisible() {
+  try {
+    return Number(sessionStorage.getItem(VISIBLE_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+function writeVisible(ms) {
+  try {
+    sessionStorage.setItem(VISIBLE_KEY, String(ms));
+  } catch {
+    // לא קריטי: הספירה תהיה לעמוד הנוכחי בלבד
+  }
+}
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DELAY_MS = 90 * 1000;
 const DAILY_SHOWS = 4; // עד ההצגה הרביעית כולל: פעם ביום. אחריה: פעם בשלושה ימים.
@@ -87,7 +104,7 @@ export default function SignupPrompt() {
   const [open, setOpen] = useState(false);
   const [offerOptOut, setOfferOptOut] = useState(false);
   const cardRef = useRef(null);
-  const visibleMs = useRef(0); // ה-layout נשאר טעון בין עמודים, אז זה סך הזמן הנראה בביקור
+  const visibleMs = useRef(0); // סך הזמן הנראה בביקור (נקרא מ-sessionStorage בהתחלה)
   const pageMs = useRef(0);
 
   const hidden = HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`));
@@ -111,10 +128,12 @@ export default function SignupPrompt() {
     // סופרים שניות שבהן הלשונית פתוחה ונראית (לא ברקע), מתחילת הביקור. מציגים כשצבר 90 שניות, וגם רק אחרי כמה שניות בעמוד הנוכחי,
     // כדי שהכרטיס לא יקפוץ ברגע שחוזרים ללשונית או עוברים עמוד.
     pageMs.current = 0;
+    visibleMs.current = Math.max(visibleMs.current, readVisible());
     const tick = setInterval(() => {
       if (document.visibilityState !== "visible") return;
       visibleMs.current += 1000;
       pageMs.current += 1000;
+      writeVisible(visibleMs.current);
       if (visibleMs.current < DELAY_MS || pageMs.current < PAGE_MIN_MS) return;
       const fresh = readState();
       if (fresh.off || tooSoon(fresh)) {
