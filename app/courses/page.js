@@ -3,7 +3,7 @@ import { CardAction, ResumeCard } from "@/app/components/CourseClient";
 import { getLatestApprovedTestimonials } from "@/lib/testimonials";
 import { NEW_COURSES } from "@/lib/lessonTheme";
 import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
-import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_WHATSAPP } from "@/lib/site";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/site";
 import "./courses-design.css";
 
 export const metadata = {
@@ -367,10 +367,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
               <span className="cx-muted">מפתחת ומורה למדעי המחשב</span>
             </div>
             <div className="cx-order__actions">
-              <a href={`https://wa.me/${CONTACT_WHATSAPP}`} className="cx-btn" target="_blank" rel="noopener noreferrer">
-                שלחו הודעה בוואטסאפ
-              </a>
-              <a href={`tel:${CONTACT_PHONE}`} className="cx-order__link" dir="ltr">
+              <a href={`tel:${CONTACT_PHONE}`} className="cx-btn" dir="ltr">
                 <span aria-hidden="true">📞</span> {CONTACT_PHONE}
               </a>
               <a href={`mailto:${CONTACT_EMAIL}`} className="cx-order__link" dir="ltr">
