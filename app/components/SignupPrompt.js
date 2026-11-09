@@ -39,12 +39,13 @@ function writeState(patch) {
   }
 }
 
-// האם המבקרת באמצע פעולה שלא כדאי להפריע לה (הקלדה בשדה, או עבודה בתוך שיעור/עורך קוד שבתוך iframe)?
+// האם המבקרת באמצע הקלדה בשדה בעמוד? (פוקוס בתוך iframe של שיעור לא נחשב: אחרי כל לחיצה בשיעור הפוקוס שם, והכרטיס לא היה מופיע לעולם.
+// הכרטיס לא גונב מיקוד, כך שהקלדה בתוך השיעור ממשיכה כרגיל.)
 function userIsBusy() {
   const el = document.activeElement;
   if (!el || el === document.body) return false;
   const tag = el.tagName;
-  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || tag === "IFRAME" || el.isContentEditable;
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
 }
 
 const REASONS = [
@@ -95,6 +96,12 @@ export default function SignupPrompt() {
     if (hidden) {
       setOpen(false);
       return;
+    }
+    // לבדיקה: הוספת ?signup-prompt=reset לכתובת מאפסת את הזיכרון, והכרטיס מופיע שוב אחרי הדקה וחצי.
+    try {
+      if (new URLSearchParams(window.location.search).get("signup-prompt") === "reset") localStorage.removeItem(KEY);
+    } catch {
+      // לא קריטי
     }
     const st = readState();
     if (st.off) return;
