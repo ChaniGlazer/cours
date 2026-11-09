@@ -414,14 +414,6 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
 </head>
 <body>
 
-<div class="name-bar">
-  <div class="wrap name-bar-inner">
-    <label for="cert-name">מי כותבת? רשמו את השם כאן — הוא יופיע בקובץ שתורידו בסוף:</label>
-    <input type="text" id="cert-name" class="name-bar-input" placeholder="השם שלך">
-    <button type="button" id="jump-to-exercises" class="name-bar-jump">לתרגילים ⬇</button>
-  </div>
-</div>
-
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow" style="justify-content:center; display:flex;">שיעור שישי · פייתון · מגמת מחשבים</div>
@@ -880,23 +872,6 @@ print(len(d), d["b"])</div>
     </div>
   </section>
 
-  <section id="certificate">
-    <div class="wrap">
-      <div class="eyebrow">לסיום</div>
-      <h2 class="section-title">שלחו לי את התוצאות</h2>
-      <p class="lede">לוחצות על הכפתור — יורד קובץ HTML מעוצב עם סיכום מה שפתרתן, כולל הקוד שהדבקתן בתרגיל 5, כדי שאוכל לבדוק.</p>
-      <div class="certificate-box">
-        <span class="cert-name-display">מורידה עבור: <strong id="cert-name-display">—</strong></span>
-        <button class="run-btn" id="cert-download" type="button">⬇️ הורידי קובץ תוצאות</button>
-        <p class="cert-status" id="cert-status" role="status" aria-live="polite"></p>
-      </div>
-      <div class="cert-fallback" id="cert-fallback" hidden>
-        <p class="cert-fallback-note">ההורדה האוטומטית לא זמינה כאן. סמנו הכול בתיבה למטה (Ctrl+A / Cmd+A), העתיקו, הדביקו לקובץ טקסט חדש ושמרו אותו בסיומת .html:</p>
-        <textarea class="cert-fallback-text" id="cert-fallback-text" readonly rows="8"></textarea>
-      </div>
-    </div>
-  </section>
-
 </main>
 
 <footer><div class="wrap">שיעור פייתון · מילונים</div></footer>
@@ -1005,12 +980,6 @@ function makeGuess(btnId, inputId, fbId, test, okText, badText) {
     else { fb.textContent = badText; fb.className = "guess-feedback wrong"; }
   });
 }
-
-/* ---------- jump to exercises ---------- */
-(function () {
-  var btn = $("jump-to-exercises"), target = $("exercises");
-  if (btn && target) btn.addEventListener("click", function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); });
-})();
 
 /* ---------- phone book ---------- */
 var BASE_AGES = [["דנה", 30], ["רונית", 25], ["מיכל", 41]];
@@ -1202,95 +1171,13 @@ var ex5Editor = pyEditor({
 /* הקוד שה-AI החזיר: אפשר להדביק ולהריץ, בלי בדיקה אוטומטית */
 var ex5AiEditor = pyEditor({ el: "ex5ai-ed", id: "ex5ai", rows: 6, maxRows: 18, code: ''# הדביקי כאן את הקוד שה-AI החזיר\n'', label: "הקוד שה-AI החזיר" });
 
-/* ---------- certificate download ---------- */
-(function () {
-  var nameInput = $("cert-name"), btn = $("cert-download"), statusEl = $("cert-status");
-  var fallbackBox = $("cert-fallback"), fallbackText = $("cert-fallback-text"), nameDisplay = $("cert-name-display");
-  function currentName() { return (nameInput.value || "").trim() || "תלמידה"; }
-  nameInput.addEventListener("input", function () { nameDisplay.textContent = currentName(); });
-  nameDisplay.textContent = currentName();
-
-  function statusRow(label, done) {
-    return ''<div class="row"><span class="dot '' + (done ? "done" : "") + ''"></span><span class="label">'' + label + ''</span><span class="state '' + (done ? "ok" : "no") + ''">'' + (done ? "הושלם" : "לא הושלם") + "</span></div>";
-  }
-  function buildCertificateHtml(name) {
-    var p = window.lessonProgress;
-    var ex5 = esc(edCode(ex5Editor, "ex5").trim()) || "(לא הוזן קוד)";
-    var aiCode = esc(edCode(ex5AiEditor, "ex5ai").trim()) || "(לא הוזן קוד)";
-    var ai = esc($("ex5-ai").value.trim()) || "(לא הוזן)";
-    var dateStr = new Date().toLocaleDateString("he-IL");
-    return ''<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">'' +
-      "<title>תעודת תרגול — " + esc(name) + "</title>" +
-      ''<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'' +
-      ''<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Heebo:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">'' +
-      "<style>" +
-      ":root{--bg:#14121f;--panel:#1d1a2d;--ink:#16242b;--dim:#bdb7d3;--gold:#ff7f96;--ok:#6fe0a0;--no:#ff7f96;--code:#16242b;--code-ink:#f4f1fa;--line:rgba(58,53,88,.14);}" +
-      "*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,sans-serif;font-size:16px;line-height:1.7;padding:50px 20px;}" +
-      ".wrap{max-width:640px;margin:0 auto;}h1{font-family:Secular One,serif;font-weight:700;font-size:2rem;margin:0 0 6px;}" +
-      ".meta{color:var(--dim);margin-bottom:34px;font-size:15px;}h2{font-family:Secular One,serif;font-weight:700;font-size:1.2rem;margin:0 0 14px;color:var(--gold);}" +
-      ".card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:26px;}" +
-      ".row{display:flex;align-items:center;gap:10px;padding:6px 0;}.dot{width:10px;height:10px;border-radius:50%;background:var(--no);flex-shrink:0;}.dot.done{background:var(--ok);}" +
-      ".label{flex:1;font-size:15px;}.state{font-family:''JetBrains Mono'',monospace;font-size:13px;font-weight:600;}.state.ok{color:var(--ok);}.state.no{color:var(--no);}" +
-      ".score{font-family:''JetBrains Mono'',monospace;font-size:15px;color:var(--dim);padding:6px 0;}.score strong{color:var(--ink);}" +
-      "pre{direction:ltr;text-align:left;font-family:''JetBrains Mono'',monospace;font-size:13.5px;line-height:1.7;background:var(--code);border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;color:var(--code-ink);margin:0 0 12px;}" +
-      ".q{font-size:14.5px;color:var(--dim);margin:0 0 10px;}.txt{margin:12px 0 0;white-space:pre-wrap;}" +
-      ''</style></head><body><div class="wrap">'' +
-      "<h1>תעודת תרגול — מילונים בפייתון</h1>" +
-      ''<div class="meta">שם: '' + esc(name) + " · תאריך: " + dateStr + "</div>" +
-      ''<h2>תרגילים עם בדיקה</h2><div class="card">'' +
-      statusRow("תרגיל 1 (קריאה לפי מפתח)", p.ex1) + statusRow("תרגיל 2 (שינוי והוספה)", p.ex2) + statusRow("תרגיל 3 (ברירת מחדל)", p.ex3) + statusRow("תרגיל 4 (מעבר על ערכים)", p.ex4) +
-      "</div>" +
-      ''<h2>בלשית קוד</h2><div class="card"><div class="score">מקרים שנפתרו: <strong>'' + p.detectiveSolved + "</strong> מתוך " + p.detectiveTotal + "</div></div>" +
-      ''<h2>תרגיל 5 · מתרגם האימוג׳ים</h2><div class="card"><p class="q">התוכנית שלי:</p><pre>'' + ex5 + ''</pre><p class="q">הקוד ש-AI החזיר:</p><pre>'' + aiCode + ''</pre><p class="txt">'' + ai + "</p></div>" +
-      "</div></body></html>";
-  }
-  function blobDownload(filename, html) {
-    try {
-      var blob = new Blob([html], { type: "text/html;charset=utf-8" });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url; a.download = filename;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
-      return true;
-    } catch (e) { return false; }
-  }
-  btn.addEventListener("click", async function () {
-    var name = currentName();
-    var html = buildCertificateHtml(name);
-    var filename = name + " - תעודת תרגול.html";
-    if (typeof window.claude !== "undefined" && window.claude.use) {
-      var downloads = null;
-      try { downloads = await window.claude.use("downloads"); } catch (e) { downloads = null; }
-      if (downloads) {
-        try {
-          var res = await downloads.save({ filename: filename, data: html });
-          statusEl.textContent = res.status === "saved" ? "הקובץ נשמר! שלחו אותו אליי." : "הקובץ נשלח.";
-          statusEl.className = "cert-status correct";
-          return;
-        } catch (err) {
-          if (err && err.code === "declined") { statusEl.textContent = "ההורדה בוטלה."; statusEl.className = "cert-status wrong"; return; }
-        }
-      }
-    }
-    if (blobDownload(filename, html)) {
-      statusEl.textContent = "הקובץ ירד! שלחו אותו אליי.";
-      statusEl.className = "cert-status correct";
-      return;
-    }
-    statusEl.textContent = "ההורדה האוטומטית לא עבדה כאן — הטקסט מוכן להעתקה למטה.";
-    statusEl.className = "cert-status wrong";
-    fallbackText.value = html; fallbackBox.hidden = false;
-  });
-})();
 </script>
 
 <script>
 /* מדגים לולאה על מילון צעד אחר צעד */
 (function () {
   var data = [["Dana", 30], ["Yuval", 25], ["Noa", 28]];
-', 6, '2026-10-08T07:27:31.938Z');
-UPDATE lessons SET html_content = html_content || '  var mode = "keys", i = 0;
+  var mode = "keys", i = 0;
   var cards = document.getElementById("gd-cards"), code = document.getElementById("gd-code"),
       vr = document.getElementById("gd-var"), out = document.getElementById("gd-out"),
       msg = document.getElementById("gd-msg"), next = document.getElementById("gd-next");
@@ -1385,4 +1272,4 @@ UPDATE lessons SET html_content = html_content || '  var mode = "keys", i = 0;
 })();
 </script></body>
 </html>
-' WHERE id='1dc32f032e4139e5832650a29aa9b0b7';
+', 6, '2026-10-08T07:27:31.938Z');
