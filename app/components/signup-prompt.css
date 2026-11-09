@@ -1,0 +1,183 @@
+/* כרטיס הזמנה להרשמה (SignupPrompt.js). בפינה הימנית-תחתונה (תחילת השורה ב-RTL); החונכת יושבת בפינה השמאלית. לא חוסם את העמוד. */
+.sp {
+  position: fixed;
+  z-index: 55;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: min(390px, calc(100vw - 32px));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 26px 24px 20px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.7);
+  animation: sp-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* פס מבטא עדין בראש הכרטיס */
+.sp::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--moss));
+}
+
+.sp__x {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.sp__x:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+.sp__x svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sp__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(111, 224, 160, 0.14);
+  color: var(--moss);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.sp__title {
+  margin: 12px 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+.sp__lead {
+  margin: 0 0 14px;
+  color: var(--text-soft);
+}
+
+.sp__list {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.sp__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.sp__icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--paper-2);
+  color: var(--gold);
+}
+.sp__icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sp__list strong {
+  display: block;
+  font-size: 1rem;
+}
+.sp__text {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.93rem;
+}
+
+.sp__cta {
+  width: 100%;
+}
+.sp__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+  margin-top: 10px;
+}
+.sp__link {
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 0.93rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.sp__link:hover {
+  color: var(--ink);
+}
+
+.sp :is(.sp__x, .sp__link, .sp__cta):focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@keyframes sp-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* מובייל: כרטיס לרוחב המסך בתחתית, קומפקטי יותר. בשיעורים (יש כפתור חונכת צף) הוא מרים את עצמו מעליו. */
+@media (max-width: 560px) {
+  .sp {
+    right: 12px;
+    left: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: auto;
+    padding: 22px 18px 14px;
+    max-height: 80vh;
+  }
+  body:has(.tw-fab:not([hidden])) .sp {
+    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 64px);
+  }
+  .sp__title {
+    font-size: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp {
+    animation: none;
+  }
+}
