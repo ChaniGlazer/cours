@@ -85,7 +85,7 @@ function Choice({ type, name, option, checked, disabled, onChange, wide }) {
   );
 }
 
-export default function SurveyClient({ contactEmail }) {
+export default function SurveyClient() {
   const [phase, setPhase] = useState("intro"); // intro | q | done
   const [idx, setIdx] = useState(0);
   const [dir, setDir] = useState(1);
@@ -366,7 +366,7 @@ export default function SurveyClient({ contactEmail }) {
                     <span>{CONSENT_TEXT}</span>
                   </label>
                   <p className="sv-fine">
-                    אפשר להסיר את עצמי בכל רגע{contactEmail ? <>, בפנייה אלינו ב-<bdi dir="ltr">{contactEmail}</bdi></> : ""}. פרטים ב
+                    אפשר להסיר את עצמי בכל רגע. פרטים ב
                     <a href="/privacy#survey" target="_blank" rel="noopener">מדיניות הפרטיות</a>. בלי סימון התיבה לא נצרפת לרשימת הדיוור.
                   </p>
                   {/* honeypot: שדה שמוסתר ממשתמשים. בוטים ממלאים אותו, ואז הבקשה נזרקת בשקט */}

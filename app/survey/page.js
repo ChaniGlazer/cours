@@ -1,4 +1,3 @@
-import { CONTACT_EMAIL } from "@/lib/site";
 import { OG_IMAGES } from "@/lib/seo";
 import SurveyClient from "./SurveyClient";
 
@@ -14,5 +13,5 @@ export const metadata = {
 };
 
 export default function SurveyPage() {
-  return <SurveyClient contactEmail={CONTACT_EMAIL} />;
+  return <SurveyClient />;
 }
