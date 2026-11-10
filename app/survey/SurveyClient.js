@@ -348,7 +348,7 @@ export default function SurveyClient() {
 
               {q.kind === "contact" && (
                 <div className="sv-field">
-                  <label htmlFor="sv-email">כתובת מייל (לא חובה)</label>
+                  <label htmlFor="sv-email">המייל שלכם</label>
                   <input
                     id="sv-email"
                     type="email"
@@ -365,9 +365,12 @@ export default function SurveyClient() {
                     <input type="checkbox" checked={answers.consent} onChange={(e) => set({ consent: e.target.checked })} />
                     <span>{CONSENT_TEXT}</span>
                   </label>
+                  {answers.email.trim() && !answers.consent && (
+                    <p className="sv-nudge" role="note">סמנו את התיבה כדי שנוכל לשלוח לכם את הסיכום 👆</p>
+                  )}
                   <p className="sv-fine">
-                    אפשר להסיר את עצמי בכל רגע. פרטים ב
-                    <a href="/privacy#survey" target="_blank" rel="noopener">מדיניות הפרטיות</a>. בלי סימון התיבה לא נצרפת לרשימת הדיוור.
+                    אפשר להפסיק לקבל בכל רגע, בלי הסבר. פרטים ב
+                    <a href="/privacy#survey" target="_blank" rel="noopener">מדיניות הפרטיות</a>.
                   </p>
                   {/* honeypot: שדה שמוסתר ממשתמשים. בוטים ממלאים אותו, ואז הבקשה נזרקת בשקט */}
                   <div className="sv-hp" aria-hidden="true">

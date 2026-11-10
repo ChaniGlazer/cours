@@ -271,3 +271,4 @@
 @keyframes svr-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .svr-avg { text-align: center; color: var(--ink-2); margin: 12px 0 0; }
 .svr-private { color: var(--moss); font-size: 0.8rem; font-weight: 700; }
+.sv-nudge { margin: 0; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--ink); font-weight: 700; font-size: 0.95rem; }
