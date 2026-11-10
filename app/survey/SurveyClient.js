@@ -5,7 +5,7 @@
 // (לא אוטומטי), ומיקוד עובר לכותרת השאלה החדשה. prefers-reduced-motion מכובד ב-CSS וגם כאן (בלי קונפטי).
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CONSENT_TEXT, MAX_OPEN_TEXT, QUESTIONS } from "@/lib/surveyConfig";
-import SurveyResults from "./SurveyResults";
+import ResultsBody from "./ResultsBody";
 import "./survey.css";
 
 const STORAGE_KEY = "survey-done-v1";
@@ -408,7 +408,7 @@ export default function SurveyClient({ contactEmail }) {
             </div>
 
             {results ? (
-              <SurveyResults results={results} mine={mine} />
+              results.total > 0 ? <ResultsBody results={results} mine={mine} embedded /> : <p className="svr-empty">עוד אין תשובות. תהיו הראשונים!</p>
             ) : (
               <p className="sv-hint">טוען את התוצאות…</p>
             )}
@@ -423,7 +423,6 @@ export default function SurveyClient({ contactEmail }) {
               <p className="sv-hint" role="status" aria-live="polite">{shareMsg}</p>
             </div>
 
-            <a className="sv-link" href="/survey/results">לעמוד התוצאות המלא ←</a>
             <a className="sv-link" href="/courses">רוצה להתחיל ללמוד? לקורסים החינמיים ←</a>
           </div>
         )}

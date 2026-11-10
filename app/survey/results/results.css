@@ -92,3 +92,10 @@
 }
 @media (prefers-reduced-motion: reduce) { .svd-ring { animation: none; } }
 .svd-note { margin: -20px 0 0; text-align: center; color: var(--text-soft); font-size: 0.9rem; }
+
+/* גרסה משובצת: מסך הסיום של הסקר. בלי ריפוד ורקע של עמוד מלא, וטורים בודדים כי העמודה צרה */
+.svd.svd--embedded { max-width: none; padding: 0; gap: 28px; }
+.svd.svd--embedded::before { display: none; }
+.svd.svd--embedded .svd-stats { grid-template-columns: 1fr; }
+.svd.svd--embedded .svr { grid-template-columns: 1fr; }
+.svd.svd--embedded .svd-note, .svd.svd--embedded .svd-small { margin: 0; }
