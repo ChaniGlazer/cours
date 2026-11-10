@@ -135,6 +135,14 @@ export default async function CoursesCatalogPage({ searchParams }) {
           </div>
 
           <div className="cx-hero__mock">
+            {/* כפתור הסקר: מדבקה עגולה ומוטה על פינת חלון הקוד */}
+            <a className="svb-fab" href="/survey" aria-label="לסקר קצר של שתי דקות: איך היית לומדת פיתוח בעידן ה-AI">
+              <span className="svb-fab__icon" aria-hidden="true">📝</span>
+              <span className="svb-fab__text">
+                סקר קצר, 2 דקות
+                <small>איך היית לומדת פיתוח היום, בעידן ה-AI? ותראי איך ענו האחרות</small>
+              </span>
+            </a>
             <div className="cx-editor">
               <div className="cx-editor__bar" dir="ltr">
                 <span className="cx-dot cx-dot--accent" />
@@ -167,12 +175,6 @@ export default async function CoursesCatalogPage({ searchParams }) {
           </div>
         </div>
       </section>
-
-      {/* כפתור הסקר: עגול, צף בצד */}
-      <a className="svb-fab" href="/survey" aria-label="לסקר קצר של שתי דקות: איך היית לומדת פיתוח בעידן ה-AI">
-        <span className="svb-fab__icon" aria-hidden="true">📝</span>
-        <span>סקר קצר</span>
-      </a>
 
       {/* CATALOG */}
       <section id="courses" className="cx-catalog">

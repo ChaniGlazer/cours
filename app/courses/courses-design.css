@@ -39,7 +39,7 @@
 .cx-link-under { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--ink); font-size: 18px; font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--border); }
 .cx-link-under:hover { border-bottom-color: var(--gold); }
 
-.cx-hero__mock { flex: 1 1 460px; min-width: 0; }
+.cx-hero__mock { position: relative; flex: 1 1 460px; min-width: 0; }
 .cx-editor { border: 1px solid var(--border); border-radius: 20px; background: var(--white); overflow: hidden; box-shadow: 14px 14px 0 var(--paper-2); }
 .cx-editor__bar { display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--paper-2); }
 .cx-dot { width: 12px; height: 12px; border-radius: 50%; }
