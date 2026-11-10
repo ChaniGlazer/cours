@@ -76,6 +76,8 @@ export default async function CoursesCatalogPage({ searchParams }) {
       return true;
     });
 
+  // סינון הקורסים (הכל / חינמי / בתשלום) מוסתר בינתיים: כל הקורסים חינמיים. להחזיר: SHOW_FILTER_TABS = true
+  const SHOW_FILTER_TABS = false;
   const tabs = [
     { key: "all", label: "הכל" },
     { key: "free", label: "חינמי" }
@@ -217,6 +219,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
               <h2 className="cx-h2">הקורסים שלנו</h2>
               <p className="cx-lede">קורס הפייתון כבר פתוח וחינמי, ועוד קורסים בדרך.</p>
             </div>
+            {SHOW_FILTER_TABS && (
             <nav className="cx-tabs" aria-label="סינון קורסים">
               {tabs.map((t) => (
                 <a
@@ -229,6 +232,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
                 </a>
               ))}
             </nav>
+            )}
           </div>
 
           <ResumeCard courses={resumable} />
