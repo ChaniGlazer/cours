@@ -10,7 +10,7 @@ import "./survey.css";
 
 const STORAGE_KEY = "survey-done-v1";
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
-const EMPTY = { stage: null, ai_usage: null, feelings: [], priorities: [], help_format: [], manual_first: null, junior_risk: null, open_text: "", email: "", consent: false };
+const EMPTY = { stage: null, ai_usage: null, priorities: [], help_format: [], manual_first: null, junior_risk: null, open_text: "", email: "", consent: false };
 
 function readDone() {
   try {
@@ -271,7 +271,7 @@ export default function SurveyClient({ contactEmail }) {
               אם הייתם מתחילים ללמוד פיתוח היום, איך הייתם עושים את זה?
             </h2>
             <p className="sv-lead">
-              בעידן שבו ה-AI כותב קוד, כולנו מנסים להבין מה באמת שווה ללמוד. עשו שמונה שאלות קצרות, וגלו מיד איך ענו האחרים.
+              בעידן שבו ה-AI כותב קוד, כולנו מנסים להבין מה באמת שווה ללמוד. עשו שבע שאלות קצרות, וגלו מיד איך ענו האחרים.
             </p>
             <ul className="sv-bullets">
               <li><span aria-hidden="true">🔒</span> אנונימי לגמרי. מייל משאירים רק אם רוצים.</li>
