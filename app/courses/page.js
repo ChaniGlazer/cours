@@ -168,19 +168,13 @@ export default async function CoursesCatalogPage({ searchParams }) {
         </div>
       </section>
 
-      {/* CATALOG */}
-      {/* באנר הסקר */}
-      <div className="svb">
-        <a className="svb__link" href="/survey">
-          <span className="svb__emoji" aria-hidden="true">📝</span>
-          <span className="svb__text">
-            <strong>איך היית לומדת פיתוח אם היית מתחילה היום, בעידן ה-AI?</strong>
-            <span>סקר קצר של שתי דקות, ותראי מיד איך ענו האחרות.</span>
-          </span>
-          <span className="svb__cta">לסקר</span>
-        </a>
-      </div>
+      {/* כפתור הסקר: עגול, צף בצד */}
+      <a className="svb-fab" href="/survey" aria-label="לסקר קצר של שתי דקות: איך היית לומדת פיתוח בעידן ה-AI">
+        <span className="svb-fab__icon" aria-hidden="true">📝</span>
+        <span>סקר קצר</span>
+      </a>
 
+      {/* CATALOG */}
       <section id="courses" className="cx-catalog">
         <div className="cx-wrap cx-catalog__inner">
           <div className="cx-catalog__head">
