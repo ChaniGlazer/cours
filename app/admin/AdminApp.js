@@ -11,8 +11,10 @@ import {
   deleteLessonAction,
   createTestimonialAction,
   updateTestimonialAction,
-  deleteTestimonialAction
+  deleteTestimonialAction,
+  removeSurveySubscriberAction
 } from "@/app/actions/admin";
+import SurveyResults from "@/app/survey/SurveyResults";
 
 const GROUPS = [
   { label: "סקירה", items: [{ key: "dashboard", label: "לוח בקרה", icon: "🏠" }] },
@@ -30,7 +32,13 @@ const GROUPS = [
       { key: "visits", label: "כניסות לאתר", icon: "📈", desc: "כמה כניסות היו, מאיפה הגיעו ומי נכנס (גם מבקרים שלא נרשמו)" }
     ]
   },
-  { label: "שיווק", items: [{ key: "testimonials", label: "המלצות", icon: "💬", desc: "הוכחה חברתית שמוצגת בעמודי הקורס" }] },
+  {
+    label: "שיווק",
+    items: [
+      { key: "testimonials", label: "המלצות", icon: "💬", desc: "הוכחה חברתית שמוצגת בעמודי הקורס" },
+      { key: "survey", label: "סקר ורשימת תפוצה", icon: "📝", desc: "תשובות הסקר (אנונימיות), ורק מי שאישרה דיוור ברשימת התפוצה" }
+    ]
+  },
   { label: "האתר", items: [{ key: "settings", label: "הגדרות אתר", icon: "⚙️", desc: "מותג, פרופיל מדריך ואחריות" }] }
 ];
 const SECTIONS = GROUPS.flatMap((g) => g.items);
@@ -1244,9 +1252,122 @@ function Dashboard({ courses, lessons, testimonials, settings, learnerData, visi
   );
 }
 
+/* ---------- Survey ---------- */
+
+function SurveyPanel({ surveyData, notify }) {
+  const [pending, setPending] = useState(null);
+  if (!surveyData) {
+    return (
+      <div className="alert alert-error">
+        טבלאות הסקר עדיין לא קיימות במסד הנתונים. צריך להריץ את המיגרציה <bdi dir="ltr">0011_survey.sql</bdi> (db:migrate:remote) ואז לרענן.
+      </div>
+    );
+  }
+  const { results, openAnswers, subscribers, perDay } = surveyData;
+  const consenting = subscribers.filter((s) => s.marketing_consent);
+  const fmt = (iso) => (iso ? new Date(iso).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short" }) : "");
+
+  const remove = async (s) => {
+    if (!window.confirm(`להסיר את ${s.email} מרשימת הדיוור?`)) return;
+    setPending(s.id);
+    try {
+      await removeSurveySubscriberAction(s.id);
+      notify("ok", "הוסרה מרשימת הדיוור");
+    } finally {
+      setPending(null);
+    }
+  };
+
+  return (
+    <div className="adm-learners">
+      <div className="adm-stats">
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{results.total}</span>
+          <span className="adm-stat__label">תשובות לסקר</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{consenting.length}</span>
+          <span className="adm-stat__label">ברשימת התפוצה (אישרו דיוור)</span>
+        </div>
+        <div className="adm-stat adm-stat--static">
+          <span className="adm-stat__value">{subscribers.length - consenting.length}</span>
+          <span className="adm-stat__label">השאירו מייל בלי לאשר דיוור (לא נשלח אליהן)</span>
+        </div>
+      </div>
+
+      <div className="adm-quick" style={{ marginBottom: 24 }}>
+        <a className="adm-quick__card" href="/api/survey/export?type=subscribers" download>
+          <strong>⬇ CSV של רשימת התפוצה</strong>
+          <small>רק מי שאישרה דיוור: מייל, תאריך ושעת הסכמה, מקור</small>
+        </a>
+        <a className="adm-quick__card" href="/api/survey/export?type=responses" download>
+          <strong>⬇ CSV של התשובות</strong>
+          <small>אנונימי, בלי מיילים</small>
+        </a>
+        <a className="adm-quick__card" href="/survey" target="_blank" rel="noreferrer">
+          <strong>↗ לעמוד הסקר</strong>
+          <small>הקישור לשיתוף: /survey</small>
+        </a>
+      </div>
+
+      <h3>תוצאות מצטברות</h3>
+      <SurveyResults results={results} headingLevel={4} />
+
+      {perDay.length > 0 && (
+        <>
+          <h3 style={{ marginTop: 28 }}>תשובות לפי יום</h3>
+          <table className="adm-table">
+            <thead><tr><th>יום</th><th>תשובות</th></tr></thead>
+            <tbody>{perDay.map((d) => <tr key={d.day}><td>{d.day}</td><td>{d.n}</td></tr>)}</tbody>
+          </table>
+        </>
+      )}
+
+      <h3 style={{ marginTop: 28 }}>"מה ה-AI עדיין לא יכול ללמד אותך?" ({openAnswers.length} אחרונות)</h3>
+      {openAnswers.length === 0 ? (
+        <p className="adm-hint">עוד אין תשובות חופשיות.</p>
+      ) : (
+        <ul className="adm-todos">
+          {openAnswers.map((a, i) => (
+            <li key={i} style={{ display: "block" }}>
+              <small className="adm-hint">{a.day}</small>
+              <div style={{ whiteSpace: "pre-wrap" }}>{a.open_text}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h3 style={{ marginTop: 28 }}>מיילים שנאספו</h3>
+      {subscribers.length === 0 ? (
+        <p className="adm-hint">עוד אין מיילים.</p>
+      ) : (
+        <table className="adm-table">
+          <thead><tr><th>מייל</th><th>דיוור</th><th>אושר ב</th><th /></tr></thead>
+          <tbody>
+            {subscribers.map((s) => (
+              <tr key={s.id}>
+                <td><bdi dir="ltr">{s.email}</bdi></td>
+                <td>{s.marketing_consent ? "✓ אישרה" : "לא אישרה"}</td>
+                <td>{s.marketing_consent ? fmt(s.consent_at) : ""}</td>
+                <td>
+                  {s.marketing_consent ? (
+                    <button type="button" className="btn btn-ghost adm-btn-sm" disabled={pending === s.id} onClick={() => remove(s)}>
+                      הסרה מהרשימה
+                    </button>
+                  ) : null}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
 /* ---------- Root ---------- */
 
-export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, visitData, logoutAction }) {
+export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, visitData, surveyData, logoutAction }) {
   const [section, setSection] = useState("dashboard");
   const [selection, setSelection] = useState({ courses: null, lessons: null, testimonials: null, learners: null });
   const [toasts, setToasts] = useState([]);
@@ -1287,7 +1408,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
       window.history.replaceState(null, "", `#${key}`);
     });
 
-  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length, learners: learnerData.learners.length, visits: visitData?.totals.views7 };
+  const counts = { courses: courses.length, lessons: lessons.length, testimonials: testimonials.length, learners: learnerData.learners.length, visits: visitData?.totals.views7, survey: surveyData?.results.total };
   const current = SECTIONS.find((s) => s.key === section);
 
   return (
@@ -1373,6 +1494,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
           />
         )}
         {section === "visits" && <VisitsPanel visitData={visitData} />}
+        {section === "survey" && <SurveyPanel surveyData={surveyData} notify={notify} />}
         {section === "settings" && <SettingsPanel settings={settings} notify={notify} guard={guard} />}
       </main>
         </div>

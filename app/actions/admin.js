@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getDb, nowIso } from "@/lib/db";
 import { updateSettings } from "@/lib/settings";
+import { removeFromMailingList } from "@/lib/surveyStore";
 import { slugify } from "@/lib/courses";
 import {
   createAdminSession,
@@ -240,4 +241,13 @@ export async function deleteLessonAction(_prev, formData) {
     await db.prepare("DELETE FROM lessons WHERE id = ?").bind(id).run();
   }
   return done("השיעור נמחק", { deleted: true });
+}
+
+// מסירה מרשימת הדיוור של הסקר (marketing_consent=0). המייל נשאר ברשומה, אבל לא נכלל בייצוא.
+export async function removeSurveySubscriberAction(id) {
+  if (!(await isAdmin())) redirect("/admin");
+  const n = Number(id);
+  if (Number.isInteger(n) && n > 0) await removeFromMailingList(n);
+  revalidatePath("/admin");
+  return { ok: true };
 }

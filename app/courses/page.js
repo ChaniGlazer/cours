@@ -5,6 +5,7 @@ import { NEW_COURSES } from "@/lib/lessonTheme";
 import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/site";
 import "./courses-design.css";
+import "@/app/survey/survey-banner.css";
 
 export const metadata = {
   title: "לימוד פייתון בחינם: קורסים אינטראקטיביים בעברית",
@@ -168,6 +169,18 @@ export default async function CoursesCatalogPage({ searchParams }) {
       </section>
 
       {/* CATALOG */}
+      {/* באנר הסקר */}
+      <div className="svb">
+        <a className="svb__link" href="/survey">
+          <span className="svb__emoji" aria-hidden="true">📝</span>
+          <span className="svb__text">
+            <strong>איך היית לומדת פיתוח אם היית מתחילה היום, בעידן ה-AI?</strong>
+            <span>סקר קצר של שתי דקות, ותראי מיד איך ענו האחרות.</span>
+          </span>
+          <span className="svb__cta">לסקר</span>
+        </a>
+      </div>
+
       <section id="courses" className="cx-catalog">
         <div className="cx-wrap cx-catalog__inner">
           <div className="cx-catalog__head">

@@ -37,7 +37,7 @@ const OFFER_OPT_OUT_AFTER = 3;
 const gapAfter = (shown) => (shown < DAILY_SHOWS ? DAY_MS : 3 * DAY_MS);
 const tooSoon = (st) => Boolean(st.last) && Date.now() - st.last < gapAfter(st.shown || 1);
 // עמודים שבהם ההזמנה מיותרת או מפריעה: הרשמה/כניסה/איפוס, תשלום ופאנל הניהול.
-const HIDDEN_ON = ["/register", "/login", "/forgot-password", "/reset-password", "/payment", "/admin"];
+const HIDDEN_ON = ["/register", "/login", "/forgot-password", "/reset-password", "/payment", "/admin", "/survey"];
 
 function readState() {
   try {

@@ -3,6 +3,7 @@ import { getSettings, getAllLessons, getTestimonials } from "@/lib/settings";
 import { getCourses } from "@/lib/courses";
 import { getLearnersOverview } from "@/lib/learnerStore";
 import { getVisitsOverview } from "@/lib/visitStore";
+import { getSurveyAdminData } from "@/lib/surveyStore";
 import { adminLoginAction, adminLogoutAction } from "@/app/actions/admin";
 import AdminApp from "./AdminApp";
 
@@ -32,7 +33,7 @@ export default async function AdminPage({ searchParams }) {
     );
   }
 
-  const [settings, courses, lessons, testimonials, learnerData, visitData] = await Promise.all([
+  const [settings, courses, lessons, testimonials, learnerData, visitData, surveyData] = await Promise.all([
     getSettings(),
     getCourses(),
     getAllLessons(),
@@ -41,6 +42,11 @@ export default async function AdminPage({ searchParams }) {
     // לפני שהמיגרציה 0010 רצה על ה-D1 אין טבלה: הפאנל מציג הודעה במקום להפיל את כל האדמין
     getVisitsOverview().catch((err) => {
       console.error("admin: visits overview failed", err?.message);
+      return null;
+    }),
+    // לפני שמיגרציה 0011 רצה אין טבלאות סקר: הלשונית מציגה הודעה במקום להפיל את האדמין
+    getSurveyAdminData().catch((err) => {
+      console.error("admin: survey data failed", err?.message);
       return null;
     })
   ]);
@@ -53,6 +59,7 @@ export default async function AdminPage({ searchParams }) {
       testimonials={testimonials}
       learnerData={learnerData}
       visitData={visitData}
+      surveyData={surveyData}
       logoutAction={adminLogoutAction}
     />
   );

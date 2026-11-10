@@ -1,0 +1,267 @@
+/* הסקר (app/survey) + גרפי התוצאות (svr-*, משותפים גם לפאנל הניהול).
+   מובייל קודם; משתמש בטוקנים של האתר (globals.css). prefers-reduced-motion מבטל אנימציות גם גלובלית, וכאן מוסתר גם הקונפטי. */
+
+.sv {
+  position: relative;
+  min-height: calc(100dvh - 140px);
+  padding: 20px 16px 56px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+/* הילה רכה על כל רוחב המסך (לא נחתכת בקצוות עמודת הסקר) */
+.sv::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(560px 340px at 85% 0%, color-mix(in srgb, var(--gold) 15%, transparent), transparent 70%),
+    radial-gradient(520px 320px at 10% 35%, color-mix(in srgb, var(--moss) 10%, transparent), transparent 70%);
+}
+@media (min-width: 720px) {
+  .sv { padding: 40px 24px 80px; }
+}
+
+.sv-sr {
+  position: absolute !important;
+  width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* פס התקדמות עליון */
+.sv-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+.sv-progress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), var(--moss));
+  transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* מעבר חלק בין מסכים. בכיוון RTL "קדימה" נכנס משמאל. */
+.sv-step--fwd { animation: sv-in-fwd 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.sv-step--back { animation: sv-in-back 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes sv-in-fwd { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+@keyframes sv-in-back { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: none; } }
+
+.sv-panel { display: flex; flex-direction: column; gap: 6px; }
+.sv-count { margin: 0; color: var(--text-soft); font-size: 0.92rem; font-weight: 700; }
+.sv-pill {
+  align-self: flex-start;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--gold) 16%, transparent);
+  color: var(--gold-dark);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.sv-title {
+  margin: 8px 0 6px;
+  font-size: clamp(1.45rem, 5.6vw, 2rem);
+  line-height: 1.25;
+  outline: none;
+}
+.sv-title--xl { font-size: clamp(1.8rem, 7.4vw, 2.7rem); }
+.sv-lead { color: var(--ink-2); font-size: 1.08rem; margin: 4px 0 10px; }
+.sv-hint { color: var(--text-soft); margin: 0 0 14px; min-height: 1.2em; }
+.sv-bullets { list-style: none; padding: 0; margin: 4px 0 18px; display: grid; gap: 8px; color: var(--ink-2); }
+.sv-bullets span { margin-inline-end: 6px; }
+
+/* כרטיסי בחירה גדולים */
+.sv-grid { display: grid; gap: 12px; margin-top: 14px; }
+@media (min-width: 560px) {
+  .sv-grid:not(.sv-grid--scale) { grid-template-columns: 1fr 1fr; }
+}
+.sv-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.sv-card:hover { border-color: var(--gold-dark); transform: translateY(-1px); }
+.sv-card input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.sv-card:has(input:focus-visible) { outline: 3px solid var(--gold-dark); outline-offset: 3px; }
+.sv-card.is-checked {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 13%, var(--white));
+  box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--gold) 70%, transparent);
+}
+.sv-card.is-disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.sv-card.is-disabled input { cursor: not-allowed; }
+.sv-card__emoji { font-size: 1.8rem; line-height: 1; flex: none; }
+.sv-card__text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sv-card__text strong { font-size: 1.08rem; line-height: 1.3; }
+.sv-card__text small { color: var(--text-soft); font-size: 0.9rem; }
+.sv-card__mark {
+  flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  color: transparent;
+  transition: all 0.15s;
+}
+.sv-card.is-checked .sv-card__mark { background: var(--gold); border-color: var(--gold); color: var(--on-accent); }
+.sv-card:has(input[type="checkbox"]) .sv-card__mark { border-radius: 8px; }
+
+/* סקאלה 1-5: אנכית במובייל, חמש עמודות בדסקטופ */
+.sv-grid--scale { gap: 10px; }
+.sv-card--scale { min-height: 60px; }
+@media (min-width: 640px) {
+  .sv-grid--scale { grid-template-columns: repeat(5, 1fr); }
+  .sv-card--scale { flex-direction: column; justify-content: center; text-align: center; min-height: 128px; gap: 8px; padding: 14px 8px; }
+  .sv-card--scale .sv-card__text { align-items: center; flex: none; }
+  .sv-card--scale .sv-card__text strong { font-size: 0.98rem; }
+  .sv-card--scale .sv-card__mark { display: none; }
+}
+
+.sv-counter { color: var(--text-soft); font-size: 0.9rem; margin: 10px 0 0; }
+
+/* שדות טקסט ומייל */
+.sv-field { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.sv-field > label:not(.sv-consent) { font-weight: 700; }
+.sv-field textarea,
+.sv-field input[type="email"] {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  min-height: 54px;
+}
+.sv-field textarea { resize: vertical; line-height: 1.55; }
+.sv-field textarea:focus,
+.sv-field input[type="email"]:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+.sv-field input[aria-invalid="true"] { border-color: var(--rust); }
+.sv-field .sv-counter { text-align: end; margin: 0; }
+.sv-consent {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; margin-top: 6px;
+  border: 2px solid var(--border); border-radius: 16px; background: var(--white);
+  cursor: pointer; line-height: 1.5;
+}
+.sv-consent input { flex: none; width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--gold); cursor: pointer; }
+.sv-consent:has(input:checked) { border-color: var(--gold); }
+.sv-consent:has(input:focus-visible) { outline: 3px solid var(--gold-dark); outline-offset: 3px; }
+.sv-fine { color: var(--text-soft); font-size: 0.88rem; margin: 2px 2px 0; }
+.sv-fine a { color: var(--gold-dark); text-decoration: underline; }
+.sv-hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.sv-error { color: var(--rust); font-weight: 700; margin: 12px 0 0; }
+
+/* כפתורים גדולים, נוחים לאגודל */
+.sv-actions {
+  display: flex; gap: 12px; margin-top: 24px;
+}
+.sv-actions .sv-btn--primary { flex: 1; }
+.sv-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 0 28px;
+  border-radius: 999px; border: 2px solid transparent;
+  font: inherit; font-size: 1.1rem; font-weight: 800;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.15s, background 0.15s, opacity 0.15s;
+}
+.sv-btn:hover:not([disabled]) { transform: translateY(-1px); }
+.sv-btn--primary { background: var(--gold); color: var(--on-accent); box-shadow: var(--shadow); }
+.sv-btn--primary:hover:not([disabled]) { background: var(--gold-dark); }
+.sv-btn--ghost { background: transparent; border-color: var(--border); color: var(--ink); }
+.sv-btn--ghost:hover:not([disabled]) { border-color: var(--ink-2); }
+.sv-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.sv-intro .sv-btn { align-self: stretch; margin-top: 8px; }
+@media (min-width: 560px) { .sv-intro .sv-btn { align-self: flex-start; } }
+
+/* מסך תודה */
+.sv-done { gap: 22px; }
+.sv-done__head { text-align: center; }
+.sv-done__emoji { display: inline-block; font-size: 3.2rem; animation: sv-pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+@keyframes sv-pop { from { transform: scale(0.3) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.sv-share { text-align: center; padding: 24px 16px; border: 2px dashed var(--border); border-radius: 22px; }
+.sv-share h3 { margin-bottom: 14px; }
+.sv-share__row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.sv-share__row .sv-btn { flex: 1 1 150px; max-width: 240px; }
+.sv-share .sv-hint { margin: 12px 0 0; }
+.sv-link { text-align: center; color: var(--gold-dark); font-weight: 700; padding: 12px; }
+
+/* קונפטי עדין: חתיכות נופלות לאט, מעל התוכן, בלי לחסום לחיצות */
+.sv-confetti { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.sv-confetti i {
+  position: absolute; top: -24px; display: block; border-radius: 2px; opacity: 0;
+  animation-name: sv-fall; animation-timing-function: ease-in; animation-fill-mode: both;
+}
+.sv-confetti i.is-round { border-radius: 50%; }
+@keyframes sv-fall {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 0; }
+  10% { opacity: 0.95; }
+  85% { opacity: 0.9; }
+  100% { transform: translate3d(var(--drift), 108vh, 0) rotate(var(--rot)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sv-confetti { display: none; }
+}
+
+/* ===== תוצאות (svr-*) ===== */
+.svr { display: grid; gap: 16px; }
+.svr-empty { text-align: center; color: var(--text-soft); }
+.svr-card {
+  padding: 20px 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+}
+.svr-card__title { font-size: 1.15rem; margin: 0 0 14px; }
+.svr-note { color: var(--text-soft); font-size: 0.85rem; margin: 12px 0 0; }
+.svr-me { color: var(--moss); font-weight: 800; font-size: 0.85rem; }
+
+.svr-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.svr-bars__top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 5px; line-height: 1.35; }
+.svr-bars__top strong { flex: none; font-variant-numeric: tabular-nums; }
+.svr-track { height: 12px; border-radius: 999px; background: var(--paper-2); overflow: hidden; }
+.svr-track i {
+  display: block; height: 100%; border-radius: inherit;
+  background: var(--gold);
+  transform-origin: right;
+  animation: svr-grow-x 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.is-mine > .svr-track i { background: var(--moss); }
+@keyframes svr-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.svr-cols { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: end; }
+.svr-cols li { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 0; }
+.svr-cols__pct { font-weight: 800; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.svr-cols__bar { display: flex; align-items: flex-end; width: 100%; max-width: 54px; height: 110px; border-radius: 12px; background: var(--paper-2); overflow: hidden; }
+.svr-cols__bar i {
+  display: block; width: 100%; border-radius: 12px 12px 0 0; background: var(--gold);
+  transform-origin: bottom; animation: svr-grow-y 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.svr-cols .is-mine .svr-cols__bar i { background: var(--moss); }
+.svr-cols__emoji { font-size: 1.3rem; line-height: 1.2; }
+.svr-cols__label { font-size: 0.78rem; color: var(--ink-2); line-height: 1.25; }
+@keyframes svr-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.svr-avg { text-align: center; color: var(--ink-2); margin: 12px 0 0; }
