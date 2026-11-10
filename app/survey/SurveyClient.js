@@ -10,7 +10,6 @@ import "./survey.css";
 
 const STORAGE_KEY = "survey-done-v1";
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
-const SHARE_TEXT = "איך היית לומדת פיתוח אם היית מתחילה היום, בעידן ה-AI? סקר קצר של שתי דקות, ותראי איך ענו האחרות:";
 const EMPTY = { stage: null, ai_usage: null, feelings: [], priorities: [], manual_first: null, junior_risk: null, open_text: "", email: "", consent: false };
 
 function readDone() {
@@ -218,16 +217,27 @@ export default function SurveyClient({ contactEmail }) {
   const share = async () => {
     setShareMsg("");
     const url = shareUrl();
+    let ok = false;
     try {
-      if (navigator.share) {
-        await navigator.share({ title: "סקר: איך היית לומדת פיתוח בעידן ה-AI", text: SHARE_TEXT, url });
-        return;
+      await navigator.clipboard.writeText(url);
+      ok = true;
+    } catch {
+      // גיבוי לדפדפנים בלי הרשאת clipboard
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch {
+        ok = false;
       }
-      await navigator.clipboard.writeText(`${SHARE_TEXT} ${url}`);
-      setShareMsg("הקישור הועתק. אפשר להדביק ולשלוח ✓");
-    } catch (err) {
-      if (err?.name !== "AbortError") setShareMsg(`אפשר להעתיק את הקישור: ${url}`);
     }
+    setShareMsg(ok ? "הקישור הועתק ✓" : `אפשר להעתיק את הקישור: ${url}`);
   };
 
   const progress = phase === "q" ? ((idx + 1) / total) * 100 : phase === "done" ? 100 : 0;
@@ -406,16 +416,8 @@ export default function SurveyClient({ contactEmail }) {
               <h3>מכירה עוד מישהי שתרצה לענות?</h3>
               <div className="sv-share__row">
                 <button type="button" className="sv-btn sv-btn--primary" onClick={share}>
-                  שלחי לחברה
+                  העתקת קישור לסקר
                 </button>
-                <a
-                  className="sv-btn sv-btn--ghost"
-                  href={`https://wa.me/?text=${encodeURIComponent(`${SHARE_TEXT} ${typeof window === "undefined" ? "" : shareUrl()}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  וואטסאפ
-                </a>
               </div>
               <p className="sv-hint" role="status" aria-live="polite">{shareMsg}</p>
             </div>
