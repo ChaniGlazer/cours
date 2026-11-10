@@ -366,7 +366,7 @@ export default function SurveyClient() {
                     <span>{CONSENT_TEXT}</span>
                   </label>
                   {answers.email.trim() && !answers.consent && (
-                    <p className="sv-nudge" role="note">סמנו את התיבה כדי שנוכל לשלוח לכם את הסיכום 👆</p>
+                    <p className="sv-nudge" role="note">סמנו את התיבה כדי שנוכל לעדכן אתכם 👆</p>
                   )}
                   <p className="sv-fine">
                     אפשר להפסיק לקבל בכל רגע, בלי הסבר. פרטים ב
