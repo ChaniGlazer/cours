@@ -270,3 +270,4 @@
 .svr-cols__label { font-size: 0.78rem; color: var(--ink-2); line-height: 1.25; }
 @keyframes svr-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .svr-avg { text-align: center; color: var(--ink-2); margin: 12px 0 0; }
+.svr-private { color: var(--moss); font-size: 0.8rem; font-weight: 700; }

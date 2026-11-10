@@ -1,6 +1,6 @@
 // גרפי התוצאות של הסקר. CSS בלבד (בלי ספריית גרפים). משותף לעמוד /survey ולפאנל הניהול.
 // results: { total, counts: { [questionId]: { [optionKey]: n } } }. mine: התשובות של הגולשת עצמה (להדגשה) או null.
-import { RESULT_QUESTIONS } from "@/lib/surveyConfig";
+import { PUBLIC_RESULT_QUESTIONS, RESULT_QUESTIONS } from "@/lib/surveyConfig";
 import "./survey.css";
 
 const pct = (n, total) => (total > 0 ? Math.round((n / total) * 100) : 0);
@@ -71,15 +71,15 @@ function ScaleQuestion({ q, counts, total, mine }) {
   );
 }
 
-export default function SurveyResults({ results, mine = null, headingLevel = 3 }) {
+export default function SurveyResults({ results, mine = null, headingLevel = 3, admin = false }) {
   const H = `h${headingLevel}`;
   const total = results?.total || 0;
   if (!total) return <p className="svr-empty">עוד אין תשובות. תהיו הראשונים!</p>;
   return (
     <div className="svr">
-      {RESULT_QUESTIONS.map((q) => (
+      {(admin ? RESULT_QUESTIONS : PUBLIC_RESULT_QUESTIONS).map((q) => (
         <section className="svr-card" key={q.id} aria-label={q.resultTitle}>
-          <H className="svr-card__title">{q.resultTitle}</H>
+          <H className="svr-card__title">{q.resultTitle}{admin && q.private && <span className="svr-private"> · רק בפאנל הניהול</span>}</H>
           {q.kind === "scale" ? (
             <ScaleQuestion q={q} counts={results.counts[q.id] || {}} total={total} mine={mine} />
           ) : (

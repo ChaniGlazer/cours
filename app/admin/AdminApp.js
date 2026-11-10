@@ -1311,7 +1311,7 @@ function SurveyPanel({ surveyData, notify }) {
       </div>
 
       <h3>תוצאות מצטברות</h3>
-      <SurveyResults results={results} headingLevel={4} />
+      <SurveyResults results={results} headingLevel={4} admin />
 
       {perDay.length > 0 && (
         <>
