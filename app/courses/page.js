@@ -6,6 +6,8 @@ import { absoluteUrl, jsonLdString, SEARCH_KEYWORDS } from "@/lib/seo";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/site";
 import "./courses-design.css";
 import "@/app/survey/survey-banner.css";
+import { getSurveyResults } from "@/lib/surveyStore";
+import { computeInsights } from "@/lib/surveyInsights";
 
 export const metadata = {
   title: "לימוד פייתון בחינם: קורסים אינטראקטיביים בעברית",
@@ -43,6 +45,12 @@ export default async function CoursesCatalogPage({ searchParams }) {
   const allCourses = await getCourses();
   const lessonsByCourse = await getLessonsByCourse();
   const testimonials = await getLatestApprovedTestimonials(60);
+  // תקציר תוצאות הסקר לעמוד הבית. אם הטעינה נכשלת או שיש עדיין מעט תשובות, הרצועה פשוט לא מוצגת
+  let survey = null;
+  try {
+    const ins = computeInsights(await getSurveyResults());
+    if (ins.total >= 3) survey = ins;
+  } catch {}
   // מעט המלצות: חוזרים עליהן עד שהרצועה ארוכה מספיק כדי שלא יופיעו רווחים בלולאה
   const marqueeBase = testimonials.length >= 3 ? Array.from({ length: Math.ceil(8 / testimonials.length) * testimonials.length }, (_, k) => testimonials[k % testimonials.length]) : [];
   const renderTestimonial = (t, key) => (
@@ -175,6 +183,27 @@ export default async function CoursesCatalogPage({ searchParams }) {
           </div>
         </div>
       </section>
+
+      {/* תקציר תוצאות הסקר */}
+      {survey && (
+        <section className="svm" aria-label="תוצאות הסקר בקצרה">
+          <div className="svm__inner">
+            <div className="svm__head">
+              <h2>מה ענו נשים בסקר</h2>
+              <p>{survey.total} נשים כבר ענו</p>
+            </div>
+            <ul className="svm__stats">
+              {survey.stats.map((st) => (
+                <li key={st.id}>
+                  <strong>{st.pct}%</strong>
+                  <span><span aria-hidden="true">{st.emoji} </span>{st.text}</span>
+                </li>
+              ))}
+            </ul>
+            <a className="svm__link" href="/survey/results">לכל התוצאות ←</a>
+          </div>
+        </section>
+      )}
 
       {/* CATALOG */}
       <section id="courses" className="cx-catalog">
