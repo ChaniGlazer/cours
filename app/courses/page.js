@@ -49,7 +49,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
   let survey = null;
   try {
     const ins = computeInsights(await getSurveyResults());
-    if (ins.total >= 10) survey = ins;
+    if (ins.total >= 3) survey = ins;
   } catch {}
   // מעט המלצות: חוזרים עליהן עד שהרצועה ארוכה מספיק כדי שלא יופיעו רווחים בלולאה
   const marqueeBase = testimonials.length >= 3 ? Array.from({ length: Math.ceil(8 / testimonials.length) * testimonials.length }, (_, k) => testimonials[k % testimonials.length]) : [];
