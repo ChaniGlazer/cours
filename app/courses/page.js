@@ -144,11 +144,11 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
           <div className="cx-hero__mock">
             {/* כפתור הסקר: מדבקה עגולה ומוטה על פינת חלון הקוד */}
-            <a className="svb-fab" href="/survey" aria-label="לסקר קצר של שתי דקות: איך היית לומדת פיתוח בעידן ה-AI">
+            <a className="svb-fab" href="/survey" aria-label="לסקר קצר של שתי דקות: איך הייתם לומדים פיתוח בעידן ה-AI">
               <span className="svb-fab__icon" aria-hidden="true">📝</span>
               <span className="svb-fab__text">
                 סקר קצר, 2 דקות
-                <small>איך היית לומדת פיתוח היום, בעידן ה-AI? ותראי איך ענו האחרות</small>
+                <small>איך הייתם לומדים פיתוח היום, בעידן ה-AI? ותראו איך ענו האחרים</small>
               </span>
             </a>
             <div className="cx-editor">
@@ -189,8 +189,8 @@ export default async function CoursesCatalogPage({ searchParams }) {
         <section className="svm" aria-label="תוצאות הסקר בקצרה">
           <div className="svm__inner">
             <div className="svm__head">
-              <h2>מה ענו נשים בסקר</h2>
-              <p>{survey.total} נשים כבר ענו</p>
+              <h2>מה ענו בסקר</h2>
+              <p>{survey.total} אנשים כבר ענו</p>
             </div>
             <ul className="svm__stats">
               {survey.stats.map((st) => (

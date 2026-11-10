@@ -2,8 +2,8 @@ import { CONTACT_EMAIL } from "@/lib/site";
 import { OG_IMAGES } from "@/lib/seo";
 import SurveyClient from "./SurveyClient";
 
-const TITLE = "סקר: איך היית לומדת פיתוח בעידן ה-AI";
-const DESCRIPTION = "סקר קצר של שתי דקות לנשים שלומדות או עובדות בפיתוח. עני וגלי איך ענו האחרות.";
+const TITLE = "סקר: איך הייתם לומדים פיתוח בעידן ה-AI";
+const DESCRIPTION = "סקר קצר של שתי דקות לכל מי שלומד או עובד בפיתוח. עשו את הסקר וגלו איך ענו האחרים.";
 
 export const metadata = {
   title: TITLE,

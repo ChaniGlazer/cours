@@ -9,7 +9,7 @@ import "./results.css";
 export const dynamic = "force-dynamic";
 
 const TITLE = "תוצאות הסקר: איך לומדים פיתוח בעידן ה-AI";
-const DESCRIPTION = "מה ענו נשים שלומדות ועובדות בפיתוח על ה-AI, על לימוד קוד ועל העתיד של ג'וניורס. תוצאות חיות, בגרפים.";
+const DESCRIPTION = "מה ענו אנשים שלומדים ועובדים בפיתוח על ה-AI, על לימוד קוד ועל העתיד של ג'וניורס. תוצאות חיות, בגרפים.";
 
 export const metadata = {
   title: TITLE,
@@ -34,20 +34,20 @@ export default async function SurveyResultsPage() {
       <header className="svd-hero">
         <span className="sv-pill">תוצאות חיות</span>
         <h1>איך לומדים פיתוח בעידן ה-AI?</h1>
-        <p className="svd-hero__lead">מה ענו נשים שלומדות ועובדות בפיתוח. הכול אנונימי, והמספרים מתעדכנים עם כל תשובה חדשה.</p>
+        <p className="svd-hero__lead">מה ענו אנשים שלומדים ועובדים בפיתוח. הכול אנונימי, והמספרים מתעדכנים עם כל תשובה חדשה.</p>
         {total > 0 && (
           <p className="svd-count">
             <strong>{total}</strong>
-            <span>{total === 1 ? "אישה אחת ענתה" : "נשים ענו"}</span>
+            <span>{total === 1 ? "אדם אחד ענה" : "אנשים ענו"}</span>
           </p>
         )}
       </header>
 
       {!results ? (
-        <p className="svr-empty">לא הצלחנו לטעון את התוצאות. נסי לרענן בעוד רגע.</p>
+        <p className="svr-empty">לא הצלחנו לטעון את התוצאות. נסו לרענן בעוד רגע.</p>
       ) : total === 0 ? (
         <section className="svd-empty">
-          <p>עוד אין תשובות. את יכולה להיות הראשונה!</p>
+          <p>עוד אין תשובות. אפשר להיות הראשונים!</p>
           <a className="sv-btn sv-btn--primary" href="/survey">לסקר</a>
         </section>
       ) : (
@@ -79,7 +79,7 @@ export default async function SurveyResultsPage() {
             <section className="svd-winner" aria-labelledby="svd-winner-h">
               <span className="svd-winner__emoji" aria-hidden="true">{winner.emoji}</span>
               <div>
-                <h2 className="svd-winner__kicker" id="svd-winner-h">הכי חשוב ללמוד היום, לפי הנשים שענו</h2>
+                <h2 className="svd-winner__kicker" id="svd-winner-h">הכי חשוב ללמוד היום, לפי מי שענו</h2>
                 <p className="svd-winner__name">{winner.label} <span>· {winner.pct}%</span></p>
                 {runnersUp.length > 0 && (
                   <p className="svd-winner__next">

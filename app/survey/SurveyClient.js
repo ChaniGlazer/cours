@@ -181,7 +181,7 @@ export default function SurveyClient({ contactEmail }) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
-        setError(data.error || "משהו השתבש. נסי שוב בעוד רגע.");
+        setError(data.error || "משהו השתבש. נסו שוב בעוד רגע.");
         return;
       }
       writeDone(answers);
@@ -194,7 +194,7 @@ export default function SurveyClient({ contactEmail }) {
         setTimeout(() => setConfetti(false), 6500);
       }
     } catch {
-      setError("אין חיבור לשרת. בדקי את החיבור ונסי שוב.");
+      setError("אין חיבור לשרת. בדקו את החיבור ונסו שוב.");
     } finally {
       setSubmitting(false);
     }
@@ -245,7 +245,7 @@ export default function SurveyClient({ contactEmail }) {
   return (
     <div className="sv">
       {confetti && <Confetti />}
-      <h1 className="sv-sr">סקר: איך היית לומדת פיתוח בעידן ה-AI</h1>
+      <h1 className="sv-sr">סקר: איך הייתם לומדים פיתוח בעידן ה-AI</h1>
 
       {phase !== "intro" && (
         <div
@@ -268,17 +268,17 @@ export default function SurveyClient({ contactEmail }) {
           <div className="sv-panel sv-intro">
             <span className="sv-pill">סקר קצר · כשתי דקות</span>
             <h2 className="sv-title sv-title--xl" tabIndex={-1} ref={headingRef}>
-              אם היית מתחילה ללמוד פיתוח היום, איך היית עושה את זה?
+              אם הייתם מתחילים ללמוד פיתוח היום, איך הייתם עושים את זה?
             </h2>
             <p className="sv-lead">
-              בעידן שבו ה-AI כותב קוד, כולנו מנסות להבין מה באמת שווה ללמוד. עני על שבע שאלות קצרות, וגלי מיד איך ענו האחרות.
+              בעידן שבו ה-AI כותב קוד, כולנו מנסים להבין מה באמת שווה ללמוד. עשו שבע שאלות קצרות, וגלו מיד איך ענו האחרים.
             </p>
             <ul className="sv-bullets">
-              <li><span aria-hidden="true">🔒</span> אנונימי לגמרי. מייל משאירים רק אם בא לך.</li>
-              <li><span aria-hidden="true">📊</span> בסוף תראי תוצאות חיות מכל מי שענתה.</li>
+              <li><span aria-hidden="true">🔒</span> אנונימי לגמרי. מייל משאירים רק אם רוצים.</li>
+              <li><span aria-hidden="true">📊</span> בסוף רואים תוצאות חיות מכל מי שענה.</li>
             </ul>
             <button type="button" className="sv-btn sv-btn--primary" onClick={start}>
-              בואי נתחיל
+              בואו נתחיל
             </button>
             <a className="sv-link" href="/survey/results">רוצה רק להציץ בתוצאות? ←</a>
           </div>
@@ -369,10 +369,10 @@ export default function SurveyClient({ contactEmail }) {
                     אפשר להסיר את עצמי בכל רגע{contactEmail ? <>, בפנייה אלינו ב-<bdi dir="ltr">{contactEmail}</bdi></> : ""}. פרטים ב
                     <a href="/privacy#survey" target="_blank" rel="noopener">מדיניות הפרטיות</a>. בלי סימון התיבה לא נצרפת לרשימת הדיוור.
                   </p>
-                  {/* honeypot: שדה שמוסתר ממשתמשות. בוטים ממלאים אותו, ואז הבקשה נזרקת בשקט */}
+                  {/* honeypot: שדה שמוסתר ממשתמשים. בוטים ממלאים אותו, ואז הבקשה נזרקת בשקט */}
                   <div className="sv-hp" aria-hidden="true">
                     <label>
-                      אל תמלאי את השדה הזה
+                      אל תמלאו את השדה הזה
                       <input type="text" name="website" tabIndex={-1} autoComplete="off" ref={honeypot} />
                     </label>
                   </div>
@@ -388,7 +388,7 @@ export default function SurveyClient({ contactEmail }) {
                 חזרה
               </button>
               <button type="submit" className="sv-btn sv-btn--primary" disabled={!canContinue || submitting}>
-                {q.kind === "contact" ? (submitting ? "שולחת…" : "שליחה") : "המשך"}
+                {q.kind === "contact" ? (submitting ? "שולח…" : "שליחה") : "המשך"}
               </button>
             </div>
           </form>
@@ -399,22 +399,22 @@ export default function SurveyClient({ contactEmail }) {
             <div className="sv-done__head">
               <span className="sv-done__emoji" aria-hidden="true">{returning ? "👋" : "🎉"}</span>
               <h2 className="sv-title sv-title--xl" tabIndex={-1} ref={headingRef}>
-                {returning ? "כבר ענית, תודה!" : "תודה, את אלופה!"}
+                {returning ? "כבר ענית, תודה!" : "תודה רבה!"}
               </h2>
               <p className="sv-lead">
-                {returning ? "הנה איך ענו כל האחרות עד עכשיו." : "התשובות שלך נשמרו. ככה ענו האחרות:"}
-                {results?.total === 1 ? " אישה אחת כבר ענתה." : results?.total > 1 ? <> <strong>{results.total}</strong> נשים כבר ענו.</> : null}
+                {returning ? "הנה איך ענו כל האחרים עד עכשיו." : "התשובות שלך נשמרו. ככה ענו האחרים:"}
+                {results?.total === 1 ? " אדם אחד כבר ענה." : results?.total > 1 ? <> <strong>{results.total}</strong> אנשים כבר ענו.</> : null}
               </p>
             </div>
 
             {results ? (
               <SurveyResults results={results} mine={mine} />
             ) : (
-              <p className="sv-hint">טוענת את התוצאות…</p>
+              <p className="sv-hint">טוען את התוצאות…</p>
             )}
 
             <div className="sv-share">
-              <h3>מכירה עוד מישהי שתרצה לענות?</h3>
+              <h3>מכירים עוד מישהו שירצה לענות?</h3>
               <div className="sv-share__row">
                 <button type="button" className="sv-btn sv-btn--primary" onClick={share}>
                   העתקת קישור לסקר

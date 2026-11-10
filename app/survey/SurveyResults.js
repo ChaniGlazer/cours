@@ -74,7 +74,7 @@ function ScaleQuestion({ q, counts, total, mine }) {
 export default function SurveyResults({ results, mine = null, headingLevel = 3 }) {
   const H = `h${headingLevel}`;
   const total = results?.total || 0;
-  if (!total) return <p className="svr-empty">עוד אין תשובות. את הראשונה!</p>;
+  if (!total) return <p className="svr-empty">עוד אין תשובות. תהיו הראשונים!</p>;
   return (
     <div className="svr">
       {RESULT_QUESTIONS.map((q) => (
