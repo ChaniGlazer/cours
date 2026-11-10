@@ -78,8 +78,8 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
   const tabs = [
     { key: "all", label: "הכל" },
-    { key: "free", label: "חינמי" },
-    { key: "paid", label: "בתשלום" }
+    { key: "free", label: "חינמי" }
+    // { key: "paid", label: "בתשלום" } - מוסתר בינתיים: אין קורסים בתשלום. לשחזר כשיהיו (הסינון ?filter=paid עדיין עובד)
   ];
 
   // כרטיס "המשך מהמקום שעצרת" רלוונטי רק לקורסים שאפשר ללמוד בהם עכשיו.
