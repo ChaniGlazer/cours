@@ -14,34 +14,33 @@
   padding: 14px 24px 14px 22px;
   border-radius: 36px;
   transform: rotate(-8deg);
-  border: 2px solid transparent;
-  background:
-    linear-gradient(var(--white), var(--white)) padding-box,
-    linear-gradient(120deg, var(--gold), #FFD27A, var(--moss), var(--cx-blue, #7AB8FF), var(--gold)) border-box;
-  color: var(--ink);
+  border: 0;
+  background: linear-gradient(135deg, var(--gold) 0%, #FFB36B 100%);
+  color: var(--on-accent);
   font-family: var(--font-body);
   font-size: 22px;
   font-weight: 800;
   line-height: 1.2;
   text-decoration: none;
-  box-shadow: 0 10px 30px -8px rgba(255, 127, 150, 0.55);
+  box-shadow: 0 14px 34px -10px rgba(255, 127, 150, 0.7), 0 0 0 5px rgba(255, 127, 150, 0.18);
   animation: svb-float 4.5s ease-in-out infinite;
   transition: box-shadow 0.2s ease;
 }
 .svb-fab__text { display: flex; flex-direction: column; gap: 3px; }
-.svb-fab__text small { font-size: 14px; font-weight: 500; color: var(--ink-2); line-height: 1.3; }
-.svb-fab__icon { font-size: 36px; line-height: 1; display: inline-block; transform-origin: 70% 70%; animation: svb-wiggle 5s ease-in-out infinite; }
+.svb-fab__text small { font-size: 14px; font-weight: 500; color: rgba(20, 18, 31, 0.78); line-height: 1.3; }
+.svb-fab::before { content: ""; position: absolute; inset: 5px; z-index: -1; border: 2px dashed rgba(20, 18, 31, 0.28); border-radius: 30px; pointer-events: none; }
+.svb-fab__icon { flex: none; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--white); font-size: 30px; line-height: 1; transform-origin: 70% 70%; animation: svb-wiggle 5s ease-in-out infinite; }
 .svb-fab::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   width: 40%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transform: translateX(-160%) skewX(-20deg);
   animation: svb-shine 4s ease-in-out infinite;
 }
-.svb-fab:hover { box-shadow: 0 0 34px rgba(255, 127, 150, 0.7); animation-play-state: paused; }
+.svb-fab:hover { box-shadow: 0 14px 40px -6px rgba(255, 127, 150, 0.9), 0 0 0 7px rgba(255, 127, 150, 0.28); animation-play-state: paused; }
 .svb-fab:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 @keyframes svb-float {
@@ -62,7 +61,7 @@
 /* מובייל: קצת קטן יותר וקרוב לקצה, כדי שלא יחרוג מהמסך */
 @media (max-width: 560px) {
   .svb-fab { top: -30px; right: -6px; max-width: calc(100vw - 32px); padding: 12px 18px; font-size: 19px; }
-  .svb-fab__icon { font-size: 30px; }
+  .svb-fab__icon { width: 44px; height: 44px; font-size: 24px; }
   .svb-fab__text small { font-size: 13px; }
 }
 @media (prefers-reduced-motion: reduce) {
