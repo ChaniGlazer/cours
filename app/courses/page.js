@@ -190,17 +190,21 @@ export default async function CoursesCatalogPage({ searchParams }) {
           <div className="svm__inner">
             <div className="svm__head">
               <h2>מה ענו בסקר</h2>
-              <p>{survey.total} אנשים כבר ענו</p>
+              <span className="svm__count">{survey.total} אנשים כבר ענו</span>
+              <a className="svm__link" href="/survey/results">לכל התוצאות <span aria-hidden="true">←</span></a>
             </div>
             <ul className="svm__stats">
               {survey.stats.map((st) => (
-                <li key={st.id}>
-                  <strong>{st.pct}%</strong>
-                  <span><span aria-hidden="true">{st.emoji} </span>{st.text}</span>
+                <li key={st.id} style={{ "--p": st.pct }}>
+                  <div className="svm__top">
+                    <span className="svm__emoji" aria-hidden="true">{st.emoji}</span>
+                    <strong>{st.pct}%</strong>
+                  </div>
+                  <p>{st.short}</p>
+                  <span className="svm__bar" aria-hidden="true"><i /></span>
                 </li>
               ))}
             </ul>
-            <a className="svm__link" href="/survey/results">לכל התוצאות ←</a>
           </div>
         </section>
       )}
