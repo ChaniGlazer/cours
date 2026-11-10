@@ -14,13 +14,15 @@ function isMine(mine, q, key) {
 function BarsQuestion({ q, counts, total, mine }) {
   const rows = q.options.map((o) => ({ ...o, n: counts[o.key] || 0 }));
   if (q.id !== "stage" && q.id !== "manual_first") rows.sort((a, b) => b.n - a.n);
+  const top = Math.max(...rows.map((r) => r.n));
   return (
     <ul className="svr-bars">
       {rows.map((o, i) => {
         const p = pct(o.n, total);
         const me = isMine(mine, q, o.key);
+        const lead = top > 0 && o.n === top;
         return (
-          <li key={o.key} className={me ? "is-mine" : undefined}>
+          <li key={o.key} className={[me ? "is-mine" : "", lead ? "is-top" : ""].join(" ").trim() || undefined}>
             <div className="svr-bars__top">
               <span>
                 <span aria-hidden="true">{o.emoji} </span>
@@ -50,8 +52,9 @@ function ScaleQuestion({ q, counts, total, mine }) {
         {q.options.map((o, i) => {
           const n = counts[o.key] || 0;
           const me = isMine(mine, q, o.key);
+          const lead = n > 0 && n === max;
           return (
-            <li key={o.key} className={me ? "is-mine" : undefined}>
+            <li key={o.key} className={[me ? "is-mine" : "", lead ? "is-top" : ""].join(" ").trim() || undefined}>
               <span className="svr-cols__pct">{pct(n, total)}%</span>
               <span className="svr-cols__bar" aria-hidden="true">
                 <i style={{ height: n ? `${Math.max(6, (n / max) * 100)}%` : 0, animationDelay: `${i * 70}ms` }} />

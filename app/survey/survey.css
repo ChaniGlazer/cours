@@ -250,6 +250,11 @@
   animation: svr-grow-x 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .is-mine > .svr-track i { background: var(--moss); }
+/* התשובה המובילה בולטת, והשאר רכים יותר, כדי שיהיה קל לראות מיד מה הכי נפוץ */
+.svr-bars li:not(.is-top):not(.is-mine) .svr-track i,
+.svr-cols li:not(.is-top):not(.is-mine) .svr-cols__bar i { opacity: 0.5; }
+.svr-bars li.is-top .svr-bars__top strong { color: var(--gold); font-size: 1.1em; }
+.svr-cols li.is-top .svr-cols__pct { color: var(--gold); }
 @keyframes svr-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 .svr-cols { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: end; }

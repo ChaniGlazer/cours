@@ -280,6 +280,7 @@ export default function SurveyClient({ contactEmail }) {
             <button type="button" className="sv-btn sv-btn--primary" onClick={start}>
               בואי נתחיל
             </button>
+            <a className="sv-link" href="/survey/results">רוצה רק להציץ בתוצאות? ←</a>
           </div>
         )}
 
@@ -422,6 +423,7 @@ export default function SurveyClient({ contactEmail }) {
               <p className="sv-hint" role="status" aria-live="polite">{shareMsg}</p>
             </div>
 
+            <a className="sv-link" href="/survey/results">לעמוד התוצאות המלא ←</a>
             <a className="sv-link" href="/courses">רוצה להתחיל ללמוד? לקורסים החינמיים ←</a>
           </div>
         )}
