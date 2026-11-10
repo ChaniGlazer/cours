@@ -52,6 +52,7 @@ export default async function SurveyResultsPage() {
         </section>
       ) : (
         <>
+          <p className="svd-note">סקר בלתי רשמי של מי שבחרו לענות, ולכן זו תמונה כללית ולא מחקר מייצג.</p>
           {total < 10 && (
             <p className="svd-small" role="note">
               עד עכשיו ענו רק {total}, ולכן האחוזים עוד יזוזו הרבה כשיצטרפו עוד תשובות.

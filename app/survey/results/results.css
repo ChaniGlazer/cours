@@ -91,3 +91,4 @@
   .svd-winner { flex-direction: column; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) { .svd-ring { animation: none; } }
+.svd-note { margin: -20px 0 0; text-align: center; color: var(--text-soft); font-size: 0.9rem; }
