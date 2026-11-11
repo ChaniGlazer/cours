@@ -17,7 +17,7 @@ export default async function RegisterPage({ searchParams }) {
       <div className="container form-narrow">
         <h1 style={{ textAlign: "center" }}>הרשמה</h1>
         <p className="text-soft" style={{ textAlign: "center", marginBottom: 28 }}>
-          יוצרים חשבון, ואז ממשיכים ללימוד או לתשלום מאובטח (לקורסים בתשלום).
+          יוצרים חשבון, ואז ממשיכים ללימוד.
         </p>
 
         <div className="card-elevated">

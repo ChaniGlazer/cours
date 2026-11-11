@@ -86,16 +86,6 @@ const REASONS = [
         <path d="M10 19v-4.5h4V19" />
       </svg>
     )
-  },
-  {
-    title: "קורסים בתשלום נפתחים בחשבון",
-    text: "רוכשים פעם אחת בתשלום מאובטח, והקורס מחכה לכם בחשבון.",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="5" y="10.5" width="14" height="9.5" rx="2.5" />
-        <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" />
-      </svg>
-    )
   }
 ];
 

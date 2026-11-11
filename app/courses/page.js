@@ -117,10 +117,6 @@ export default async function CoursesCatalogPage({ searchParams }) {
       <section className="cx-hero">
         <div className="cx-wrap cx-hero__grid">
           <div className="cx-hero__text">
-            <span className="cx-pill">
-              <span className="cx-pill__dot" />
-              חלק מהקורסים חינם לגמרי
-            </span>
             <h1 className="cx-h1">
               מהשורה הראשונה <span className="cx-accent">ועד אפליקציה</span> שעובדת
             </h1>

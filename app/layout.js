@@ -8,7 +8,7 @@ import VisitTracker from "@/app/components/VisitTracker";
 import SignupPrompt from "@/app/components/SignupPrompt";
 
 const DEFAULT_DESCRIPTION =
-  "קורסים בעברית ללימוד פייתון ופיתוח אפליקציות בעידן ה-AI, עם שיעורים אינטראקטיביים ותרגילים. חלק מהקורסים חינמיים.";
+  "קורסים בעברית ללימוד פייתון ופיתוח אפליקציות בעידן ה-AI, עם שיעורים אינטראקטיביים ותרגילים.";
 
 export async function generateMetadata() {
   const settings = await getSettings();
