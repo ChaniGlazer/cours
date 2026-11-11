@@ -1,5 +1,6 @@
 import { isAdmin } from "@/lib/admin-auth";
 import { getSettings, getAllLessons, getTestimonials } from "@/lib/settings";
+import { listCourseGrants } from "@/lib/courseAccess";
 import { getCourses } from "@/lib/courses";
 import { getLearnersOverview } from "@/lib/learnerStore";
 import { getVisitsOverview } from "@/lib/visitStore";
@@ -33,7 +34,7 @@ export default async function AdminPage({ searchParams }) {
     );
   }
 
-  const [settings, courses, lessons, testimonials, learnerData, visitData, surveyData] = await Promise.all([
+  const [settings, courses, lessons, testimonials, learnerData, visitData, surveyData, courseGrants] = await Promise.all([
     getSettings(),
     getCourses(),
     getAllLessons(),
@@ -48,7 +49,9 @@ export default async function AdminPage({ searchParams }) {
     getSurveyAdminData().catch((err) => {
       console.error("admin: survey data failed", err?.message);
       return null;
-    })
+    }),
+    // גישה ידנית לקורסים (מיגרציה 0013). null אם הטבלה עוד לא קיימת
+    listCourseGrants()
   ]);
 
   return (
@@ -60,6 +63,7 @@ export default async function AdminPage({ searchParams }) {
       learnerData={learnerData}
       visitData={visitData}
       surveyData={surveyData}
+      courseGrants={courseGrants}
       logoutAction={adminLogoutAction}
     />
   );

@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
+import { hasCourseGrant } from "@/lib/courseAccess";
 import { isAdmin } from "@/lib/admin-auth";
 import { parseVideoEmbed } from "@/lib/video";
 import LessonLayout from "@/app/components/LessonLayout";
@@ -44,10 +45,12 @@ export default async function LessonPage({ params }) {
   const user = await getCurrentUser();
   const admin = await isAdmin();
   // קורס "בקרוב" סגור: הפניה לעמוד הקורס (שמציג "בקרוב"). מנהל מחובר רואה תצוגה מקדימה.
-  if (course.coming_soon && !admin) redirect(`/courses/${course.id}`);
+  // לומדת שהמנהלת הוסיפה ידנית (course_access) נכנסת גם לקורס "בקרוב".
+  const granted = user ? await hasCourseGrant(user.id, course.id) : false;
+  if (course.coming_soon && !admin && !granted) redirect(`/courses/${course.id}`);
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
   // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום
-  const hasAccess = !course.is_paid || purchased || admin;
+  const hasAccess = !course.is_paid || purchased || granted || admin;
 
   const lessons = await getLessonsForCourse(course.id);
   const idx = lessons.findIndex((l) => l.slug === lessonSlug);

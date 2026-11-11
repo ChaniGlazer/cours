@@ -12,7 +12,9 @@ import {
   createTestimonialAction,
   updateTestimonialAction,
   deleteTestimonialAction,
-  removeSurveySubscriberAction
+  removeSurveySubscriberAction,
+  grantCourseAccessAction,
+  revokeCourseAccessAction
 } from "@/app/actions/admin";
 import SurveyResults from "@/app/survey/SurveyResults";
 
@@ -22,7 +24,8 @@ const GROUPS = [
     label: "תוכן הקורסים",
     items: [
       { key: "courses", label: "קורסים", icon: "📚", desc: "שם, תיאור, מחיר וגישה לכל קורס" },
-      { key: "lessons", label: "שיעורים", icon: "🎬", desc: "תוכן וסדר השיעורים בכל קורס" }
+      { key: "lessons", label: "שיעורים", icon: "🎬", desc: "תוכן וסדר השיעורים בכל קורס" },
+      { key: "access", label: "גישה ידנית", icon: "🔑", desc: "להוסיף לומדת מסוימת (לפי מייל) לקורס, גם אם הוא עדיין סגור" }
     ]
   },
   {
@@ -1254,6 +1257,91 @@ function Dashboard({ courses, lessons, testimonials, settings, learnerData, visi
 
 /* ---------- Survey ---------- */
 
+function AccessPanel({ courses, grants, notify }) {
+  const [email, setEmail] = useState("");
+  const [courseId, setCourseId] = useState(courses[0]?.id || "");
+  const [busy, setBusy] = useState(false);
+  const fmt = (iso) => (iso ? new Date(iso).toLocaleDateString("he-IL") : "");
+  const titleOf = (id) => courses.find((c) => c.id === id)?.title || id;
+
+  if (grants === null) {
+    return (
+      <div className="alert alert-error">
+        טבלת הגישה הידנית עדיין לא קיימת במסד הנתונים. צריך להריץ את המיגרציה <bdi dir="ltr">0013_course_access.sql</bdi> ואז לרענן.
+      </div>
+    );
+  }
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const fd = new FormData();
+      fd.set("email", email);
+      fd.set("course_id", courseId);
+      const res = await grantCourseAccessAction(null, fd);
+      if (res?.ok) {
+        notify("ok", res.message);
+        setEmail("");
+      } else {
+        notify("err", res?.error || "לא הצלחתי להוסיף.");
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const revoke = async (g) => {
+    if (!window.confirm(`להסיר את הגישה של ${g.name} ל"${titleOf(g.course_id)}"?`)) return;
+    await revokeCourseAccessAction(g.user_id, g.course_id);
+    notify("ok", "הגישה הוסרה");
+  };
+
+  return (
+    <div className="adm-learners">
+      <p className="text-soft">
+        המשתמשת צריכה להיות רשומה באתר (להירשם עם המייל שלה). אחרי שמוסיפים אותה, היא רואה את שיעורי הקורס כשהיא מחוברת, וכל השאר ממשיכות לראות "בקרוב".
+      </p>
+      <form onSubmit={submit} style={{ display: "grid", gap: 12, maxWidth: 480, margin: "16px 0 28px" }}>
+        <Field label="מייל של הלומדת" htmlFor="acc-email">
+          <input id="acc-email" type="email" required dir="ltr" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </Field>
+        <Field label="קורס" htmlFor="acc-course">
+          <select id="acc-course" value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+            {courses.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+                {c.coming_soon ? " (בקרוב)" : ""}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <button type="submit" className="btn btn-primary" disabled={busy}>
+          {busy ? "מוסיפה..." : "הוספת גישה"}
+        </button>
+      </form>
+
+      <h3>מי קיבלה גישה ידנית</h3>
+      {grants.length === 0 ? (
+        <p className="text-soft">עדיין לא הוספת אף אחת.</p>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: 8 }}>
+          {grants.map((g) => (
+            <li key={`${g.user_id}-${g.course_id}`} style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+              <span>
+                <strong>{g.name}</strong> <bdi dir="ltr">({g.email})</bdi> · {titleOf(g.course_id)} · {fmt(g.created_at)}
+              </span>
+              <button type="button" className="btn" onClick={() => revoke(g)}>
+                הסרה
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function SurveyPanel({ surveyData, notify }) {
   const [pending, setPending] = useState(null);
   if (!surveyData) {
@@ -1367,7 +1455,7 @@ function SurveyPanel({ surveyData, notify }) {
 
 /* ---------- Root ---------- */
 
-export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, visitData, surveyData, logoutAction }) {
+export default function AdminApp({ settings, courses, lessons, testimonials, learnerData, visitData, surveyData, courseGrants, logoutAction }) {
   const [section, setSection] = useState("dashboard");
   const [selection, setSelection] = useState({ courses: null, lessons: null, testimonials: null, learners: null });
   const [toasts, setToasts] = useState([]);
@@ -1493,6 +1581,7 @@ export default function AdminApp({ settings, courses, lessons, testimonials, lea
             setSelected={setSelectedFor("learners")}
           />
         )}
+        {section === "access" && <AccessPanel courses={courses} grants={courseGrants} notify={notify} />}
         {section === "visits" && <VisitsPanel visitData={visitData} />}
         {section === "survey" && <SurveyPanel surveyData={surveyData} notify={notify} />}
         {section === "settings" && <SettingsPanel settings={settings} notify={notify} guard={guard} />}

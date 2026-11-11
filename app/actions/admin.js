@@ -7,6 +7,8 @@ import { getDb, nowIso } from "@/lib/db";
 import { updateSettings } from "@/lib/settings";
 import { removeFromMailingList } from "@/lib/surveyStore";
 import { slugify } from "@/lib/courses";
+import { findUserByEmail } from "@/lib/auth";
+import { grantCourseAccess, revokeCourseAccess } from "@/lib/courseAccess";
 import {
   createAdminSession,
   destroyAdminSession,
@@ -241,6 +243,32 @@ export async function deleteLessonAction(_prev, formData) {
     await db.prepare("DELETE FROM lessons WHERE id = ?").bind(id).run();
   }
   return done("השיעור נמחק", { deleted: true });
+}
+
+// גישה ידנית: המנהלת מוסיפה לומדת (חייבת להיות רשומה באתר) לקורס מסוים, גם אם הוא "בקרוב".
+export async function grantCourseAccessAction(_prev, formData) {
+  if (!(await isAdmin())) redirect("/admin");
+  const email = (formData.get("email") || "").toString().trim().toLowerCase();
+  const courseId = (formData.get("course_id") || "").toString();
+  if (!email || !email.includes("@")) return fail("יש להזין כתובת מייל.");
+  const db = await getDb();
+  const course = await db.prepare("SELECT id, title FROM courses WHERE id = ?").bind(courseId).first();
+  if (!course) return fail("יש לבחור קורס.");
+  const user = await findUserByEmail(email);
+  if (!user) return fail("אין באתר משתמשת עם המייל הזה. היא צריכה קודם להירשם (דף ההרשמה), ואז אפשר להוסיף אותה.");
+  try {
+    await grantCourseAccess(user.id, course.id);
+  } catch {
+    return fail("טבלת הגישה הידנית עדיין לא קיימת במסד הנתונים (צריך להריץ את מיגרציה 0013).");
+  }
+  return done(`${user.name} קיבלה גישה ל"${course.title}"`);
+}
+
+export async function revokeCourseAccessAction(userId, courseId) {
+  if (!(await isAdmin())) redirect("/admin");
+  await revokeCourseAccess(String(userId), String(courseId));
+  revalidatePath("/admin");
+  return { ok: true };
 }
 
 // מסירה מרשימת הדיוור של הסקר (marketing_consent=0). המייל נשאר ברשומה, אבל לא נכלל בייצוא.

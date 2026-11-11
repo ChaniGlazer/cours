@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourses, getLessonsByCourse } from "@/lib/courses";
 import { getPurchasedCourseIds } from "@/lib/purchases";
+import { getGrantedCourseIds } from "@/lib/courseAccess";
 import { tutorVisibleFor } from "@/lib/tutorAccess";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
 import MyArea from "@/app/components/MyArea";
@@ -15,10 +16,11 @@ export default async function MyCoursesPage() {
 
   const allCourses = await getCourses();
   const lessonsByCourse = await getLessonsByCourse();
-  const purchasedIds = await getPurchasedCourseIds(user.id);
+  const grantedIds = await getGrantedCourseIds(user.id);
+  const purchasedIds = [...(await getPurchasedCourseIds(user.id)), ...grantedIds];
 
   // "הקורסים שלי": קורסים שאפשר ללמוד בהם עכשיו (חינמיים, או בתשלום ונרכשו). קורס "בקרוב" עובר ל"עוד קורסים".
-  const mine = allCourses.filter((c) => !c.coming_soon && (!c.is_paid || purchasedIds.includes(c.id)));
+  const mine = allCourses.filter((c) => (!c.coming_soon || grantedIds.includes(c.id)) && (!c.is_paid || purchasedIds.includes(c.id)));
   const mineIds = new Set(mine.map((c) => c.id));
   const others = allCourses.filter((c) => !mineIds.has(c.id));
 

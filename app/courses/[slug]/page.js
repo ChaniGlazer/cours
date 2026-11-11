@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { getCourseBySlug, getLessonsForCourse } from "@/lib/courses";
 import { hasPurchasedCourse } from "@/lib/purchases";
+import { hasCourseGrant } from "@/lib/courseAccess";
 import { isAdmin } from "@/lib/admin-auth";
 import { getApprovedTestimonials, getUserTestimonial } from "@/lib/testimonials";
 import TestimonialForm from "./TestimonialForm";
@@ -40,11 +41,12 @@ export default async function CoursePage({ params, searchParams }) {
 
   const user = await getCurrentUser();
   const purchased = course.is_paid && user ? await hasPurchasedCourse(user.id, course.id) : false;
-  const ownsCourse = !course.is_paid || purchased;
+  const granted = user ? await hasCourseGrant(user.id, course.id) : false; // גישה ידנית שהמנהלת נתנה
+  const ownsCourse = !course.is_paid || purchased || granted;
   // מנהל מחובר (סיסמת /admin) רואה את כל השיעורים בלי תשלום, וגם קורס "בקרוב" כתצוגה מקדימה.
   // קורס "בקרוב" סגור לכל השאר, גם אם הוא חינמי: אין רשימת שיעורים ואין כפתור כניסה.
   const admin = await isAdmin();
-  const hasAccess = course.coming_soon ? admin : ownsCourse || admin;
+  const hasAccess = course.coming_soon ? admin || granted : ownsCourse || admin;
 
   const lessons = await getLessonsForCourse(course.id);
   const openSlugs = lessons.filter((_, i) => !(course.is_paid && !hasAccess && i > 0)).map((l) => l.slug);
