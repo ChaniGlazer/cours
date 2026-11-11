@@ -235,9 +235,7 @@ export default async function CoursesCatalogPage({ searchParams }) {
 
           {courses.length === 0 ? (
             <div className="cx-empty">
-              {filter === "paid"
-                ? "קורסים בתשלום יתווספו בקרוב. בינתיים, כל מה שפתוח כאן הוא בחינם."
-                : "אין כרגע קורסים בקטגוריה הזו."}
+              אין כרגע קורסים בקטגוריה הזו.
             </div>
           ) : (
             <div className="cx-grid">
