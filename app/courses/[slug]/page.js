@@ -49,6 +49,21 @@ export default async function CoursePage({ params, searchParams }) {
   const lessons = await getLessonsForCourse(course.id);
   const openSlugs = lessons.filter((_, i) => !(course.is_paid && !hasAccess && i > 0)).map((l) => l.slug);
   const testimonials = await getApprovedTestimonials(course.id);
+  // מעט המלצות: חוזרים עליהן עד שהרצועה ארוכה מספיק כדי שלא יופיעו רווחים בלולאה
+  const marqueeBase = testimonials.length >= 3 ? Array.from({ length: Math.ceil(8 / testimonials.length) * testimonials.length }, (_, k) => testimonials[k % testimonials.length]) : [];
+  const renderTestimonial = (t, key) => (
+    <figure className="testimonial-card" key={key}>
+      <blockquote>“{t.quote}”</blockquote>
+      {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
+      <figcaption>
+        {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
+        <span>
+          <strong>{t.name}</strong>
+          {t.role && <small>{t.role}</small>}
+        </span>
+      </figcaption>
+    </figure>
+  );
   const canReview = Boolean(user) && ownsCourse && !course.coming_soon;
   const myTestimonial = canReview ? await getUserTestimonial(user.id, course.id) : null;
 
@@ -160,21 +175,19 @@ export default async function CoursePage({ params, searchParams }) {
               <p className="empty-note">עדיין אין המלצות על הקורס. אחרי שתסיימו ללמוד, אפשר להיות הראשונים לכתוב.</p>
             )}
 
-            {testimonials.length > 0 && (
-              <div className="testimonial-grid">
-                {testimonials.map((t) => (
-                  <figure className="testimonial-card" key={t.id}>
-                    <blockquote>“{t.quote}”</blockquote>
-                    {t.result && <p className="testimonial-card__result">✓ {t.result}</p>}
-                    <figcaption>
-                      {t.photo_url && <img src={t.photo_url} alt="" width="40" height="40" loading="lazy" />}
-                      <span>
-                        <strong>{t.name}</strong>
-                        {t.role && <small>{t.role}</small>}
-                      </span>
-                    </figcaption>
-                  </figure>
-                ))}
+            {testimonials.length > 0 && testimonials.length < 3 && (
+              <div className="testimonial-grid">{testimonials.map((t) => renderTestimonial(t, t.id))}</div>
+            )}
+
+            {testimonials.length >= 3 && (
+              // רצועה נעה ואינסופית, כמו בעמוד הקורסים. משוכפלת פעמיים כדי שהלולאה תהיה חלקה; העותק השני מוסתר מקוראי מסך.
+              <div className="tm-marquee" role="region" aria-label="המלצות תלמידים">
+                <div className="tm-marquee__track" style={{ "--tm-marquee-time": `${Math.max(30, marqueeBase.length * 7)}s` }}>
+                  {marqueeBase.map((t, i) => renderTestimonial(t, `a${i}`))}
+                  <div className="tm-marquee__copy" aria-hidden="true">
+                    {marqueeBase.map((t, i) => renderTestimonial(t, `b${i}`))}
+                  </div>
+                </div>
               </div>
             )}
 

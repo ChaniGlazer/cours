@@ -965,6 +965,18 @@ a.syl-row:hover { border-color: var(--ink); }
 .testimonial-card figcaption { display: flex; align-items: center; gap: 12px; margin-top: auto; }
 .testimonial-card figcaption img { border-radius: 50%; object-fit: cover; }
 .testimonial-card figcaption small { display: block; color: var(--text-soft); }
+/* רצועת המלצות נעה (כמו בעמוד הקורסים הראשי). direction:ltr כדי שהאנימציה תתנהג אותו דבר, והכרטיסים חוזרים ל-rtl. */
+.tm-marquee { direction: ltr; overflow: hidden; margin: 28px -24px 0; padding: 8px 0 14px; -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+.tm-marquee__track { display: flex; width: max-content; animation: tm-marquee var(--tm-marquee-time, 40s) linear infinite; }
+.tm-marquee__copy { display: contents; }
+.tm-marquee .testimonial-card { direction: rtl; flex: none; width: min(360px, 82vw); margin-inline: 10px; box-sizing: border-box; }
+.tm-marquee:hover .tm-marquee__track, .tm-marquee:focus-within .tm-marquee__track { animation-play-state: paused; }
+@keyframes tm-marquee { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .tm-marquee { overflow-x: auto; }
+  .tm-marquee__track { animation: none; }
+  .tm-marquee__copy { display: none; }
+}
 .testimonial-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 600px) { .testimonial-form__row { grid-template-columns: 1fr; } }
 
