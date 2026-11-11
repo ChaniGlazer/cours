@@ -9,6 +9,17 @@ import {
   hashPassword,
   verifyPassword
 } from "@/lib/auth";
+import { recordMailingConsent } from "@/lib/surveyStore";
+
+// תיבת "אשמח לקבל עדכונים": נרשמת לרשימת התפוצה רק אם סומנה. כשל בשמירה לא מפיל את ההרשמה/ההתחברות.
+async function saveMailingConsent(formData, email, source) {
+  if (formData.get("marketing") !== "on") return;
+  try {
+    await recordMailingConsent(email, source);
+  } catch (e) {
+    console.error("mailing consent failed", e);
+  }
+}
 
 function safeNext(next) {
   // מונע redirect לכתובת חיצונית - מאפשרים רק נתיבים פנימיים שמתחילים ב-/
@@ -44,6 +55,7 @@ export async function registerAction(formData) {
   const passwordHash = await hashPassword(password);
   const userId = await createUser({ name, email, passwordHash });
   await createSession(userId);
+  await saveMailingConsent(formData, email, "register");
 
   redirect(next);
 }
@@ -65,6 +77,7 @@ export async function loginAction(formData) {
   }
 
   await createSession(user.id);
+  await saveMailingConsent(formData, email, "login");
   redirect(next);
 }
 

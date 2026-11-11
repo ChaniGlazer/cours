@@ -1,3 +1,4 @@
+import { CONSENT_TEXT } from "@/lib/surveyConfig";
 import { registerAction } from "@/app/actions/auth";
 
 const ERROR_MESSAGES = {
@@ -44,6 +45,10 @@ export default async function RegisterPage({ searchParams }) {
                 autoComplete="new-password"
               />
             </div>
+            <label className="field" style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+              <input type="checkbox" name="marketing" style={{ width: 20, height: 20, marginTop: 3, flex: "none" }} />
+              <span>{CONSENT_TEXT}</span>
+            </label>
             <button type="submit" className="btn btn-primary btn-block">
               המשך
             </button>
