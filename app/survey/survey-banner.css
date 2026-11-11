@@ -60,9 +60,18 @@
 
 /* מובייל: קצת קטן יותר וקרוב לקצה, כדי שלא יחרוג מהמסך */
 @media (max-width: 560px) {
-  .svb-fab { top: -30px; right: -6px; max-width: calc(100vw - 32px); padding: 12px 18px; font-size: 19px; }
-  .svb-fab__icon { width: 44px; height: 44px; font-size: 24px; }
-  .svb-fab__text small { font-size: 13px; }
+  /* בטלפון הכפתור קטן ותלוי בראש ה-hero (מעל הכותרת), ולא מתחת לכפתורים. ה-mock מפסיק להיות נקודת העיגון, כך שהמיקום יחסית ל-hero. */
+  .cx-hero { position: relative; }
+  .cx-hero__mock { position: static; }
+  .cx-hero .cx-hero__grid { padding-top: 68px; }
+  .svb-fab { top: 14px; right: 16px; gap: 8px; max-width: calc(100vw - 32px); padding: 7px 14px 7px 12px; border-radius: 24px; font-size: 15px; transform: rotate(-3deg); animation-name: svb-float-sm; box-shadow: 0 8px 20px -8px rgba(255, 127, 150, 0.7), 0 0 0 3px rgba(255, 127, 150, 0.18); }
+  .svb-fab::before { inset: 3px; border-width: 1.5px; border-radius: 21px; }
+  .svb-fab__icon { width: 30px; height: 30px; font-size: 17px; }
+  .svb-fab__text small { display: none; }
+}
+@keyframes svb-float-sm {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-3px) rotate(-1deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .svb-fab, .svb-fab__icon, .svb-fab::after { animation: none !important; }
