@@ -1,5 +1,5 @@
 import { OG_IMAGES } from "@/lib/seo";
-import { CATEGORIES, CONCLUSIONS, FEATURED, SNAPSHOT } from "@/lib/surveyStories";
+import { CATEGORIES, CONCLUSIONS, FEATURED, FUNNY, SNAPSHOT } from "@/lib/surveyStories";
 import CopyLinkButton from "../CopyLinkButton";
 import "../survey.css";
 import "../results/results.css";
@@ -68,6 +68,16 @@ export default function SurveyInsightsPage() {
             </figure>
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="svi-funny">
+        <h2 className="svd-h2" id="svi-funny">חיוכים מהתשובות 😄</h2>
+        <p className="svi-lead">גם בסקר רציני יש רגעים כאלה. כמה משפטים שגרמו לי לחייך, מפוזרים כמו פתקים על הלוח.</p>
+        <ul className="svi-notes">
+          {FUNNY.map((q) => (
+            <li className="svi-note" key={q}>{q}</li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="svi-themes">
