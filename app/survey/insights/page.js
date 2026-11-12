@@ -81,6 +81,12 @@ export default async function SurveyInsightsPage() {
         </div>
       </section>
 
+      <aside className="svi-pin" aria-label="התשובה שהכי אהבתי">
+        <span className="svi-pin__tag">📌 התשובה שהכי אהבתי</span>
+        <p>תורה, מצוות ומעשים טובים :)</p>
+        <span className="svi-pin__sub">על השאלה מה ה-AI לא יכול ללמד</span>
+      </aside>
+
       <section aria-labelledby="svi-themes">
         <h2 className="svd-h2" id="svi-themes">מה כתבתם? {SNAPSHOT.openAnswers} תשובות חופשיות לפי נושאים</h2>
         <p className="svi-lead">

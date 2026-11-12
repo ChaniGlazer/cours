@@ -25,6 +25,20 @@
 .svi-featured { display: grid; gap: 14px; }
 @media (min-width: 720px) { .svi-featured { grid-template-columns: repeat(2, 1fr); align-items: start; } }
 
+/* פתק בצד: התשובה האהובה */
+.svi-pin {
+  justify-self: center; display: grid; gap: 6px; max-width: 360px; text-align: center;
+  padding: 20px 26px 22px;
+  background: color-mix(in srgb, var(--cx-yellow, #FFD27A) 55%, var(--white));
+  border-radius: 6px 6px 22px 6px;
+  box-shadow: 0 14px 28px -16px rgba(0, 0, 0, 0.4);
+  transform: rotate(-2deg);
+}
+.svi-pin__tag { font-weight: 800; font-size: 0.95rem; color: var(--ink-2); }
+.svi-pin p { margin: 0; font-size: 1.6rem; font-weight: 800; line-height: 1.3; color: var(--ink); }
+.svi-pin__sub { font-size: 0.85rem; color: var(--ink-2); }
+@media (min-width: 900px) { .svi-pin { justify-self: end; } }
+
 /* קטגוריות */
 .svi-cats { display: grid; gap: 18px; }
 .svi-cat {
