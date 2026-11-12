@@ -1,12 +1,15 @@
 import { OG_IMAGES } from "@/lib/seo";
-import { CATEGORIES, CONCLUSIONS, FEATURED, SNAPSHOT } from "@/lib/surveyStories";
+import { getSurveyResults } from "@/lib/surveyStore";
+import { CATEGORIES, FEATURED, SNAPSHOT, buildConclusions } from "@/lib/surveyStories";
 import CopyLinkButton from "../CopyLinkButton";
 import "../survey.css";
 import "../results/results.css";
 import "./insights.css";
 
+export const dynamic = "force-dynamic";
+
 const TITLE = "מה למדנו מהסקר: מסקנות ומה אמרתם";
-const DESCRIPTION = `${SNAPSHOT.total} תשובות לסקר על לימוד פיתוח בעידן ה-AI: ארבע מסקנות, והתשובות החופשיות ממוינות לנושאים, עם ציטוטים אנונימיים.`;
+const DESCRIPTION = `תשובות לסקר על לימוד פיתוח בעידן ה-AI: ארבע מסקנות, והתשובות החופשיות ממוינות לנושאים, עם ציטוטים אנונימיים.`;
 
 export const metadata = {
   title: TITLE,
@@ -18,7 +21,15 @@ export const metadata = {
 
 const pctOfOpen = (n) => Math.round((n / SNAPSHOT.openAnswers) * 100);
 
-export default function SurveyInsightsPage() {
+export default async function SurveyInsightsPage() {
+  let results = null;
+  try {
+    results = await getSurveyResults();
+  } catch (err) {
+    console.error("survey insights page failed", err?.message);
+  }
+  const total = results?.total || 0;
+  const conclusions = buildConclusions(results);
   const maxN = Math.max(...CATEGORIES.map((c) => c.n));
 
   return (
@@ -27,11 +38,11 @@ export default function SurveyInsightsPage() {
         <span className="sv-pill">מסקנות ותשובות</span>
         <h1>מה למדנו מהסקר, ומה אמרתם</h1>
         <p className="svd-hero__lead">
-          {SNAPSHOT.total} בנות ענו על השאלה איך לומדים פיתוח בעידן ה-AI, ו-{SNAPSHOT.openAnswers} מהן כתבו גם תשובה במילים שלהן. הנה מה שעולה מהמספרים, ומה שעולה מהמילים.
+          {total} בנות ענו על השאלה איך לומדים פיתוח בעידן ה-AI, ו-{SNAPSHOT.openAnswers} מהן כתבו גם תשובה במילים שלהן. הנה מה שעולה מהמספרים, ומה שעולה מהמילים.
         </p>
         <p className="svd-count">
-          <strong>{SNAPSHOT.total}</strong>
-          <span>תשובות · נכון ל-{SNAPSHOT.date}</span>
+          <strong>{total}</strong>
+          <span>בנות ענו · מתעדכן חי</span>
         </p>
       </header>
 
@@ -42,7 +53,7 @@ export default function SurveyInsightsPage() {
       <section aria-labelledby="svi-conclusions">
         <h2 className="svd-h2" id="svi-conclusions">ארבע מסקנות</h2>
         <ul className="svi-conclusions">
-          {CONCLUSIONS.map((c) => (
+          {conclusions.map((c) => (
             <li className="svi-conclusion" key={c.id}>
               <div className="svd-ring" style={{ "--p": c.pct }} role="img" aria-label={`${c.pct} אחוז`}>
                 <span className="svd-ring__in">
@@ -73,7 +84,7 @@ export default function SurveyInsightsPage() {
       <section aria-labelledby="svi-themes">
         <h2 className="svd-h2" id="svi-themes">מה כתבתם? {SNAPSHOT.openAnswers} תשובות חופשיות לפי נושאים</h2>
         <p className="svi-lead">
-          השאלה הייתה: "מה ה-AI עדיין לא יכול ללמד אתכם, ובשביל זה אתם צריכים בן אדם?" מיינתי כל תשובה לנושא אחד עיקרי. הציטוטים אנונימיים ותוקנו בהם רק שגיאות הקלדה.
+          השאלה הייתה: "מה ה-AI עדיין לא יכול ללמד אתכם, ובשביל זה אתם צריכים בן אדם?" מיינתי כל תשובה לנושא אחד עיקרי (המיון נכון ל-{SNAPSHOT.date}, ל-{SNAPSHOT.openAnswers} התשובות הראשונות). הציטוטים אנונימיים ותוקנו בהם רק שגיאות הקלדה.
         </p>
 
         <div className="svi-cats">
