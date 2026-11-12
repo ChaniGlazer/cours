@@ -59,6 +59,7 @@ export default async function SurveyResultsPage() {
         <p>כל תשובה נוספת משפרת את התמונה. הסקר לוקח שתי דקות.</p>
         <div className="svd-cta__row">
           <a className="sv-btn sv-btn--primary" href="/survey">למילוי הסקר</a>
+          <a className="sv-btn sv-btn--ghost" href="/survey/insights">מסקנות ותשובות חופשיות</a>
           <CopyLinkButton path="/survey" className="sv-btn sv-btn--ghost">העתקת קישור לסקר</CopyLinkButton>
         </div>
       </section>
