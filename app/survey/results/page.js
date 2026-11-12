@@ -8,7 +8,7 @@ import "./results.css";
 export const dynamic = "force-dynamic";
 
 const TITLE = "תוצאות הסקר: איך לומדים פיתוח בעידן ה-AI";
-const DESCRIPTION = "מה ענו אנשים שלומדים ועובדים בפיתוח על ה-AI, על לימוד קוד ועל העתיד של ג'וניורס. תוצאות חיות, בגרפים.";
+const DESCRIPTION = "מה ענו בנות שלומדות ועובדות בפיתוח על ה-AI, על לימוד קוד ועל העתיד של ג'וניורס. תוצאות חיות, בגרפים.";
 
 export const metadata = {
   title: TITLE,
@@ -32,11 +32,11 @@ export default async function SurveyResultsPage() {
       <header className="svd-hero">
         <span className="sv-pill">תוצאות חיות</span>
         <h1>איך לומדים פיתוח בעידן ה-AI?</h1>
-        <p className="svd-hero__lead">מה ענו אנשים שלומדים ועובדים בפיתוח. הכול אנונימי, והמספרים מתעדכנים עם כל תשובה חדשה.</p>
+        <p className="svd-hero__lead">מה ענו בנות שלומדות ועובדות בפיתוח. הכול אנונימי, והמספרים מתעדכנים עם כל תשובה חדשה.</p>
         {total > 0 && (
           <p className="svd-count">
             <strong>{total}</strong>
-            <span>{total === 1 ? "אדם אחד ענה" : "אנשים ענו"}</span>
+            <span>{total === 1 ? "בת אחת ענתה" : "בנות ענו"}</span>
           </p>
         )}
       </header>

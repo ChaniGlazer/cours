@@ -27,7 +27,7 @@ export default function SurveyInsightsPage() {
         <span className="sv-pill">מסקנות ותשובות</span>
         <h1>מה למדנו מהסקר, ומה אמרתם</h1>
         <p className="svd-hero__lead">
-          {SNAPSHOT.total} אנשים ענו על השאלה איך לומדים פיתוח בעידן ה-AI, ו-{SNAPSHOT.openAnswers} מהם כתבו גם תשובה במילים שלהם. הנה מה שעולה מהמספרים, ומה שעולה מהמילים.
+          {SNAPSHOT.total} בנות ענו על השאלה איך לומדים פיתוח בעידן ה-AI, ו-{SNAPSHOT.openAnswers} מהן כתבו גם תשובה במילים שלהן. הנה מה שעולה מהמספרים, ומה שעולה מהמילים.
         </p>
         <p className="svd-count">
           <strong>{SNAPSHOT.total}</strong>
@@ -36,7 +36,7 @@ export default function SurveyInsightsPage() {
       </header>
 
       <p className="svd-note">
-        סקר בלתי רשמי של מי שבחרו לענות, ולכן זו תמונה כללית ולא מחקר מייצג. רוב העונים עובדים כבר בפיתוח.
+        סקר בלתי רשמי של מי שבחרו לענות, ולכן זו תמונה כללית ולא מחקר מייצג. רוב העונות עובדות כבר בפיתוח.
       </p>
 
       <section aria-labelledby="svi-conclusions">
