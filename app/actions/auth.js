@@ -7,6 +7,7 @@ import {
   destroySession,
   findUserByEmail,
   hashPassword,
+  upgradeHashIfNeeded,
   verifyPassword
 } from "@/lib/auth";
 
@@ -63,6 +64,9 @@ export async function loginAction(formData) {
   if (!valid) {
     redirect(`/login?error=invalid&${qp}`);
   }
+
+  // מעבר שקוף מ-hash ישן (bcrypt, כבד מדי ל-CPU של Workers) ל-hash חדש (scrypt).
+  await upgradeHashIfNeeded(user.id, password, user.password_hash);
 
   await createSession(user.id);
   redirect(next);
