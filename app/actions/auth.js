@@ -77,8 +77,11 @@ export async function loginAction(formData) {
     redirect(`/login?error=invalid&${qp}`);
   }
 
-  // מעבר שקוף מ-hash ישן (bcrypt, כבד מדי ל-CPU של Workers) ל-hash חדש (scrypt).
-  await upgradeHashIfNeeded(user.id, password, user.password_hash);
+  // מעבר שקוף מ-hash ישן (bcrypt) ל-hash חדש (scrypt) - מושבת זמנית (2026-11-19):
+  // תחת עומס כניסות גבוה, חישוב scrypt נוסף מעל bcrypt.compare חוסם את ה-isolate
+  // ומוביל לשגיאות CPU limit (1102) גם בדפים אחרים. יופעל מחדש בנפרד מההתחברות
+  // (migration/batch job) ולא באופן סינכרוני בתוך loginAction.
+  // await upgradeHashIfNeeded(user.id, password, user.password_hash);
 
   await createSession(user.id);
   await saveMailingConsent(formData, email, "login");
