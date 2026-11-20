@@ -355,14 +355,14 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="eyebrow">נסו בעצמכם</div>
         <h3>הרכיבו את הפרומפט בשני סדרים</h3>
         <div class="order-toggle">
-          <button class="otbtn active" type="button" data-order="aq">שאלה ← מידע</button>
-          <button class="otbtn" type="button" data-order="qa">מידע ← שאלה</button>
+          <button class="otbtn active" type="button" data-order="info-first">מידע, ואז שאלה</button>
+          <button class="otbtn" type="button" data-order="question-first">שאלה, ואז מידע</button>
         </div>
         <div class="oblocks">
           <div class="oblk info">📄 מידע ארוך — לוג שגיאות / קוד / מסמך</div>
           <div class="oblk q">❓ השאלה או המשימה</div>
         </div>
-        <div class="ot-note warn" id="order-note">⚠️ פחות מומלץ — בעיקר כשהמידע ארוך, המשימה "נבלעת" בהתחלה.</div>
+        <div class="ot-note good" id="order-note">✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף.</div>
       </div>
 
       <div class="quiz-wrap">
@@ -649,10 +649,10 @@ buildQuiz("quiz3-container", "score-box-3", [
     b.addEventListener("click", function () {
       btns.forEach(function (x) { x.classList.remove("active"); });
       b.classList.add("active");
-      var qa = b.dataset.order === "qa";
-      box.classList.toggle("swap", qa);
-      if (qa) { note.textContent = "✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף."; note.className = "ot-note good"; }
-      else { note.textContent = "⚠️ פחות מומלץ — בעיקר כשהמידע ארוך, המשימה בהתחלה \"נבלעת\"."; note.className = "ot-note warn"; }
+      var questionFirst = b.dataset.order === "question-first";
+      box.classList.toggle("swap", questionFirst);
+      if (questionFirst) { note.textContent = "⚠️ פחות מומלץ — בעיקר כשהמידע ארוך, המשימה בהתחלה \"נבלעת\"."; note.className = "ot-note warn"; }
+      else { note.textContent = "✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף."; note.className = "ot-note good"; }
     });
   });
 })();
