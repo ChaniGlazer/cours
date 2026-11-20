@@ -1,0 +1,749 @@
+DELETE FROM lessons WHERE course_id='prompts' AND slug='lesson-1-three-principles';
+INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_content, position, created_at) VALUES ('a63086fc0e8f468e658df377f2373337', 'prompts', 'lesson-1-three-principles', 'שיעור 1 - שלושה עקרונות ונוסחת 4 החלקים', '', '', '<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 1 — איך לדבר עם AI כמו שצריך</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code, label code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 68ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(2.3rem, 5vw, 4rem); line-height: 1.16; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin-top: 20px; font-size: clamp(18px, 1.6vw, 21px); max-width: 54ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+.chat-demo { background: #fff; border-radius: 30px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(91,108,255,.08); }
+.chat-demo-head { padding: 14px 22px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--cyan-soft), #fff); }
+.chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
+.chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
+.bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
+.bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chat-empty { color: var(--ink-faint); font-size: 16px; text-align: center; margin: auto; }
+.chips { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.chip { font-size: 14.5px; font-weight: 600; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 9px 16px; transition: all .15s; }
+.chip:hover:not(:disabled) { background: var(--cyan); color: #fff; transform: translateY(-1px); }
+.chip:disabled { opacity: .45; cursor: default; }
+.demo-note { padding: 0 22px 18px; font-size: 13px; color: var(--ink-faint); }
+.demo-after { margin-top: 20px; font-size: 16px; color: var(--ink); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s; }
+.demo-after.show { opacity: 1; transform: none; }
+
+/* tiles */
+.tiles4 { margin-top: 30px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .tiles4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .tiles4 { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: #fff; border-radius: 22px; padding: 22px 20px; box-shadow: var(--shadow-sm); text-align: center; }
+.tile .em { font-size: 34px; line-height: 1.2; }
+.tile h4 { font-size: 16.5px; margin: 10px 0 4px; }
+.tile p { font-size: 14.5px; line-height: 1.6; }
+
+/* shared */
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* quiz */
+.quiz-wrap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+.quiz-wrap h3 { font-size: 19px; }
+#quiz1-container, #quiz2-container, #quiz3-container { margin-top: 20px; display: grid; gap: 18px; }
+.quiz-card { background: var(--bg-panel-2); border-radius: 20px; padding: 20px 22px; }
+.quiz-card > p { color: var(--ink); font-weight: 700; font-size: 16.5px; margin-bottom: 12px; }
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 15.5px; line-height: 1.6; transition: all .15s; box-shadow: var(--shadow-sm); white-space: pre-line; }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+.score-box { margin-top: 20px; font-family: var(--display); font-weight: 700; font-size: 18px; color: #3F4FE0; }
+
+/* compare */
+.dd { margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 720px) { .dd { grid-template-columns: minmax(0, 1fr); } }
+.dd-col { border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.dd-col.yes { background: linear-gradient(160deg, #E6FAF1, #D3F4E5); }
+.dd-col.no { background: linear-gradient(160deg, #FFEBEF, #FFDDE4); }
+.dd-col h4 { font-size: 18px; margin-bottom: 12px; }
+.dd-col.yes h4 { color: #0F8F63; } .dd-col.no h4 { color: #C9304F; }
+.prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
+.dd-note { margin-top: 12px; font-size: 14.5px; color: var(--ink); }
+
+/* order demo */
+.order-demo { margin-top: 26px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px; }
+.order-toggle { display: flex; gap: 10px; flex-wrap: wrap; }
+.otbtn { font-size: 14.5px; font-weight: 700; padding: 9px 18px; border-radius: 100px; border: none; background: var(--bg-panel-2); color: var(--ink-dim); transition: all .15s; }
+.otbtn.active { background: var(--cyan); color: #fff; }
+.oblocks { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.oblk { border-radius: 14px; padding: 16px 18px; font-size: 15.5px; line-height: 1.6; }
+.oblk.info { background: var(--cyan-soft); color: #3F4FE0; order: 1; }
+.oblk.q { background: var(--violet-soft); color: #C9432E; order: 2; }
+.order-demo.swap .oblk.info { order: 2; }
+.order-demo.swap .oblk.q { order: 1; }
+.ot-note { margin-top: 16px; font-size: 14.5px; font-weight: 700; }
+.ot-note.good { color: var(--success); } .ot-note.warn { color: var(--warn); }
+
+/* formula */
+.formula-flow { margin-top: 34px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+.fstep { cursor: pointer; border: none; font-family: var(--display); font-weight: 700; font-size: 14.5px; border-radius: 18px; padding: 16px 18px; text-align: center; min-width: 150px; max-width: 220px; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s; }
+.fstep .n { display: block; font-size: 11.5px; font-weight: 700; opacity: .65; margin-bottom: 5px; letter-spacing: .03em; }
+.fstep:hover { transform: translateY(-2px); }
+.fstep.active { box-shadow: var(--shadow); transform: translateY(-2px); outline: 3px solid rgba(37,34,79,.12); }
+.fstep.c1 { background: var(--cyan-soft); color: #3F4FE0; }
+.fstep.c2 { background: var(--violet-soft); color: #C9432E; }
+.fstep.c3 { background: var(--warn-soft); color: #A66200; }
+.fstep.c4 { background: var(--success-soft); color: #0F8F63; }
+.farrow { font-size: 22px; color: var(--ink-faint); }
+@media (max-width: 760px) { .formula-flow { flex-direction: column; } .farrow { transform: rotate(90deg); } }
+
+.annotated-box { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; font-size: 17px; line-height: 2; direction: rtl; }
+.annotated-box p { color: var(--ink); }
+.annotated-box .seg { border-radius: 6px; padding: 2px 5px; transition: opacity .2s; }
+.annotated-box .seg.s1 { background: var(--cyan-soft); color: #3F4FE0; }
+.annotated-box .seg.s2 { background: var(--violet-soft); color: #C9432E; }
+.annotated-box .seg.s3 { background: var(--warn-soft); color: #A66200; }
+.annotated-box .seg.s4 { background: var(--success-soft); color: #0F8F63; }
+.annotated-box[data-focus="1"] .seg:not(.s1) { opacity: .3; }
+.annotated-box[data-focus="2"] .seg:not(.s2) { opacity: .3; }
+.annotated-box[data-focus="3"] .seg:not(.s3) { opacity: .3; }
+.annotated-box[data-focus="4"] .seg:not(.s4) { opacity: .3; }
+.annotated-hint { margin-top: 10px; font-size: 14px; color: var(--ink-faint); text-align: center; }
+
+/* exercise */
+.exsummary { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 28px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.exsummary b { font-family: var(--display); font-size: 17px; white-space: nowrap; }
+.exsummary .bar { flex: 1; min-width: 160px; height: 10px; border-radius: 10px; background: var(--bg-panel-2); overflow: hidden; }
+.exsummary .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #34D6A0, #1FB985); border-radius: 10px; transition: width .4s ease; }
+.excard { margin-top: 22px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; border: 2px solid transparent; transition: border-color .25s; }
+.excard.passed { border-color: rgba(31,185,133,.55); }
+.exhead { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.exnum { width: 42px; height: 42px; border-radius: 14px; background: var(--bg-panel-2); color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.exhead .prompt-quote.bad { flex: 1; min-width: 220px; border: 1px dashed rgba(229,72,106,.35); background: var(--danger-soft); color: #9A2F47; }
+.exfields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 820px) { .exfields { grid-template-columns: minmax(0, 1fr); } }
+.exfield label { display: block; font-size: 14px; font-weight: 700; color: var(--ink-dim); margin-bottom: 7px; }
+.exfield textarea { width: 100%; min-height: 72px; border-radius: 14px; border: 1.5px solid var(--line); padding: 11px 14px; font-family: var(--sans); font-size: 15px; resize: vertical; background: #fcfcff; color: var(--ink); line-height: 1.55; }
+.exfield textarea:focus { outline: none; border-color: var(--cyan); }
+.exfb { margin-top: 7px; font-size: 13.5px; font-weight: 600; min-height: 18px; }
+.exfb.ok { color: var(--success); } .exfb.fail { color: var(--danger); }
+.exrow { display: flex; align-items: center; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
+.exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
+.excard.passed .exbadge { color: var(--success); }
+
+/* recap */
+.recap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px 32px; }
+.recap ul { margin: 16px 0 0; padding-inline-start: 22px; color: var(--ink-dim); display: grid; gap: 12px; }
+.recap li { font-size: 16.5px; line-height: 1.6; }
+.recap li strong { color: var(--ink); }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: var(--ink); min-height: 26px; }
+
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">הנדסת פרומפטים למפתחים</span>
+    <span class="lesson-chip">שיעור 1</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+   <div class="hero-text">
+    <div class="eyebrow c">שיעור 1 · היסודות</div>
+    <h1>איך לדבר עם <span class="a1">AI</span><br>כמו שמדברים עם <span class="a2">מתכנת טוב</span></h1>
+    <p class="hero-sub">אתם כבר יודעים לכתוב קוד. השיעור הזה מלמד אתכם לכתוב <strong style="color:var(--ink)">פרומפטים</strong> — ההנחיה שאתם נותנים לכלי ה-AI — כמו מהנדסים, ולא כמו מי שמקליד שאלה מהירה בגוגל.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-35 דקות</span>
+      <span class="pill">🧩 3 עקרונות + נוסחה</span>
+      <span class="pill">✍️ תרגיל סיום עם בדיקה אוטומטית</span>
+    </div>
+   </div>
+   <div class="hero-visual">
+    <div class="chat-demo">
+      <div class="chat-demo-head"><span class="dot"></span> אותו כלי AI, שתי הנחיות שונות</div>
+      <div class="chat-body" id="chat-body"><div class="chat-empty">לחצו על אחת ההנחיות למטה, ותראו מה חוזר</div></div>
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-i="0">❌ "תתקן את הבאג בלוגין"</button>
+        <button class="chip" type="button" data-i="1">✅ הגרסה המדויקת</button>
+      </div>
+      <div class="demo-note">* הדגמה מוקלטת להמחשה בלבד.</div>
+    </div>
+    <p class="demo-after" id="demo-after">ההבדל לא היה ב"איכות" ה-AI. הוא היה בפרומפט. וזה בדיוק מה שנלמד עכשיו.</p>
+   </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="callout info">
+    <span class="ico">👋</span>
+    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם כבר כותבים קוד, ומשתמשים (או מתחילים להשתמש) בכלי AI כמו Claude, ChatGPT, Copilot או כלי קידוד סוכניים — ולפעמים מרגישים שהתשובה לא רלוונטית, או שהכלי "הבין לא נכון" את הבקשה. ברוב המקרים הבעיה היא לא בכלי. היא בפרומפט.</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ================= ROADMAP ================= -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="eyebrow">המפה</div>
+      <h2 class="section-title">מה נלמד היום?</h2>
+      <p class="lede">בסוף השיעור תדעו לנתח <strong style="color:var(--ink)">למה</strong> פרומפט נכשל, ותדעו לכתוב מחדש כל פרומפט לפי נוסחה פשוטה של ארבעה חלקים.</p>
+
+      <div class="tiles4">
+        <div class="tile"><div class="em">🧑‍💻</div><h4>עקרון 1</h4><p>עובד חדש מבריק, בלי הקשר</p></div>
+        <div class="tile"><div class="em">📍</div><h4>עקרון 2</h4><p>איפה שמים את המידע</p></div>
+        <div class="tile"><div class="em">🙅➡️🙆</div><h4>עקרון 3</h4><p>חיובי עובד טוב יותר משלילי</p></div>
+        <div class="tile"><div class="em">🧮</div><h4>הנוסחה</h4><p>4 חלקים + תרגיל סיום עם בדיקה</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 1 ================= -->
+  <section id="p1">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 1</div>
+      <h2 class="section-title">המודל הוא עובד חדש מבריק — בלי שום הקשר</h2>
+      <p class="lede">תחשבו על ה-AI כעל מתכנת מחונן שגויס הבוקר. הוא חכם, מהיר, ולא ישן אף פעם. אבל הוא לא היה בישיבות שלכם, לא קרא את היסטוריית ה-commits, ולא מכיר את הקוד שלכם. כל מה שהוא יודע על המשימה הוא <strong style="color:var(--ink)">מה שכתבתם בפרומפט</strong> — ושום דבר מעבר לזה.</p>
+
+      <div class="callout warn">
+        <span class="ico">🧪</span>
+        <p><strong>המבחן המעשי:</strong> אם הייתם מראים את הפרומפט לעמית שמכיר מעט מאוד את המשימה, והוא היה מתבלבל — גם המודל יתבלבל.</p>
+      </div>
+
+      <div class="dd">
+        <div class="dd-col no">
+          <h4>❌ דוגמה גרועה</h4>
+          <p class="prompt-quote">תתקן את הבאג בלוגין</p>
+          <p class="dd-note">אין סימפטום, אין מיקום בקוד, ואין הגדרה של "תהליך עבודה" — רק "תתקן".</p>
+        </div>
+        <div class="dd-col yes">
+          <h4>✅ דוגמה טובה</h4>
+          <p class="prompt-quote">משתמשים מדווחים שהלוגין נכשל אחרי שה-session פג. תבדוק את זרימת ה-auth ב-src/auth/, בעיקר רענון טוקן. תכתוב טסט שנכשל ומשחזר את הבעיה, ואז תתקן.</p>
+          <p class="dd-note">סימפטום קונקרטי + מיקום סביר בקוד + הגדרת תהליך עבודה ברור.</p>
+        </div>
+      </div>
+
+      <div class="quiz-wrap">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>מבחן העמית: יבין, או יתבלבל?</h3>
+        <p style="margin-top:6px;">לכל פרומפט, החליטו: עמית שמכיר מעט מאוד את הפרויקט — יבין מה לעשות, או יתבלבל? (וזה בדיוק גם מה שיקרה למודל)</p>
+        <div id="quiz1-container"></div>
+        <div class="score-box" id="score-box-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 2 ================= -->
+  <section id="p2">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 2</div>
+      <h2 class="section-title">איפה שמים את המידע משנה תוצאה</h2>
+      <p class="lede">כלל פשוט: כשיש מידע ארוך — קוד, לוג שגיאות, מסמך — שמים אותו <strong style="color:var(--ink)">בתחילת</strong> הפרומפט, ואת השאלה או המשימה <strong style="color:var(--ink)">בסוף</strong>. זה לא עניין של טעם או סגנון. זה משפיע בפועל על איכות התשובה, בעיקר בפרומפטים ארוכים עם כמה מקורות מידע.</p>
+
+      <div class="dd">
+        <div class="dd-col no">
+          <h4>❌ שאלה לפני המידע</h4>
+          <p class="prompt-quote">תסביר למה הפונקציה הזו נכשלת: [200 שורות קוד]</p>
+        </div>
+        <div class="dd-col yes">
+          <h4>✅ מידע לפני השאלה</h4>
+          <p class="prompt-quote">[200 שורות קוד]
+
+בהתבסס על הקוד למעלה: למה הפונקציה הזו נכשלת כש-input ריק?</p>
+        </div>
+      </div>
+
+      <div class="order-demo" id="order-demo">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>הרכיבו את הפרומפט בשני סדרים</h3>
+        <div class="order-toggle">
+          <button class="otbtn active" type="button" data-order="aq">שאלה ← מידע</button>
+          <button class="otbtn" type="button" data-order="qa">מידע ← שאלה</button>
+        </div>
+        <div class="oblocks">
+          <div class="oblk info">📄 מידע ארוך — לוג שגיאות / קוד / מסמך</div>
+          <div class="oblk q">❓ השאלה או המשימה</div>
+        </div>
+        <div class="ot-note warn" id="order-note">⚠️ פחות מומלץ — בעיקר כשהמידע ארוך, המשימה "נבלעת" בהתחלה.</div>
+      </div>
+
+      <div class="quiz-wrap">
+        <div class="eyebrow">תרגול</div>
+        <h3>איזו גרסה הייתם שולחים?</h3>
+        <div id="quiz2-container"></div>
+        <div class="score-box" id="score-box-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 3 ================= -->
+  <section id="p3">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 3</div>
+      <h2 class="section-title">הוראה חיובית עובדת טוב יותר משלילית</h2>
+      <p class="lede">המודל לא תמיד "שומע" היטב רשימת איסורים. הדוגמה הקנונית: במקום <code>לעולם אל תשתמש בשלוש נקודות</code> (שעובד פחות טוב), עדיף לתת גם את ה"למה" וגם ניסוח חיובי של מה כן לעשות:</p>
+
+      <div class="callout ok">
+        <span class="ico">🔊</span>
+        <p><strong>"התשובה תוקרא על ידי מנוע טקסט-לדיבור, ולכן תמיד תכתבו מספרים במילים — המנוע לא יודע לבטא קיצורים."</strong></p>
+      </div>
+
+      <p class="lede" style="margin-top:28px;">בהקשר קוד, אותו עיקרון בדיוק:</p>
+      <div class="dd">
+        <div class="dd-col no">
+          <h4>❌ שלילי</h4>
+          <p class="prompt-quote">אל תכתוב קוד שלא תואם את הסגנון הקיים</p>
+        </div>
+        <div class="dd-col yes">
+          <h4>✅ חיובי</h4>
+          <p class="prompt-quote">תכתוב קוד שעוקב אחרי התבנית הקיימת ב-X</p>
+        </div>
+      </div>
+
+      <div class="quiz-wrap">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>בחרו את הניסוח היעיל יותר</h3>
+        <div id="quiz3-container"></div>
+        <div class="score-box" id="score-box-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FORMULA ================= -->
+  <section id="formula">
+    <div class="wrap">
+      <div class="eyebrow v">הנוסחה</div>
+      <h2 class="section-title">נוסחת 4 החלקים לכתיבת פרומפט</h2>
+      <p class="lede">זו הנוסחה המרכזית של השיעור. כל פרומפט טוב — גם אם הוא לא כתוב פורמלית ככה — עונה על ארבעת החלקים האלה. לחצו על כל חלק כדי לראות אותו מודגש בדוגמה שלמטה.</p>
+
+      <div class="formula-flow" id="formula-flow">
+        <button class="fstep c1" type="button" data-p="1"><span class="n">1</span>מטרה / סימפטום</button>
+        <span class="farrow">←</span>
+        <button class="fstep c2" type="button" data-p="2"><span class="n">2</span>הקשר</button>
+        <span class="farrow">←</span>
+        <button class="fstep c3" type="button" data-p="3"><span class="n">3</span>אילוצים</button>
+        <span class="farrow">←</span>
+        <button class="fstep c4" type="button" data-p="4"><span class="n">4</span>הגדרת הצלחה שניתנת לבדיקה</button>
+      </div>
+
+      <div class="annotated-box" id="annotated-box">
+        <p>
+          <span class="seg s1">הצ''קאאוט מחזיר 500 לסירוגין מאז הדיפלוי abc123 [stack trace מצורף].</span>
+          <span class="seg s2">השירות הוא src/payments/, עם idempotency keys ב-Redis.</span>
+          <span class="seg s3">תבנה 2-3 השערות מדורגות לפי סבירות לפני שתשנה קוד.</span>
+          <span class="seg s4">תכתוב טסט שנכשל ומשחזר את הבעיה.</span>
+          <span class="seg s3">תתקן את שורש הבעיה — לא לדכא את השגיאה או להוסיף retry כעקיפה.</span>
+          <span class="seg s4">תריץ את ה-test suite של payments ותראה את הפלט.</span>
+        </p>
+      </div>
+      <p class="annotated-hint">💡 שימו לב: בפועל הסדר לא חייב להיות קשיח, ואפשר לשלב חלקים זה בתוך זה. מה שחשוב הוא שארבעת החלקים <strong style="color:var(--ink)">נמצאים</strong> בפרומפט.</p>
+    </div>
+  </section>
+
+  <!-- ================= EXERCISE ================= -->
+  <section id="exercise">
+    <div class="wrap">
+      <div class="eyebrow">תרגיל סיום</div>
+      <h2 class="section-title">שכתבו לפי הנוסחה — ובדקו את עצמכם</h2>
+      <p class="lede">שלושה פרומפטים גרועים. לכל אחד כתבו מחדש בעזרת ארבעת החלקים, ולחצו "בדקו" לקבל משוב ספציפי על מה חסר. המטרה: ✓ ירוק בכל ארבעת השדות, בכל שלוש הכרטיסים.</p>
+
+      <div class="exsummary">
+        <b id="ex-count">0 / 3 תרגילים עברו</b>
+        <div class="bar"><i id="ex-bar"></i></div>
+      </div>
+
+      <!-- exercise 1 -->
+      <div class="excard" data-ex>
+        <div class="exhead">
+          <div class="exnum">1</div>
+          <p class="prompt-quote bad">תתקן את הבאג</p>
+        </div>
+        <div class="exfields">
+          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה קורה בפועל? איזה סימפטום או שגיאה, ומתי זה קורה?"></textarea><div class="exfb" data-fb="goal"></div></div>
+          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="אילו קבצים/תיקיות רלוונטיים? יש היסטוריה או אילוץ ארכיטקטוני?"></textarea><div class="exfb" data-fb="context"></div></div>
+          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="אילו ספריות מותר/אסור? API שאסור לשנות? דרישות ביצועים?"></textarea><div class="exfb" data-fb="constraints"></div></div>
+          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="איך נדע שהצליח? איזה טסט יעבור, איזה build ירוץ, איזה פלט צפוי?"></textarea><div class="exfb" data-fb="success"></div></div>
+        </div>
+        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+      </div>
+
+      <!-- exercise 2 -->
+      <div class="excard" data-ex>
+        <div class="exhead">
+          <div class="exnum">2</div>
+          <p class="prompt-quote bad">תוסיף טסטים ל-foo.py</p>
+        </div>
+        <div class="exfields">
+          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה הפונקציה/מודול עושה, ולמה חסרה עליו כיסוי בדיקות?"></textarea><div class="exfb" data-fb="goal"></div></div>
+          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="מה יש כבר ב-foo.py? יש פריימוורק טסטים קיים בפרויקט?"></textarea><div class="exfb" data-fb="context"></div></div>
+          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="באיזו ספריית טסטים חייבים להשתמש? יש מקרי קצה שחייבים לכסות?"></textarea><div class="exfb" data-fb="constraints"></div></div>
+          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="כמה טסטים, איזה coverage, ושכל הטסטים אכן עוברים בהרצה?"></textarea><div class="exfb" data-fb="success"></div></div>
+        </div>
+        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+      </div>
+
+      <!-- exercise 3 -->
+      <div class="excard" data-ex>
+        <div class="exhead">
+          <div class="exnum">3</div>
+          <p class="prompt-quote bad">תשפר את הדשבורד</p>
+        </div>
+        <div class="exfields">
+          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה בדיוק לא טוב בדשבורד היום? איטי? מבלבל? חסר נתון?"></textarea><div class="exfb" data-fb="goal"></div></div>
+          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="באיזה קובץ/קומפוננטה מדובר? מי המשתמשים, ומה חשוב להם?"></textarea><div class="exfb" data-fb="context"></div></div>
+          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="ספריית עיצוב קיימת שצריך לשמור עליה? אסור לשבור מסך קיים?"></textarea><div class="exfb" data-fb="constraints"></div></div>
+          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="מה בדיוק ישתנה במסך? איך נבדוק/נראה שזה עבד?"></textarea><div class="exfb" data-fb="success"></div></div>
+        </div>
+        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECAP ================= -->
+  <section id="recap">
+    <div class="wrap">
+      <div class="eyebrow c">סיכום</div>
+      <h2 class="section-title">מה לקחת איתכם</h2>
+      <div class="recap">
+        <ul>
+          <li><strong>עקרון 1:</strong> המודל הוא עובד חדש מבריק בלי הקשר. אם עמית שמכיר מעט את המשימה היה מתבלבל מהפרומפט — גם המודל יתבלבל.</li>
+          <li><strong>עקרון 2:</strong> מידע ארוך (קוד, לוג, מסמך) בתחילת הפרומפט, והמשימה בסוף. זה משפיע בפועל, במיוחד בפרומפטים ארוכים.</li>
+          <li><strong>עקרון 3:</strong> ניסוח חיובי עם "למה" עובד טוב יותר מרשימת איסורים.</li>
+          <li><strong>הנוסחה:</strong> מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה. ארבעת החלקים, לא בהכרח בסדר הזה.</li>
+        </ul>
+      </div>
+      <div class="callout info" style="margin-top:28px;">
+        <span class="ico">🚀</span>
+        <p><strong>בשיעורים הבאים</strong> נעמיק בדיבוג פרומפטים שלא עובדים, ובעבודה עם כלי קידוד סוכניים (agentic) — שם האיכות של ההנחיה שלכם משפיעה אפילו יותר.</p>
+      </div>
+      <div class="mission-done" id="mission-done"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">הנדסת פרומפטים למפתחים · שיעור 1</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- hero chat demo ---------- */
+(function () {
+  var answers = [
+    { q: "תתקן את הבאג בלוגין", a: "אני צריך עוד פרטים כדי להתחיל: איזה באג בדיוק? באיזה קובץ? מתי זה קורה? יש הודעת שגיאה או שלבים לשחזור?" },
+    { q: "משתמשים מדווחים שהלוגין נכשל אחרי שה-session פג. תבדוק את זרימת ה-auth ב-src/auth/, בעיקר רענון טוקן. תכתוב טסט שנכשל ומשחזר את הבעיה, ואז תתקן.", a: "מבין. בודק את src/auth/, מתמקד ברענון הטוקן. כותב טסט שמשחזר את הכשל אחרי תפוגת session, מוודא שהוא נכשל כצפוי, ואז מתקן ומריץ שוב." }
+  ];
+  var body = $("chat-body");
+  var chips = document.querySelectorAll("#chips .chip");
+  var after = $("demo-after");
+  var busy = false;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (busy) return;
+      busy = true;
+      chips.forEach(function (c) { c.disabled = true; });
+      var item = answers[parseInt(chip.dataset.i, 10)];
+      body.innerHTML = "";
+      var u = document.createElement("div"); u.className = "bubble user"; u.textContent = item.q; body.appendChild(u);
+      var ai = document.createElement("div"); ai.className = "bubble ai typing"; body.appendChild(ai);
+      var i = 0;
+      function finish() {
+        ai.classList.remove("typing");
+        chips.forEach(function (c) { c.disabled = false; });
+        busy = false;
+        after.classList.add("show");
+      }
+      if (reduceMotion) { ai.textContent = item.a; finish(); return; }
+      setTimeout(function tick() {
+        i += 2;
+        ai.textContent = item.a.slice(0, i);
+        if (i < item.a.length) setTimeout(tick, 16); else finish();
+      }, 400);
+    });
+  });
+})();
+
+/* ---------- reusable quiz builder ---------- */
+function buildQuiz(containerId, scoreBoxId, qs) {
+  var host = $(containerId);
+  var answered = 0, right = 0;
+  qs.forEach(function (item, i) {
+    var card = document.createElement("div");
+    card.className = "quiz-card";
+    card.innerHTML = ''<p></p><div class="choices"></div><div class="fb"></div>'';
+    card.querySelector("p").textContent = (i + 1) + ". " + item.q;
+    var choices = card.querySelector(".choices");
+    var fb = card.querySelector(".fb");
+    item.opts.forEach(function (o, j) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "choice"; b.textContent = o;
+      b.addEventListener("click", function () {
+        var all = choices.querySelectorAll(".choice");
+        all.forEach(function (x) { x.disabled = true; });
+        answered++;
+        if (j === item.ok) { right++; b.classList.add("right"); fb.textContent = "נכון! " + item.why; fb.className = "fb correct"; }
+        else { b.classList.add("wrong"); all[item.ok].classList.add("right"); fb.textContent = "לא בדיוק. " + item.why; fb.className = "fb wrong"; }
+        if (answered === qs.length) {
+          $(scoreBoxId).textContent = right === qs.length ? "🏆 " + right + " מתוך " + qs.length + ". מושלם!" : right + " מתוך " + qs.length + ". כדאי לחזור לחלק שלא היה ברור.";
+        }
+      });
+      choices.appendChild(b);
+    });
+    host.appendChild(card);
+  });
+}
+
+/* ---------- quiz 1: principle 1 ---------- */
+buildQuiz("quiz1-container", "score-box-1", [
+  { q: "תתקן את הבאג בלוגין", opts: ["כן, ברור מספיק", "לא, הוא יתבלבל"], ok: 1, why: "אין סימפטום, אין מיקום בקוד, ואין הגדרת הצלחה — העמית (וגם המודל) יצטרכו לנחש." },
+  { q: "משתמשים מדווחים שהלוגין נכשל אחרי שה-session פג. תבדוק את זרימת ה-auth ב-src/auth/, בעיקר רענון טוקן. תכתוב טסט שנכשל ומשחזר את הבעיה, ואז תתקן.", opts: ["כן, ברור מספיק", "לא, הוא יתבלבל"], ok: 0, why: "יש סימפטום קונקרטי, מיקום בקוד, ותהליך עבודה ברור." },
+  { q: "תעשה רפקטור לקומפוננטה", opts: ["כן, ברור מספיק", "לא, הוא יתבלבל"], ok: 1, why: "לאיזו קומפוננטה? מה לא טוב בה כרגע? מה אסור לשבור בדרך?" },
+  { q: "הקומפוננטה UserCard.tsx תומכת היום רק בפרופ user. תוסיפו מצב loading עם skeleton, תשמרו על מבנה הפרופס הקיים ועל שם הקובץ, ותוסיפו סיפור ב-Storybook שמראה את שני המצבים.", opts: ["כן, ברור מספיק", "לא, הוא יתבלבל"], ok: 0, why: "מיקום מדויק, דרישה ברורה, אילוץ (לשמור מבנה קיים), והגדרת הצלחה (סיפור שמראה את שני המצבים)." }
+]);
+
+/* ---------- quiz 2: principle 2 ---------- */
+buildQuiz("quiz2-container", "score-box-2", [
+  { q: "איזו גרסה הייתם שולחים?", opts: [
+      "תסבירו לי למה ה-endpoint הזה מחזיר 500:\n[לוג שגיאות של 300 שורות]",
+      "[לוג שגיאות של 300 שורות]\n\nבהתבסס על הלוג למעלה: למה ה-endpoint הזה מחזיר 500?"
+    ], ok: 1, why: "באותו תוכן בדיוק, הגרסה שבה החומר הארוך מגיע קודם והמשימה הממוקדת בסוף נותנת תוצאות עקביות יותר." },
+  { q: "ואיזו מהגרסאות האלה?", opts: [
+      "מה דעתכם על הקוד הזה?\n[קובץ שלם של 150 שורות]",
+      "[קובץ שלם של 150 שורות]\n\nעל סמך הקוד למעלה בלבד: אילו שינויים הכרחיים כדי לתמוך גם בבקשות אסינכרוניות?"
+    ], ok: 1, why: "שוב, המידע הארוך קודם, ושאלה ממוקדת וברורה בסוף." }
+]);
+
+/* ---------- quiz 3: principle 3 ---------- */
+buildQuiz("quiz3-container", "score-box-3", [
+  { q: "איזה ניסוח יעיל יותר?", opts: [
+      "לעולם אל תשתמש בשלוש נקודות בתשובה.",
+      "התשובה תוקרא על ידי מנוע טקסט־לדיבור, ולכן תמיד תכתוב מספרים במילים — המנוע לא יודע לבטא קיצורים וסימנים."
+    ], ok: 1, why: "הניסוח החיובי מסביר גם את ה\"למה\", וגם נותן הוראה ברורה מה כן לעשות — לא רק מה אסור." },
+  { q: "ובהקשר קוד?", opts: [
+      "אל תכתוב קוד שלא תואם את הסגנון הקיים בפרויקט.",
+      "תכתוב קוד שעוקב אחרי התבנית הקיימת ב-src/components/, כולל מוסכמות השמות וה-hooks שכבר בשימוש שם."
+    ], ok: 1, why: "הפניה קונקרטית למקום שבו נמצאת התבנית נותנת למודל משהו לחקות — לא רק מה לא לעשות." },
+  { q: "ועוד דוגמה אחת?", opts: [
+      "אל תשתמש בלולאות for רגילות בקובץ הזה.",
+      "השתמשו בפונקציות map/filter/reduce, בהתאם לסגנון הפונקציונלי שכבר נהוג ב-utils/array.js."
+    ], ok: 1, why: "הכיוון החיובי מצביע למודל בדיוק לאן להסתכל כדי להתאים את עצמו." }
+]);
+
+/* ---------- order demo (principle 2) ---------- */
+(function () {
+  var box = $("order-demo");
+  var note = $("order-note");
+  var btns = box.querySelectorAll(".otbtn");
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      btns.forEach(function (x) { x.classList.remove("active"); });
+      b.classList.add("active");
+      var qa = b.dataset.order === "qa";
+      box.classList.toggle("swap", qa);
+      if (qa) { note.textContent = "✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף."; note.className = "ot-note good"; }
+      else { note.textContent = "⚠️ פחות מומלץ — בעיקר כשהמידע ארוך, המשימה בהתחלה \"נבלעת\"."; note.className = "ot-note warn"; }
+    });
+  });
+})();
+
+/* ---------- formula legend focus ---------- */
+(function () {
+  var steps = document.querySelectorAll(".fstep");
+  var box = $("annotated-box");
+  steps.forEach(function (s) {
+    s.addEventListener("click", function () {
+      var p = s.dataset.p;
+      var already = s.classList.contains("active");
+      steps.forEach(function (x) { x.classList.remove("active"); });
+      if (already) { box.removeAttribute("data-focus"); return; }
+      s.classList.add("active");
+      box.setAttribute("data-focus", p);
+    });
+  });
+})();
+
+/* ---------- exercise checker ---------- */
+(function () {
+  function wc(s) { var m = s.trim().match(/\S+/g); return m ? m.length : 0; }
+
+  function checkGoal(v) {
+    var t = v.trim();
+    if (!t) return { ok: false, msg: "✗ ריק — תארו מה קורה בפועל: איזה סימפטום, שגיאה, או מתי זה קורה." };
+    if (t.length < 12 || wc(t) < 3) return { ok: false, msg: "✗ קצר מדי בשביל סימפטום אמיתי. הוסיפו פרט קונקרטי (מה קורה, מתי, איך רואים את זה)." };
+    return { ok: true, msg: "✓ יש כאן סימפטום קונקרטי." };
+  }
+
+  function checkContext(v) {
+    var t = v.trim();
+    if (!t) return { ok: false, msg: "✗ ריק — אילו קבצים/תיקיות רלוונטיים? יש היסטוריה שה-AI לא יכול לנחש?" };
+    if (t.length < 10 || wc(t) < 2) return { ok: false, msg: "✗ קצר מדי. הוסיפו היכן בקוד זה קורה, או מה הרקע הרלוונטי." };
+    var hasAnchor = /[.\/]|קוב|תיקי|מודול|ספריי|היסטור|ארכיטקט|קומפוננט|API|class|function/i.test(t);
+    if (!hasAnchor) return { ok: true, msg: "✓ יש הקשר. טיפ: עוגן קונקרטי כמו שם קובץ או תיקייה יעזור עוד יותר." };
+    return { ok: true, msg: "✓ הקשר קונקרטי וברור." };
+  }
+
+  function checkConstraints(v) {
+    var t = v.trim();
+    if (!t) return { ok: false, msg: "✗ ריק — אילו ספריות מותר להשתמש? API שאסור לשנות? דרישת ביצועים?" };
+    if (t.length < 8 || wc(t) < 2) return { ok: false, msg: "✗ קצר מדי בשביל אילוץ אמיתי. תארו גבול ברור, לא רק \"שיהיה טוב\"." };
+    return { ok: true, msg: "✓ יש אילוץ ברור." };
+  }
+
+  function checkSuccess(v) {
+    var t = v.trim();
+    if (!t) return { ok: false, msg: "✗ ריק — איך נדע שהמשימה הצליחה?" };
+    if (t.length < 8) return { ok: false, msg: "✗ קצר מדי." };
+    var marker = /טסט|בדיק|build|ירוץ|יעבור|פלט|output|expect|תראה|יציג|status|log|pass|fail|\bci\b/i;
+    if (!marker.test(t)) return { ok: false, msg: "✗ זה נשמע כמו \"שיפור\" כללי, לא הגדרה שאפשר לבדוק. הוסיפו: אילו טסטים יעברו, איזה build ירוץ, איזה פלט צפוי." };
+    return { ok: true, msg: "✓ הגדרת הצלחה שאפשר לבדוק בפועל." };
+  }
+
+  var checkers = { goal: checkGoal, context: checkContext, constraints: checkConstraints, success: checkSuccess };
+  var cards = document.querySelectorAll("[data-ex]");
+
+  function updateSummary() {
+    var passed = 0;
+    cards.forEach(function (c) { if (c.classList.contains("passed")) passed++; });
+    $("ex-count").textContent = passed + " / " + cards.length + " תרגילים עברו";
+    $("ex-bar").style.width = (passed / cards.length * 100) + "%";
+    if (window.reportProgress) window.reportProgress(passed, cards.length);
+    $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! עברתם את כל שלושת התרגילים לפי הנוסחה." : (passed ? passed + " מתוך " + cards.length + " תרגילים עברו את כל 4 החלקים" : "");
+  }
+
+  cards.forEach(function (card) {
+    var btn = card.querySelector("[data-check]");
+    btn.addEventListener("click", function () {
+      var okCount = 0;
+      card.querySelectorAll("textarea[data-k]").forEach(function (ta) {
+        var k = ta.dataset.k;
+        var res = checkers[k](ta.value);
+        if (res.ok) okCount++;
+        var fb = card.querySelector(''[data-fb="'' + k + ''"]'');
+        fb.textContent = res.msg;
+        fb.className = "exfb " + (res.ok ? "ok" : "fail");
+      });
+      card.classList.toggle("passed", okCount === 4);
+      card.querySelector("[data-badge]").textContent = okCount + " / 4 תקינים";
+      updateSummary();
+    });
+  });
+
+  if (window.reportProgress) window.reportProgress(0, cards.length);
+})();
+</script>
+
+</body>
+</html>
+', 1, '2026-11-20T00:00:00.000Z');
