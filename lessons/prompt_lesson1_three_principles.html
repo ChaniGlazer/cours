@@ -217,6 +217,8 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .exfield textarea:focus { outline: none; border-color: var(--cyan); }
 .exfb { margin-top: 7px; font-size: 13.5px; font-weight: 600; min-height: 18px; }
 .exfb.ok { color: var(--success); } .exfb.fail { color: var(--danger); }
+.exhint { margin: 0 0 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel-2); border-radius: 16px; padding: 12px 18px; }
+.exhint .btn { padding: 9px 22px; font-size: 14.5px; flex-shrink: 0; }
 .exrow { display: flex; align-items: center; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
 .exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
 .excard.passed .exbadge { color: var(--success); }
@@ -456,6 +458,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">1</div>
           <p class="prompt-quote bad">תתקן את הבאג</p>
         </div>
+        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
         <div class="exfields">
           <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה קורה בפועל? איזה סימפטום או שגיאה, ומתי זה קורה?"></textarea><div class="exfb" data-fb="goal"></div></div>
           <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="אילו קבצים/תיקיות רלוונטיים? יש היסטוריה או אילוץ ארכיטקטוני?"></textarea><div class="exfb" data-fb="context"></div></div>
@@ -471,6 +474,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">2</div>
           <p class="prompt-quote bad">תוסיף טסטים ל-foo.py</p>
         </div>
+        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
         <div class="exfields">
           <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה הפונקציה/מודול עושה, ולמה חסרה עליו כיסוי בדיקות?"></textarea><div class="exfb" data-fb="goal"></div></div>
           <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="מה יש כבר ב-foo.py? יש פריימוורק טסטים קיים בפרויקט?"></textarea><div class="exfb" data-fb="context"></div></div>
@@ -486,6 +490,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">3</div>
           <p class="prompt-quote bad">תשפר את הדשבורד</p>
         </div>
+        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
         <div class="exfields">
           <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה בדיוק לא טוב בדשבורד היום? איטי? מבלבל? חסר נתון?"></textarea><div class="exfb" data-fb="goal"></div></div>
           <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="באיזה קובץ/קומפוננטה מדובר? מי המשתמשים, ומה חשוב להם?"></textarea><div class="exfb" data-fb="context"></div></div>
@@ -722,8 +727,8 @@ buildQuiz("quiz3-container", "score-box-3", [
   }
 
   cards.forEach(function (card) {
-    var btn = card.querySelector("[data-check]");
-    btn.addEventListener("click", function () {
+    card.querySelectorAll("[data-check]").forEach(function (btn) { btn.addEventListener("click", onCheck); });
+    function onCheck() {
       var okCount = 0;
       card.querySelectorAll("textarea[data-k]").forEach(function (ta) {
         var k = ta.dataset.k;
@@ -736,7 +741,7 @@ buildQuiz("quiz3-container", "score-box-3", [
       card.classList.toggle("passed", okCount === 4);
       card.querySelector("[data-badge]").textContent = okCount + " / 4 תקינים";
       updateSummary();
-    });
+    }
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
