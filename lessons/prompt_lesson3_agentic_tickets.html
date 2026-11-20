@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 3 — טיקט לסוכן קידוד כמו מפתח בכיר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code, label code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 68ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.5rem); line-height: 1.2; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin-top: 20px; font-size: clamp(18px, 1.6vw, 21px); max-width: 54ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+.chat-demo { background: #fff; border-radius: 30px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(91,108,255,.08); }
+.chat-demo-head { padding: 14px 22px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--cyan-soft), #fff); }
+.chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
+.chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
+.bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; }
+.bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
+.bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chat-empty { color: var(--ink-faint); font-size: 16px; text-align: center; margin: auto; }
+.chips { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.chip { font-size: 14.5px; font-weight: 600; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 9px 16px; transition: all .15s; }
+.chip:hover:not(:disabled) { background: var(--cyan); color: #fff; transform: translateY(-1px); }
+.chip:disabled { opacity: .45; cursor: default; }
+.demo-note { padding: 0 22px 18px; font-size: 13px; color: var(--ink-faint); }
+.demo-after { margin-top: 20px; font-size: 16px; color: var(--ink); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s; }
+.demo-after.show { opacity: 1; transform: none; }
+
+/* tiles */
+.tiles5 { margin-top: 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .tiles5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .tiles5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .tiles5 { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: #fff; border-radius: 22px; padding: 22px 20px; box-shadow: var(--shadow-sm); text-align: center; }
+.tile .em { font-size: 34px; line-height: 1.2; }
+.tile h4 { font-size: 16px; margin: 10px 0 4px; }
+.tile p { font-size: 14px; line-height: 1.6; }
+
+/* shared */
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* citation */
+.cite { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
+.cite .ico { flex-shrink: 0; }
+
+/* quote blocks */
+.prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
+.prompt-quote.en { direction: ltr; text-align: left; font-style: normal; font-family: var(--mono); font-size: 14.5px; }
+.dd { margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 720px) { .dd { grid-template-columns: minmax(0, 1fr); } }
+.dd-col { border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.dd-col.yes { background: linear-gradient(160deg, #E6FAF1, #D3F4E5); }
+.dd-col.no { background: linear-gradient(160deg, #FFEBEF, #FFDDE4); }
+.dd-col h4 { font-size: 18px; margin-bottom: 12px; }
+.dd-col.yes h4 { color: #0F8F63; } .dd-col.no h4 { color: #C9304F; }
+.dd-note { margin-top: 12px; font-size: 14.5px; color: var(--ink); }
+
+/* compact before/after rows */
+.ba-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; background: #fff; border-radius: 16px; padding: 14px 18px; box-shadow: var(--shadow-sm); }
+.ba-row .bad { color: #9A2F47; background: var(--danger-soft); border-radius: 10px; padding: 6px 12px; font-size: 13.5px; font-family: var(--mono); direction: ltr; }
+.ba-row .good { color: #0F8F63; background: var(--success-soft); border-radius: 10px; padding: 6px 12px; font-size: 13.5px; font-family: var(--mono); direction: ltr; flex: 1; min-width: 220px; }
+.ba-row .arr { color: var(--ink-faint); font-size: 18px; }
+@media (max-width: 680px) { .ba-row { flex-direction: column; align-items: stretch; } .ba-row .arr { transform: rotate(90deg); align-self: center; } }
+
+/* generic card */
+.subcard { background: #fff; border-radius: 22px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.subcard h4 { font-size: 17px; margin-bottom: 10px; }
+.subcard p { font-size: 15.5px; }
+.subcard .prompt-quote { margin-top: 12px; }
+.subcard ul { margin: 12px 0 0; padding-inline-start: 20px; color: var(--ink-dim); font-size: 15px; }
+.subcard li { margin-bottom: 6px; }
+
+/* ticket builder (principle 1) */
+.tb { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+.tb-bad { font-family: var(--mono); direction: ltr; text-align: left; font-size: 15px; color: #9A2F47; background: var(--danger-soft); border-radius: 12px; padding: 10px 16px; display: inline-block; }
+.tb-chips { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+.tb-chip { font-size: 14.5px; font-weight: 700; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 9px 18px; transition: all .15s; }
+.tb-chip:hover:not(:disabled) { background: var(--cyan); color: #fff; transform: translateY(-1px); }
+.tb-chip:disabled { opacity: .4; cursor: default; }
+.tb-preview { margin-top: 18px; min-height: 90px; background: var(--code-bg); border-radius: 18px; padding: 18px 20px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; line-height: 2; color: var(--code-ink); }
+.tb-empty { color: #8C89C4; font-style: italic; font-family: var(--sans); direction: rtl; text-align: right; display: block; }
+.tb-line { opacity: 0; transform: translateY(6px); animation: tbin .35s ease forwards; }
+@keyframes tbin { to { opacity: 1; transform: none; } }
+.tb-line .src { color: #8C89C4; font-size: 12px; margin-inline-start: 8px; }
+.tb-done { margin-top: 16px; font-weight: 700; font-family: var(--display); color: var(--success); }
+
+/* suggest vs execute simulator (principle 2) */
+.sim { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+.sim-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.sim-chip { font-size: 14px; font-weight: 600; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 10px 18px; direction: ltr; font-family: var(--mono); transition: all .15s; }
+.sim-chip:hover:not(:disabled) { background: var(--cyan); color: #fff; }
+.sim-chip:disabled { opacity: .45; }
+.sim-out { margin-top: 20px; min-height: 120px; }
+.sim-card { border-radius: 18px; padding: 18px 20px; }
+.sim-card.suggest { background: var(--warn-soft); }
+.sim-card.execute { background: var(--success-soft); }
+.sim-card h5 { font-family: var(--display); font-size: 15px; margin-bottom: 10px; }
+.sim-card.suggest h5 { color: #A66200; } .sim-card.execute h5 { color: #0F8F63; }
+.sim-card ul { margin: 0; padding-inline-start: 20px; font-size: 15px; color: var(--ink); }
+.sim-card li { margin-bottom: 6px; }
+.diff-line { font-family: var(--mono); direction: ltr; text-align: left; font-size: 14px; border-radius: 6px; padding: 4px 10px; margin-bottom: 4px; }
+.diff-line.rm { background: rgba(229,72,106,.14); color: #9A2F47; text-decoration: line-through; }
+.diff-line.add { background: rgba(31,185,133,.14); color: #0F6B4A; }
+.sim-empty { color: var(--ink-faint); font-size: 15px; }
+
+/* refactor/new toggle (principle 3) */
+.rn-toggle { display: flex; gap: 10px; margin-top: 24px; }
+.rn-tab { font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 100px; border: none; background: var(--bg-panel-2); color: var(--ink-dim); transition: all .15s; }
+.rn-tab.active { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; }
+.rn-panel { margin-top: 20px; }
+
+/* flow (principle 4) */
+.flow { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+.fstep { font-family: var(--display); font-weight: 700; font-size: 14.5px; border-radius: 18px; padding: 14px 18px; text-align: center; min-width: 110px; background: var(--bg-panel-2); color: var(--ink-dim); transition: all .25s; }
+.fstep.on { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; box-shadow: var(--shadow-sm); }
+.farrow { font-size: 20px; color: var(--ink-faint); transition: color .25s; }
+.farrow.on { color: var(--cyan); }
+.fshortcut { margin-top: 10px; text-align: center; font-size: 13.5px; color: var(--ink-faint); min-height: 18px; }
+@media (max-width: 760px) { .flow { flex-direction: column; } .farrow { transform: rotate(90deg); } }
+.flow-scenarios { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.fsc { font-size: 14px; font-weight: 600; color: var(--ink-dim); background: #fff; border: 1.5px solid var(--line); border-radius: 100px; padding: 9px 18px; box-shadow: var(--shadow-sm); transition: all .15s; }
+.fsc:hover { border-color: var(--cyan); }
+.fsc.active { background: var(--cyan-soft); border-color: var(--cyan); color: #3F4FE0; }
+.flow-note { margin-top: 18px; text-align: center; font-size: 15px; font-weight: 700; min-height: 24px; }
+.flow-note.plan { color: #3F4FE0; } .flow-note.skip { color: var(--success); }
+
+/* sorting board (principle 5) */
+.board { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+.board-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 0; border-top: 1px dashed var(--line-strong); }
+.board-row:first-of-type { border-top: none; padding-top: 0; }
+.board-rule { flex: 1; min-width: 240px; font-size: 15.5px; color: var(--ink); }
+.board-rule code { direction: ltr; unicode-bidi: embed; }
+.board-btns { display: flex; gap: 8px; }
+.board-btn { font-size: 13.5px; font-weight: 700; border-radius: 100px; padding: 8px 14px; border: 1.5px solid var(--line); background: #fff; color: var(--ink-dim); transition: all .15s; }
+.board-btn:hover:not(:disabled) { border-color: var(--cyan); }
+.board-btn:disabled { cursor: default; }
+.board-btn.right { border-color: var(--success); background: var(--success-soft); color: #0F8F63; }
+.board-btn.wrong { border-color: var(--danger); background: var(--danger-soft); color: #9A2F47; }
+.board-score { margin-top: 16px; font-family: var(--display); font-weight: 700; font-size: 15px; color: #3F4FE0; }
+
+/* quiz (capstone) */
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 15.5px; line-height: 1.6; transition: all .15s; box-shadow: var(--shadow-sm); white-space: pre-line; }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.choice.en { direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; }
+.fb { margin-top: 12px; font-size: 15px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+
+/* recap swap rows */
+.recap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px 32px; }
+.swap-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px dashed var(--line-strong); }
+.swap-row:first-child { border-top: none; padding-top: 0; }
+@media (max-width: 760px) { .swap-row { grid-template-columns: minmax(0,1fr); gap: 8px; } .swap-row .sw-arrow { display: none; } }
+.sw-old, .sw-new { border-radius: 16px; padding: 14px 18px; font-size: 15px; line-height: 1.55; }
+.sw-old { background: var(--danger-soft); color: #9A2F47; }
+.sw-new { background: var(--success-soft); color: #0F6B4A; }
+.sw-old b, .sw-new b { display: block; font-family: var(--display); font-size: 13px; margin-bottom: 4px; }
+.sw-old b { color: #C9304F; } .sw-new b { color: #0F8F63; }
+.sw-arrow { font-size: 22px; color: var(--ink-faint); }
+@media (max-width: 760px) { .sw-arrow { transform: rotate(90deg); } }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: var(--ink); min-height: 26px; }
+
+/* exercise */
+.exsummary { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 28px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.exsummary b { font-family: var(--display); font-size: 17px; white-space: nowrap; }
+.exsummary .bar { flex: 1; min-width: 160px; height: 10px; border-radius: 10px; background: var(--bg-panel-2); overflow: hidden; }
+.exsummary .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #34D6A0, #1FB985); border-radius: 10px; transition: width .4s ease; }
+.excard { margin-top: 22px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; border: 2px solid transparent; transition: border-color .25s; }
+.excard.passed { border-color: rgba(31,185,133,.55); }
+.exhead { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.exnum { width: 42px; height: 42px; border-radius: 14px; background: var(--bg-panel-2); color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.exhead .prompt-quote.bad { flex: 1; min-width: 220px; border: 1px dashed rgba(229,72,106,.35); background: var(--danger-soft); color: #9A2F47; }
+.exintro { margin-bottom: 18px; font-size: 15px; color: var(--ink-dim); }
+.exdiag { margin-bottom: 24px; }
+.exdiag:last-of-type { margin-bottom: 0; }
+.exdiag p { color: var(--ink); font-weight: 700; font-size: 16px; margin-bottom: 10px; }
+.exrow { display: flex; align-items: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
+.exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
+.excard.passed .exbadge { color: var(--success); }
+
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">הנדסת פרומפטים למפתחים</span>
+    <span class="lesson-chip">שיעור 3</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+   <div class="hero-text">
+    <div class="eyebrow c">שיעור 3 · סוכני קידוד</div>
+    <h1>תנו לסוכן הקידוד <span class="a1">משימה</span><br>כמו שהייתם נותנים <span class="a2">למפתח בכיר</span></h1>
+    <p class="hero-sub">Claude Code, Cursor וכלים דומים יכולים לתכנן, לחקור ולהריץ קוד בעצמם — אבל רק אם נותנים להם טיקט אמיתי, לא בקשה מהוססת. היום: איך לכתוב בקשה שמקבלת בדיוק את מה שהתכוונתם, לא פחות ולא יותר.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-35 דקות</span>
+      <span class="pill">🤖 Claude Code · Cursor ועוד</span>
+      <span class="pill">📚 שיעור 3 מתוך 5</span>
+    </div>
+   </div>
+   <div class="hero-visual">
+    <div class="chat-demo">
+      <div class="chat-demo-head"><span class="dot"></span> אותו סוכן קידוד, שני טיקטים</div>
+      <div class="chat-body" id="chat-body"><div class="chat-empty">לחצו על אחד הטיקטים למטה, ותראו איך הסוכן מגיב</div></div>
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-i="0">❌ fix the login bug</button>
+        <button class="chip" type="button" data-i="1">✅ הטיקט המלא</button>
+      </div>
+      <div class="demo-note">* הדגמה מוקלטת להמחשה בלבד.</div>
+    </div>
+    <p class="demo-after" id="demo-after">סוכן קידוד לא "מרגיש" מה רציתם. הוא פועל בדיוק לפי מה שכתוב בטיקט — לא פחות, אבל גם לא יותר.</p>
+   </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="callout info">
+    <span class="ico">👋</span>
+    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם כבר עובדים עם כלי קידוד סוכניים, ולפעמים הם עושים פחות ממה שרציתם, יותר ממה שרציתם, או משהו אחר לגמרי. היום נלמד לכתוב בקשה שמקבלת בדיוק את התוצאה שהתכוונתם אליה.</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ================= ROADMAP ================= -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="eyebrow">המפה</div>
+      <h2 class="section-title">מה נלמד היום?</h2>
+      <p class="lede">חמישה עקרונות לעבודה עם סוכן קידוד — מהטיקט הראשון ועד ליחסים בין קובץ ההוראות לחוקים נוקשים.</p>
+
+      <div class="tiles5">
+        <div class="tile"><div class="em">🎫</div><h4>עקרון 1</h4><p>טיקט טוב לסוכן</p></div>
+        <div class="tile"><div class="em">🎯</div><h4>עקרון 2</h4><p>הצעה מול ביצוע</p></div>
+        <div class="tile"><div class="em">🔧</div><h4>עקרון 3</h4><p>Refactor מול בנייה חדשה</p></div>
+        <div class="tile"><div class="em">🧭</div><h4>עקרון 4</h4><p>Explore → Plan → Code</p></div>
+        <div class="tile"><div class="em">📏</div><h4>עקרון 5</h4><p>הוראה מול חוק נוקשה</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 1 ================= -->
+  <section id="p1">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 1</div>
+      <h2 class="section-title">"טיקט טוב" לסוכן קידוד</h2>
+      <p class="lede">אותה נוסחה שלמדנו בשיעור 1 — סימפטום/מטרה ← מיקום בקוד ← אילוצים ← הגדרת "גמור" שניתנת לבדיקה — הפעם ממוקדת לסוכן קידוד. הנה דוגמה אמיתית מהתיעוד הרשמי של Claude Code:</p>
+
+      <div class="dd">
+        <div class="dd-col no">
+          <h4>❌ before</h4>
+          <p class="prompt-quote en">fix the login bug</p>
+          <p class="dd-note">אין סימפטום, אין מיקום, אין הגדרת "גמור" — הסוכן יצטרך לנחש הכול.</p>
+        </div>
+        <div class="dd-col yes">
+          <h4>✅ after</h4>
+          <p class="prompt-quote en">users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it</p>
+          <p class="dd-note">סימפטום קונקרטי + מיקום בקוד + תהליך עבודה עם הגדרת "גמור" ניתנת לבדיקה.</p>
+        </div>
+      </div>
+
+      <p class="lede" style="margin-top:28px; font-size:16.5px;">עוד שתי דוגמאות מהתיעוד הרשמי:</p>
+      <div class="ba-row">
+        <span class="bad">add a calendar widget</span>
+        <span class="arr">←</span>
+        <span class="good">follow the pattern in HotDogWidget.php and build a calendar widget that lets you pick a month and page between years. no new libraries</span>
+      </div>
+      <div class="ba-row">
+        <span class="bad">the build is failing</span>
+        <span class="arr">←</span>
+        <span class="good">the build fails with this error: [paste]. fix it and verify the build succeeds. address the root cause, don't suppress the error</span>
+      </div>
+
+      <div class="tb">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>בנו את הטיקט המלא</h3>
+        <p style="margin-top:6px;">הטיקט הגרוע למטה חסר הכול. לחצו על הרכיבים לפי הסדר, וצפו בטיקט האמיתי מתרכב מתוך ציטוטים מהתיעוד הרשמי:</p>
+        <div class="tb-bad">fix the login bug</div>
+        <div class="tb-chips" id="tb-chips">
+          <button class="tb-chip" type="button" data-part="0">+ סימפטום</button>
+          <button class="tb-chip" type="button" data-part="1">+ מיקום / תבנית לחיקוי</button>
+          <button class="tb-chip" type="button" data-part="2">+ אילוצים</button>
+          <button class="tb-chip" type="button" data-part="3">+ הגדרת "גמור"</button>
+        </div>
+        <div class="tb-preview" id="tb-preview"><span class="tb-empty">לחצו על הרכיבים למעלה, לפי הסדר</span></div>
+        <div class="tb-done" id="tb-done" hidden>✅ זה טיקט שסוכן קידוד יכול לרוץ איתו ישר, בלי לנחש כלום.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 2 ================= -->
+  <section id="p2">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 2</div>
+      <h2 class="section-title">הצעה מול ביצוע</h2>
+      <p class="lede"><code>Can you suggest some changes?</code> מניב הצעות בלבד. <code>Change this function to improve its performance</code> מניב עריכה בפועל. ההבדל הוא בניסוח, לא ביכולת של הסוכן — וזו טעות נפוצה: מצפים לביצוע ומקבלים רק הצעה, או להפך.</p>
+
+      <div class="sim">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>אותה פונקציה, שתי בקשות</h3>
+        <p style="margin-top:6px;">לחצו על אחת הבקשות, וראו מה הסוכן בפועל עושה:</p>
+        <div class="sim-chips" style="margin-top:16px;">
+          <button class="sim-chip" type="button" data-sim="suggest">Can you suggest some changes?</button>
+          <button class="sim-chip" type="button" data-sim="execute">Change this function to improve its performance</button>
+        </div>
+        <div class="sim-out" id="sim-out"><p class="sim-empty">לחצו על אחת הבקשות למעלה</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 3 ================= -->
+  <section id="p3">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 3</div>
+      <h2 class="section-title">Refactor ובנייה חדשה הן שתי שפות שונות</h2>
+      <p class="lede">באותו כלי, שתי משימות שונות לגמרי דורשות ניסוח שונה לגמרי. לחצו כדי לעבור בין המצבים:</p>
+
+      <div class="rn-toggle">
+        <button class="rn-tab active" type="button" data-rn="refactor">🔧 Refactor</button>
+        <button class="rn-tab" type="button" data-rn="new">✨ פיצ'ר חדש</button>
+      </div>
+
+      <div class="rn-panel" id="rn-refactor">
+        <div class="subcard">
+          <h4>האילוץ המרכזי: שימור התנהגות</h4>
+          <p>צריך scope מפורש (אילו קבצים/מודולים), דרישה שהטסטים הקיימים יעברו ללא שינוי, שלבים קטנים עם הרצת טסטים אחרי כל שלב, ואיסור מפורש על שינוי API ציבורי אם רלוונטי.</p>
+          <ul>
+            <li>scope מוגדר: "only in src/payments/"</li>
+            <li>טסטים קיימים חייבים לעבור, בלי שינוי</li>
+            <li>שלבים קטנים + טסט אחרי כל שלב</li>
+            <li>אסור לשנות API ציבורי (אם רלוונטי)</li>
+          </ul>
+          <p class="prompt-quote en" style="margin-top:14px;">It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality.</p>
+          <div class="callout warn" style="margin-top:16px;">
+            <span class="ico">⚠️</span>
+            <p>היזהרו מ-over-engineering: סוכנים נוטים להוסיף הפשטות לא נדרשות באמצע refactor. אם לא ביקשתם — ציינו שלא רוצים שכבות הפשטה חדשות.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rn-panel" id="rn-new" hidden>
+        <div class="subcard">
+          <h4>האילוץ המרכזי: לא להיות מינימליסטי מדי</h4>
+          <p>הסוכן נוטה לבנות את המינימום שעונה על הבקשה המדויקת. הביטוי "be ambitious" עוזר להילחם בזה, והצבעה על קובץ קיים כ"תבנית לחיקוי" עוזרת מאוד.</p>
+          <p class="prompt-quote en" style="margin-top:14px;">build the settings page… be ambitious: empty and error states, the save flow wired up, keyboard navigation</p>
+          <ul style="margin-top:14px;">
+            <li>"be ambitious" — לא רק מה שהתבקש במפורש</li>
+            <li>"follow the pattern in X" — תבנית קיימת לחיקוי</li>
+            <li>לחשוב מראש על מצבי קצה: ריק, שגיאה, טעינה</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 4 ================= -->
+  <section id="p4">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 4</div>
+      <h2 class="section-title">Explore → Plan → Code → Commit</h2>
+      <p class="lede">במשימות שנוגעות בכמה קבצים, או כשלא בטוחים בגישה, עדיף לבקש מהסוכן לחקור ולהציג תוכנית לפני מימוש. אם אפשר לתאר את ה-diff במשפט אחד — אפשר לדלג על שלב התכנון.</p>
+
+      <div class="cite"><span class="ico">🔬</span><span>מקור: Suproteem Sarkar, University of Chicago — ניתוח על אלפי משתמשי Cursor: מפתחים מנוסים יותר כותבים יותר תוכניות לפני קוד; חברות ממזגות 39% יותר PR-ים לאחר שסוכן קידוד הפך לברירת מחדל בצוות.</span></div>
+
+      <div class="eyebrow" style="margin-top:28px;">נסו בעצמכם</div>
+      <h3>לתכנן קודם, או לקפוץ לקוד?</h3>
+      <p style="margin-top:6px;">לחצו על תרחיש, וצפו באיזה חלק מהתהליך רלוונטי:</p>
+
+      <div class="flow" id="flow">
+        <div class="fstep" data-step="explore">🔍 Explore</div>
+        <span class="farrow" data-arrow="0">←</span>
+        <div class="fstep" data-step="plan">📋 Plan</div>
+        <span class="farrow" data-arrow="1">←</span>
+        <div class="fstep" data-step="code">💻 Code</div>
+        <span class="farrow" data-arrow="2">←</span>
+        <div class="fstep" data-step="commit">✅ Commit</div>
+      </div>
+      <div class="flow-note" id="flow-note"></div>
+
+      <div class="flow-scenarios" id="flow-scenarios">
+        <button class="fsc" type="button" data-fsc="0">לשנות טקסט של הודעת שגיאה אחת</button>
+        <button class="fsc" type="button" data-fsc="1">תמיכה חדשה שמשפיעה על 6 מודולים שונים</button>
+        <button class="fsc" type="button" data-fsc="2">לא בטוחים איזו גישה טכנית הכי מתאימה</button>
+        <button class="fsc" type="button" data-fsc="3">לעדכן ברירת מחדל של פרמטר אחד בפונקציה</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 5 ================= -->
+  <section id="p5">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 5</div>
+      <h2 class="section-title">קובץ הוראות מול כלל נוקשה</h2>
+      <p class="lede">קובץ ההוראות (<code>CLAUDE.md</code>/<code>AGENTS.md</code>) הוא <strong style="color:var(--ink)">המלצה</strong> — הסוכן יכול להחליט שהיא לא חלה במקרה מסוים. כלל ש<strong style="color:var(--ink)">חייב</strong> לחול בלי יוצא מן הכלל צריך להיות hook/deny rule באכיפה דטרמיניסטית.</p>
+
+      <div class="callout warn">
+        <span class="ico">🚩</span>
+        <p><strong>הסימן לזהות:</strong> אם ממשיכים להדגיש שורה בקובץ ההוראות והסוכן עדיין מפספס אותה — זה סימן שהשורה שייכת ל-hook.</p>
+      </div>
+
+      <div class="board">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>מיינו: קובץ הוראות, או Hook?</h3>
+        <p style="margin-top:6px;">לכל כלל, בחרו היכן הוא שייך:</p>
+        <div id="board-rows">
+          <div class="board-row" data-ok="file">
+            <div class="board-rule">תעדיפו טסטים עם <code>Jest</code> ולא עם ספרייה אחרת</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="file">📄 הוראה</button>
+              <button class="board-btn" type="button" data-choice="hook">🔒 Hook</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="hook">
+            <div class="board-rule">לעולם אל תערכו קבצים בתיקיית <code>migrations/</code></div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="file">📄 הוראה</button>
+              <button class="board-btn" type="button" data-choice="hook">🔒 Hook</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="file">
+            <div class="board-rule">תעקבו אחרי קונבנציית השמות הקיימת בפרויקט</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="file">📄 הוראה</button>
+              <button class="board-btn" type="button" data-choice="hook">🔒 Hook</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="hook">
+            <div class="board-rule">לעולם אל תקראו את תוכן הקובץ <code>.env</code></div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="file">📄 הוראה</button>
+              <button class="board-btn" type="button" data-choice="hook">🔒 Hook</button>
+            </div>
+          </div>
+        </div>
+        <div class="board-score" id="board-score">0 / 4 נכונים</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXERCISE ================= -->
+  <section id="exercise">
+    <div class="wrap">
+      <div class="eyebrow">תרגיל סיום</div>
+      <h2 class="section-title">זהו את הבעיה, ובחרו את הניסוח הנכון</h2>
+      <p class="lede">שלוש בקשות לסוכן קידוד. לכל אחת: זהו איזו בעיה מופיעה, ובחרו את הניסוח הנכון.</p>
+
+      <div class="exsummary">
+        <b id="ex-count">0 / 3 תרגילים עברו</b>
+        <div class="bar"><i id="ex-bar"></i></div>
+      </div>
+
+      <!-- exercise 1: vague ticket -->
+      <div class="excard" data-ex data-principle="ticket">
+        <div class="exhead">
+          <div class="exnum">1</div>
+          <p class="prompt-quote bad en">fix the login bug</p>
+        </div>
+        <p class="exintro">ענו על שתי השאלות:</p>
+        <div class="exdiag">
+          <p>1. מה הבעיה כאן?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-diag="0">טיקט לא מספיק מפורט (חסר סימפטום/מיקום/הגדרת "גמור")</button>
+            <button class="choice" type="button" data-diag="1">לא ברור אם ביקשתם הצעה או ביצוע בפועל</button>
+            <button class="choice" type="button" data-diag="2">רפקטור בלי scope ברור ובלי לשמר התנהגות</button>
+          </div>
+          <div class="fb" data-diagfb></div>
+        </div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מתקן את הבעיה?</p>
+          <div class="choices">
+            <button class="choice en" type="button" data-fix="0">try to fix the login somehow, you'll figure it out</button>
+            <button class="choice en" type="button" data-fix="1">users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it</button>
+            <button class="choice en" type="button" data-fix="2">explain conceptually how login usually works</button>
+          </div>
+          <div class="fb" data-fixfb></div>
+        </div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
+      </div>
+
+      <!-- exercise 2: suggest vs execute -->
+      <div class="excard" data-ex data-principle="suggest">
+        <div class="exhead">
+          <div class="exnum">2</div>
+          <p class="prompt-quote bad en">Can you look at this function?</p>
+        </div>
+        <p class="exintro">ענו על שתי השאלות:</p>
+        <div class="exdiag">
+          <p>1. מה הבעיה כאן?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-diag="0">טיקט לא מספיק מפורט (חסר סימפטום/מיקום/הגדרת "גמור")</button>
+            <button class="choice" type="button" data-diag="1">לא ברור אם ביקשתם הצעה או ביצוע בפועל</button>
+            <button class="choice" type="button" data-diag="2">רפקטור בלי scope ברור ובלי לשמר התנהגות</button>
+          </div>
+          <div class="fb" data-diagfb></div>
+        </div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מבקש במפורש ביצוע בפועל?</p>
+          <div class="choices">
+            <button class="choice en" type="button" data-fix="0">Change this function to improve its performance</button>
+            <button class="choice en" type="button" data-fix="1">Can you suggest some changes?</button>
+            <button class="choice en" type="button" data-fix="2">What do you think about this approach?</button>
+          </div>
+          <div class="fb" data-fixfb></div>
+        </div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
+      </div>
+
+      <!-- exercise 3: refactor without scope -->
+      <div class="excard" data-ex data-principle="refactor">
+        <div class="exhead">
+          <div class="exnum">3</div>
+          <p class="prompt-quote bad en">refactor this module, make it cleaner</p>
+        </div>
+        <p class="exintro">ענו על שתי השאלות:</p>
+        <div class="exdiag">
+          <p>1. מה הבעיה כאן?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-diag="0">טיקט לא מספיק מפורט (חסר סימפטום/מיקום/הגדרת "גמור")</button>
+            <button class="choice" type="button" data-diag="1">לא ברור אם ביקשתם הצעה או ביצוע בפועל</button>
+            <button class="choice" type="button" data-diag="2">רפקטור בלי scope ברור ובלי לשמר התנהגות</button>
+          </div>
+          <div class="fb" data-diagfb></div>
+        </div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מתקן את הבעיה?</p>
+          <div class="choices">
+            <button class="choice en" type="button" data-fix="0">make this module as clean and modern as possible, use your judgement</button>
+            <button class="choice en" type="button" data-fix="1">refactor src/payments/calculateTotal.js only. preserve all existing behavior — the current tests must keep passing unchanged. don't change the public function signature. small steps, run tests after each one</button>
+            <button class="choice en" type="button" data-fix="2">build a new, better version of this module from scratch</button>
+          </div>
+          <div class="fb" data-fixfb></div>
+        </div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECAP ================= -->
+  <section id="recap">
+    <div class="wrap">
+      <div class="eyebrow c">סיכום</div>
+      <h2 class="section-title">מה לקחת איתכם</h2>
+      <div class="recap">
+        <div class="swap-row">
+          <div class="sw-old"><b>❌ הרגל ישן</b>טיקט מעורפל: "fix the bug"</div>
+          <div class="sw-arrow">←</div>
+          <div class="sw-new"><b>✅ במקום זה</b>סימפטום ← מיקום ← אילוצים ← הגדרת "גמור" שניתנת לבדיקה</div>
+        </div>
+        <div class="swap-row">
+          <div class="sw-old"><b>❌ הרגל ישן</b>לא ברור אם מבקשים הצעה או ביצוע</div>
+          <div class="sw-arrow">←</div>
+          <div class="sw-new"><b>✅ במקום זה</b>ניסוח מפורש: "suggest" להצעה, פועל ישיר לביצוע</div>
+        </div>
+        <div class="swap-row">
+          <div class="sw-old"><b>❌ הרגל ישן</b>refactor בלי scope, או פיצ'ר מינימלי מדי</div>
+          <div class="sw-arrow">←</div>
+          <div class="sw-new"><b>✅ במקום זה</b>refactor: scope+טסטים קיימים; חדש: "be ambitious" + תבנית לחיקוי</div>
+        </div>
+        <div class="swap-row">
+          <div class="sw-old"><b>❌ הרגל ישן</b>קפיצה ישר לקוד במשימה מורכבת</div>
+          <div class="sw-arrow">←</div>
+          <div class="sw-new"><b>✅ במקום זה</b>Explore → Plan → Code → Commit, אלא אם ה-diff ניתן לתיאור במשפט אחד</div>
+        </div>
+        <div class="swap-row">
+          <div class="sw-old"><b>❌ הרגל ישן</b>חוק קריטי כתוב רק בקובץ הוראות</div>
+          <div class="sw-arrow">←</div>
+          <div class="sw-new"><b>✅ במקום זה</b>חוק שחייב לחול תמיד = hook/deny rule דטרמיניסטי</div>
+        </div>
+      </div>
+      <div class="callout info" style="margin-top:28px;">
+        <span class="ico">🚀</span>
+        <p><strong>בשיעור הבא</strong> ממשיכים בקורס "הנדסת פרומפטים למפתחים" — עוד שיעור אחד בדרך.</p>
+      </div>
+      <div class="mission-done" id="mission-done"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">הנדסת פרומפטים למפתחים · שיעור 3</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- hero ticket demo ---------- */
+(function () {
+  var answers = [
+    { q: "fix the login bug", a: "אני צריך עוד פרטים: איזה באג בדיוק? איפה בקוד? מתי זה קורה? אני מניח שמדובר ב-session, אבל אני לא בטוח — אני אבדוק את src/auth/ ואנסה לנחש." },
+    { q: "users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it", a: "מבין. בודק את token refresh ב-src/auth/. כותב טסט שמשחזר את הכשל אחרי תפוגת session, מוודא שהוא נכשל כצפוי, ואז מתקן ומריץ שוב." }
+  ];
+  var body = $("chat-body");
+  var chips = document.querySelectorAll("#chips .chip");
+  var after = $("demo-after");
+  var busy = false;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (busy) return;
+      busy = true;
+      chips.forEach(function (c) { c.disabled = true; });
+      var item = answers[parseInt(chip.dataset.i, 10)];
+      body.innerHTML = "";
+      var u = document.createElement("div"); u.className = "bubble user"; u.textContent = item.q; body.appendChild(u);
+      var ai = document.createElement("div"); ai.className = "bubble ai typing"; body.appendChild(ai);
+      var i = 0;
+      function finish() {
+        ai.classList.remove("typing");
+        chips.forEach(function (c) { c.disabled = false; });
+        busy = false;
+        after.classList.add("show");
+      }
+      if (reduceMotion) { ai.textContent = item.a; finish(); return; }
+      setTimeout(function tick() {
+        i += 2;
+        ai.textContent = item.a.slice(0, i);
+        if (i < item.a.length) setTimeout(tick, 16); else finish();
+      }, 400);
+    });
+  });
+})();
+
+/* ---------- ticket builder (principle 1) ---------- */
+(function () {
+  var parts = [
+    { src: "login", text: "users report login fails after the session times out" },
+    { src: "calendar widget", text: "follow the pattern in HotDogWidget.php" },
+    { src: "calendar widget", text: "no new libraries" },
+    { src: "login", text: "write a failing test that reproduces it, then fix it" }
+  ];
+  var preview = $("tb-preview");
+  var done = $("tb-done");
+  var chips = document.querySelectorAll("#tb-chips .tb-chip");
+  var revealed = 0;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (chip.disabled) return;
+      chip.disabled = true;
+      if (revealed === 0) preview.innerHTML = "";
+      var part = parts[parseInt(chip.dataset.part, 10)];
+      var line = document.createElement("div");
+      line.className = "tb-line";
+      line.innerHTML = part.text + '<span class="src">// ' + part.src + "</span>";
+      preview.appendChild(line);
+      revealed++;
+      if (revealed === chips.length) done.hidden = false;
+    });
+  });
+})();
+
+/* ---------- suggest vs execute simulator (principle 2) ---------- */
+(function () {
+  var out = $("sim-out");
+  var chips = document.querySelectorAll(".sim-chip");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var mode = chip.dataset.sim;
+      if (mode === "suggest") {
+        out.innerHTML = '<div class="sim-card suggest"><h5>💡 הצעות בלבד — שום דבר לא נערך בקוד</h5><ul>' +
+          "<li>אפשר לשקול memoization לתוצאות שחוזרות על עצמן</li>" +
+          "<li>הלולאה המקוננת אפשר לפשט עם מבנה נתונים אחר</li>" +
+          "<li>יש קריאה כפולה למסד הנתונים שאפשר לאחד</li>" +
+          "</ul></div>";
+      } else {
+        out.innerHTML = '<div class="sim-card execute"><h5>✅ בוצע — הקוד נערך בפועל</h5>' +
+          '<div class="diff-line rm">- for (let i = 0; i &lt; items.length; i++) { total += db.lookup(items[i]); }</div>' +
+          '<div class="diff-line add">+ const cache = new Map();</div>' +
+          '<div class="diff-line add">+ for (const item of items) { total += cache.get(item) ?? cache.set(item, db.lookup(item)).get(item); }</div>' +
+          "</div>";
+      }
+    });
+  });
+})();
+
+/* ---------- refactor/new toggle (principle 3) ---------- */
+(function () {
+  var tabs = document.querySelectorAll(".rn-tab");
+  var panels = { refactor: $("rn-refactor"), new: $("rn-new") };
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      var mode = tab.dataset.rn;
+      Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== mode; });
+    });
+  });
+})();
+
+/* ---------- Explore/Plan/Code/Commit flow (principle 4) ---------- */
+(function () {
+  var steps = document.querySelectorAll(".fstep");
+  var arrows = document.querySelectorAll(".farrow");
+  var note = $("flow-note");
+  var scenarios = document.querySelectorAll(".fsc");
+  var needsPlan = { 0: false, 1: true, 2: true, 3: false };
+  var texts = {
+    true: "🧭 כאן כדאי לבקש Explore → Plan לפני שקופצים לקוד.",
+    false: "⚡ אפשר לדלג ישר לקוד — ה-diff ניתן לתיאור במשפט אחד."
+  };
+  scenarios.forEach(function (sc) {
+    sc.addEventListener("click", function () {
+      scenarios.forEach(function (s) { s.classList.remove("active"); });
+      sc.classList.add("active");
+      var plan = needsPlan[sc.dataset.fsc];
+      steps.forEach(function (s) {
+        var show = plan || s.dataset.step === "explore" || s.dataset.step === "code";
+        s.classList.toggle("on", show);
+      });
+      arrows.forEach(function (a) {
+        var idx = parseInt(a.dataset.arrow, 10);
+        var show = plan || idx === 2;
+        a.classList.toggle("on", show);
+      });
+      note.textContent = texts[plan];
+      note.className = "flow-note " + (plan ? "plan" : "skip");
+    });
+  });
+})();
+
+/* ---------- rule sorting board (principle 5) ---------- */
+(function () {
+  var rows = document.querySelectorAll("#board-rows .board-row");
+  var score = $("board-score");
+  var correct = 0;
+  rows.forEach(function (row) {
+    var ok = row.dataset.ok;
+    var btns = row.querySelectorAll(".board-btn");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (x) { x.disabled = true; });
+        if (b.dataset.choice === ok) {
+          b.classList.add("right");
+          correct++;
+        } else {
+          b.classList.add("wrong");
+          row.querySelector('[data-choice="' + ok + '"]').classList.add("right");
+        }
+        score.textContent = correct + " / " + rows.length + " נכונים";
+      });
+    });
+  });
+})();
+
+/* ---------- exercise: diagnose + pick the fix ---------- */
+(function () {
+  var diagLabels = ["טיקט לא מספיק מפורט", "לא ברור אם ביקשתם הצעה או ביצוע בפועל", "רפקטור בלי scope ברור ובלי לשמר התנהגות"];
+  var diagKeyByPrinciple = { ticket: 0, suggest: 1, refactor: 2 };
+  var fixWhyByPrinciple = {
+    ticket: "זו האפשרות היחידה עם סימפטום קונקרטי, מיקום בקוד, וטסט שמגדיר \"גמור\".",
+    suggest: "זו הבקשה היחידה עם פועל ישיר (Change) שמבקש עריכה בפועל, לא רק דעה.",
+    refactor: "זו האפשרות היחידה עם scope מוגדר, דרישה לשמר התנהגות וטסטים, ושלבים קטנים."
+  };
+  var fixOkIndex = { ticket: 1, suggest: 0, refactor: 1 };
+  var cards = document.querySelectorAll("[data-ex]");
+
+  function updateSummary() {
+    var passed = 0;
+    cards.forEach(function (c) { if (c.classList.contains("passed")) passed++; });
+    $("ex-count").textContent = passed + " / " + cards.length + " תרגילים עברו";
+    $("ex-bar").style.width = (passed / cards.length * 100) + "%";
+    if (window.reportProgress) window.reportProgress(passed, cards.length);
+    $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! זיהיתם ובחרתם נכון בכל שלוש הבקשות." : (passed ? passed + " מתוך " + cards.length + " תרגילים עברו" : "");
+  }
+
+  cards.forEach(function (card) {
+    var principle = card.dataset.principle;
+    var okDiagIndex = diagKeyByPrinciple[principle];
+    var okFixIndex = fixOkIndex[principle];
+    var diagCorrect = false, fixCorrect = false;
+
+    function updateCard() {
+      var okCount = (diagCorrect ? 1 : 0) + (fixCorrect ? 1 : 0);
+      card.classList.toggle("passed", okCount === 2);
+      card.querySelector("[data-badge]").textContent = okCount + " / 2 נכונים";
+      updateSummary();
+    }
+
+    var diagChoices = card.querySelectorAll("[data-diag]");
+    diagChoices.forEach(function (b) {
+      b.addEventListener("click", function () {
+        diagChoices.forEach(function (x) { x.disabled = true; });
+        var j = parseInt(b.dataset.diag, 10);
+        var fb = card.querySelector("[data-diagfb]");
+        if (j === okDiagIndex) {
+          b.classList.add("right");
+          diagCorrect = true;
+          fb.textContent = "נכון! " + diagLabels[okDiagIndex] + ".";
+          fb.className = "fb correct";
+        } else {
+          b.classList.add("wrong");
+          diagChoices[okDiagIndex].classList.add("right");
+          fb.textContent = "לא בדיוק. הבעיה כאן היא: " + diagLabels[okDiagIndex] + ".";
+          fb.className = "fb wrong";
+        }
+        updateCard();
+      });
+    });
+
+    var fixChoices = card.querySelectorAll("[data-fix]");
+    fixChoices.forEach(function (b) {
+      b.addEventListener("click", function () {
+        fixChoices.forEach(function (x) { x.disabled = true; });
+        var j = parseInt(b.dataset.fix, 10);
+        var fb = card.querySelector("[data-fixfb]");
+        if (j === okFixIndex) {
+          b.classList.add("right");
+          fixCorrect = true;
+          fb.textContent = "נכון! " + fixWhyByPrinciple[principle];
+          fb.className = "fb correct";
+        } else {
+          b.classList.add("wrong");
+          fixChoices[okFixIndex].classList.add("right");
+          fb.textContent = "לא בדיוק. " + fixWhyByPrinciple[principle];
+          fb.className = "fb wrong";
+        }
+        updateCard();
+      });
+    });
+
+    updateCard();
+  });
+
+  if (window.reportProgress) window.reportProgress(0, cards.length);
+})();
+</script>
+
+</body>
+</html>
