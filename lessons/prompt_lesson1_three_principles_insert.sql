@@ -211,16 +211,11 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .exhead { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
 .exnum { width: 42px; height: 42px; border-radius: 14px; background: var(--bg-panel-2); color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .exhead .prompt-quote.bad { flex: 1; min-width: 220px; border: 1px dashed rgba(229,72,106,.35); background: var(--danger-soft); color: #9A2F47; }
-.exfields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-@media (max-width: 820px) { .exfields { grid-template-columns: minmax(0, 1fr); } }
-.exfield label { display: block; font-size: 14px; font-weight: 700; color: var(--ink-dim); margin-bottom: 7px; }
-.exfield textarea { width: 100%; min-height: 72px; border-radius: 14px; border: 1.5px solid var(--line); padding: 11px 14px; font-family: var(--sans); font-size: 15px; resize: vertical; background: #fcfcff; color: var(--ink); line-height: 1.55; }
-.exfield textarea:focus { outline: none; border-color: var(--cyan); }
-.exfb { margin-top: 7px; font-size: 13.5px; font-weight: 600; min-height: 18px; }
-.exfb.ok { color: var(--success); } .exfb.fail { color: var(--danger); }
-.exhint { margin: 0 0 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel-2); border-radius: 16px; padding: 12px 18px; }
-.exhint .btn { padding: 9px 22px; font-size: 14.5px; flex-shrink: 0; }
-.exrow { display: flex; align-items: center; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
+.exintro { margin-bottom: 20px; font-size: 15px; color: var(--ink-dim); }
+.exslot { margin-bottom: 24px; }
+.exslot:last-of-type { margin-bottom: 0; }
+.exslot-label { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 10px; }
+.exrow { display: flex; align-items: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
 .exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
 .excard.passed .exbadge { color: var(--success); }
 
@@ -445,8 +440,8 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
   <section id="exercise">
     <div class="wrap">
       <div class="eyebrow">תרגיל סיום</div>
-      <h2 class="section-title">שכתבו לפי הנוסחה — ובדקו את עצמכם</h2>
-      <p class="lede">שלושה פרומפטים גרועים. לכל אחד כתבו מחדש בעזרת ארבעת החלקים, ולחצו "בדקו" לקבל משוב ספציפי על מה חסר. המטרה: ✓ ירוק בכל ארבעת השדות, בכל שלוש הכרטיסים.</p>
+      <h2 class="section-title">בחרו את הניסוח הנכון לכל חלק בנוסחה</h2>
+      <p class="lede">שלושה פרומפטים גרועים. לכל אחד, לכל אחד מארבעת החלקים יש שלוש אפשרויות — רק אחת מתאימה. לחצו ובדקו מיד אם צדקתם.</p>
 
       <div class="exsummary">
         <b id="ex-count">0 / 3 תרגילים עברו</b>
@@ -459,14 +454,46 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">1</div>
           <p class="prompt-quote bad">תתקן את הבאג</p>
         </div>
-        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
-        <div class="exfields">
-          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה קורה בפועל? איזה סימפטום או שגיאה, ומתי זה קורה?"></textarea><div class="exfb" data-fb="goal"></div></div>
-          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="אילו קבצים/תיקיות רלוונטיים? יש היסטוריה או אילוץ ארכיטקטוני?"></textarea><div class="exfb" data-fb="context"></div></div>
-          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="אילו ספריות מותר/אסור? API שאסור לשנות? דרישות ביצועים?"></textarea><div class="exfb" data-fb="constraints"></div></div>
-          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="איך נדע שהצליח? איזה טסט יעבור, איזה build ירוץ, איזה פלט צפוי?"></textarea><div class="exfb" data-fb="success"></div></div>
+        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+
+        <div class="exslot" data-slot="0">
+          <p class="exslot-label">1. מטרה / סימפטום</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">יש באג, צריך לתקן</button>
+            <button class="choice" type="button" data-opt="1">משתמשים מדווחים שהלוגין נכשל ב-50% מהניסיונות אחרי שה-session פג</button>
+            <button class="choice" type="button" data-opt="2">תריץ את הטסטים ותראה אם הם עוברים</button>
+          </div>
+          <div class="fb"></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+        <div class="exslot" data-slot="1">
+          <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">הקוד הרלוונטי ב-src/auth/session.js, יש היסטוריה של באג דומה בגרסה קודמת</button>
+            <button class="choice" type="button" data-opt="1">אסור לשנות את החתימה הציבורית של login()</button>
+            <button class="choice" type="button" data-opt="2">תעבוד על זה בבקשה</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="2">
+          <p class="exslot-label">3. אילוצים</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">הבעיה נמצאת ב-src/auth/session.js</button>
+            <button class="choice" type="button" data-opt="1">תעשה כמה שיותר מהר</button>
+            <button class="choice" type="button" data-opt="2">אסור לשנות את ה-API של login(), מותר רק ספריות שכבר בשימוש בפרויקט</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="3">
+          <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">תכתוב טסט שנכשל ומשחזר את הבעיה, ואז תריץ את כל ה-suite ותראה שהכל עובר</button>
+            <button class="choice" type="button" data-opt="1">אסור להוסיף תלויות חדשות</button>
+            <button class="choice" type="button" data-opt="2">שיהיה תקין</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+
+        <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
       </div>
 
       <!-- exercise 2 -->
@@ -475,14 +502,46 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">2</div>
           <p class="prompt-quote bad">תוסיף טסטים ל-foo.py</p>
         </div>
-        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
-        <div class="exfields">
-          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה הפונקציה/מודול עושה, ולמה חסרה עליו כיסוי בדיקות?"></textarea><div class="exfb" data-fb="goal"></div></div>
-          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="מה יש כבר ב-foo.py? יש פריימוורק טסטים קיים בפרויקט?"></textarea><div class="exfb" data-fb="context"></div></div>
-          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="באיזו ספריית טסטים חייבים להשתמש? יש מקרי קצה שחייבים לכסות?"></textarea><div class="exfb" data-fb="constraints"></div></div>
-          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="כמה טסטים, איזה coverage, ושכל הטסטים אכן עוברים בהרצה?"></textarea><div class="exfb" data-fb="success"></div></div>
+        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+
+        <div class="exslot" data-slot="0">
+          <p class="exslot-label">1. מטרה / סימפטום</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">תריץ pytest ותראה שהכל ירוק</button>
+            <button class="choice" type="button" data-opt="1">צריך טסטים</button>
+            <button class="choice" type="button" data-opt="2">ל-foo.py אין שום כיסוי בדיקות, ופעם אחת כבר נשבר בשקט בפרודקשן</button>
+          </div>
+          <div class="fb"></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+        <div class="exslot" data-slot="1">
+          <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">foo.py מכיל 3 פונקציות עיבוד נתונים; הפרויקט כבר משתמש ב-pytest בשאר הקבצים</button>
+            <button class="choice" type="button" data-opt="1">חובה להשתמש ב-pytest, אסור להוסיף ספריות חדשות</button>
+            <button class="choice" type="button" data-opt="2">תסתכל על הקובץ</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="2">
+          <p class="exslot-label">3. אילוצים</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">ל-foo.py יש 3 פונקציות שמעבדות נתונים</button>
+            <button class="choice" type="button" data-opt="1">חובה להשתמש ב-pytest (כמו שאר הפרויקט), ולכסות גם מקרי קצה של קלט ריק</button>
+            <button class="choice" type="button" data-opt="2">תעשה את זה טוב</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="3">
+          <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">שהטסטים יהיו טובים</button>
+            <button class="choice" type="button" data-opt="1">foo.py נמצא בתיקיית src/utils/</button>
+            <button class="choice" type="button" data-opt="2">לפחות 90% coverage על foo.py, וכל הטסטים עוברים ב-pytest</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+
+        <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
       </div>
 
       <!-- exercise 3 -->
@@ -491,14 +550,46 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">3</div>
           <p class="prompt-quote bad">תשפר את הדשבורד</p>
         </div>
-        <div class="exhint">📝 מלאו את ארבעת השדות למטה לפי הנוסחה, ואפשר ללחוץ "בדקו" בכל שלב לקבל משוב. <button class="btn" type="button" data-check>בדקו את הניסוח</button></div>
-        <div class="exfields">
-          <div class="exfield"><label>1. מטרה / סימפטום</label><textarea data-k="goal" placeholder="מה בדיוק לא טוב בדשבורד היום? איטי? מבלבל? חסר נתון?"></textarea><div class="exfb" data-fb="goal"></div></div>
-          <div class="exfield"><label>2. הקשר (מה AI לא יכול לנחש)</label><textarea data-k="context" placeholder="באיזה קובץ/קומפוננטה מדובר? מי המשתמשים, ומה חשוב להם?"></textarea><div class="exfb" data-fb="context"></div></div>
-          <div class="exfield"><label>3. אילוצים</label><textarea data-k="constraints" placeholder="ספריית עיצוב קיימת שצריך לשמור עליה? אסור לשבור מסך קיים?"></textarea><div class="exfb" data-fb="constraints"></div></div>
-          <div class="exfield"><label>4. הגדרת הצלחה שניתנת לבדיקה</label><textarea data-k="success" placeholder="מה בדיוק ישתנה במסך? איך נבדוק/נראה שזה עבד?"></textarea><div class="exfb" data-fb="success"></div></div>
+        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+
+        <div class="exslot" data-slot="0">
+          <p class="exslot-label">1. מטרה / סימפטום</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">הדשבורד נטען תוך 8 שניות במובייל, ומשתמשים נוטשים לפני שהנתונים מופיעים</button>
+            <button class="choice" type="button" data-opt="1">תבדקו עם Lighthouse שה-score עולה מעל 90</button>
+            <button class="choice" type="button" data-opt="2">הדשבורד לא טוב</button>
+          </div>
+          <div class="fb"></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו את הניסוח</button><span class="exbadge" data-badge></span></div>
+        <div class="exslot" data-slot="1">
+          <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">אסור לשנות את ה-API שמזין את הדשבורד</button>
+            <button class="choice" type="button" data-opt="1">תסתכל על זה</button>
+            <button class="choice" type="button" data-opt="2">הקומפוננטה ב-src/dashboard/DashboardPage.jsx, טוענת הכל בבת אחת בלי lazy loading</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="2">
+          <p class="exslot-label">3. אילוצים</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">אסור לשנות את ה-API שמזין את הדשבורד, ויש לשמור על ספריית העיצוב הקיימת</button>
+            <button class="choice" type="button" data-opt="1">שיהיה מהיר</button>
+            <button class="choice" type="button" data-opt="2">הקומפוננטה ב-src/dashboard/DashboardPage.jsx</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+        <div class="exslot" data-slot="3">
+          <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
+          <div class="choices">
+            <button class="choice" type="button" data-opt="0">יש לשמור על ספריית העיצוב הקיימת</button>
+            <button class="choice" type="button" data-opt="1">זמן טעינה ראשוני מתחת ל-2 שניות במובייל, נמדד ב-Lighthouse</button>
+            <button class="choice" type="button" data-opt="2">שיהיה חוויה טובה יותר</button>
+          </div>
+          <div class="fb"></div>
+        </div>
+
+        <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
       </div>
     </div>
   </section>
@@ -679,43 +770,30 @@ buildQuiz("quiz3-container", "score-box-3", [
   });
 })();
 
-/* ---------- exercise checker ---------- */
+/* ---------- exercise: pick the right wording per formula part ---------- */
 (function () {
-  function wc(s) { var m = s.trim().match(/\S+/g); return m ? m.length : 0; }
+  // לכל כרטיס: 4 סלוטים, לכל סלוט האינדקס הנכון (ok) וההסבר (why).
+  var answers = [
+    [
+      { ok: 1, why: "זה הניסוח היחיד שמתאר סימפטום קונקרטי (מה קורה, באיזו תדירות, מתי) — לא רק \"יש באג\", ולא הגדרת הצלחה." },
+      { ok: 0, why: "זה החלק היחיד שנותן עוגן קונקרטי (קובץ, היסטוריה) שה-AI לא יכול לנחש לבד." },
+      { ok: 2, why: "זה הניסוח היחיד שמגדיר גבול אמיתי (מה אסור לשנות, מה מותר) — לא תיאור מיקום ולא קריאה כללית." },
+      { ok: 0, why: "זו ההגדרה היחידה שניתנת לבדיקה בפועל — יש טסט קונקרטי שצריך לעבור, לא רק \"שיהיה תקין\"." }
+    ],
+    [
+      { ok: 2, why: "זה הניסוח היחיד שמתאר סימפטום קונקרטי — לא \"צריך טסטים\", ולא הגדרת הצלחה." },
+      { ok: 0, why: "זה החלק היחיד שנותן עוגן קונקרטי על הקובץ והקונבנציה הקיימת בפרויקט." },
+      { ok: 1, why: "זה הניסוח היחיד שמגדיר אילוץ אמיתי (ספרייה חובה, מקרי קצה לכסות)." },
+      { ok: 2, why: "זו ההגדרה היחידה שניתנת לבדיקה — אחוז coverage קונקרטי וטסטים שעוברים." }
+    ],
+    [
+      { ok: 0, why: "זה הניסוח היחיד שמתאר סימפטום קונקרטי (זמן טעינה, נטישה) — לא \"לא טוב\", ולא הגדרת הצלחה." },
+      { ok: 2, why: "זה החלק היחיד שנותן עוגן קונקרטי: שם קומפוננטה והתנהגות קיימת." },
+      { ok: 0, why: "זה הניסוח היחיד שמגדיר אילוץ אמיתי (API שאסור לשנות, ספריית עיצוב לשמור)." },
+      { ok: 1, why: "זו ההגדרה היחידה שניתנת לבדיקה — מספר קונקרטי שנמדד בכלי אמיתי." }
+    ]
+  ];
 
-  function checkGoal(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — תארו מה קורה בפועל: איזה סימפטום, שגיאה, או מתי זה קורה." };
-    if (t.length < 12 || wc(t) < 3) return { ok: false, msg: "✗ קצר מדי בשביל סימפטום אמיתי. הוסיפו פרט קונקרטי (מה קורה, מתי, איך רואים את זה)." };
-    return { ok: true, msg: "✓ יש כאן סימפטום קונקרטי." };
-  }
-
-  function checkContext(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — אילו קבצים/תיקיות רלוונטיים? יש היסטוריה שה-AI לא יכול לנחש?" };
-    if (t.length < 10 || wc(t) < 2) return { ok: false, msg: "✗ קצר מדי. הוסיפו היכן בקוד זה קורה, או מה הרקע הרלוונטי." };
-    var hasAnchor = /[.\/]|קוב|תיקי|מודול|ספריי|היסטור|ארכיטקט|קומפוננט|API|class|function/i.test(t);
-    if (!hasAnchor) return { ok: true, msg: "✓ יש הקשר. טיפ: עוגן קונקרטי כמו שם קובץ או תיקייה יעזור עוד יותר." };
-    return { ok: true, msg: "✓ הקשר קונקרטי וברור." };
-  }
-
-  function checkConstraints(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — אילו ספריות מותר להשתמש? API שאסור לשנות? דרישת ביצועים?" };
-    if (t.length < 8 || wc(t) < 2) return { ok: false, msg: "✗ קצר מדי בשביל אילוץ אמיתי. תארו גבול ברור, לא רק \"שיהיה טוב\"." };
-    return { ok: true, msg: "✓ יש אילוץ ברור." };
-  }
-
-  function checkSuccess(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — איך נדע שהמשימה הצליחה?" };
-    if (t.length < 8) return { ok: false, msg: "✗ קצר מדי." };
-    var marker = /טסט|בדיק|build|ירוץ|יעבור|פלט|output|expect|תראה|יציג|status|log|pass|fail|\bci\b/i;
-    if (!marker.test(t)) return { ok: false, msg: "✗ זה נשמע כמו \"שיפור\" כללי, לא הגדרה שאפשר לבדוק. הוסיפו: אילו טסטים יעברו, איזה build ירוץ, איזה פלט צפוי." };
-    return { ok: true, msg: "✓ הגדרת הצלחה שאפשר לבדוק בפועל." };
-  }
-
-  var checkers = { goal: checkGoal, context: checkContext, constraints: checkConstraints, success: checkSuccess };
   var cards = document.querySelectorAll("[data-ex]");
 
   function updateSummary() {
@@ -727,22 +805,43 @@ buildQuiz("quiz3-container", "score-box-3", [
     $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! עברתם את כל שלושת התרגילים לפי הנוסחה." : (passed ? passed + " מתוך " + cards.length + " תרגילים עברו את כל 4 החלקים" : "");
   }
 
-  cards.forEach(function (card) {
-    card.querySelectorAll("[data-check]").forEach(function (btn) { btn.addEventListener("click", onCheck); });
-    function onCheck() {
-      var okCount = 0;
-      card.querySelectorAll("textarea[data-k]").forEach(function (ta) {
-        var k = ta.dataset.k;
-        var res = checkers[k](ta.value);
-        if (res.ok) okCount++;
-        var fb = card.querySelector(''[data-fb="'' + k + ''"]'');
-        fb.textContent = res.msg;
-        fb.className = "exfb " + (res.ok ? "ok" : "fail");
-      });
-      card.classList.toggle("passed", okCount === 4);
-      card.querySelector("[data-badge]").textContent = okCount + " / 4 תקינים";
+  cards.forEach(function (card, cardIdx) {
+    var slots = card.querySelectorAll(".exslot");
+    var correctCount = 0;
+
+    function updateCard() {
+      card.classList.toggle("passed", correctCount === slots.length);
+      card.querySelector("[data-badge]").textContent = correctCount + " / " + slots.length + " נכונים";
       updateSummary();
     }
+
+    slots.forEach(function (slot, slotIdx) {
+      var info = answers[cardIdx][slotIdx];
+      var choices = slot.querySelectorAll(".choice");
+      var fb = slot.querySelector(".fb");
+      choices.forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (slot.dataset.done) return;
+          slot.dataset.done = "1";
+          choices.forEach(function (x) { x.disabled = true; });
+          var j = parseInt(b.dataset.opt, 10);
+          if (j === info.ok) {
+            b.classList.add("right");
+            correctCount++;
+            fb.textContent = "נכון! " + info.why;
+            fb.className = "fb correct";
+          } else {
+            b.classList.add("wrong");
+            choices[info.ok].classList.add("right");
+            fb.textContent = "לא בדיוק. " + info.why;
+            fb.className = "fb wrong";
+          }
+          updateCard();
+        });
+      });
+    });
+
+    updateCard();
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);

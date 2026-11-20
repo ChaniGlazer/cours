@@ -189,16 +189,11 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .exhead { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
 .exnum { width: 42px; height: 42px; border-radius: 14px; background: var(--bg-panel-2); color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .exhead .prompt-quote.bad { flex: 1; min-width: 220px; border: 1px dashed rgba(229,72,106,.35); background: var(--danger-soft); color: #9A2F47; }
-.exhint { margin: 0 0 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 14.5px; color: var(--ink-dim); background: var(--bg-panel-2); border-radius: 16px; padding: 12px 18px; }
-.exhint .btn { padding: 9px 22px; font-size: 14.5px; flex-shrink: 0; }
-.exdiag { margin-bottom: 20px; }
+.exintro { margin-bottom: 18px; font-size: 15px; color: var(--ink-dim); }
+.exdiag { margin-bottom: 24px; }
+.exdiag:last-of-type { margin-bottom: 0; }
 .exdiag p { color: var(--ink); font-weight: 700; font-size: 16px; margin-bottom: 10px; }
-.exfield label { display: block; font-size: 14px; font-weight: 700; color: var(--ink-dim); margin-bottom: 7px; }
-.exfield textarea { width: 100%; min-height: 80px; border-radius: 14px; border: 1.5px solid var(--line); padding: 11px 14px; font-family: var(--sans); font-size: 15px; resize: vertical; background: #fcfcff; color: var(--ink); line-height: 1.55; }
-.exfield textarea:focus { outline: none; border-color: var(--cyan); }
-.exfb { margin-top: 7px; font-size: 13.5px; font-weight: 600; min-height: 18px; }
-.exfb.ok { color: var(--success); } .exfb.fail { color: var(--danger); }
-.exrow { display: flex; align-items: center; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
+.exrow { display: flex; align-items: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
 .exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
 .excard.passed .exbadge { color: var(--success); }
 
@@ -397,7 +392,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">1</div>
           <p class="prompt-quote bad">תפתור את הבאג הזה. קודם תסביר מה אתה חושב שקורה. שנית תבדוק את ה-logs. שלישית תבדוק את ה-DB connection. רביעית תבדוק את ה-auth middleware. חמישית תגיד לי את האבחנה הסופית. ואז תתקן.</p>
         </div>
-        <div class="exhint">📝 ענו על שתי המשימות למטה, ואפשר ללחוץ "בדקו" בכל שלב. <button class="btn" type="button" data-check>בדקו</button></div>
+        <p class="exintro">ענו על שתי השאלות:</p>
         <div class="exdiag">
           <p>1. איזה הרגל בעייתי מופיע כאן?</p>
           <div class="choices">
@@ -407,12 +402,16 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           </div>
           <div class="fb" data-diagfb></div>
         </div>
-        <div class="exfield">
-          <label>2. שכתבו את ההנחיה בעזרת החלופה הנכונה</label>
-          <textarea data-k="rewrite" placeholder="רמזים: effort/reasoning level, הקשר על הבעיה, בלי שרשרת שלבים ידנית..."></textarea>
-          <div class="exfb" data-fb="rewrite"></div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מתקן את הבעיה?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-fix="0">/effort high — יש באג לסירוגין בפרודקשן מאז הדיפלוי האחרון. ההקשר: [stack trace, קבצים רלוונטיים]. תאבחן ותתקן.</button>
+            <button class="choice" type="button" data-fix="1">קודם תבדוק את ה-logs, אחר כך את ה-DB, אחר כך את ה-auth, ואז תגיד לי מה הבעיה</button>
+            <button class="choice" type="button" data-fix="2">תפתור את זה בצורה הכי טובה שאתה יכול</button>
+          </div>
+          <div class="fb" data-fixfb></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו</button><span class="exbadge" data-badge></span></div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
 
       <!-- exercise 2: persona -->
@@ -421,7 +420,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">2</div>
           <p class="prompt-quote bad">אתה סטאף אינג''ינר עם 15 שנות ניסיון באבטחת מידע. האם הפונקציה הזו בטוחה?</p>
         </div>
-        <div class="exhint">📝 ענו על שתי המשימות למטה, ואפשר ללחוץ "בדקו" בכל שלב. <button class="btn" type="button" data-check>בדקו</button></div>
+        <p class="exintro">ענו על שתי השאלות:</p>
         <div class="exdiag">
           <p>1. איזה הרגל בעייתי מופיע כאן?</p>
           <div class="choices">
@@ -431,12 +430,16 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           </div>
           <div class="fb" data-diagfb></div>
         </div>
-        <div class="exfield">
-          <label>2. שכתבו את ההנחיה בעזרת החלופה הנכונה</label>
-          <textarea data-k="rewrite" placeholder="אפשר להשאיר את הפרסונה לטון, אבל להוסיף הקשר אמיתי: קוד, קובץ, פרטים קונקרטיים..."></textarea>
-          <div class="exfb" data-fb="rewrite"></div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מתקן את הבעיה?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-fix="0">אתה מהנדס אבטחה בכיר (לטון התשובה). הנה הפונקציה: [קוד מצורף]. תבדוק אם יש חשיפה ל-SQL injection ותסביר למה.</button>
+            <button class="choice" type="button" data-fix="1">אתה מהנדס אבטחה עם 25 שנות ניסיון, הכי טוב בעולם. תגיד לי אם זה בטוח.</button>
+            <button class="choice" type="button" data-fix="2">תבדוק אם הקוד בטוח.</button>
+          </div>
+          <div class="fb" data-fixfb></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו</button><span class="exbadge" data-badge></span></div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
 
       <!-- exercise 3: self-check -->
@@ -445,7 +448,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">3</div>
           <p class="prompt-quote bad">תבדוק את התשובה שלך ותוודא שהיא נכונה לפני שאתה שולח.</p>
         </div>
-        <div class="exhint">📝 ענו על שתי המשימות למטה, ואפשר ללחוץ "בדקו" בכל שלב. <button class="btn" type="button" data-check>בדקו</button></div>
+        <p class="exintro">ענו על שתי השאלות:</p>
         <div class="exdiag">
           <p>1. איזה הרגל בעייתי מופיע כאן?</p>
           <div class="choices">
@@ -455,12 +458,16 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           </div>
           <div class="fb" data-diagfb></div>
         </div>
-        <div class="exfield">
-          <label>2. שכתבו את ההנחיה בעזרת החלופה הנכונה</label>
-          <textarea data-k="rewrite" placeholder="רמזים: טסטים, build, קומפיילר, reviewer — איזה סיגנל חיצוני אמיתי אפשר לדרוש?"></textarea>
-          <div class="exfb" data-fb="rewrite"></div>
+        <div class="exdiag">
+          <p>2. איזה שכתוב מתקן את הבעיה?</p>
+          <div class="choices">
+            <button class="choice" type="button" data-fix="0">תריץ את ה-test suite ותמשיך לתקן עד שכל הטסטים עוברים.</button>
+            <button class="choice" type="button" data-fix="1">תעבור על התשובה פעמיים ותוודא שהיא הגיונית.</button>
+            <button class="choice" type="button" data-fix="2">תהיה בטוח שהתשובה נכונה.</button>
+          </div>
+          <div class="fb" data-fixfb></div>
         </div>
-        <div class="exrow"><button class="btn" type="button" data-check>בדקו</button><span class="exbadge" data-badge></span></div>
+        <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
     </div>
   </section>
@@ -604,40 +611,16 @@ buildQuiz("quiz3-container", "score-box-3", [
   { q: "\"תשתמש ב-linter/type checker ותתקן עד שאין שגיאות\"", opts: ["משוב פנימי בלבד (חלש)", "משוב חיצוני אמיתי (חזק)"], ok: 1, why: "linter/type checker הם כלים חיצוניים עם סיגנל אובייקטיבי, לא דעה עצמית של המודל." }
 ]);
 
-/* ---------- exercise checker ---------- */
+/* ---------- exercise: זיהוי ההרגל + בחירת השכתוב הנכון ---------- */
 (function () {
-  function wc(s) { var m = s.trim().match(/\S+/g); return m ? m.length : 0; }
-
-  function checkEffort(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — תארו מה הייתם כותבים במקום שרשרת שלבים ידנית." };
-    if (t.length < 12 || wc(t) < 3) return { ok: false, msg: "✗ קצר מדי." };
-    var marker = /effort|reasoning|רמת מאמץ|רמת חשיבה|רמת קושי|מורכבות|\/effort|high|low/i;
-    if (!marker.test(t)) return { ok: false, msg: "✗ לא רואים כאן התייחסות לרמת effort/reasoning של הכלי. זו בדיוק החלופה לשרשרת שלבים ידנית — נסו להזכיר אותה." };
-    return { ok: true, msg: "✓ יש כאן התייחסות לרמת effort/reasoning במקום שרשרת ידנית." };
-  }
-
-  function checkContext(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — הוסיפו הקשר אמיתי (קוד, קובץ, פרטים קונקרטיים)." };
-    if (t.length < 10 || wc(t) < 2) return { ok: false, msg: "✗ קצר מדי." };
-    var hasAnchor = /[.\/]|קוב|תיקי|מודול|קומפוננט|API|class|function|קוד|מצורף/i.test(t);
-    if (!hasAnchor) return { ok: false, msg: "✗ עדיין נשמע כמו פרסונה בלבד. הוסיפו עוגן קונקרטי: קוד מצורף, שם קובץ, או פרט אמיתי מהפרויקט." };
-    return { ok: true, msg: "✓ יש כאן הקשר אמיתי, לא רק פרסונה." };
-  }
-
-  function checkFeedback(v) {
-    var t = v.trim();
-    if (!t) return { ok: false, msg: "✗ ריק — איזה משוב חיצוני אמיתי אפשר לדרוש?" };
-    if (t.length < 8) return { ok: false, msg: "✗ קצר מדי." };
-    var marker = /טסט|בדיק|build|ירוץ|יעבור|פלט|output|expect|status|log|pass|fail|compiler|linter|reviewer|\bci\b/i;
-    if (!marker.test(t)) return { ok: false, msg: "✗ זה עדיין נשמע כמו בדיקה עצמית כללית. הוסיפו מקור משוב חיצוני אמיתי: טסטים, build, linter, או reviewer." };
-    return { ok: true, msg: "✓ יש כאן משוב חיצוני אמיתי, לא רק בדיקה עצמית." };
-  }
-
-  var checkers = { effort: checkEffort, context: checkContext, feedback: checkFeedback };
   var diagLabels = ["פרסונה בלי הקשר אמיתי", "שרשרת שלבים ידנית, במקום רמת effort/reasoning", "בדיקה עצמית בלי משוב חיצוני"];
   var diagKeyByPrinciple = { effort: 1, context: 0, feedback: 2 };
+  var fixWhyByPrinciple = {
+    effort: "זו האפשרות היחידה שמשתמשת ברמת effort/reasoning של הכלי ונותנת הקשר אמיתי — בלי שרשרת שלבים ידנית.",
+    context: "זו האפשרות היחידה שמשאירה את הפרסונה לטון, אבל מוסיפה את הקוד האמיתי — מקור הדיוק.",
+    feedback: "זו האפשרות היחידה עם משוב חיצוני אמיתי — תוצאת טסטים, לא עוד סבב של בדיקה עצמית."
+  };
+  var fixOkIndex = { effort: 0, context: 0, feedback: 0 };
   var cards = document.querySelectorAll("[data-ex]");
 
   function updateSummary() {
@@ -646,53 +629,65 @@ buildQuiz("quiz3-container", "score-box-3", [
     $("ex-count").textContent = passed + " / " + cards.length + " תרגילים עברו";
     $("ex-bar").style.width = (passed / cards.length * 100) + "%";
     if (window.reportProgress) window.reportProgress(passed, cards.length);
-    $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! זיהיתם ושכתבתם את כל שלושת ההרגלים נכון." : (passed ? passed + " מתוך " + cards.length + " תרגילים עברו" : "");
+    $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! זיהיתם ובחרתם נכון בכל שלושת ההרגלים." : (passed ? passed + " מתוך " + cards.length + " תרגילים עברו" : "");
   }
 
   cards.forEach(function (card) {
     var principle = card.dataset.principle;
     var okDiagIndex = diagKeyByPrinciple[principle];
+    var okFixIndex = fixOkIndex[principle];
+    var diagCorrect = false, fixCorrect = false;
 
-    card.querySelectorAll("[data-diag]").forEach(function (b) {
+    function updateCard() {
+      var okCount = (diagCorrect ? 1 : 0) + (fixCorrect ? 1 : 0);
+      card.classList.toggle("passed", okCount === 2);
+      card.querySelector("[data-badge]").textContent = okCount + " / 2 נכונים";
+      updateSummary();
+    }
+
+    var diagChoices = card.querySelectorAll("[data-diag]");
+    diagChoices.forEach(function (b) {
       b.addEventListener("click", function () {
-        var all = card.querySelectorAll("[data-diag]");
-        all.forEach(function (x) { x.disabled = true; });
+        diagChoices.forEach(function (x) { x.disabled = true; });
         var j = parseInt(b.dataset.diag, 10);
         var fb = card.querySelector("[data-diagfb]");
         if (j === okDiagIndex) {
           b.classList.add("right");
-          card.dataset.diagOk = "1";
+          diagCorrect = true;
           fb.textContent = "נכון! " + diagLabels[okDiagIndex] + ".";
           fb.className = "fb correct";
         } else {
           b.classList.add("wrong");
-          all[okDiagIndex].classList.add("right");
-          card.dataset.diagOk = "0";
+          diagChoices[okDiagIndex].classList.add("right");
           fb.textContent = "לא בדיוק. ההרגל הבעייתי כאן הוא: " + diagLabels[okDiagIndex] + ".";
           fb.className = "fb wrong";
         }
+        updateCard();
       });
     });
 
-    card.querySelectorAll("[data-check]").forEach(function (btn) { btn.addEventListener("click", onCheck); });
-    function onCheck() {
-      var diagOk = card.dataset.diagOk === "1";
-      var ta = card.querySelector(''textarea[data-k="rewrite"]'');
-      var res = checkers[principle](ta.value);
-      var fb = card.querySelector(''[data-fb="rewrite"]'');
-      fb.textContent = res.msg;
-      fb.className = "exfb " + (res.ok ? "ok" : "fail");
+    var fixChoices = card.querySelectorAll("[data-fix]");
+    fixChoices.forEach(function (b) {
+      b.addEventListener("click", function () {
+        fixChoices.forEach(function (x) { x.disabled = true; });
+        var j = parseInt(b.dataset.fix, 10);
+        var fb = card.querySelector("[data-fixfb]");
+        if (j === okFixIndex) {
+          b.classList.add("right");
+          fixCorrect = true;
+          fb.textContent = "נכון! " + fixWhyByPrinciple[principle];
+          fb.className = "fb correct";
+        } else {
+          b.classList.add("wrong");
+          fixChoices[okFixIndex].classList.add("right");
+          fb.textContent = "לא בדיוק. " + fixWhyByPrinciple[principle];
+          fb.className = "fb wrong";
+        }
+        updateCard();
+      });
+    });
 
-      var okCount = (diagOk ? 1 : 0) + (res.ok ? 1 : 0);
-      card.classList.toggle("passed", okCount === 2);
-      card.querySelector("[data-badge]").textContent = okCount + " / 2 תקינים";
-      if (!card.dataset.diagOk) {
-        var diagFb = card.querySelector("[data-diagfb]");
-        diagFb.textContent = "קודם ענו על שאלת הזיהוי למעלה.";
-        diagFb.className = "fb wrong";
-      }
-      updateSummary();
-    }
+    updateCard();
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
