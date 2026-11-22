@@ -139,6 +139,8 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 /* citation */
 .cite { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
 .cite .ico { flex-shrink: 0; }
+.cite a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.cite a:hover { color: var(--ink); }
 
 /* quote blocks */
 .prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
@@ -341,7 +343,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <p class="ctx-caption">בניסוי LongMemEval (306 שאלות): פרומפט ממוקד של כ-300 טוקנים הניב תוצאות טובות יותר מפרומפט של כ-113,000 טוקנים שהכיל את אותה תשובה בדיוק.</p>
       </div>
 
-      <div class="cite"><span class="ico">🔬</span><span>מקור: Chroma, "Context Rot" (יולי 2025) — 18 מודלים מובילים, ביניהם Claude Opus 4, o3, GPT-4.1, Gemini 2.5 Pro.</span></div>
+      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://www.trychroma.com/research/context-rot" target="_blank" rel="noopener noreferrer">Chroma, "Context Rot" (יולי 2025)</a> — 18 מודלים מובילים, ביניהם Claude Opus 4, o3, GPT-4.1, Gemini 2.5 Pro.</span></div>
 
       <div class="callout warn">
         <span class="ico">💡</span>
@@ -490,7 +492,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="fb" id="measure-fb"></div>
       </div>
 
-      <div class="cite"><span class="ico">🔬</span><span>מקור: METR, RCT עם מפתחי קוד פתוח מנוסים (יולי 2025).</span></div>
+      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener noreferrer">METR, RCT עם מפתחי קוד פתוח מנוסים (יולי 2025)</a>.</span></div>
 
       <p class="lede" style="margin-top:28px; font-size:17px;">בדיוק בשביל זה הפרויקט הבא מבקש מכם לתעד "לפני" ו"אחרי" — לא לשאול אתכם אם הרגשתם שהשתפרתם.</p>
     </div>

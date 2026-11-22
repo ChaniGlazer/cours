@@ -139,6 +139,8 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 /* citation */
 .cite { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
 .cite .ico { flex-shrink: 0; }
+.cite a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.cite a:hover { color: var(--ink); }
 
 /* quote blocks */
 .prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
@@ -472,7 +474,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">Explore → Plan → Code → Commit</h2>
       <p class="lede">במשימות שנוגעות בכמה קבצים, או כשלא בטוחים בגישה, עדיף לבקש מהסוכן לחקור ולהציג תוכנית לפני מימוש. אם אפשר לתאר את ה-diff במשפט אחד — אפשר לדלג על שלב התכנון.</p>
 
-      <div class="cite"><span class="ico">🔬</span><span>מקור: Suproteem Sarkar, University of Chicago — ניתוח על אלפי משתמשי Cursor: מפתחים מנוסים יותר כותבים יותר תוכניות לפני קוד; חברות ממזגות 39% יותר PR-ים לאחר שסוכן קידוד הפך לברירת מחדל בצוות.</span></div>
+      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://cursor.com/blog/productivity" target="_blank" rel="noopener noreferrer">Suproteem Sarkar, University of Chicago</a> — ניתוח על אלפי משתמשי Cursor: מפתחים מנוסים יותר כותבים יותר תוכניות לפני קוד; חברות ממזגות 39% יותר PR-ים לאחר שסוכן קידוד הפך לברירת מחדל בצוות. נתון זה פורסם על ידי Cursor עצמה, על בסיס המשתמשים שלה — לא מחקר עמיתים עיוור כמו שאר המקורות בקורס.</span></div>
 
       <div class="eyebrow" style="margin-top:28px;">נסו בעצמכם</div>
       <h3>לתכנן קודם, או לקפוץ לקוד?</h3>

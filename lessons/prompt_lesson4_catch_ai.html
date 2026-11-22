@@ -138,6 +138,8 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 /* citation */
 .cite { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
 .cite .ico { flex-shrink: 0; }
+.cite a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.cite a:hover { color: var(--ink); }
 
 /* quote blocks */
 .prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
@@ -422,7 +424,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">הזיות בקוד: חבילות שלא קיימות</h2>
       <p class="lede">מודלי שפה לא רק טועים בלוגיקה — הם גם ממציאים שמות חבילות שנשמעים סבירים להפליא, אבל לא קיימות ב-npm/PyPI בפועל. התופעה נקראת <strong style="color:var(--ink)">slopsquatting</strong>: כל מי שירשום חבילה בשם שסוכן ממציא שוב ושוב, "תופס" אלפי התקנות של אנשים שלא בדקו.</p>
 
-      <div class="cite"><span class="ico">🔬</span><span>מקור: Spracklen et al., USENIX Security Symposium 2025 — Distinguished Paper Award. 576,000 דגימות קוד, 16 מודלים: בממוצע 19.7% מהחבילות המומלצות לא היו קיימות. GPT-4 Turbo הזה רק 3.59% מהפעמים; מודלים פתוחים קטנים הזו ביותר משליש. 43% מהשמות המומצאים חזרו בכל אחת מעשר הרצות חוזרות על אותה בקשה — דפוס שחוזר, לא תקלה חד-פעמית.</span></div>
+      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf" target="_blank" rel="noopener noreferrer">Spracklen et al., USENIX Security Symposium 2025</a>. 576,000 דגימות קוד, 16 מודלים: בממוצע 19.7% מהחבילות המומלצות לא היו קיימות. GPT-4 Turbo הזה רק 3.59% מהפעמים; מודלים פתוחים קטנים הזו ביותר משליש. 43% מהשמות המומצאים חזרו בכל אחת מעשר הרצות חוזרות על אותה בקשה — דפוס שחוזר, לא תקלה חד-פעמית.</span></div>
 
       <div class="pkgsim">
         <div class="eyebrow">נסו בעצמכם</div>
