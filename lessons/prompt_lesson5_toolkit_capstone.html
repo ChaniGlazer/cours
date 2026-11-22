@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיעור 5 — ערכת הכלים שלך ופרויקט שמוכיח שאתה אלוף</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F3FF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #F0EEFF;
+  --ink: #25224F;
+  --ink-dim: #5A577F;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
+  --cyan-soft: #E8EBFF;
+  --violet: #FF7B6B;
+  --violet-soft: #FFE8E3;
+  --success: #1FB985;
+  --success-soft: #DDF7EC;
+  --danger: #E5486A;
+  --danger-soft: #FFE4EA;
+  --warn: #D98A00;
+  --warn-soft: #FFF0D4;
+  --line: rgba(91,108,255,.12);
+  --line-strong: rgba(91,108,255,.26);
+  --radius: 28px;
+  --shadow: 0 1px 2px rgba(50,40,140,.05), 0 16px 48px -16px rgba(60,50,150,.24);
+  --shadow-sm: 0 1px 2px rgba(50,40,140,.05), 0 8px 24px -10px rgba(60,50,150,.20);
+  --code-bg: #221F55;
+  --code-ink: #ECEBFF;
+  --display: "Rubik", sans-serif;
+  --sans: "Assistant", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 18px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 620px at 4% -4%, rgba(139,107,255,.20), transparent 62%),
+    radial-gradient(820px 600px at 100% 8%, rgba(255,123,107,.17), transparent 62%),
+    radial-gradient(900px 700px at 62% 108%, rgba(31,185,133,.13), transparent 60%);
+}
+::selection { background: var(--cyan); color: #fff; }
+
+.wrap { width: 100%; max-width: 1560px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 84px); }
+p { color: var(--ink-dim); margin: 0; }
+p strong, li strong { color: var(--ink); }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; color: var(--ink); margin: 0; letter-spacing: -0.005em; }
+code, .mono { font-family: var(--mono); }
+p code, li code, summary code, label code {
+  font-size: .86em; background: var(--cyan-soft); color: #3F4FE0; border-radius: 8px; padding: 2px 8px;
+  direction: ltr; unicode-bidi: embed;
+}
+button { font-family: var(--sans); cursor: pointer; }
+button:focus-visible, a:focus-visible, textarea:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid rgba(91,108,255,.45); outline-offset: 3px; }
+
+section { padding: clamp(60px, 7vw, 108px) 0; }
+section:nth-of-type(even) { background: rgba(255,255,255,.55); }
+.eyebrow { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink-dim); background: rgba(255,255,255,.8); border-radius: 100px; padding: 4px 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); direction: rtl; }
+.eyebrow.c { color: #3F4FE0; background: var(--cyan-soft); box-shadow: none; }
+.eyebrow.v { color: #E0553F; background: var(--violet-soft); box-shadow: none; }
+h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
+.lede { font-size: clamp(18px, 1.5vw, 20px); margin-top: 14px; max-width: 68ch; }
+
+/* top bars */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 4px; z-index: 50; }
+.scroll-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--cyan-2), var(--violet)); border-radius: 0 4px 4px 0; }
+.topbar { background: rgba(255,255,255,.75); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: 14px 0; position: sticky; top: 0; z-index: 40; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; }
+.topbar .course { font-family: var(--display); font-weight: 600; color: var(--ink); }
+.topbar .lesson-chip { font-weight: 700; font-size: 13.5px; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--cyan-2)); border-radius: 100px; padding: 4px 16px; }
+
+/* hero */
+.hero { position: relative; padding: clamp(48px, 7vw, 100px) 0 clamp(40px, 5vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 90px); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.5rem); line-height: 1.2; font-weight: 800; }
+.hero h1 .a1 { background: linear-gradient(90deg, var(--cyan), var(--cyan-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 .a2 { background: linear-gradient(90deg, var(--violet), #FFA06B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { margin-top: 20px; font-size: clamp(18px, 1.6vw, 21px); max-width: 54ch; }
+.time-row { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { font-size: 14.5px; font-weight: 600; color: var(--ink-dim); background: rgba(255,255,255,.85); border-radius: 100px; padding: 6px 16px; box-shadow: var(--shadow-sm); }
+
+.chat-demo { background: #fff; border-radius: 30px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid rgba(91,108,255,.08); }
+.chat-demo-head { padding: 14px 22px; font-size: 14.5px; font-weight: 700; color: var(--ink-dim); display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--cyan-soft), #fff); }
+.chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
+.chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
+.bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
+.bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chat-empty { color: var(--ink-faint); font-size: 16px; text-align: center; margin: auto; }
+.chips { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.chip { font-size: 14.5px; font-weight: 600; color: #3F4FE0; background: var(--cyan-soft); border: none; border-radius: 100px; padding: 9px 16px; transition: all .15s; }
+.chip:hover:not(:disabled) { background: var(--cyan); color: #fff; transform: translateY(-1px); }
+.chip:disabled { opacity: .45; cursor: default; }
+.demo-note { padding: 0 22px 18px; font-size: 13px; color: var(--ink-faint); }
+.demo-after { margin-top: 20px; font-size: 16px; color: var(--ink); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s; }
+.demo-after.show { opacity: 1; transform: none; }
+
+/* tiles */
+.tiles5 { margin-top: 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .tiles5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .tiles5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .tiles5 { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: #fff; border-radius: 22px; padding: 22px 20px; box-shadow: var(--shadow-sm); text-align: center; }
+.tile .em { font-size: 34px; line-height: 1.2; }
+.tile h4 { font-size: 16px; margin: 10px 0 4px; }
+.tile p { font-size: 14px; line-height: 1.6; }
+
+/* shared */
+.callout { margin-top: 20px; border-radius: 20px; padding: 16px 20px; font-size: 16px; display: flex; gap: 14px; align-items: flex-start; border: 1px solid; text-align: start; }
+.callout .ico { font-size: 22px; line-height: 1.5; }
+.callout p { color: var(--ink); }
+.callout.warn { background: var(--warn-soft); border-color: rgba(217,138,0,.22); }
+.callout.danger { background: var(--danger-soft); border-color: rgba(229,72,106,.22); }
+.callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
+.callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
+
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* citation */
+.cite { margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
+.cite .ico { flex-shrink: 0; }
+
+/* quote blocks */
+.prompt-quote { background: rgba(255,255,255,.75); border-radius: 14px; padding: 14px 18px; font-style: italic; color: var(--ink); font-size: 16px; line-height: 1.65; white-space: pre-line; }
+.prompt-quote.en { direction: ltr; text-align: left; font-style: normal; font-family: var(--mono); font-size: 14.5px; }
+.dd { margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 720px) { .dd { grid-template-columns: minmax(0, 1fr); } }
+.dd-col { border-radius: 26px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.dd-col.yes { background: linear-gradient(160deg, #E6FAF1, #D3F4E5); }
+.dd-col.no { background: linear-gradient(160deg, #FFEBEF, #FFDDE4); }
+.dd-col h4 { font-size: 18px; margin-bottom: 12px; }
+.dd-col.yes h4 { color: #0F8F63; } .dd-col.no h4 { color: #C9304F; }
+.dd-note { margin-top: 12px; font-size: 14.5px; color: var(--ink); }
+
+/* generic card */
+.subcard { background: #fff; border-radius: 22px; padding: 24px 26px; box-shadow: var(--shadow-sm); }
+.subcard h4 { font-size: 17px; margin-bottom: 10px; }
+.subcard p { font-size: 15.5px; }
+.subcard .prompt-quote { margin-top: 12px; }
+.subcard ul, .subcard ol { margin: 12px 0 0; padding-inline-start: 20px; color: var(--ink-dim); font-size: 15px; }
+.subcard li { margin-bottom: 6px; }
+
+/* refactor/new-style toggle, reused for context-rot demo */
+.rn-toggle { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.rn-tab { font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 100px; border: none; background: var(--bg-panel-2); color: var(--ink-dim); transition: all .15s; }
+.rn-tab.active { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; }
+.rn-panel { margin-top: 20px; }
+
+/* token meter (context rot) */
+.tmeter { margin-top: 16px; height: 14px; border-radius: 10px; background: var(--bg-panel-2); overflow: hidden; }
+.tmeter-fill { display: block; height: 100%; width: 0; border-radius: 10px; transition: width .5s ease; }
+.tmeter-fill.good { background: linear-gradient(90deg, #34D6A0, #1FB985); }
+.tmeter-fill.bad { background: linear-gradient(90deg, #FF9B6B, #E5486A); }
+.tmeter-label { margin-top: 8px; font-size: 13.5px; font-weight: 700; color: var(--ink-dim); }
+.tmeter-result { margin-top: 14px; font-size: 15px; font-weight: 700; }
+.tmeter-result.good { color: var(--success); } .tmeter-result.bad { color: var(--danger); }
+.ctx-caption { margin-top: 18px; font-size: 14.5px; color: var(--ink-dim); }
+
+/* sorting board (reused pattern) */
+.board { margin-top: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+.board-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 0; border-top: 1px dashed var(--line-strong); }
+.board-row:first-of-type { border-top: none; padding-top: 0; }
+.board-rule { flex: 1; min-width: 240px; font-size: 15.5px; color: var(--ink); }
+.board-rule code { direction: ltr; unicode-bidi: embed; }
+.board-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.board-btn { font-size: 13.5px; font-weight: 700; border-radius: 100px; padding: 8px 14px; border: 1.5px solid var(--line); background: #fff; color: var(--ink-dim); transition: all .15s; }
+.board-btn:hover:not(:disabled) { border-color: var(--cyan); }
+.board-btn:disabled { cursor: default; }
+.board-btn.right { border-color: var(--success); background: var(--success-soft); color: #0F8F63; }
+.board-btn.wrong { border-color: var(--danger); background: var(--danger-soft); color: #9A2F47; }
+.board-score { margin-top: 16px; font-family: var(--display); font-weight: 700; font-size: 15px; color: #3F4FE0; }
+
+/* quiz */
+.choices { display: grid; gap: 10px; }
+.choice { text-align: start; background: #fff; border: 1.5px solid var(--line); color: var(--ink); border-radius: 16px; padding: 12px 18px; font-size: 15.5px; line-height: 1.6; transition: all .15s; box-shadow: var(--shadow-sm); white-space: pre-line; }
+.choice:hover:not(:disabled) { border-color: var(--cyan); transform: translateY(-1px); }
+.choice.right { border-color: var(--success); background: var(--success-soft); }
+.choice.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.choice:disabled { cursor: default; }
+.fb { margin-top: 12px; font-size: 15px; font-weight: 700; min-height: 22px; }
+.fb.correct { color: var(--success); } .fb.wrong { color: var(--danger); }
+
+/* template library */
+.tpl-grid { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .tpl-grid { grid-template-columns: minmax(0, 1fr); } }
+.tpl-card { background: var(--bg-panel-2); border-radius: 22px; padding: 22px 24px; border: 2px solid transparent; transition: border-color .2s, background .2s; }
+.tpl-card.added { border-color: rgba(31,185,133,.55); background: var(--success-soft); }
+.tpl-card h4 { font-size: 16px; margin-bottom: 4px; }
+.tpl-card .src { font-size: 12.5px; font-weight: 600; color: var(--ink-faint); display: block; margin-bottom: 10px; }
+.tpl-card .prompt-quote { font-size: 13.5px; max-height: 150px; overflow: auto; }
+.tpl-add-btn { margin-top: 14px; font-size: 14px; font-weight: 700; border: none; border-radius: 100px; padding: 9px 18px; background: #fff; color: #3F4FE0; box-shadow: var(--shadow-sm); transition: all .15s; }
+.tpl-add-btn.on { background: var(--success); color: #fff; }
+.tpl-doc-wrap { margin-top: 26px; }
+.tpl-doc-wrap label { display: block; font-weight: 700; font-family: var(--display); font-size: 15px; color: var(--ink); margin-bottom: 10px; }
+.tpl-doc { width: 100%; min-height: 220px; resize: vertical; border-radius: 18px; border: none; background: var(--code-bg); color: var(--code-ink); font-family: var(--mono); font-size: 13px; line-height: 1.7; padding: 18px 20px; direction: ltr; text-align: left; }
+.tpl-count { margin-top: 14px; font-weight: 700; font-family: var(--display); font-size: 15px; color: #3F4FE0; }
+
+/* capstone project fields */
+.proj-field { margin-top: 22px; }
+.proj-field label { display: block; font-weight: 700; font-family: var(--display); font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+.proj-field textarea { width: 100%; min-height: 110px; resize: vertical; border-radius: 16px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); font-family: var(--sans); font-size: 15px; padding: 14px 16px; }
+.proj-field textarea:focus { outline: none; border-color: var(--cyan); }
+.checklist-title { margin-top: 26px; font-weight: 700; font-family: var(--display); font-size: 15px; color: var(--ink); }
+.checklist { margin-top: 14px; display: grid; gap: 10px; }
+.cl-item { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--ink); background: var(--bg-panel-2); border-radius: 14px; padding: 12px 16px; cursor: pointer; }
+.cl-item input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--cyan); flex-shrink: 0; }
+
+/* exercise */
+.exsummary { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 28px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.exsummary b { font-family: var(--display); font-size: 17px; white-space: nowrap; }
+.exsummary .bar { flex: 1; min-width: 160px; height: 10px; border-radius: 10px; background: var(--bg-panel-2); overflow: hidden; }
+.exsummary .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #34D6A0, #1FB985); border-radius: 10px; transition: width .4s ease; }
+.excard { margin-top: 22px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; border: 2px solid transparent; transition: border-color .25s; }
+.excard.passed { border-color: rgba(31,185,133,.55); }
+.exhead { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.exnum { width: 42px; height: 42px; border-radius: 14px; background: var(--bg-panel-2); color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.exhead h3 { font-size: 19px; }
+.exintro { margin: 14px 0 0; font-size: 15px; color: var(--ink-dim); }
+.exrow { display: flex; align-items: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
+.exbadge { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink-dim); }
+.excard.passed .exbadge { color: var(--success); }
+
+/* recap */
+.recap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px 32px; }
+.recap ul { margin: 0; padding-inline-start: 22px; color: var(--ink-dim); display: grid; gap: 14px; }
+.recap li { font-size: 16.5px; line-height: 1.65; }
+.recap li strong { color: var(--ink); }
+.mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: var(--ink); min-height: 26px; }
+
+footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"><i id="scroll-bar"></i></div>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="course">הנדסת פרומפטים למפתחים</span>
+    <span class="lesson-chip">שיעור 5</span>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap hero-grid">
+   <div class="hero-text">
+    <div class="eyebrow c">שיעור 5 · סיכום הקורס</div>
+    <h1>ה<span class="a1">ערכה</span> שהבאתם איתכם,<br>וה<span class="a2">הוכחה</span> שהשתפרתם</h1>
+    <p class="hero-sub">זה השיעור האחרון בקורס. היום לא לומדים עקרון בודד נוסף — אוספים את כל מה שבניתם בארבעת השיעורים הקודמים לכלים שתיקחו איתכם, ופותרים איתם בעיה אמיתית משלכם.</p>
+    <div class="time-row">
+      <span class="pill">⏱ כ-40 דקות</span>
+      <span class="pill">🧰 ספריית תבניות אישית</span>
+      <span class="pill">🏁 שיעור 5 מתוך 5 — האחרון</span>
+    </div>
+   </div>
+   <div class="hero-visual">
+    <div class="chat-demo">
+      <div class="chat-demo-head"><span class="dot"></span> אותה שיחה, שני מצבים</div>
+      <div class="chat-body" id="chat-body"><div class="chat-empty">לחצו על אחת הבקשות למטה, ותראו איך הסוכן מגיב</div></div>
+      <div class="chips" id="chips">
+        <button class="chip" type="button" data-i="0">❌ להמשיך באותה שיחה אחרי שעתיים</button>
+        <button class="chip" type="button" data-i="1">✅ שיחה חדשה, פרומפט ממוקד</button>
+      </div>
+      <div class="demo-note">* הדגמה מוקלטת להמחשה בלבד.</div>
+    </div>
+    <p class="demo-after" id="demo-after">אותו מודל, אותה יכולת. ההבדל הוא כמה קונטקסט לא-רלוונטי הצטבר בשיחה עד הרגע הזה.</p>
+   </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="callout info">
+    <span class="ico">👋</span>
+    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם מרגישים שהשיחות שלכם עם סוכן קידוד מתארכות ומתדרדרות עם הזמן, אתם רוצים לקחת מהקורס הזה יותר מ"הבנתי בזמן אמת" — ממש תבניות שתשתמשו בהן שוב, ויש לכם בעיה אמיתית מהעבודה או מפרויקט אישי שמתאימה בול לניסוי.</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ================= ROADMAP ================= -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="eyebrow">המפה</div>
+      <h2 class="section-title">מה נשאר, בשיעור הכי חשוב בקורס?</h2>
+      <p class="lede">שני עקרונות קצרים על ניהול הקשר, ואז שני דברים שתיקחו איתכם באמת: ספריית התבניות שלכם, ופרויקט שמוכיח — לא רק מרגיש — שהשתפרתם.</p>
+
+      <div class="tiles5">
+        <div class="tile"><div class="em">🧵</div><h4>עקרון 1</h4><p>הקשר ארוך = ביצועים נחלשים</p></div>
+        <div class="tile"><div class="em">🧹</div><h4>עקרון 2</h4><p>מתי לנקות הקשר, ומתי לא</p></div>
+        <div class="tile"><div class="em">🗂️</div><h4>ספריית תבניות</h4><p>אוספים משיעורים 1-4</p></div>
+        <div class="tile"><div class="em">📏</div><h4>למדוד, לא להרגיש</h4><p>מחקר ה-METR</p></div>
+        <div class="tile"><div class="em">🏆</div><h4>פרויקט מסכם</h4><p>הבעיה האמיתית שלכם</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 1 — CONTEXT ROT ================= -->
+  <section id="p1">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 1</div>
+      <h2 class="section-title">הקשר ארוך = ביצועים נחלשים</h2>
+      <p class="lede">דוח טכני של Chroma (יולי 2025) בדק 18 מודלים מובילים — כולל Claude Opus 4, o3, GPT-4.1 ו-Gemini 2.5 Pro — ומצא שכולם מידרדרים ככל שהקלט מתארך. זו תופעה מדידה, לא תחושה סובייקטיבית.</p>
+
+      <div class="subcard" style="margin-top:24px;">
+        <div class="rn-toggle" id="ctx-toggle">
+          <button class="rn-tab active" type="button" data-ctx="focused">🎯 פרומפט ממוקד (~300 טוקן)</button>
+          <button class="rn-tab" type="button" data-ctx="bloated">🧵 קונטקסט עמוס (~113,000 טוקן)</button>
+        </div>
+        <div class="rn-panel" id="ctx-focused">
+          <div class="tmeter"><i class="tmeter-fill good" style="width:3%"></i></div>
+          <div class="tmeter-label">~300 טוקנים — מכיל את ההקשר הרלוונטי, ושום דבר מעבר לזה</div>
+          <div class="tmeter-result good">✅ תוצאה: מדויקת ועקבית</div>
+        </div>
+        <div class="rn-panel" id="ctx-bloated" hidden>
+          <div class="tmeter"><i class="tmeter-fill bad" style="width:95%"></i></div>
+          <div class="tmeter-label">~113,000 טוקנים — מכיל את אותה תשובה בדיוק, קבורה בתוך קונטקסט עמוס</div>
+          <div class="tmeter-result bad">⚠️ תוצאה: פחות מדויקת — אותו מידע בדיוק, פשוט עמוק יותר בתוך השיחה</div>
+        </div>
+        <p class="ctx-caption">בניסוי LongMemEval (306 שאלות): פרומפט ממוקד של כ-300 טוקנים הניב תוצאות טובות יותר מפרומפט של כ-113,000 טוקנים שהכיל את אותה תשובה בדיוק.</p>
+      </div>
+
+      <div class="cite"><span class="ico">🔬</span><span>מקור: Chroma, "Context Rot" (יולי 2025) — 18 מודלים מובילים, ביניהם Claude Opus 4, o3, GPT-4.1, Gemini 2.5 Pro.</span></div>
+
+      <div class="callout warn">
+        <span class="ico">💡</span>
+        <p><strong>המסקנה המעשית:</strong> קובץ הוראות קצר, וסשן חדש / <code>/clear</code> לכל משימה נפרדת — לא "לדחוף הכול לאותה שיחה".</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRINCIPLE 2 — WHEN TO CLEAR ================= -->
+  <section id="p2">
+    <div class="wrap">
+      <div class="eyebrow c">עקרון 2</div>
+      <h2 class="section-title">מתי לנקות הקשר, ומתי לא</h2>
+      <p class="lede">כללים מתיעוד Claude Code: לא כל שיחה חייבת להסתיים ב-<code>/clear</code>, אבל יש רגעים ברורים שבהם כן — ורגעים שבהם ההמשך באותה שיחה הוא בדיוק הדבר הנכון.</p>
+
+      <div class="board">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>מיינו: לנקות, להמשיך, או להפעיל סאב-אג'נט?</h3>
+        <p style="margin-top:6px;">לכל תרחיש, בחרו את הפעולה הנכונה:</p>
+        <div id="board-rows">
+          <div class="board-row" data-ok="clear">
+            <div class="board-rule">סיימתם לנפות באג בתשלומים, ועכשיו רוצים לבנות פיצ'ר חדש בדשבורד</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="clear">🧹 לנקות</button>
+              <button class="board-btn" type="button" data-choice="continue">➡️ להמשיך</button>
+              <button class="board-btn" type="button" data-choice="subagent">🤖 סאב-אג'נט</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="clear">
+            <div class="board-rule">ניסיתם לתקן את אותו באג פעמיים ברצף, והתיקון לא עבד בשתיהן</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="clear">🧹 לנקות</button>
+              <button class="board-btn" type="button" data-choice="continue">➡️ להמשיך</button>
+              <button class="board-btn" type="button" data-choice="subagent">🤖 סאב-אג'נט</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="subagent">
+            <div class="board-rule">צריך להבין איך 40 קבצים במודול ישן מתחברים זה לזה, לפני שמתקנים שורה אחת</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="clear">🧹 לנקות</button>
+              <button class="board-btn" type="button" data-choice="continue">➡️ להמשיך</button>
+              <button class="board-btn" type="button" data-choice="subagent">🤖 סאב-אג'נט</button>
+            </div>
+          </div>
+          <div class="board-row" data-ok="continue">
+            <div class="board-rule">ממשיכים לתקן עוד שתי הערות קטנות על אותו פיצ'ר שבניתם הרגע, באותה שיחה</div>
+            <div class="board-btns">
+              <button class="board-btn" type="button" data-choice="clear">🧹 לנקות</button>
+              <button class="board-btn" type="button" data-choice="continue">➡️ להמשיך</button>
+              <button class="board-btn" type="button" data-choice="subagent">🤖 סאב-אג'נט</button>
+            </div>
+          </div>
+        </div>
+        <div class="board-score" id="board-score">0 / 4 נכונים</div>
+      </div>
+
+      <div class="subcard" style="margin-top:24px;">
+        <h4>צ'קפוינטים ו-rewind: לתכנן פחות, לנסות יותר</h4>
+        <p>אפשר "לנסות דבר מסוכן" — ואם זה לא עובד, לחזור אחורה (rewind) לנקודה קודמת ולנסות גישה אחרת, במקום לתכנן כל צעד בקפידה מראש.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TEMPLATE LIBRARY (EXERCISE 1) ================= -->
+  <section id="library">
+    <div class="wrap">
+      <div class="eyebrow v">ספריית התבניות שלך</div>
+      <h2 class="section-title">אספו את ארבע התבניות שבניתם</h2>
+      <p class="lede">תבניות ופקודות שחוזרות על עצמן שוות שמירה כקבצים בריפו — לא כתיבה מאפס כל פעם, כך שגם חברי צוות אחרים יכולים להשתמש בהן ולתרום להן (למשל כפקודות צוותיות נפוצות: <code>/pr</code>, <code>/fix-issue [number]</code>, <code>/review</code>, <code>/update-deps</code>). התבניות למטה הן שלכם — בניתם אותן בארבעת השיעורים הקודמים. לחצו "הוסיפו לספרייה" על כל אחת.</p>
+
+      <div class="exsummary">
+        <b id="ex-count">0 / 2 משימות הסיום הושלמו</b>
+        <div class="bar"><i id="ex-bar"></i></div>
+      </div>
+
+      <div class="excard" data-ex id="ex-library">
+        <div class="exhead">
+          <div class="exnum">1</div>
+          <h3>ספריית התבניות שלכם</h3>
+        </div>
+        <p class="exintro">הוסיפו את כל ארבע התבניות למסמך למטה:</p>
+
+        <div class="tpl-grid" id="tpl-grid">
+          <div class="tpl-card" data-tpl="formula">
+            <h4>נוסחת 4 החלקים</h4>
+            <span class="src">שיעור 1 · מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה</span>
+            <p class="prompt-quote en">the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis. build 2-3 hypotheses ranked by likelihood before changing any code. write a failing test that reproduces the bug. fix the root cause — don't suppress the error or add a retry as a workaround. run the payments test suite and show the output.</p>
+            <button class="tpl-add-btn" type="button">+ הוסיפו לספרייה</button>
+          </div>
+          <div class="tpl-card" data-tpl="ticket">
+            <h4>טיקט טוב לסוכן קידוד</h4>
+            <span class="src">שיעור 3 · סימפטום + מיקום בקוד + הגדרת "גמור" שניתנת לבדיקה</span>
+            <p class="prompt-quote en">users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it</p>
+            <button class="tpl-add-btn" type="button">+ הוסיפו לספרייה</button>
+          </div>
+          <div class="tpl-card" data-tpl="debug">
+            <h4>תבנית דיבוג שיטתי</h4>
+            <span class="src">שיעור 4 · השערות מדורגות ← טסט שמשחזר ← תיקון שורש ← הרצת הסוויט</span>
+            <p class="prompt-quote en">the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis.
+1. build 2-3 hypotheses ranked by likelihood before changing any code.
+2. write a failing test that reproduces the bug.
+3. fix the root cause — don't suppress the error or add a retry as a workaround.
+4. run the payments test suite and show the output.</p>
+            <button class="tpl-add-btn" type="button">+ הוסיפו לספרייה</button>
+          </div>
+          <div class="tpl-card" data-tpl="review">
+            <h4>תבנית review בהקשר נקי</h4>
+            <span class="src">שיעור 4 · subagent עם diff + קריטריוני correctness בלבד</span>
+            <p class="prompt-quote en">use a subagent to review the rate limiter diff against SPEC.md, check every requirement is implemented and the listed edge cases have tests, report gaps that affect correctness and skip style.</p>
+            <button class="tpl-add-btn" type="button">+ הוסיפו לספרייה</button>
+          </div>
+        </div>
+
+        <div class="tpl-count" id="tpl-count">0 / 4 תבניות נוספו</div>
+
+        <div class="tpl-doc-wrap">
+          <label for="tpl-doc">המסמך המורכב שלכם — סמנו הכול והעתיקו אל קובץ התבניות שלכם</label>
+          <textarea class="tpl-doc" id="tpl-doc" readonly placeholder="התבניות שתוסיפו יופיעו כאן..."></textarea>
+        </div>
+
+        <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MEASURE, DON'T FEEL ================= -->
+  <section id="measure">
+    <div class="wrap">
+      <div class="eyebrow c">למדוד, לא להרגיש</div>
+      <h2 class="section-title">תחושת ההאצה יכולה להיות שגויה</h2>
+      <p class="lede">מחקר RCT של METR (יולי 2025) על מפתחי קוד פתוח מנוסים מצא שהם היו <strong style="color:var(--ink)">איטיים ב-19%</strong> כשהשתמשו בכלי AI על ריפוזיטוריז שהם מכירים היטב — אבל הם <strong style="color:var(--ink)">העריכו בסוף שהם הואצו ב-20%</strong>.</p>
+
+      <div class="callout warn">
+        <span class="ico">💡</span>
+        <p><strong>המסקנה היא לא ש-AI לא עוזר</strong> — אלא שתחושת ההאצה יכולה להיות שגויה, ושכדאי למדוד בעצמכם (זמן מחזור, כמה עבודה חזרה לתיקון) ולא להסתפק בתחושה.</p>
+      </div>
+
+      <div class="subcard" style="margin-top:24px;">
+        <div class="eyebrow">נסו בעצמכם</div>
+        <h3>מה בפועל קרה במחקר?</h3>
+        <div class="choices" id="measure-choices" style="margin-top:16px;">
+          <button class="choice" type="button" data-opt="0">המפתחים הואצו ב-20%, גם לפי המדידה וגם לפי התחושה</button>
+          <button class="choice" type="button" data-opt="1">המפתחים האטו ב-19% בפועל, אבל העריכו בסוף שהואצו ב-20%</button>
+          <button class="choice" type="button" data-opt="2">לא נמצא הבדל מדיד בין עבודה עם AI לעבודה בלעדיו</button>
+        </div>
+        <div class="fb" id="measure-fb"></div>
+      </div>
+
+      <div class="cite"><span class="ico">🔬</span><span>מקור: METR, RCT עם מפתחי קוד פתוח מנוסים (יולי 2025).</span></div>
+
+      <p class="lede" style="margin-top:28px; font-size:17px;">בדיוק בשביל זה הפרויקט הבא מבקש מכם לתעד "לפני" ו"אחרי" — לא לשאול אתכם אם הרגשתם שהשתפרתם.</p>
+    </div>
+  </section>
+
+  <!-- ================= CAPSTONE PROJECT (EXERCISE 2) ================= -->
+  <section id="capstone">
+    <div class="wrap">
+      <div class="eyebrow v">פרויקט מסכם</div>
+      <h2 class="section-title">תוכיחו שאתם אלופים</h2>
+      <p class="lede">הביאו באג, פיצ'ר קטן, או refactor אמיתי משלכם — מהעבודה או מפרויקט אישי. פתרו אותו עם סוכן קידוד, ותעדו שני ניסוחים: איך הייתם מבקשים את זה <strong style="color:var(--ink)">לפני</strong> הקורס, ואיך אתם מנסחים את זה <strong style="color:var(--ink)">אחרי</strong>.</p>
+
+      <div class="excard" data-ex id="ex-capstone">
+        <div class="exhead">
+          <div class="exnum">2</div>
+          <h3>הפרויקט המסכם שלכם</h3>
+        </div>
+
+        <div class="proj-field">
+          <label for="proj-before">לפני הקורס — איך הייתם מבקשים את זה?</label>
+          <textarea id="proj-before" placeholder='לדוגמה: "תתקן את הבאג בלוגין" / "תוסיף פיצ׳ר X" / "תשפר את הקוד הזה"...'></textarea>
+        </div>
+
+        <div class="proj-field">
+          <label for="proj-after">אחרי הקורס — איך תנסחו את זה עכשיו?</label>
+          <textarea id="proj-after" placeholder="השתמשו בנוסחת 4 החלקים, בתבנית הטיקט, או בתבנית הדיבוג מספריית התבניות שבניתם למעלה"></textarea>
+        </div>
+
+        <div class="checklist-title">בדיקה עצמית: מה יש בניסוח ה"אחרי" שלכם?</div>
+        <div class="checklist" id="proj-checklist">
+          <label class="cl-item"><input type="checkbox" data-cl="0"> יש סימפטום/מטרה קונקרטית — לא רק "יש בעיה"</label>
+          <label class="cl-item"><input type="checkbox" data-cl="1"> יש הקשר שה-AI לא יכול לנחש (קובץ/מיקום בקוד, תבנית קיימת לחיקוי)</label>
+          <label class="cl-item"><input type="checkbox" data-cl="2"> יש אילוצים (מה אסור לשנות, מה חובה לשמור)</label>
+          <label class="cl-item"><input type="checkbox" data-cl="3"> יש הגדרת הצלחה שניתנת לבדיקה (טסט, מדד, קריטריון קונקרטי)</label>
+        </div>
+
+        <div class="exrow"><span class="exbadge" data-badge>0 / 2 הושלמו</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECAP ================= -->
+  <section id="recap">
+    <div class="wrap">
+      <div class="eyebrow c">סיכום הקורס</div>
+      <h2 class="section-title">חמישה שיעורים, אחד אחרי השני</h2>
+      <div class="recap">
+        <ul>
+          <li><strong>בשיעור 1</strong> למדתם את נוסחת 4 החלקים: מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה.</li>
+          <li><strong>בשיעור 2</strong> פרקתם שלושה הרגלים נפוצים, ולמדתם שמשוב חיצוני אמיתי (טסטים, קומפיילר, reviewer) עובד טוב יותר מבדיקה עצמית בלי משוב.</li>
+          <li><strong>בשיעור 3</strong> התאמתם את הנוסחה לטיקט לסוכן קידוד — הצעה מול ביצוע, refactor מול בנייה חדשה, ו-Explore → Plan → Code → Commit.</li>
+          <li><strong>בשיעור 4</strong> למדתם לתפוס דיבוג שטחי, הזיות חבילות, ו-review שמעריך את עצמו — לפני שזה מגיע ל-production.</li>
+          <li><strong>והיום, בשיעור 5:</strong> ניהול הקשר הארוך נכון, ספריית התבניות שבניתם מכל זה, ופרויקט שמוכיח — לא רק מרגיש — שאתם פותרים בעיות אמיתיות טוב יותר מאיך שעשיתם את זה לפני הקורס.</li>
+        </ul>
+      </div>
+      <div class="callout ok" style="margin-top:28px;">
+        <span class="ico">🎉</span>
+        <p><strong>סיימתם את הקורס "הנדסת פרומפטים למפתחים".</strong> ממשיכים מכאן עם ספריית התבניות שלכם, ועם ההוכחה העצמית שהשתפרתם.</p>
+      </div>
+      <div class="mission-done" id="mission-done"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">הנדסת פרומפטים למפתחים · שיעור 5</div></footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- scroll progress ---------- */
+(function () {
+  var bar = $("scroll-bar");
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+})();
+
+/* ---------- hero chat demo ---------- */
+(function () {
+  var answers = [
+    { q: "(באותה שיחה, אחרי 40 הודעות על דיבוג בתשלומים) אגב, תוכל גם להוסיף טאב הגדרות חדש לדשבורד?", a: "בטח, מוסיף טאב הגדרות... [מתחיל לערבב קונבנציות מהקוד של התשלומים לתוך הדשבורד, ומפספס קומפוננטה שהוזכרה כבר קודם בשיחה]" },
+    { q: "(שיחה חדשה) הוסיפו טאב הגדרות לדשבורד, בעקבות התבנית הקיימת ב-src/dashboard/TabsPanel.jsx", a: "בודק את TabsPanel.jsx... מוסיף טאב הגדרות לפי התבנית הקיימת, כולל ה-state וה-styling התואמים." }
+  ];
+  var body = $("chat-body");
+  var chips = document.querySelectorAll("#chips .chip");
+  var after = $("demo-after");
+  var busy = false;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (busy) return;
+      busy = true;
+      chips.forEach(function (c) { c.disabled = true; });
+      var item = answers[parseInt(chip.dataset.i, 10)];
+      body.innerHTML = "";
+      var u = document.createElement("div"); u.className = "bubble user"; u.textContent = item.q; body.appendChild(u);
+      var ai = document.createElement("div"); ai.className = "bubble ai typing"; body.appendChild(ai);
+      var i = 0;
+      function finish() {
+        ai.classList.remove("typing");
+        chips.forEach(function (c) { c.disabled = false; });
+        busy = false;
+        after.classList.add("show");
+      }
+      if (reduceMotion) { ai.textContent = item.a; finish(); return; }
+      setTimeout(function tick() {
+        i += 2;
+        ai.textContent = item.a.slice(0, i);
+        if (i < item.a.length) setTimeout(tick, 16); else finish();
+      }, 400);
+    });
+  });
+})();
+
+/* ---------- context-rot toggle (principle 1) ---------- */
+(function () {
+  var tabs = document.querySelectorAll("#ctx-toggle .rn-tab");
+  var panels = { focused: $("ctx-focused"), bloated: $("ctx-bloated") };
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      var mode = tab.dataset.ctx;
+      Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== mode; });
+    });
+  });
+})();
+
+/* ---------- when-to-clear sorting board (principle 2) ---------- */
+(function () {
+  var rows = document.querySelectorAll("#board-rows .board-row");
+  var score = $("board-score");
+  var correct = 0;
+  rows.forEach(function (row) {
+    var ok = row.dataset.ok;
+    var btns = row.querySelectorAll(".board-btn");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (x) { x.disabled = true; });
+        if (b.dataset.choice === ok) {
+          b.classList.add("right");
+          correct++;
+        } else {
+          b.classList.add("wrong");
+          row.querySelector('[data-choice="' + ok + '"]').classList.add("right");
+        }
+        score.textContent = correct + " / " + rows.length + " נכונים";
+      });
+    });
+  });
+})();
+
+/* ---------- measure-dont-feel quiz ---------- */
+(function () {
+  var choices = document.querySelectorAll("#measure-choices .choice");
+  var fb = $("measure-fb");
+  choices.forEach(function (b) {
+    b.addEventListener("click", function () {
+      choices.forEach(function (x) { x.disabled = true; });
+      var j = parseInt(b.dataset.opt, 10);
+      if (j === 1) {
+        b.classList.add("right");
+        fb.textContent = "נכון! האטה מדידה של 19%, לצד תחושה של האצה ב-20% — פער גדול בין המדידה לתחושה.";
+        fb.className = "fb correct";
+      } else {
+        b.classList.add("wrong");
+        choices[1].classList.add("right");
+        fb.textContent = "לא בדיוק. מה שבאמת קרה: האטה מדידה של 19%, לצד תחושה של האצה ב-20%.";
+        fb.className = "fb wrong";
+      }
+    });
+  });
+})();
+
+/* ---------- template library + capstone project = the two closing exercises ---------- */
+(function () {
+  var templates = {
+    formula: { title: "נוסחת 4 החלקים (שיעור 1)", text: "the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis. build 2-3 hypotheses ranked by likelihood before changing any code. write a failing test that reproduces the bug. fix the root cause — don't suppress the error or add a retry as a workaround. run the payments test suite and show the output." },
+    ticket: { title: "טיקט טוב לסוכן קידוד (שיעור 3)", text: "users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it" },
+    debug: { title: "תבנית דיבוג שיטתי (שיעור 4)", text: "the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis.\n1. build 2-3 hypotheses ranked by likelihood before changing any code.\n2. write a failing test that reproduces the bug.\n3. fix the root cause — don't suppress the error or add a retry as a workaround.\n4. run the payments test suite and show the output." },
+    review: { title: "תבנית review בהקשר נקי (שיעור 4)", text: "use a subagent to review the rate limiter diff against SPEC.md, check every requirement is implemented and the listed edge cases have tests, report gaps that affect correctness and skip style." }
+  };
+  var order = ["formula", "ticket", "debug", "review"];
+  var added = {};
+
+  var tplDoc = $("tpl-doc");
+  var tplCount = $("tpl-count");
+  var libCard = $("ex-library");
+
+  function renderDoc() {
+    var parts = [];
+    order.forEach(function (key) {
+      if (added[key]) {
+        var t = templates[key];
+        parts.push("# " + t.title + "\n" + t.text);
+      }
+    });
+    tplDoc.value = parts.join("\n\n");
+    var n = Object.keys(added).length;
+    tplCount.textContent = n + " / 4 תבניות נוספו";
+    var passed = n === 4;
+    libCard.classList.toggle("passed", passed);
+    libCard.querySelector("[data-badge]").textContent = n + " / 4 נכונים";
+    updateSummary();
+  }
+
+  document.querySelectorAll(".tpl-card").forEach(function (card) {
+    var key = card.dataset.tpl;
+    var btn = card.querySelector(".tpl-add-btn");
+    btn.addEventListener("click", function () {
+      if (added[key]) {
+        delete added[key];
+        card.classList.remove("added");
+        btn.classList.remove("on");
+        btn.textContent = "+ הוסיפו לספרייה";
+      } else {
+        added[key] = true;
+        card.classList.add("added");
+        btn.classList.add("on");
+        btn.textContent = "✅ נוסף לספרייה";
+      }
+      renderDoc();
+    });
+  });
+
+  var before = $("proj-before");
+  var after = $("proj-after");
+  var checkboxes = document.querySelectorAll("#proj-checklist input[type=checkbox]");
+  var capCard = $("ex-capstone");
+
+  function updateCapstone() {
+    var allChecked = true;
+    checkboxes.forEach(function (c) { if (!c.checked) allChecked = false; });
+    var passed = before.value.trim() !== "" && after.value.trim() !== "" && allChecked;
+    capCard.classList.toggle("passed", passed);
+    capCard.querySelector("[data-badge]").textContent = passed ? "2 / 2 הושלמו" : (before.value.trim() || after.value.trim() || allChecked ? "1 / 2 הושלמו" : "0 / 2 הושלמו");
+    updateSummary();
+  }
+  before.addEventListener("input", updateCapstone);
+  after.addEventListener("input", updateCapstone);
+  checkboxes.forEach(function (c) { c.addEventListener("change", updateCapstone); });
+
+  function updateSummary() {
+    var cards = document.querySelectorAll("[data-ex]");
+    var passed = 0;
+    cards.forEach(function (c) { if (c.classList.contains("passed")) passed++; });
+    $("ex-count").textContent = passed + " / " + cards.length + " משימות הסיום הושלמו";
+    $("ex-bar").style.width = (passed / cards.length * 100) + "%";
+    if (window.reportProgress) window.reportProgress(passed, cards.length);
+    $("mission-done").textContent = passed === cards.length ? "🎉 כל הכבוד! השלמתם את ספריית התבניות ואת הפרויקט המסכם — וסיימתם את הקורס." : (passed ? passed + " מתוך " + cards.length + " משימות הסיום הושלמו" : "");
+  }
+
+  renderDoc();
+  updateCapstone();
+})();
+</script>
+
+</body>
+</html>
