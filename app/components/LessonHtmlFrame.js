@@ -36,6 +36,17 @@ const REPORT_SCRIPT =
   // השיעור יכול להיטען לפני שההורה מחובר (hydration) ולפספס את הודעת ההתחלה, ולכן ההורה מבקש שליחה חוזרת.
   "addEventListener('message',function(e){if(e.source===parent&&e.data&&e.data.type==='lesson-parent-ready'&&last>=0)" +
   "parent.postMessage({type:'lesson-progress',done:last,total:tot},'*');});})();</script>";
+// saveLessonData(value)/onLessonDataRestore(cb) - שמירה/שחזור של תוכן חופשי שהתלמיד כותב בשיעור (למשל טקסט
+// חופשי בתרגיל), כי ה-iframe רץ sandbox בלי allow-same-origin ולא יכול לגשת ל-localStorage בעצמו. השמירה
+// בפועל קורית בהורה (ב-LessonLayout, לפי courseId+slug). הבקשה לשחזור חוזרת כל 250ms עד תשובה, כדי לא
+// להיתקע אם ההורה עוד לא סיים להתחבר כשהשיעור מבקש לראשונה.
+const DATA_SCRIPT =
+  "<script>(function(){var cb=null,got=false,tries=0;" +
+  "function ask(){if(got||tries>=20)return;tries++;parent.postMessage({type:'lesson-request-data'},'*');setTimeout(ask,250);}" +
+  "window.onLessonDataRestore=function(fn){cb=fn;ask();};" +
+  "window.saveLessonData=function(value){try{parent.postMessage({type:'lesson-save-data',value:value},'*');}catch(e){}};" +
+  "addEventListener('message',function(e){if(e.source===parent&&e.data&&e.data.type==='lesson-restore-data'){got=true;if(cb)cb(e.data.value||null);}});" +
+  "})();</script>";
 // זיהוי התרגיל הפעיל בשיעור, עבור החונכת (TutorWidget). הפונקציה מוזרקת ל-iframe כטקסט (toString), ולכן היא עצמאית לגמרי:
 // בלי התייחסות למשתנים מחוץ לה, ובתחביר פשוט (ES5). כשהלומדת מתמקדת בתרגיל, מקלידה בו או לוחצת בו, נשלחת להורה
 // { type: "tutor-context", topicKey, code }: topicKey הוא "exN" (לפי ids שמתחילים ב-exN, או כותרת "תרגיל N"), או במשחקים של
@@ -185,20 +196,25 @@ const LAYOUT_RESET =
 // הודעות נוספות מהשיעור (למשל lesson-progress ו-lesson-complete) מועברות להורה ב-prop onMessage.
 // ה-origin של ה-iframe הוא "null" (sandbox בלי allow-same-origin), ולכן הזהות נבדקת לפי event.source בלבד.
 // כל השיעורים (בכל הקורסים) מוצגים בעיצוב הכהה האחיד של האתר: הצבעים מוחלפים בזמן ההצגה בלבד.
-export default function LessonHtmlFrame({ html, onMessage, tutor = false, transparent = false }) {
+export default function LessonHtmlFrame({ html, onMessage, tutor = false, transparent = false, restoreData = null }) {
   const iframeRef = useRef(null);
   const onMessageRef = useRef(onMessage);
+  const restoreDataRef = useRef(restoreData);
   const [height, setHeight] = useState(600);
   // מסך מלא: שיעור (תרגיל הבריחה) מבקש {type:'lesson-fullscreen', on} כדי לתפוס את כל חלון הדפדפן, ובסיום לשחרר.
   const [full, setFull] = useState(false);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
-  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html, transparent) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor, transparent]);
+  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html, transparent) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + DATA_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor, transparent]);
 
   // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {
     onMessageRef.current = onMessage;
   }, [onMessage]);
+
+  useEffect(() => {
+    restoreDataRef.current = restoreData;
+  }, [restoreData]);
 
   useEffect(() => {
     function handleMessage(e) {
@@ -211,6 +227,10 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false, transp
       }
       if (data.type === "lesson-fullscreen") {
         setFull(data.on === true);
+        return;
+      }
+      if (data.type === "lesson-request-data") {
+        e.source.postMessage({ type: "lesson-restore-data", value: restoreDataRef.current ?? null }, "*");
         return;
       }
       onMessageRef.current?.(data);

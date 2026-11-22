@@ -139,3 +139,28 @@ export function nextLesson(progress, courseId, slugs) {
 export function countDone(progress, courseId, slugs) {
   return slugs.filter((s) => lessonStatus(progress, courseId, s) === "done").length;
 }
+
+// תוכן חופשי שתלמיד כותב בתוך שיעור (למשל טקסט בפרויקט מסכם) - נשמר כאן, בעמוד המארח,
+// כי ה-iframe של השיעור רץ sandbox בלי allow-same-origin ולא יכול לגשת ל-localStorage בעצמו.
+// מפתח נפרד מ-course-progress-v1 כדי לא לערבב תוכן חופשי עם מצב השלמה.
+const DATA_KEY = "lesson-data-v1";
+
+export function getLessonData(courseId, slug) {
+  try {
+    const all = JSON.parse(window.localStorage.getItem(DATA_KEY) || "{}");
+    return all?.[courseId]?.[slug] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveLessonData(courseId, slug, value) {
+  try {
+    const all = JSON.parse(window.localStorage.getItem(DATA_KEY) || "{}");
+    all[courseId] = all[courseId] || {};
+    all[courseId][slug] = value;
+    window.localStorage.setItem(DATA_KEY, JSON.stringify(all));
+  } catch {
+    // אחסון חסום (מצב פרטי ועוד) - התוכן פשוט לא יישמר.
+  }
+}

@@ -5,7 +5,7 @@ import LessonHtmlFrame from "./LessonHtmlFrame";
 import { GLOW_COURSES } from "@/lib/lessonTheme";
 import TutorWidget from "./TutorWidget";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
-import { countDone, enableServerTracking, isAuto, lessonStatus, markSeen, reportExercises, setDone, useProgress } from "./progress";
+import { countDone, enableServerTracking, getLessonData, isAuto, lessonStatus, markSeen, reportExercises, saveLessonData, setDone, useProgress } from "./progress";
 import "./lesson-design.css";
 
 // מעטפת עמוד השיעור (תבנית אחת לכל השיעורים בכל הקורסים), לפי design-reference/lesson-page.html:
@@ -48,6 +48,9 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   // תרגילי החובה בשיעור הנוכחי, כפי שהשיעור דיווח. נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
   const [exercises, setExercises] = useState(null);
   const exerciseProgress = exercises?.slug === currentSlug ? exercises : null;
+  // תוכן חופשי שהתלמידה כתבה בשיעור (למשל טקסט בפרויקט מסכם), נשמר ב-localStorage לפי קורס+שיעור.
+  // נקרא ב-lazy init (סינכרוני, לפני כל render) כדי שיהיה זמין כבר לפני שה-iframe מבקש אותו.
+  const [lessonData] = useState(() => (typeof window === "undefined" ? null : getLessonData(course.id, currentSlug)));
   // הקשר לחונכת: התרגיל שהלומדת עובדת עליו וקוד שכתבה, כפי שה-iframe של השיעור דיווח (tutor-context). נשמר עם ה-slug כדי שלא יידלף בין שיעורים.
   // tutorEnabled מגיע מהשרת (מתג הכיבוי ורשימת המיילים): החלטה אחת בלבד, בלי חשיפת משתני סביבה ל-client.
   const hasTutor = tutorEnabled && TUTOR_COURSES.includes(course.id);
@@ -88,6 +91,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
       completeHandledRef.current = currentSlug;
       // שיעור שכבר סומן (ידנית או אוטומטית) נשאר כמו שהוא.
       if (!isDone) setDone(course.id, currentSlug, true, true);
+    } else if (data.type === "lesson-save-data") {
+      saveLessonData(course.id, currentSlug, data.value ?? null);
     }
   }
 
@@ -229,7 +234,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           )}
 
           <section id="lesson" className="lx-content">
-            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} transparent={glow} /> : children}
+            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} transparent={glow} restoreData={lessonData} /> : children}
           </section>
 
           <section className="lx-complete">

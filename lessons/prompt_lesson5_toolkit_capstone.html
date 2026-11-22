@@ -222,6 +222,8 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .proj-field label { display: block; font-weight: 700; font-family: var(--display); font-size: 15px; color: var(--ink); margin-bottom: 8px; }
 .proj-field textarea { width: 100%; min-height: 110px; resize: vertical; border-radius: 16px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); font-family: var(--sans); font-size: 15px; padding: 14px 16px; }
 .proj-field textarea:focus { outline: none; border-color: var(--cyan); }
+.proj-hint { margin-top: 8px; font-size: 13.5px; font-weight: 600; color: var(--ink-faint); }
+.proj-hint.ok { color: var(--success); }
 .checklist-title { margin-top: 26px; font-weight: 700; font-family: var(--display); font-size: 15px; color: var(--ink); }
 .checklist { margin-top: 14px; display: grid; gap: 10px; }
 .cl-item { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--ink); background: var(--bg-panel-2); border-radius: 14px; padding: 12px 16px; cursor: pointer; }
@@ -519,6 +521,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="proj-field">
           <label for="proj-after">אחרי הקורס — איך תנסחו את זה עכשיו?</label>
           <textarea id="proj-after" placeholder="השתמשו בנוסחת 4 החלקים, בתבנית הטיקט, או בתבנית הדיבוג מספריית התבניות שבניתם למעלה"></textarea>
+          <div class="proj-hint" id="proj-after-hint"></div>
         </div>
 
         <div class="checklist-title">בדיקה עצמית: מה יש בניסוח ה"אחרי" שלכם?</div>
@@ -725,20 +728,73 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
 
   var before = $("proj-before");
   var after = $("proj-after");
+  var afterHint = $("proj-after-hint");
   var checkboxes = document.querySelectorAll("#proj-checklist input[type=checkbox]");
   var capCard = $("ex-capstone");
+  var MIN_BEFORE = 8;
+  var MIN_AFTER = 50;
+  var AFTER_RATIO = 1.3;
+
+  function capstoneState() {
+    var b = before.value.trim();
+    var a = after.value.trim();
+    return { beforeOk: b.length >= MIN_BEFORE, afterOk: a.length >= MIN_AFTER && a.length >= b.length * AFTER_RATIO, aLen: a.length, bLen: b.length };
+  }
+
+  function updateHint(s) {
+    if (s.afterOk) {
+      afterHint.textContent = "✅ אורך ותוכן מספיקים";
+      afterHint.className = "proj-hint ok";
+    } else if (s.aLen < MIN_AFTER) {
+      afterHint.textContent = "עוד " + (MIN_AFTER - s.aLen) + " תווים לפחות (" + s.aLen + " / " + MIN_AFTER + ")";
+      afterHint.className = "proj-hint";
+    } else {
+      afterHint.textContent = 'כדאי להרחיב עוד — ה"אחרי" אמור להיות מפורט משמעותית יותר מה"לפני"';
+      afterHint.className = "proj-hint";
+    }
+  }
+
+  var saveTimer = null;
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      if (window.saveLessonData) {
+        window.saveLessonData({
+          before: before.value,
+          after: after.value,
+          checked: Array.prototype.map.call(checkboxes, function (c) { return c.checked; })
+        });
+      }
+    }, 400);
+  }
 
   function updateCapstone() {
+    var s = capstoneState();
     var allChecked = true;
     checkboxes.forEach(function (c) { if (!c.checked) allChecked = false; });
-    var passed = before.value.trim() !== "" && after.value.trim() !== "" && allChecked;
+    var textOk = s.beforeOk && s.afterOk;
+    var passed = textOk && allChecked;
+    updateHint(s);
     capCard.classList.toggle("passed", passed);
-    capCard.querySelector("[data-badge]").textContent = passed ? "2 / 2 הושלמו" : (before.value.trim() || after.value.trim() || allChecked ? "1 / 2 הושלמו" : "0 / 2 הושלמו");
+    capCard.querySelector("[data-badge]").textContent = passed ? "2 / 2 הושלמו" : (textOk || allChecked ? "1 / 2 הושלמו" : "0 / 2 הושלמו");
     updateSummary();
+    scheduleSave();
   }
   before.addEventListener("input", updateCapstone);
   after.addEventListener("input", updateCapstone);
   checkboxes.forEach(function (c) { c.addEventListener("change", updateCapstone); });
+
+  if (window.onLessonDataRestore) {
+    window.onLessonDataRestore(function (value) {
+      if (!value) return;
+      if (typeof value.before === "string") before.value = value.before;
+      if (typeof value.after === "string") after.value = value.after;
+      if (Array.isArray(value.checked)) {
+        checkboxes.forEach(function (c, i) { c.checked = !!value.checked[i]; });
+      }
+      updateCapstone();
+    });
+  }
 
   function updateSummary() {
     var cards = document.querySelectorAll("[data-ex]");
