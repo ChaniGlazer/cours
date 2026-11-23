@@ -219,10 +219,6 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .excard.passed .exbadge { color: var(--success); }
 
 /* recap */
-.recap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px 32px; }
-.recap ul { margin: 16px 0 0; padding-inline-start: 22px; color: var(--ink-dim); display: grid; gap: 12px; }
-.recap li { font-size: 16.5px; line-height: 1.6; }
-.recap li strong { color: var(--ink); }
 .mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: var(--ink); min-height: 26px; }
 
 footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
@@ -246,7 +242,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
    <div class="hero-text">
     <div class="eyebrow c">שיעור 1 · היסודות</div>
     <h1>איך לדבר עם <span class="a1">AI</span><br>כמו שמדברים עם <span class="a2">מתכנת טוב</span></h1>
-    <p class="hero-sub">אתם כבר יודעים לכתוב קוד. השיעור הזה מלמד אתכם לכתוב <strong style="color:var(--ink)">פרומפטים</strong> — ההנחיה שאתם נותנים לכלי ה-AI — כמו מהנדסים, ולא כמו מי שמקליד שאלה מהירה בגוגל.</p>
+    <p class="hero-sub">אתם כבר יודעים לכתוב קוד. עכשיו ללמוד לכתוב <strong style="color:var(--ink)">פרומפטים</strong> כמו מהנדסים — לא כמו שאלה מהירה בגוגל.</p>
     <div class="time-row">
       <span class="pill">⏱ כ-35 דקות</span>
       <span class="pill">🧩 3 עקרונות + נוסחה</span>
@@ -271,7 +267,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
 <div class="wrap">
   <div class="callout info">
     <span class="ico">👋</span>
-    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם כבר כותבים קוד, ומשתמשים (או מתחילים להשתמש) בכלי AI כמו Claude, ChatGPT, Copilot או כלי קידוד סוכניים — ולפעמים מרגישים שהתשובה לא רלוונטית, או שהכלי "הבין לא נכון" את הבקשה. ברוב המקרים הבעיה היא לא בכלי. היא בפרומפט.</p>
+    <p><strong>בשבילכם אם:</strong> אתם כותבים קוד עם AI (Claude, ChatGPT, Copilot...) ולפעמים מרגישים שהוא "לא הבין". כמעט תמיד הבעיה בפרומפט — לא בכלי.</p>
   </div>
 </div>
 
@@ -282,7 +278,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow">המפה</div>
       <h2 class="section-title">מה נלמד היום?</h2>
-      <p class="lede">בסוף השיעור תדעו לנתח <strong style="color:var(--ink)">למה</strong> פרומפט נכשל, ותדעו לכתוב מחדש כל פרומפט לפי נוסחה פשוטה של ארבעה חלקים.</p>
+      <p class="lede">בסוף השיעור: תדעו <strong style="color:var(--ink)">למה</strong> פרומפט נכשל, ואיך לתקן אותו לפי נוסחה של ארבעה חלקים.</p>
 
       <div class="tiles4">
         <div class="tile"><div class="em">🧑‍💻</div><h4>עקרון 1</h4><p>עובד חדש מבריק, בלי הקשר</p></div>
@@ -298,11 +294,11 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 1</div>
       <h2 class="section-title">המודל הוא עובד חדש מבריק — בלי שום הקשר</h2>
-      <p class="lede">תחשבו על ה-AI כעל מתכנת מחונן שגויס הבוקר. הוא חכם, מהיר, ולא ישן אף פעם. אבל הוא לא היה בישיבות שלכם, לא קרא את היסטוריית ה-commits, ולא מכיר את הקוד שלכם. כל מה שהוא יודע על המשימה הוא <strong style="color:var(--ink)">מה שכתבתם בפרומפט</strong> — ושום דבר מעבר לזה.</p>
+      <p class="lede">ה-AI הוא עובד חדש מבריק שגויס הבוקר: חכם ומהיר, אבל לא היה בישיבות, לא קרא commit אחד, ולא מכיר את הקוד שלכם. הוא יודע רק <strong style="color:var(--ink)">מה שכתבתם בפרומפט</strong>.</p>
 
       <div class="callout warn">
         <span class="ico">🧪</span>
-        <p><strong>המבחן המעשי:</strong> אם הייתם מראים את הפרומפט לעמית שמכיר מעט מאוד את המשימה, והוא היה מתבלבל — גם המודל יתבלבל.</p>
+        <p><strong>המבחן המעשי:</strong> עמית שמכיר מעט את המשימה היה מתבלבל מהפרומפט? גם המודל יתבלבל.</p>
       </div>
 
       <div class="dd">
@@ -333,7 +329,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 2</div>
       <h2 class="section-title">איפה שמים את המידע משנה תוצאה</h2>
-      <p class="lede">כלל פשוט: כשיש מידע ארוך — קוד, לוג שגיאות, מסמך — שמים אותו <strong style="color:var(--ink)">בתחילת</strong> הפרומפט, ואת השאלה או המשימה <strong style="color:var(--ink)">בסוף</strong>. זה לא עניין של טעם או סגנון. זה משפיע בפועל על איכות התשובה, בעיקר בפרומפטים ארוכים עם כמה מקורות מידע.</p>
+      <p class="lede">כלל פשוט: מידע ארוך (קוד, לוג, מסמך) <strong style="color:var(--ink)">בהתחלה</strong>, השאלה או המשימה <strong style="color:var(--ink)">בסוף</strong>. לא עניין של טעם — זה משפיע בפועל על איכות התשובה.</p>
 
       <div class="dd">
         <div class="dd-col no">
@@ -376,14 +372,14 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 3</div>
       <h2 class="section-title">הוראה חיובית עובדת טוב יותר משלילית</h2>
-      <p class="lede">המודל לא תמיד "שומע" היטב רשימת איסורים. הדוגמה הקנונית: במקום <code>לעולם אל תשתמש בשלוש נקודות</code> (שעובד פחות טוב), עדיף לתת גם את ה"למה" וגם ניסוח חיובי של מה כן לעשות:</p>
+      <p class="lede">רשימת איסורים עובדת פחות טוב מניסוח חיובי + "למה". דוגמה קלאסית:</p>
 
       <div class="callout ok">
         <span class="ico">🔊</span>
         <p><strong>"התשובה תוקרא על ידי מנוע טקסט-לדיבור, ולכן תמיד תכתבו מספרים במילים — המנוע לא יודע לבטא קיצורים."</strong></p>
       </div>
 
-      <p class="lede" style="margin-top:28px;">בהקשר קוד, אותו עיקרון בדיוק:</p>
+      <p class="lede" style="margin-top:28px;">ובקוד — אותו עיקרון:</p>
       <div class="dd">
         <div class="dd-col no">
           <h4>❌ שלילי</h4>
@@ -409,7 +405,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow v">הנוסחה</div>
       <h2 class="section-title">נוסחת 4 החלקים לכתיבת פרומפט</h2>
-      <p class="lede">זו הנוסחה המרכזית של השיעור. כל פרומפט טוב — גם אם הוא לא כתוב פורמלית ככה — עונה על ארבעת החלקים האלה. לחצו על כל חלק כדי לראות אותו מודגש בדוגמה שלמטה.</p>
+      <p class="lede">כל פרומפט טוב עונה על ארבעת החלקים האלה, גם אם לא כתוב פורמלית ככה. לחצו על חלק כדי לראות אותו מודגש למטה.</p>
 
       <div class="formula-flow" id="formula-flow">
         <button class="fstep c1" type="button" data-p="1"><span class="n">1</span>מטרה / סימפטום</button>
@@ -431,7 +427,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <span class="seg s4">תריץ את ה-test suite של payments ותראה את הפלט.</span>
         </p>
       </div>
-      <p class="annotated-hint">💡 שימו לב: בפועל הסדר לא חייב להיות קשיח, ואפשר לשלב חלקים זה בתוך זה. מה שחשוב הוא שארבעת החלקים <strong style="color:var(--ink)">נמצאים</strong> בפרומפט.</p>
+      <p class="annotated-hint">💡 הסדר לא קשיח — מה שחשוב הוא שארבעת החלקים <strong style="color:var(--ink)">נמצאים</strong> בפרומפט.</p>
     </div>
   </section>
 
@@ -440,7 +436,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow">תרגיל סיום</div>
       <h2 class="section-title">בחרו את הניסוח הנכון לכל חלק בנוסחה</h2>
-      <p class="lede">שלושה פרומפטים גרועים. לכל אחד, לכל אחד מארבעת החלקים יש שלוש אפשרויות — רק אחת מתאימה. לחצו ובדקו מיד אם צדקתם.</p>
+      <p class="lede">שלושה פרומפטים גרועים. לכל חלק בנוסחה שלוש אפשרויות — רק אחת מתאימה. לחצו ובדקו מיד.</p>
 
       <div class="exsummary">
         <b id="ex-count">0 / 3 תרגילים עברו</b>
@@ -453,7 +449,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">1</div>
           <p class="prompt-quote bad">תתקן את הבאג</p>
         </div>
-        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+        <p class="exintro">בחרו את הניסוח המתאים לכל חלק:</p>
 
         <div class="exslot" data-slot="0">
           <p class="exslot-label">1. מטרה / סימפטום</p>
@@ -501,7 +497,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">2</div>
           <p class="prompt-quote bad">תוסיף טסטים ל-foo.py</p>
         </div>
-        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+        <p class="exintro">בחרו את הניסוח המתאים לכל חלק:</p>
 
         <div class="exslot" data-slot="0">
           <p class="exslot-label">1. מטרה / סימפטום</p>
@@ -549,7 +545,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="exnum">3</div>
           <p class="prompt-quote bad">תשפר את הדשבורד</p>
         </div>
-        <p class="exintro">לכל חלק בנוסחה, בחרו את הניסוח המתאים:</p>
+        <p class="exintro">בחרו את הניסוח המתאים לכל חלק:</p>
 
         <div class="exslot" data-slot="0">
           <p class="exslot-label">1. מטרה / סימפטום</p>
@@ -598,17 +594,15 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">סיכום</div>
       <h2 class="section-title">מה לקחת איתכם</h2>
-      <div class="recap">
-        <ul>
-          <li><strong>עקרון 1:</strong> המודל הוא עובד חדש מבריק בלי הקשר. אם עמית שמכיר מעט את המשימה היה מתבלבל מהפרומפט — גם המודל יתבלבל.</li>
-          <li><strong>עקרון 2:</strong> מידע ארוך (קוד, לוג, מסמך) בתחילת הפרומפט, והמשימה בסוף. זה משפיע בפועל, במיוחד בפרומפטים ארוכים.</li>
-          <li><strong>עקרון 3:</strong> ניסוח חיובי עם "למה" עובד טוב יותר מרשימת איסורים.</li>
-          <li><strong>הנוסחה:</strong> מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה. ארבעת החלקים, לא בהכרח בסדר הזה.</li>
-        </ul>
+      <div class="tiles4">
+        <div class="tile"><div class="em">🧑‍💻</div><h4>עקרון 1</h4><p>עמית היה מתבלבל מהפרומפט? גם המודל יתבלבל.</p></div>
+        <div class="tile"><div class="em">📍</div><h4>עקרון 2</h4><p>מידע ארוך בהתחלה, המשימה בסוף.</p></div>
+        <div class="tile"><div class="em">🙅➡️🙆</div><h4>עקרון 3</h4><p>חיובי + "למה" עובד טוב יותר מרשימת איסורים.</p></div>
+        <div class="tile"><div class="em">🧮</div><h4>הנוסחה</h4><p>מטרה ← הקשר ← אילוצים ← הצלחה נבדקת.</p></div>
       </div>
       <div class="callout info" style="margin-top:28px;">
         <span class="ico">🚀</span>
-        <p><strong>בשיעורים הבאים</strong> נעמיק בדיבוג פרומפטים שלא עובדים, ובעבודה עם כלי קידוד סוכניים (agentic) — שם האיכות של ההנחיה שלכם משפיעה אפילו יותר.</p>
+        <p><strong>בשיעורים הבאים:</strong> דיבוג פרומפטים שלא עובדים, וכלי קידוד סוכניים (agentic) — שם זה משפיע אפילו יותר.</p>
       </div>
       <div class="mission-done" id="mission-done"></div>
     </div>
