@@ -246,10 +246,6 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .excard.passed .exbadge { color: var(--success); }
 
 /* recap */
-.recap { margin-top: 30px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px 32px; }
-.recap ul { margin: 0; padding-inline-start: 22px; color: var(--ink-dim); display: grid; gap: 14px; }
-.recap li { font-size: 16.5px; line-height: 1.65; }
-.recap li strong { color: var(--ink); }
 .mission-done { margin-top: 20px; font-weight: 700; font-family: var(--display); color: var(--ink); min-height: 26px; }
 
 footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
@@ -273,7 +269,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
    <div class="hero-text">
     <div class="eyebrow c">שיעור 5 · סיכום הקורס</div>
     <h1>ה<span class="a1">ערכה</span> שהבאתם איתכם,<br>וה<span class="a2">הוכחה</span> שהשתפרתם</h1>
-    <p class="hero-sub">זה השיעור האחרון בקורס. היום לא לומדים עקרון בודד נוסף — אוספים את כל מה שבניתם בארבעת השיעורים הקודמים לכלים שתיקחו איתכם, ופותרים איתם בעיה אמיתית משלכם.</p>
+    <p class="hero-sub">השיעור האחרון. היום לא לומדים עקרון חדש — אוספים את מה שבניתם לכלים שתיקחו איתכם, ופותרים איתם בעיה אמיתית משלכם.</p>
     <div class="time-row">
       <span class="pill">⏱ כ-40 דקות</span>
       <span class="pill">🧰 ספריית תבניות אישית</span>
@@ -298,7 +294,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
 <div class="wrap">
   <div class="callout info">
     <span class="ico">👋</span>
-    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם מרגישים שהשיחות שלכם עם סוכן קידוד מתארכות ומתדרדרות עם הזמן, אתם רוצים לקחת מהקורס הזה יותר מ"הבנתי בזמן אמת" — ממש תבניות שתשתמשו בהן שוב, ויש לכם בעיה אמיתית מהעבודה או מפרויקט אישי שמתאימה בול לניסוי.</p>
+    <p><strong>בשבילכם אם:</strong> השיחות שלכם עם סוכן קידוד מתארכות ומתדרדרות עם הזמן, אתם רוצים תבניות אמיתיות לשימוש חוזר — לא רק "הבנתי בזמן אמת" — ויש לכם בעיה אמיתית לניסוי.</p>
   </div>
 </div>
 
@@ -326,7 +322,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 1</div>
       <h2 class="section-title">הקשר ארוך = ביצועים נחלשים</h2>
-      <p class="lede">דוח טכני של Chroma (יולי 2025) בדק 18 מודלים מובילים — כולל Claude Opus 4, o3, GPT-4.1 ו-Gemini 2.5 Pro — ומצא שכולם מידרדרים ככל שהקלט מתארך. זו תופעה מדידה, לא תחושה סובייקטיבית.</p>
+      <p class="lede">דוח Chroma (יולי 2025) בדק 18 מודלים מובילים — Claude Opus 4, o3, GPT-4.1, Gemini 2.5 Pro ועוד — ומצא שכולם מידרדרים ככל שהקלט מתארך. תופעה מדידה, לא תחושה.</p>
 
       <div class="subcard" style="margin-top:24px;">
         <div class="rn-toggle" id="ctx-toggle">
@@ -360,7 +356,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 2</div>
       <h2 class="section-title">מתי לנקות הקשר, ומתי לא</h2>
-      <p class="lede">כללים מתיעוד Claude Code: לא כל שיחה חייבת להסתיים ב-<code>/clear</code>, אבל יש רגעים ברורים שבהם כן — ורגעים שבהם ההמשך באותה שיחה הוא בדיוק הדבר הנכון.</p>
+      <p class="lede">מתיעוד Claude Code: לא כל שיחה חייבת <code>/clear</code>, אבל יש רגעים ברורים שבהם כן — ורגעים שהמשך באותה שיחה הוא בדיוק הנכון.</p>
 
       <div class="board">
         <div class="eyebrow">נסו בעצמכם</div>
@@ -415,7 +411,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow v">ספריית התבניות שלך</div>
       <h2 class="section-title">אספו את ארבע התבניות שבניתם</h2>
-      <p class="lede">תבניות ופקודות שחוזרות על עצמן שוות שמירה כקבצים בריפו — לא כתיבה מאפס כל פעם, כך שגם חברי צוות אחרים יכולים להשתמש בהן ולתרום להן (למשל כפקודות צוותיות נפוצות: <code>/pr</code>, <code>/fix-issue [number]</code>, <code>/review</code>, <code>/update-deps</code>). התבניות למטה הן שלכם — בניתם אותן בארבעת השיעורים הקודמים. לחצו "הוסיפו לספרייה" על כל אחת.</p>
+      <p class="lede">תבניות שחוזרות על עצמן שוות שמירה כקבצים בריפו, לא כתיבה מאפס כל פעם — כך גם הצוות יכול להשתמש בהן (למשל: <code>/pr</code>, <code>/fix-issue [number]</code>, <code>/review</code>, <code>/update-deps</code>). התבניות למטה הן שלכם מהשיעורים הקודמים. לחצו "הוסיפו לספרייה" על כל אחת.</p>
 
       <div class="exsummary">
         <b id="ex-count">0 / 2 משימות הסיום הושלמו</b>
@@ -543,14 +539,12 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">סיכום הקורס</div>
       <h2 class="section-title">חמישה שיעורים, אחד אחרי השני</h2>
-      <div class="recap">
-        <ul>
-          <li><strong>בשיעור 1</strong> למדתם את נוסחת 4 החלקים: מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה.</li>
-          <li><strong>בשיעור 2</strong> פרקתם שלושה הרגלים נפוצים, ולמדתם שמשוב חיצוני אמיתי (טסטים, קומפיילר, reviewer) עובד טוב יותר מבדיקה עצמית בלי משוב.</li>
-          <li><strong>בשיעור 3</strong> התאמתם את הנוסחה לטיקט לסוכן קידוד — הצעה מול ביצוע, refactor מול בנייה חדשה, ו-Explore → Plan → Code → Commit.</li>
-          <li><strong>בשיעור 4</strong> למדתם לתפוס דיבוג שטחי, הזיות חבילות, ו-review שמעריך את עצמו — לפני שזה מגיע ל-production.</li>
-          <li><strong>והיום, בשיעור 5:</strong> ניהול הקשר הארוך נכון, ספריית התבניות שבניתם מכל זה, ופרויקט שמוכיח — לא רק מרגיש — שאתם פותרים בעיות אמיתיות טוב יותר מאיך שעשיתם את זה לפני הקורס.</li>
-        </ul>
+      <div class="tiles5">
+        <div class="tile"><div class="em">🧮</div><h4>שיעור 1</h4><p>נוסחת 4 החלקים: מטרה ← הקשר ← אילוצים ← הצלחה נבדקת</p></div>
+        <div class="tile"><div class="em">🪞</div><h4>שיעור 2</h4><p>משוב חיצוני אמיתי עובד טוב יותר מבדיקה עצמית</p></div>
+        <div class="tile"><div class="em">🎫</div><h4>שיעור 3</h4><p>טיקט לסוכן: הצעה/ביצוע, refactor/חדש, Explore→Plan→Code</p></div>
+        <div class="tile"><div class="em">🔎</div><h4>שיעור 4</h4><p>לתפוס דיבוג שטחי, חבילות מומצאות, review שמאשר לעצמו</p></div>
+        <div class="tile"><div class="em">🏆</div><h4>שיעור 5</h4><p>ניהול הקשר, ספריית תבניות, הוכחה שהשתפרתם</p></div>
       </div>
       <div class="callout ok" style="margin-top:28px;">
         <span class="ico">🎉</span>

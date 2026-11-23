@@ -291,7 +291,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
    <div class="hero-text">
     <div class="eyebrow c">שיעור 4 · דיבוג, TDD והזיות קוד</div>
     <h1>תפסו את ה-AI <span class="a1">לפני</span> שהוא <span class="a2">תופס אתכם</span></h1>
-    <p class="hero-sub">סוכן קידוד שמתקן באג "בעיניים עצומות", כותב טסט שמתאים לבאג במקום לתפוס אותו, מציע חבילת npm שלא קיימת, או בודק את עצמו ומאשר לעצמו שהכול תקין — כל אלה קורים בשקט, בלי אזהרה. היום: ארבע הרגלים שתופסים את זה לפני שזה מגיע ל-production.</p>
+    <p class="hero-sub">תיקון עיוור, טסט שמתאים לבאג, חבילת npm שלא קיימת, בדיקה עצמית שמאשרת לעצמה — כל אלה קורים בשקט. היום: ארבעה הרגלים שתופסים את זה לפני ה-production.</p>
     <div class="time-row">
       <span class="pill">⏱ כ-35 דקות</span>
       <span class="pill">🤖 Claude Code · Cursor ועוד</span>
@@ -316,7 +316,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
 <div class="wrap">
   <div class="callout info">
     <span class="ico">👋</span>
-    <p><strong>השיעור הזה בשבילכם אם:</strong> אתם נותנים לסוכן קידוד לתקן באגים, לכתוב טסטים, או להציע חבילות להתקנה — ולפעמים מתגלה בדיעבד שהתיקון היה שטחי, שהטסט "מתאים" לבאג, או שהחבילה שהוצעה לא קיימת בכלל.</p>
+    <p><strong>בשבילכם אם:</strong> אתם נותנים לסוכן לתקן באגים, לכתוב טסטים, או להציע חבילות — ולפעמים מתגלה בדיעבד שהתיקון שטחי, הטסט "מתאים" לבאג, או שהחבילה לא קיימת בכלל.</p>
   </div>
 </div>
 
@@ -343,7 +343,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 1</div>
       <h2 class="section-title">דיבוג שיטתי, לא "תתקן את זה"</h2>
-      <p class="lede">"תתקן את זה" נותן לסוכן רשות לנחש. תבנית מסודרת — מבוססת על תיעוד Anthropic — מחייבת אותו לעבוד כמו מפתח בכיר שמנפה באג אמיתי: השערות לפני שינוי קוד, טסט שמשחזר, תיקון שורש, והוכחה שהתיקון עבד.</p>
+      <p class="lede">"תתקן את זה" נותן לסוכן רשות לנחש. תבנית מתועדת (Anthropic) מחייבת אותו לעבוד כמו מפתח בכיר: השערות לפני שינוי קוד, טסט שמשחזר, תיקון שורש, והוכחה שזה עבד.</p>
 
       <div class="dd">
         <div class="dd-col no">
@@ -391,7 +391,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 2</div>
       <h2 class="section-title">TDD עם סוכן — בלי "לרמות"</h2>
-      <p class="lede">כשסוכן כותב גם את הטסט וגם את המימוש, הוא יכול "לרמות" בלי כוונה: לכתוב טסט שמתאים למה שהקוד כבר מחזיר, כולל הבאג. הסדר הבא (לפי גישה מתועדת בקהילת Cursor) מונע את זה:</p>
+      <p class="lede">כשסוכן כותב גם את הטסט וגם את המימוש, הוא עלול "לרמות" בלי כוונה: טסט שמתאים למה שהקוד כבר מחזיר, כולל הבאג. הסדר הבא (מתועד בקהילת Cursor) מונע את זה:</p>
 
       <div class="subcard" style="margin-top:24px;">
         <h4>חמשת השלבים, בסדר הזה</h4>
@@ -423,7 +423,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 3</div>
       <h2 class="section-title">הזיות בקוד: חבילות שלא קיימות</h2>
-      <p class="lede">מודלי שפה לא רק טועים בלוגיקה — הם גם ממציאים שמות חבילות שנשמעים סבירים להפליא, אבל לא קיימות ב-npm/PyPI בפועל. התופעה נקראת <strong style="color:var(--ink)">slopsquatting</strong>: כל מי שירשום חבילה בשם שסוכן ממציא שוב ושוב, "תופס" אלפי התקנות של אנשים שלא בדקו.</p>
+      <p class="lede">מודלי שפה לא רק טועים בלוגיקה — הם ממציאים שמות חבילות שנשמעים סבירים אבל לא קיימים ב-npm/PyPI. התופעה נקראת <strong style="color:var(--ink)">slopsquatting</strong>: מי שירשום חבילה בשם שסוכן ממציא שוב ושוב, "תופס" אלפי התקנות.</p>
 
       <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf" target="_blank" rel="noopener noreferrer">Spracklen et al., USENIX Security Symposium 2025</a>. 576,000 דגימות קוד, 16 מודלים: בממוצע 19.7% מהחבילות המומלצות לא היו קיימות. GPT-4 Turbo הזה רק 3.59% מהפעמים; מודלים פתוחים קטנים הזו ביותר משליש. 43% מהשמות המומצאים חזרו בכל אחת מעשר הרצות חוזרות על אותה בקשה — דפוס שחוזר, לא תקלה חד-פעמית.</span></div>
 
