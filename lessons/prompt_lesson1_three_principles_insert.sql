@@ -15,17 +15,17 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   --bg-panel-2: #F0EEFF;
   --ink: #25224F;
   --ink-dim: #5A577F;
-  --ink-faint: #676489;
-  --cyan: #4655E6;
-  --cyan-2: #6A4FE0;
+  --ink-faint: #8B88AE;
+  --cyan: #5B6CFF;
+  --cyan-2: #8B6BFF;
   --cyan-soft: #E8EBFF;
   --violet: #FF7B6B;
   --violet-soft: #FFE8E3;
-  --success: #0A7350;
+  --success: #1FB985;
   --success-soft: #DDF7EC;
-  --danger: #B8264A;
+  --danger: #E5486A;
   --danger-soft: #FFE4EA;
-  --warn: #8F5400;
+  --warn: #D98A00;
   --warn-soft: #FFF0D4;
   --line: rgba(91,108,255,.12);
   --line-strong: rgba(91,108,255,.26);
@@ -99,7 +99,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
 .chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
 .bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
-.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; border-end-start-radius: 6px; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
 .bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
 .bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
@@ -130,7 +130,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
 .callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
 
-.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
 .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
 
