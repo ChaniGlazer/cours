@@ -188,6 +188,18 @@ function tutorContextProbe() {
   }, true);
 }
 const TUTOR_CONTEXT_SCRIPT = "<script>(" + tutorContextProbe.toString() + ")();</script>";
+// requestPromptReview(exerciseKey, prompt, cb) - משוב AI על פרומפט שהלומדת כתבה (קורס הפרומפטים). ה-iframe לא יכול לפנות ל-API
+// בעצמו (sandbox בלי עוגיות), ולכן הבקשה עוברת להורה (LessonLayout), שקורא ל-/api/prompt-review ומחזיר
+// { type: "prompt-review-result", id, review, error }. cb מקבל { review, error }. מוזרק רק כשהמשוב זמין ללומדת,
+// כך ששיעור בודק typeof window.requestPromptReview ויודע אם להציג את התרגיל. מחרוזת רגילה (לא toString) כדי שהמכווץ לא ישנה אותה.
+const PROMPT_REVIEW_SCRIPT =
+  "<script>(function(){var seq=0,pending={};" +
+  "window.requestPromptReview=function(exerciseKey,prompt,cb){var id='r'+(++seq)+'-'+Date.now();" +
+  "var timer=setTimeout(function(){if(pending[id]){delete pending[id];cb({review:null,error:'הבדיקה לקחה יותר מדי זמן. נסו שוב.'});}},60000);" +
+  "pending[id]=function(res){clearTimeout(timer);cb(res);};" +
+  "parent.postMessage({type:'prompt-review-request',id:id,exerciseKey:String(exerciseKey),prompt:String(prompt)},'*');};" +
+  "addEventListener('message',function(e){var d=e.data;if(e.source!==parent||!d||d.type!=='prompt-review-result')return;" +
+  "var fn=pending[d.id];if(!fn)return;delete pending[d.id];fn({review:d.review||null,error:d.error||null});});})();</script>";
 
 const LAYOUT_RESET =
   "<style>html,body{width:100%;max-width:none!important;margin-left:0!important;margin-right:0!important;overflow-y:hidden!important}" +
@@ -196,7 +208,7 @@ const LAYOUT_RESET =
 // הודעות נוספות מהשיעור (למשל lesson-progress ו-lesson-complete) מועברות להורה ב-prop onMessage.
 // ה-origin של ה-iframe הוא "null" (sandbox בלי allow-same-origin), ולכן הזהות נבדקת לפי event.source בלבד.
 // כל השיעורים (בכל הקורסים) מוצגים בעיצוב הכהה האחיד של האתר: הצבעים מוחלפים בזמן ההצגה בלבד.
-export default function LessonHtmlFrame({ html, onMessage, tutor = false, transparent = false, restoreData = null }) {
+export default function LessonHtmlFrame({ html, onMessage, tutor = false, promptReview = false, transparent = false, restoreData = null }) {
   const iframeRef = useRef(null);
   const onMessageRef = useRef(onMessage);
   const restoreDataRef = useRef(restoreData);
@@ -205,7 +217,7 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false, transp
   const [full, setFull] = useState(false);
   // הצבעים של השיעור מוחלפים לפלטת האתר בזמן ההצגה; התוכן במסד לא משתנה.
   const themed = useMemo(() => themeLessonHtml(html), [html]);
-  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html, transparent) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + DATA_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : ""), [html, tutor, transparent]);
+  const injected = useMemo(() => FONTS + LAYOUT_RESET + "<style>" + lessonThemeCss(html, transparent) + "</style>" + HEIGHT_SCRIPT + REPORT_SCRIPT + DATA_SCRIPT + PYX_RUNNER_SCRIPT + (html.indexOf("pyxTerminal") >= 0 ? PYX_TERMINAL_SCRIPT : "") + (tutor ? TUTOR_CONTEXT_SCRIPT : "") + (promptReview ? PROMPT_REVIEW_SCRIPT : ""), [html, tutor, promptReview, transparent]);
 
   // ה-callback נשמר ב-ref כדי שהאזנה אחת תישאר פעילה גם כשההורה יוצר פונקציה חדשה בכל רינדור.
   useEffect(() => {
@@ -233,7 +245,8 @@ export default function LessonHtmlFrame({ html, onMessage, tutor = false, transp
         e.source.postMessage({ type: "lesson-restore-data", value: restoreDataRef.current ?? null }, "*");
         return;
       }
-      onMessageRef.current?.(data);
+      // ה-source מועבר כדי שההורה יוכל לענות לשיעור (למשל prompt-review-result).
+      onMessageRef.current?.(data, e.source);
     }
     window.addEventListener("message", handleMessage);
     // אם ה-iframe כבר נטען, מבקשים ממנו לשלוח שוב את מצב ההתקדמות (ההודעה הראשונה שלו אבדה לפני ההאזנה).

@@ -37,7 +37,25 @@ function ringTexts(done, total) {
   return [done === 1 ? "התחלה טובה!" : "ממשיכים יפה!", note];
 }
 
-export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, tutorEnabled = false, seoContent = null, children }) {
+// בקשת משוב על פרומפט מהשיעור (prompt-review-request): ההורה קורא ל-API ומחזיר לשיעור prompt-review-result.
+// הבדיקות כאן הן רק סינון ראשוני; השרת מאמת הכול שוב (הרשאה, תרגיל, אורך, מכסה).
+const REVIEW_KEY = /^[a-z0-9_-]{1,40}$/;
+async function fetchPromptReview(courseId, lessonSlug, exerciseKey, prompt) {
+  try {
+    const res = await fetch("/api/prompt-review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId, lessonSlug, exerciseKey, prompt })
+    });
+    const data = await res.json().catch(() => null);
+    if (res.ok && data?.review) return { review: data.review, error: null };
+    return { review: null, error: data?.error || "משהו השתבש בבדיקה. נסו שוב בעוד רגע." };
+  } catch {
+    return { review: null, error: "אין חיבור לשרת. בדקו את החיבור לאינטרנט ונסו שוב." };
+  }
+}
+
+export default function LessonLayout({ course, lessons, currentSlug, prev, next, heading, hero, html, loggedIn = false, tutorEnabled = false, promptReviewEnabled = false, seoContent = null, children }) {
   const progress = useProgress();
   const slugs = lessons.map((l) => l.slug);
   const idx = slugs.indexOf(currentSlug);
@@ -56,6 +74,8 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   const hasTutor = tutorEnabled && TUTOR_COURSES.includes(course.id);
   const [tutorCtx, setTutorCtx] = useState(null);
   const tutorContext = tutorCtx?.slug === currentSlug ? tutorCtx : null;
+  // בקשת משוב אחת בכל פעם (לחיצות כפולות לא שולחות שתי בקשות ל-API).
+  const reviewBusyRef = useRef(false);
   // lesson-complete מטופל פעם אחת בלבד לכל שיעור.
   const completeHandledRef = useRef(null);
   // דיווח תרגילים לשרת רק כשהמצב השתנה.
@@ -70,7 +90,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
   }, [course.id, currentSlug, loggedIn]);
 
   // הודעות מהשיעור (כבר אומתו ב-LessonHtmlFrame לפי event.source). ה-slug נלקח מהעמוד ולא מההודעה.
-  function handleLessonMessage(data) {
+  function handleLessonMessage(data, source) {
     if (data.type === "lesson-progress") {
       const { done, total } = data;
       if (Number.isInteger(done) && Number.isInteger(total) && total > 0 && done >= 0 && done <= total) {
@@ -93,6 +113,21 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
       if (!isDone) setDone(course.id, currentSlug, true, true);
     } else if (data.type === "lesson-save-data") {
       saveLessonData(course.id, currentSlug, data.value ?? null);
+    } else if (data.type === "prompt-review-request") {
+      if (!promptReviewEnabled || !source) return;
+      const id = typeof data.id === "string" ? data.id.slice(0, 40) : "";
+      const reply = (res) => source.postMessage({ type: "prompt-review-result", id, ...res }, "*");
+      if (!id || typeof data.prompt !== "string" || !REVIEW_KEY.test(data.exerciseKey || "")) return;
+      if (reviewBusyRef.current) {
+        reply({ review: null, error: "בדיקה קודמת עדיין רצה. רגע אחד..." });
+        return;
+      }
+      reviewBusyRef.current = true;
+      fetchPromptReview(course.id, currentSlug, data.exerciseKey, data.prompt.slice(0, 2000))
+        .then(reply)
+        .finally(() => {
+          reviewBusyRef.current = false;
+        });
     }
   }
 
@@ -234,7 +269,7 @@ export default function LessonLayout({ course, lessons, currentSlug, prev, next,
           )}
 
           <section id="lesson" className="lx-content">
-            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} transparent={glow} restoreData={lessonData} /> : children}
+            {html ? <LessonHtmlFrame html={html} onMessage={handleLessonMessage} tutor={hasTutor} promptReview={promptReviewEnabled} transparent={glow} restoreData={lessonData} /> : children}
           </section>
 
           <section className="lx-complete">

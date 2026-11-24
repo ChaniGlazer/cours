@@ -11,6 +11,7 @@ import OUTLINES from "@/lib/lessonOutlines.json";
 import { getLessonSeo } from "@/lib/lessonSeo";
 import { getTopicsForLesson } from "@/lib/topics";
 import { tutorVisibleFor } from "@/lib/tutorAccess";
+import { PROMPT_REVIEW_COURSES, promptReviewEnabled } from "@/lib/promptReview";
 import { absoluteUrl, toDescription, jsonLdString, AUTHOR_NAME, OG_IMAGES } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
@@ -119,6 +120,8 @@ export default async function LessonPage({ params }) {
         html={lesson.html_content || null}
         loggedIn={Boolean(user)}
         tutorEnabled={tutorVisibleFor(user)}
+        // משוב AI על פרומפטים (קורס הפרומפטים): רק למחוברת או למנהלת עם גישה לקורס. השיעור מקבל רק "זמין / לא זמין".
+        promptReviewEnabled={promptReviewEnabled() && PROMPT_REVIEW_COURSES.includes(course.id) && hasAccess && (Boolean(user) || admin)}
         seoContent={
           outline || seo ? (
             <LessonSeoSection

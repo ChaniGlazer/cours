@@ -6,6 +6,7 @@
 // הסדר חשוב: מקור הבקשה -> התחברות -> ולידציה -> קורס ושיעור -> הגדרות -> הגבלת קצב -> ספירת ניסיון -> OpenAI.
 // מספר הניסיון נקבע רק כאן (ב-D1), ורמת הרמז נגזרת ממנו. המפתח, שגיאות הספק ומידע פנימי לא מוחזרים לעולם.
 import { getCurrentUser } from "@/lib/auth";
+import { isSameOriginRequest } from "@/lib/sameOrigin";
 import { validateTutorBody } from "@/lib/tutorInput";
 import { tutorAllowedFor, tutorEnabled } from "@/lib/tutorAccess";
 import { TUTOR_COURSES } from "@/lib/tutorCourses";
@@ -37,20 +38,6 @@ const MSG = {
   rate: "שלחת הרבה הודעות. אפשר לחזור לחונכת בעוד קצת."
 };
 
-// הגנת CSRF: האימות הוא עוגיית סשן, ולכן דורשים שהבקשה תגיע מהאתר עצמו.
-function sameSite(request) {
-  const origin = request.headers.get("origin");
-  const allowed = new Set([new URL(request.url).origin]);
-  try {
-    if (process.env.SITE_URL) allowed.add(new URL(process.env.SITE_URL).origin);
-  } catch {
-    // SITE_URL לא תקין - מתעלמים
-  }
-  if (origin) return allowed.has(origin);
-  const fetchSite = request.headers.get("sec-fetch-site");
-  return fetchSite === "same-origin" || fetchSite === "none";
-}
-
 // מזהה יציב ולא חושף של הלומדת עבור OpenAI (safety_identifier): hash של מזהה המשתמש.
 async function safetyId(userId) {
   const bytes = new TextEncoder().encode(`tutor:${userId}`);
@@ -63,7 +50,8 @@ export async function POST(request) {
     // מתג כיבוי (TUTOR_ENABLED=false): לפני כל דבר אחר, בלי לגעת ב-DB ובלי לקרוא ל-OpenAI.
     if (!tutorEnabled()) return json({ error: MSG.disabled }, 503);
 
-    if (!sameSite(request)) return json({ error: MSG.forbidden }, 403);
+    // הגנת CSRF: האימות הוא עוגיית סשן, ולכן דורשים שהבקשה תגיע מהאתר עצמו.
+    if (!isSameOriginRequest(request)) return json({ error: MSG.forbidden }, 403);
 
     const user = await getCurrentUser();
     if (!user) return json({ error: MSG.login }, 401);

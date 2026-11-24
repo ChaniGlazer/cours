@@ -223,6 +223,39 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 
 footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font-size: 14.5px; }
 [hidden] { display: none !important; }
+
+/* ---------- write your own + AI feedback ---------- */
+.wr-facts-title { font-weight: 700; color: var(--ink); margin-top: 4px; }
+.wr-facts { margin: 10px 0 0; padding-inline-start: 22px; display: grid; gap: 8px; font-size: 16px; }
+.wr-facts code, .wr-hint code { font-family: var(--mono); font-size: 14px; background: var(--bg-panel-2); border-radius: 6px; padding: 1px 6px; direction: ltr; unicode-bidi: isolate; }
+.wr-hint { margin-top: 14px; font-size: 15px; color: var(--ink-dim); }
+.wr-label { display: block; margin-top: 22px; font-weight: 700; color: var(--ink); }
+.wr-input { display: block; width: 100%; margin-top: 8px; min-height: 150px; resize: vertical; font-family: var(--sans); font-size: 16px; line-height: 1.6; color: var(--ink); background: #fff; border: 1.5px solid #ECE9FF; border-radius: 14px; padding: 14px 16px; }
+.wr-input:focus { outline: none; border-color: var(--cyan); }
+.wr-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+.wr-count { font-size: 14px; color: var(--ink-dim); }
+.wr-status { margin-top: 12px; font-size: 15px; color: var(--ink-dim); min-height: 1.5em; }
+.wr-status.err { color: #9A2F47; font-weight: 700; }
+.wr-result { margin-top: 18px; }
+.wr-score { font-family: var(--display); font-size: 18px; color: var(--ink); }
+.wr-parts { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
+.wr-part { border-radius: 14px; padding: 12px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start; }
+.wr-part .ic { font-size: 18px; line-height: 1.5; grid-row: span 2; }
+.wr-part .hd { font-weight: 700; }
+.wr-part .nt { color: var(--ink); font-size: 15.5px; }
+.wr-part .nt code, .wr-tip code { font-family: var(--mono); font-size: 13.5px; background: rgba(255,255,255,.75); border-radius: 6px; padding: 1px 6px; direction: ltr; unicode-bidi: isolate; }
+.wr-part.present { background: var(--success-soft); }
+.wr-part.present .hd { color: #0F6B4A; }
+.wr-part.partial { background: var(--warn-soft); }
+.wr-part.partial .hd { color: #A66200; }
+.wr-part.missing { background: var(--danger-soft); }
+.wr-part.missing .hd { color: #9A2F47; }
+.wr-tip { margin-top: 14px; }
+.wr-improved { margin-top: 14px; }
+.wr-improved summary { cursor: pointer; font-weight: 700; color: #3F4FE0; padding: 6px 0; }
+.wr-improved .prompt-quote { margin-top: 8px; font-style: normal; text-align: start; }
+.wr-again { margin-top: 12px; font-size: 15px; color: var(--ink-dim); }
+@media (max-width: 540px) { .wr-part { grid-template-columns: minmax(0, 1fr); } .wr-part .ic { grid-row: auto; } }
 </style>
 </head>
 <body>
@@ -589,6 +622,51 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     </div>
   </section>
 
+  <!-- ================= WRITE YOUR OWN (AI feedback, optional) ================= -->
+  <!-- מוצג רק כשהמשוב זמין (האתר מזריק window.requestPromptReview ללומדת מחוברת עם גישה). בלי זה - נשאר מוסתר. -->
+  <section id="write" hidden>
+    <div class="wrap">
+      <div class="eyebrow v">אתגר בונוס · רשות</div>
+      <h2 class="section-title">עכשיו כתבו בעצמכם, וקבלו משוב</h2>
+      <p class="lede">שכתבו את הפרומפט הגרוע למטה לפי נוסחת 4 החלקים. ה-AI בודק כל חלק, אומר מה חסר, ומציע גרסה משופרת. אפשר לתקן ולשלוח שוב כמה פעמים שרוצים.</p>
+
+      <div class="excard wr-card">
+        <div class="exhead">
+          <div class="exnum" aria-hidden="true">✍️</div>
+          <p class="prompt-quote bad">החיפוש שבור, תתקן</p>
+        </div>
+
+        <p class="wr-facts-title">מה ידוע לכם (השתמשו במה שצריך):</p>
+        <ul class="wr-facts">
+          <li><b>סימפטום:</b> בחיפוש המוצרים, <code>iPhone</code> מחזיר 0 תוצאות, אבל <code>iphone</code> מחזיר 12. זה התחיל אחרי ה-merge של PR #482 אתמול.</li>
+          <li><b>קוד:</b> הלוגיקה נמצאת ב-<code>src/search/buildQuery.ts</code>. ב-PR #482 שונה שם האופן שבו מנרמלים את מילות החיפוש.</li>
+          <li><b>גבולות:</b> אסור לשנות את מבנה התשובה של <code>/api/search</code>, כי אפליקציית המובייל תלויה בו. בלי ספריות חדשות.</li>
+          <li><b>בדיקות:</b> יש <code>tests/search.test.ts</code>, ומריצים אותו עם <code>npm test</code>.</li>
+        </ul>
+        <p class="wr-hint">💡 מעדיפים לתרגל על משהו אמיתי? כתבו פרומפט למשימה שלכם מהעבודה. המשוב בודק את אותם ארבעה חלקים, בעברית או באנגלית.</p>
+
+        <label class="wr-label" for="wr-input">הפרומפט שלכם</label>
+        <textarea id="wr-input" class="wr-input" dir="auto" rows="7" maxlength="2000" placeholder="כתבו כאן את הפרומפט, כאילו אתם שולחים אותו עכשיו לסוכן קידוד..."></textarea>
+        <div class="wr-row">
+          <button class="btn" id="wr-send" type="button">קבלו משוב</button>
+          <span class="wr-count" id="wr-count" aria-hidden="true">0 / 2000</span>
+        </div>
+        <div class="wr-status" id="wr-status" role="status" aria-live="polite"></div>
+
+        <div class="wr-result" id="wr-result" hidden>
+          <p class="wr-score" id="wr-score"></p>
+          <ul class="wr-parts" id="wr-parts"></ul>
+          <div class="callout info wr-tip"><span class="ico" aria-hidden="true">🎯</span><p id="wr-tip"></p></div>
+          <details class="wr-improved">
+            <summary>הציגו גרסה משופרת לדוגמה</summary>
+            <p class="prompt-quote" id="wr-improved" dir="auto"></p>
+          </details>
+          <p class="wr-again">שפרו את הפרומפט בתיבה למעלה ושלחו שוב, כדי לראות את ההבדל.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= RECAP ================= -->
   <section id="recap">
     <div class="wrap">
@@ -839,6 +917,93 @@ buildQuiz("quiz3-container", "score-box-3", [
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
 })();
+/* ---------- write your own: AI feedback on a free-text prompt (optional, not part of lesson completion) ---------- */
+(function () {
+  var section = document.getElementById("write");
+  if (!section || typeof window.requestPromptReview !== "function") return;
+  section.hidden = false;
+
+  var input = $("wr-input"), send = $("wr-send"), count = $("wr-count"), status = $("wr-status");
+  var result = $("wr-result"), scoreEl = $("wr-score"), partsEl = $("wr-parts"), tipEl = $("wr-tip"), improvedEl = $("wr-improved");
+  var MIN = 10, MAX = 2000;
+  var PARTS = [
+    ["goal", "מטרה / סימפטום"],
+    ["context", "הקשר"],
+    ["constraints", "אילוצים"],
+    ["success", "הגדרת הצלחה שניתנת לבדיקה"]
+  ];
+  var LOOK = { present: ["✅", "קיים"], partial: ["⚠️", "חלקי"], missing: ["❌", "חסר"] };
+  var busy = false, saveTimer = null;
+
+  function updateCount() { count.textContent = input.value.length + " / " + MAX; }
+  input.addEventListener("input", function () {
+    updateCount();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { if (window.saveLessonData) window.saveLessonData({ writeDraft: input.value }); }, 500);
+  });
+  if (window.onLessonDataRestore) {
+    window.onLessonDataRestore(function (v) {
+      if (v && typeof v.writeDraft === "string" && !input.value) { input.value = v.writeDraft.slice(0, MAX); updateCount(); }
+    });
+  }
+
+  function setStatus(text, isErr) { status.textContent = text; status.className = "wr-status" + (isErr ? " err" : ""); }
+
+  // טקסט בעברית עם קוד בתוך `...`: הקטעים שבין ה-backticks הופכים ל-<code> מבודד כיוון, כדי שנתיב כמו /api/search
+  // לא "יקפוץ" עם הפיסוק בתוך משפט מימין לשמאל. הכול דרך textContent, בלי HTML מהמודל.
+  function fillRich(el, text) {
+    el.textContent = "";
+    String(text).split("`").forEach(function (seg, i) {
+      if (!seg) return;
+      if (i % 2) { var c = document.createElement("code"); c.textContent = seg; el.appendChild(c); }
+      else el.appendChild(document.createTextNode(seg));
+    });
+  }
+
+  function render(review) {
+    partsEl.innerHTML = "";
+    var points = 0;
+    PARTS.forEach(function (p) {
+      var part = review.parts[p[0]];
+      var look = LOOK[part.status];
+      points += part.status === "present" ? 1 : part.status === "partial" ? 0.5 : 0;
+      var li = document.createElement("li");
+      li.className = "wr-part " + part.status;
+      var ic = document.createElement("span"); ic.className = "ic"; ic.setAttribute("aria-hidden", "true"); ic.textContent = look[0];
+      var hd = document.createElement("span"); hd.className = "hd"; hd.textContent = p[1] + ": " + look[1];
+      var nt = document.createElement("span"); nt.className = "nt"; fillRich(nt, part.note);
+      li.appendChild(ic); li.appendChild(hd); li.appendChild(nt);
+      partsEl.appendChild(li);
+    });
+    scoreEl.textContent = points === 4 ? "🎉 כל ארבעת החלקים קיימים!" : "הפרומפט שלכם: " + points + " מתוך 4 חלקים";
+    fillRich(tipEl, review.tip);
+    improvedEl.textContent = review.improved;
+    result.querySelector("details").open = false;
+    result.hidden = false;
+  }
+
+  send.addEventListener("click", function () {
+    if (busy) return;
+    var text = input.value.trim();
+    if (text.length < MIN) { setStatus("כתבו פרומפט של לפחות " + MIN + " תווים, ואז שלחו.", true); input.focus(); return; }
+    busy = true;
+    send.disabled = true;
+    setStatus("בודק את הפרומפט... (בדרך כלל 5 עד 15 שניות)");
+    window.requestPromptReview("write-1", text, function (res) {
+      busy = false;
+      send.disabled = false;
+      if (res && res.review) {
+        setStatus("");
+        send.textContent = "שלחו שוב לבדיקה";
+        render(res.review);
+        scoreEl.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+      } else {
+        setStatus((res && res.error) || "משהו השתבש בבדיקה. נסו שוב בעוד רגע.", true);
+      }
+    });
+  });
+})();
+
 /* ---------- a11y: expose the selected state of toggle buttons to screen readers ---------- */
 (function () {
   var sel = "button.otbtn, button.fstep, .rn-tab, .fsc, .tpl-add-btn";
