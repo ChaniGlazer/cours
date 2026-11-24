@@ -15,17 +15,17 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   --bg-panel-2: #F0EEFF;
   --ink: #25224F;
   --ink-dim: #5A577F;
-  --ink-faint: #8B88AE;
-  --cyan: #5B6CFF;
-  --cyan-2: #8B6BFF;
+  --ink-faint: #676489;
+  --cyan: #4655E6;
+  --cyan-2: #6A4FE0;
   --cyan-soft: #E8EBFF;
   --violet: #FF7B6B;
   --violet-soft: #FFE8E3;
-  --success: #1FB985;
+  --success: #0A7350;
   --success-soft: #DDF7EC;
-  --danger: #E5486A;
+  --danger: #B8264A;
   --danger-soft: #FFE4EA;
-  --warn: #D98A00;
+  --warn: #8F5400;
   --warn-soft: #FFF0D4;
   --line: rgba(91,108,255,.12);
   --line-strong: rgba(91,108,255,.26);
@@ -99,7 +99,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
 .chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
 .bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
-.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; border-end-start-radius: 6px; }
 .bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
 .bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
@@ -130,7 +130,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
 .callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
 
-.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
 .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
 
@@ -299,7 +299,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <h3>איזו רמת effort מתאימה למשימה?</h3>
         <p style="margin-top:6px;">במקום לכתוב שרשרת שלבים ידנית, התרגלו לחשוב במונחי רמת effort: נמוכה למשימה פשוטה, גבוהה למשימה קשה ורב-שלבית.</p>
         <div id="quiz1-container"></div>
-        <div class="score-box" id="score-box-1"></div>
+        <div aria-live="polite" class="score-box" id="score-box-1"></div>
       </div>
     </div>
   </section>
@@ -335,7 +335,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="eyebrow">נסו בעצמכם</div>
         <h3>טון, או דיוק?</h3>
         <div id="quiz2-container"></div>
-        <div class="score-box" id="score-box-2"></div>
+        <div aria-live="polite" class="score-box" id="score-box-2"></div>
       </div>
     </div>
   </section>
@@ -371,7 +371,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="eyebrow">נסו בעצמכם</div>
         <h3>משוב פנימי (חלש), או חיצוני (חזק)?</h3>
         <div id="quiz3-container"></div>
-        <div class="score-box" id="score-box-3"></div>
+        <div aria-live="polite" class="score-box" id="score-box-3"></div>
       </div>
     </div>
   </section>
@@ -383,7 +383,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">זהו את ההרגל, ושכתבו נכון</h2>
       <p class="lede">שלוש הנחיות. לכל אחת: זהו את ההרגל הבעייתי, ובחרו את השכתוב הנכון.</p>
 
-      <div class="exsummary">
+      <div aria-live="polite" class="exsummary">
         <b id="ex-count">0 / 3 תרגילים עברו</b>
         <div class="bar"><i id="ex-bar"></i></div>
       </div>
@@ -402,7 +402,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">שרשרת שלבים ידנית, במקום רמת effort/reasoning</button>
             <button class="choice" type="button" data-diag="2">בדיקה עצמית בלי משוב חיצוני</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -411,7 +411,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-fix="1">קודם תבדוק את ה-logs, אחר כך את ה-DB, אחר כך את ה-auth, ואז תגיד לי מה הבעיה</button>
             <button class="choice" type="button" data-fix="2">תפתור את זה בצורה הכי טובה שאתה יכול</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -430,7 +430,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">שרשרת שלבים ידנית, במקום רמת effort/reasoning</button>
             <button class="choice" type="button" data-diag="2">בדיקה עצמית בלי משוב חיצוני</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -439,7 +439,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-fix="1">אתה מהנדס אבטחה עם 25 שנות ניסיון, הכי טוב בעולם. תגיד לי אם זה בטוח.</button>
             <button class="choice" type="button" data-fix="2">תבדוק אם הקוד בטוח.</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -458,7 +458,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">שרשרת שלבים ידנית, במקום רמת effort/reasoning</button>
             <button class="choice" type="button" data-diag="2">בדיקה עצמית בלי משוב חיצוני</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -467,7 +467,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-fix="1">תעבור על התשובה פעמיים ותוודא שהיא הגיונית.</button>
             <button class="choice" type="button" data-fix="2">תהיה בטוח שהתשובה נכונה.</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -498,7 +498,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       </div>
       <div class="callout info" style="margin-top:28px;">
         <span class="ico">🚀</span>
-        <p><strong>בשיעור הבא</strong> ממשיכים בקורס "הנדסת פרומפטים למפתחים" — עוד שני שיעורים בדרך.</p>
+        <p><strong>בשיעור הבא:</strong> איך לכתוב לסוכן קידוד (Claude Code, Cursor ודומיהם) טיקט שמקבל בדיוק את מה שהתכוונתם — לא פחות, וגם לא יותר.</p>
       </div>
       <div class="mission-done" id="mission-done"></div>
     </div>
@@ -567,7 +567,7 @@ function buildQuiz(containerId, scoreBoxId, qs) {
   qs.forEach(function (item, i) {
     var card = document.createElement("div");
     card.className = "quiz-card";
-    card.innerHTML = ''<p></p><div class="choices"></div><div class="fb"></div>'';
+    card.innerHTML = ''<p></p><div class="choices"></div><div aria-live="polite" class="fb"></div>'';
     card.querySelector("p").textContent = (i + 1) + ". " + item.q;
     var choices = card.querySelector(".choices");
     var fb = card.querySelector(".fb");
@@ -693,6 +693,15 @@ buildQuiz("quiz3-container", "score-box-3", [
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
+})();
+/* ---------- a11y: expose the selected state of toggle buttons to screen readers ---------- */
+(function () {
+  var sel = "button.otbtn, button.fstep, .rn-tab, .fsc, .tpl-add-btn";
+  function sync(b) { b.setAttribute("aria-pressed", /(^|\s)(active|on)(\s|$)/.test(b.className) ? "true" : "false"); }
+  document.querySelectorAll(sel).forEach(function (b) {
+    sync(b);
+    new MutationObserver(function () { sync(b); }).observe(b, { attributes: true, attributeFilter: ["class"] });
+  });
 })();
 </script>
 

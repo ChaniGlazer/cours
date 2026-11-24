@@ -14,17 +14,17 @@
   --bg-panel-2: #F0EEFF;
   --ink: #25224F;
   --ink-dim: #5A577F;
-  --ink-faint: #8B88AE;
-  --cyan: #5B6CFF;
-  --cyan-2: #8B6BFF;
+  --ink-faint: #676489;
+  --cyan: #4655E6;
+  --cyan-2: #6A4FE0;
   --cyan-soft: #E8EBFF;
   --violet: #FF7B6B;
   --violet-soft: #FFE8E3;
-  --success: #1FB985;
+  --success: #0A7350;
   --success-soft: #DDF7EC;
-  --danger: #E5486A;
+  --danger: #B8264A;
   --danger-soft: #FFE4EA;
-  --warn: #D98A00;
+  --warn: #8F5400;
   --warn-soft: #FFF0D4;
   --line: rgba(91,108,255,.12);
   --line-strong: rgba(91,108,255,.26);
@@ -98,7 +98,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
 .chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
 .bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
-.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; border-end-start-radius: 6px; }
 .bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
 .bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
@@ -129,7 +129,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
 .callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
 
-.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
 .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
 
@@ -319,7 +319,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <h3>מבחן העמית: יבין, או יתבלבל?</h3>
         <p style="margin-top:6px;">לכל פרומפט, החליטו: עמית שמכיר מעט מאוד את הפרויקט — יבין מה לעשות, או יתבלבל? (וזה בדיוק גם מה שיקרה למודל)</p>
         <div id="quiz1-container"></div>
-        <div class="score-box" id="score-box-1"></div>
+        <div aria-live="polite" class="score-box" id="score-box-1"></div>
       </div>
     </div>
   </section>
@@ -329,7 +329,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
     <div class="wrap">
       <div class="eyebrow c">עקרון 2</div>
       <h2 class="section-title">איפה שמים את המידע משנה תוצאה</h2>
-      <p class="lede">כלל פשוט: מידע ארוך (קוד, לוג, מסמך) <strong style="color:var(--ink)">בהתחלה</strong>, השאלה או המשימה <strong style="color:var(--ink)">בסוף</strong>. לא עניין של טעם — זה משפיע בפועל על איכות התשובה.</p>
+      <p class="lede">כלל פשוט: מידע ארוך (קוד, לוג, מסמך) <strong style="color:var(--ink)">בהתחלה</strong>, השאלה או המשימה <strong style="color:var(--ink)">בסוף</strong>. לא עניין של טעם — זה משפיע בפועל על איכות התשובה, וההשפעה גדלה ככל שהמידע ארוך יותר (מסמכים ולוגים של אלפי שורות).</p>
 
       <div class="dd">
         <div class="dd-col no">
@@ -355,14 +355,14 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="oblk info">📄 מידע ארוך — לוג שגיאות / קוד / מסמך</div>
           <div class="oblk q">❓ השאלה או המשימה</div>
         </div>
-        <div class="ot-note good" id="order-note">✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף.</div>
+        <div aria-live="polite" class="ot-note good" id="order-note">✅ הסדר המומלץ — המידע הארוך נקרא קודם, והמשימה ברורה וממוקדת בסוף.</div>
       </div>
 
       <div class="quiz-wrap">
         <div class="eyebrow">תרגול</div>
         <h3>איזו גרסה הייתם שולחים?</h3>
         <div id="quiz2-container"></div>
-        <div class="score-box" id="score-box-2"></div>
+        <div aria-live="polite" class="score-box" id="score-box-2"></div>
       </div>
     </div>
   </section>
@@ -376,7 +376,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
 
       <div class="callout ok">
         <span class="ico">🔊</span>
-        <p><strong>"התשובה תוקרא על ידי מנוע טקסט-לדיבור, ולכן תמיד תכתבו מספרים במילים — המנוע לא יודע לבטא קיצורים."</strong></p>
+        <p>במקום <strong>"לעולם אל תשתמש בשלוש נקודות"</strong>, כותבים: <strong>"התשובה תוקרא על ידי מנוע טקסט-לדיבור, ולכן תסיים כל משפט בנקודה רגילה — המנוע לא יודע איך לבטא שלוש נקודות."</strong></p>
       </div>
 
       <p class="lede" style="margin-top:28px;">ובקוד — אותו עיקרון:</p>
@@ -395,7 +395,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="eyebrow">נסו בעצמכם</div>
         <h3>בחרו את הניסוח היעיל יותר</h3>
         <div id="quiz3-container"></div>
-        <div class="score-box" id="score-box-3"></div>
+        <div aria-live="polite" class="score-box" id="score-box-3"></div>
       </div>
     </div>
   </section>
@@ -438,7 +438,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">בחרו את הניסוח הנכון לכל חלק בנוסחה</h2>
       <p class="lede">שלושה פרומפטים גרועים. לכל חלק בנוסחה שלוש אפשרויות — רק אחת מתאימה. לחצו ובדקו מיד.</p>
 
-      <div class="exsummary">
+      <div aria-live="polite" class="exsummary">
         <b id="ex-count">0 / 3 תרגילים עברו</b>
         <div class="bar"><i id="ex-bar"></i></div>
       </div>
@@ -458,7 +458,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">משתמשים מדווחים שהלוגין נכשל ב-50% מהניסיונות אחרי שה-session פג</button>
             <button class="choice" type="button" data-opt="2">תריץ את הטסטים ותראה אם הם עוברים</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="1">
           <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
@@ -467,7 +467,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">אסור לשנות את החתימה הציבורית של login()</button>
             <button class="choice" type="button" data-opt="2">תעבוד על זה בבקשה</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="2">
           <p class="exslot-label">3. אילוצים</p>
@@ -476,7 +476,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">תעשה כמה שיותר מהר</button>
             <button class="choice" type="button" data-opt="2">אסור לשנות את ה-API של login(), מותר רק ספריות שכבר בשימוש בפרויקט</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="3">
           <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
@@ -485,7 +485,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">אסור להוסיף תלויות חדשות</button>
             <button class="choice" type="button" data-opt="2">שיהיה תקין</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
 
         <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
@@ -506,7 +506,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">צריך טסטים</button>
             <button class="choice" type="button" data-opt="2">ל-foo.py אין שום כיסוי בדיקות, ופעם אחת כבר נשבר בשקט בפרודקשן</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="1">
           <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
@@ -515,7 +515,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">חובה להשתמש ב-pytest, אסור להוסיף ספריות חדשות</button>
             <button class="choice" type="button" data-opt="2">תסתכל על הקובץ</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="2">
           <p class="exslot-label">3. אילוצים</p>
@@ -524,7 +524,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">חובה להשתמש ב-pytest (כמו שאר הפרויקט), ולכסות גם מקרי קצה של קלט ריק</button>
             <button class="choice" type="button" data-opt="2">תעשה את זה טוב</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="3">
           <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
@@ -533,7 +533,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">foo.py נמצא בתיקיית src/utils/</button>
             <button class="choice" type="button" data-opt="2">לפחות 90% coverage על foo.py, וכל הטסטים עוברים ב-pytest</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
 
         <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
@@ -554,7 +554,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">תבדקו עם Lighthouse שה-score עולה מעל 90</button>
             <button class="choice" type="button" data-opt="2">הדשבורד לא טוב</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="1">
           <p class="exslot-label">2. הקשר (מה AI לא יכול לנחש)</p>
@@ -563,7 +563,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">תסתכל על זה</button>
             <button class="choice" type="button" data-opt="2">הקומפוננטה ב-src/dashboard/DashboardPage.jsx, טוענת הכל בבת אחת בלי lazy loading</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="2">
           <p class="exslot-label">3. אילוצים</p>
@@ -572,7 +572,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">שיהיה מהיר</button>
             <button class="choice" type="button" data-opt="2">הקומפוננטה ב-src/dashboard/DashboardPage.jsx</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
         <div class="exslot" data-slot="3">
           <p class="exslot-label">4. הגדרת הצלחה שניתנת לבדיקה</p>
@@ -581,7 +581,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-opt="1">זמן טעינה ראשוני מתחת ל-2 שניות במובייל, נמדד ב-Lighthouse</button>
             <button class="choice" type="button" data-opt="2">שיהיה חוויה טובה יותר</button>
           </div>
-          <div class="fb"></div>
+          <div aria-live="polite" class="fb"></div>
         </div>
 
         <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
@@ -602,7 +602,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       </div>
       <div class="callout info" style="margin-top:28px;">
         <span class="ico">🚀</span>
-        <p><strong>בשיעורים הבאים:</strong> דיבוג פרומפטים שלא עובדים, וכלי קידוד סוכניים (agentic) — שם זה משפיע אפילו יותר.</p>
+        <p><strong>בשיעור הבא:</strong> שלושה הרגלי פרומפטים נפוצים שמחקרים מראים שלא עובדים כמו שחשבנו, ומה לעשות במקומם. אחריו: כלי קידוד סוכניים (agentic), שם הניסוח משפיע אפילו יותר.</p>
       </div>
       <div class="mission-done" id="mission-done"></div>
     </div>
@@ -671,7 +671,7 @@ function buildQuiz(containerId, scoreBoxId, qs) {
   qs.forEach(function (item, i) {
     var card = document.createElement("div");
     card.className = "quiz-card";
-    card.innerHTML = '<p></p><div class="choices"></div><div class="fb"></div>';
+    card.innerHTML = '<p></p><div class="choices"></div><div aria-live="polite" class="fb"></div>';
     card.querySelector("p").textContent = (i + 1) + ". " + item.q;
     var choices = card.querySelector(".choices");
     var fb = card.querySelector(".fb");
@@ -718,7 +718,7 @@ buildQuiz("quiz2-container", "score-box-2", [
 buildQuiz("quiz3-container", "score-box-3", [
   { q: "איזה ניסוח יעיל יותר?", opts: [
       "לעולם אל תשתמש בשלוש נקודות בתשובה.",
-      "התשובה תוקרא על ידי מנוע טקסט־לדיבור, ולכן תמיד תכתוב מספרים במילים — המנוע לא יודע לבטא קיצורים וסימנים."
+      "התשובה תוקרא על ידי מנוע טקסט־לדיבור, ולכן תסיים כל משפט בנקודה רגילה — המנוע לא יודע איך לבטא שלוש נקודות."
     ], ok: 1, why: "הניסוח החיובי מסביר גם את ה\"למה\", וגם נותן הוראה ברורה מה כן לעשות — לא רק מה אסור." },
   { q: "ובהקשר קוד?", opts: [
       "אל תכתוב קוד שלא תואם את הסגנון הקיים בפרויקט.",
@@ -726,7 +726,7 @@ buildQuiz("quiz3-container", "score-box-3", [
     ], ok: 1, why: "הפניה קונקרטית למקום שבו נמצאת התבנית נותנת למודל משהו לחקות — לא רק מה לא לעשות." },
   { q: "ועוד דוגמה אחת?", opts: [
       "אל תשתמש בלולאות for רגילות בקובץ הזה.",
-      "השתמשו בפונקציות map/filter/reduce, בהתאם לסגנון הפונקציונלי שכבר נהוג ב-utils/array.js."
+      "תשתמש בפונקציות map/filter/reduce, בהתאם לסגנון הפונקציונלי שכבר נהוג ב-utils/array.js."
     ], ok: 1, why: "הכיוון החיובי מצביע למודל בדיוק לאן להסתכל כדי להתאים את עצמו." }
 ]);
 
@@ -838,6 +838,15 @@ buildQuiz("quiz3-container", "score-box-3", [
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
+})();
+/* ---------- a11y: expose the selected state of toggle buttons to screen readers ---------- */
+(function () {
+  var sel = "button.otbtn, button.fstep, .rn-tab, .fsc, .tpl-add-btn";
+  function sync(b) { b.setAttribute("aria-pressed", /(^|\s)(active|on)(\s|$)/.test(b.className) ? "true" : "false"); }
+  document.querySelectorAll(sel).forEach(function (b) {
+    sync(b);
+    new MutationObserver(function () { sync(b); }).observe(b, { attributes: true, attributeFilter: ["class"] });
+  });
 })();
 </script>
 

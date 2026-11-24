@@ -15,17 +15,17 @@ INSERT INTO lessons (id, course_id, slug, title, description, video_url, html_co
   --bg-panel-2: #F0EEFF;
   --ink: #25224F;
   --ink-dim: #5A577F;
-  --ink-faint: #8B88AE;
-  --cyan: #5B6CFF;
-  --cyan-2: #8B6BFF;
+  --ink-faint: #676489;
+  --cyan: #4655E6;
+  --cyan-2: #6A4FE0;
   --cyan-soft: #E8EBFF;
   --violet: #FF7B6B;
   --violet-soft: #FFE8E3;
-  --success: #1FB985;
+  --success: #0A7350;
   --success-soft: #DDF7EC;
-  --danger: #E5486A;
+  --danger: #B8264A;
   --danger-soft: #FFE4EA;
-  --warn: #D98A00;
+  --warn: #8F5400;
   --warn-soft: #FFF0D4;
   --line: rgba(91,108,255,.12);
   --line-strong: rgba(91,108,255,.26);
@@ -101,7 +101,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
 .chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
 .bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
-.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; border-end-start-radius: 6px; }
 .bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
 .bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
@@ -133,7 +133,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
 .callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
 
-.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
 .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
 
@@ -166,7 +166,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 /* refactor/new-style toggle, reused for context-rot demo */
 .rn-toggle { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
 .rn-tab { font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 100px; border: none; background: var(--bg-panel-2); color: var(--ink-dim); transition: all .15s; }
-.rn-tab.active { background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; }
+.rn-tab.active { background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; }
 .rn-panel { margin-top: 20px; }
 
 /* token meter (context rot) */
@@ -396,7 +396,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             </div>
           </div>
         </div>
-        <div class="board-score" id="board-score">0 / 4 נכונים</div>
+        <div aria-live="polite" class="board-score" id="board-score">0 / 4 נכונים</div>
       </div>
 
       <div class="subcard" style="margin-top:24px;">
@@ -413,7 +413,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">אספו את ארבע התבניות שבניתם</h2>
       <p class="lede">תבניות שחוזרות על עצמן שוות שמירה כקבצים בריפו, לא כתיבה מאפס כל פעם — כך גם הצוות יכול להשתמש בהן (למשל: <code>/pr</code>, <code>/fix-issue [number]</code>, <code>/review</code>, <code>/update-deps</code>). התבניות למטה הן שלכם מהשיעורים הקודמים. לחצו "הוסיפו לספרייה" על כל אחת.</p>
 
-      <div class="exsummary">
+      <div aria-live="polite" class="exsummary">
         <b id="ex-count">0 / 2 משימות הסיום הושלמו</b>
         <div class="bar"><i id="ex-bar"></i></div>
       </div>
@@ -429,7 +429,10 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="tpl-card" data-tpl="formula">
             <h4>נוסחת 4 החלקים</h4>
             <span class="src">שיעור 1 · מטרה/סימפטום ← הקשר ← אילוצים ← הגדרת הצלחה שניתנת לבדיקה</span>
-            <p class="prompt-quote en">the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis. build 2-3 hypotheses ranked by likelihood before changing any code. write a failing test that reproduces the bug. fix the root cause — don''t suppress the error or add a retry as a workaround. run the payments test suite and show the output.</p>
+            <p class="prompt-quote en">GOAL: [the concrete symptom or outcome, e.g. checkout returns 500 intermittently since deploy abc123]
+CONTEXT: [what the AI can''t guess: relevant files, an existing pattern to follow, the stack trace]
+CONSTRAINTS: [what must not change: public API, no new dependencies, existing tests stay unchanged]
+DONE WHEN: [a checkable result: a failing test now passes, the full suite is green, a metric hits a target]</p>
             <button class="tpl-add-btn" type="button">+ הוסיפו לספרייה</button>
           </div>
           <div class="tpl-card" data-tpl="ticket">
@@ -456,14 +459,14 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           </div>
         </div>
 
-        <div class="tpl-count" id="tpl-count">0 / 4 תבניות נוספו</div>
+        <div aria-live="polite" class="tpl-count" id="tpl-count">0 / 4 תבניות נוספו</div>
 
         <div class="tpl-doc-wrap">
           <label for="tpl-doc">המסמך המורכב שלכם — סמנו הכול והעתיקו אל קובץ התבניות שלכם</label>
           <textarea class="tpl-doc" id="tpl-doc" readonly placeholder="התבניות שתוסיפו יופיעו כאן..."></textarea>
         </div>
 
-        <div class="exrow"><span class="exbadge" data-badge>0 / 4 נכונים</span></div>
+        <div class="exrow"><span class="exbadge" data-badge>0 / 4 תבניות</span></div>
       </div>
     </div>
   </section>
@@ -488,7 +491,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <button class="choice" type="button" data-opt="1">המפתחים האטו ב-19% בפועל, אבל העריכו בסוף שהואצו ב-20%</button>
           <button class="choice" type="button" data-opt="2">לא נמצא הבדל מדיד בין עבודה עם AI לעבודה בלעדיו</button>
         </div>
-        <div class="fb" id="measure-fb"></div>
+        <div aria-live="polite" class="fb" id="measure-fb"></div>
       </div>
 
       <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener noreferrer">METR, RCT עם מפתחי קוד פתוח מנוסים (יולי 2025)</a>.</span></div>
@@ -518,7 +521,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
         <div class="proj-field">
           <label for="proj-after">אחרי הקורס — איך תנסחו את זה עכשיו?</label>
           <textarea id="proj-after" placeholder="השתמשו בנוסחת 4 החלקים, בתבנית הטיקט, או בתבנית הדיבוג מספריית התבניות שבניתם למעלה"></textarea>
-          <div class="proj-hint" id="proj-after-hint"></div>
+          <div aria-live="polite" class="proj-hint" id="proj-after-hint"></div>
         </div>
 
         <div class="checklist-title">בדיקה עצמית: מה יש בניסוח ה"אחרי" שלכם?</div>
@@ -673,7 +676,7 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
 /* ---------- template library + capstone project = the two closing exercises ---------- */
 (function () {
   var templates = {
-    formula: { title: "נוסחת 4 החלקים (שיעור 1)", text: "the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis. build 2-3 hypotheses ranked by likelihood before changing any code. write a failing test that reproduces the bug. fix the root cause — don''t suppress the error or add a retry as a workaround. run the payments test suite and show the output." },
+    formula: { title: "נוסחת 4 החלקים (שיעור 1)", text: "GOAL: [the concrete symptom or outcome, e.g. checkout returns 500 intermittently since deploy abc123]\nCONTEXT: [what the AI can''t guess: relevant files, an existing pattern to follow, the stack trace]\nCONSTRAINTS: [what must not change: public API, no new dependencies, existing tests stay unchanged]\nDONE WHEN: [a checkable result: a failing test now passes, the full suite is green, a metric hits a target]" },
     ticket: { title: "טיקט טוב לסוכן קידוד (שיעור 3)", text: "users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it" },
     debug: { title: "תבנית דיבוג שיטתי (שיעור 4)", text: "the checkout returns 500 intermittently since deploy abc123 [stack trace attached]. the service is in src/payments/, with idempotency keys in Redis.\n1. build 2-3 hypotheses ranked by likelihood before changing any code.\n2. write a failing test that reproduces the bug.\n3. fix the root cause — don''t suppress the error or add a retry as a workaround.\n4. run the payments test suite and show the output." },
     review: { title: "תבנית review בהקשר נקי (שיעור 4)", text: "use a subagent to review the rate limiter diff against SPEC.md, check every requirement is implemented and the listed edge cases have tests, report gaps that affect correctness and skip style." }
@@ -698,7 +701,7 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
     tplCount.textContent = n + " / 4 תבניות נוספו";
     var passed = n === 4;
     libCard.classList.toggle("passed", passed);
-    libCard.querySelector("[data-badge]").textContent = n + " / 4 נכונים";
+    libCard.querySelector("[data-badge]").textContent = n + " / 4 תבניות";
     updateSummary();
   }
 
@@ -803,6 +806,15 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
 
   renderDoc();
   updateCapstone();
+})();
+/* ---------- a11y: expose the selected state of toggle buttons to screen readers ---------- */
+(function () {
+  var sel = "button.otbtn, button.fstep, .rn-tab, .fsc, .tpl-add-btn";
+  function sync(b) { b.setAttribute("aria-pressed", /(^|\s)(active|on)(\s|$)/.test(b.className) ? "true" : "false"); }
+  document.querySelectorAll(sel).forEach(function (b) {
+    sync(b);
+    new MutationObserver(function () { sync(b); }).observe(b, { attributes: true, attributeFilter: ["class"] });
+  });
 })();
 </script>
 

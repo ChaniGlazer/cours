@@ -14,17 +14,17 @@
   --bg-panel-2: #F0EEFF;
   --ink: #25224F;
   --ink-dim: #5A577F;
-  --ink-faint: #8B88AE;
-  --cyan: #5B6CFF;
-  --cyan-2: #8B6BFF;
+  --ink-faint: #676489;
+  --cyan: #4655E6;
+  --cyan-2: #6A4FE0;
   --cyan-soft: #E8EBFF;
   --violet: #FF7B6B;
   --violet-soft: #FFE8E3;
-  --success: #1FB985;
+  --success: #0A7350;
   --success-soft: #DDF7EC;
-  --danger: #E5486A;
+  --danger: #B8264A;
   --danger-soft: #FFE4EA;
-  --warn: #D98A00;
+  --warn: #8F5400;
   --warn-soft: #FFF0D4;
   --line: rgba(91,108,255,.12);
   --line-strong: rgba(91,108,255,.26);
@@ -100,7 +100,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .chat-demo-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 4px rgba(31,185,133,.2); }
 .chat-body { padding: 22px; min-height: 210px; display: flex; flex-direction: column; gap: 14px; }
 .bubble { max-width: 90%; padding: 12px 18px; border-radius: 22px; font-size: 16px; line-height: 1.6; }
-.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); color: #fff; border-end-start-radius: 6px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; }
+.bubble.user { align-self: flex-start; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); color: #fff; border-end-start-radius: 6px; direction: ltr; text-align: left; font-family: var(--mono); font-size: 14.5px; }
 .bubble.ai { align-self: flex-end; background: var(--bg-panel-2); color: var(--ink); border-end-end-radius: 6px; }
 .bubble.ai.typing::after { content: "▍"; color: var(--cyan); animation: blink .8s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
@@ -131,7 +131,7 @@ h2.section-title { font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.22; }
 .callout.info { background: var(--cyan-soft); border-color: rgba(91,108,255,.2); }
 .callout.ok { background: var(--success-soft); border-color: rgba(31,185,133,.25); }
 
-.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #6C7BFF, #8B6BFF); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 16px; color: #fff; background: linear-gradient(135deg, #4B5BEF, #6A4FE0); border: none; border-radius: 100px; padding: 12px 28px; box-shadow: 0 12px 26px -12px rgba(91,108,255,.8); transition: transform .18s, box-shadow .18s, opacity .18s; }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(91,108,255,.9); }
 .btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
 
@@ -412,7 +412,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <button class="sim-chip" type="button" data-tdd="correct">✅ טסטים קודם, מאושרים שנכשלים, ואז מימוש</button>
           <button class="sim-chip" type="button" data-tdd="wrong">❌ מימוש קודם, "ואז תכתוב טסטים שמוכיחים שזה עובד"</button>
         </div>
-        <div class="sim-out" id="tdd-out"><p class="sim-empty">לחצו על אחת הגישות למעלה</p></div>
+        <div aria-live="polite" class="sim-out" id="tdd-out"><p class="sim-empty">לחצו על אחת הגישות למעלה</p></div>
       </div>
     </div>
   </section>
@@ -424,7 +424,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">הזיות בקוד: חבילות שלא קיימות</h2>
       <p class="lede">מודלי שפה לא רק טועים בלוגיקה — הם ממציאים שמות חבילות שנשמעים סבירים אבל לא קיימים ב-npm/PyPI. התופעה נקראת <strong style="color:var(--ink)">slopsquatting</strong>: מי שירשום חבילה בשם שסוכן ממציא שוב ושוב, "תופס" אלפי התקנות.</p>
 
-      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf" target="_blank" rel="noopener noreferrer">Spracklen et al., USENIX Security Symposium 2025</a>. 576,000 דגימות קוד, 16 מודלים: בממוצע 19.7% מהחבילות המומלצות לא היו קיימות. GPT-4 Turbo הזה רק 3.59% מהפעמים; מודלים פתוחים קטנים הזו ביותר משליש. 43% מהשמות המומצאים חזרו בכל אחת מעשר הרצות חוזרות על אותה בקשה — דפוס שחוזר, לא תקלה חד-פעמית.</span></div>
+      <div class="cite"><span class="ico">🔬</span><span>מקור: <a href="https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf" target="_blank" rel="noopener noreferrer">Spracklen et al., USENIX Security Symposium 2025</a>. 576,000 דגימות קוד, 16 מודלים: בממוצע 19.7% מהחבילות המומלצות לא היו קיימות. GPT-4 Turbo המציא שמות חבילות רק ב-3.59% מהמקרים, ואילו בחלק מהמודלים הפתוחים הקטנים השיעור עלה על שליש. 43% מהשמות המומצאים חזרו בכל אחת מעשר הרצות חוזרות על אותה בקשה — דפוס שחוזר, לא תקלה חד-פעמית.</span></div>
 
       <div class="pkgsim">
         <div class="eyebrow">נסו בעצמכם</div>
@@ -436,7 +436,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
           <div class="pkg-row"><span class="pkg-name">retry-backoff-pro</span><button class="pkg-check" type="button">בדקו ב-npm registry</button><span class="pkg-result" hidden></span></div>
           <div class="pkg-row"><span class="pkg-name">async-retry</span><button class="pkg-check" type="button">בדקו ב-npm registry</button><span class="pkg-result" hidden></span></div>
         </div>
-        <div class="pkg-summary" id="pkg-summary" hidden></div>
+        <div aria-live="polite" class="pkg-summary" id="pkg-summary" hidden></div>
       </div>
 
       <div class="subcard" style="margin-top:24px;">
@@ -504,7 +504,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             </div>
           </div>
         </div>
-        <div class="board-score" id="board2-score">0 / 4 נכונים</div>
+        <div aria-live="polite" class="board-score" id="board2-score">0 / 4 נכונים</div>
       </div>
     </div>
   </section>
@@ -516,7 +516,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       <h2 class="section-title">זהו את הבעיה, ובחרו את הניסוח הנכון</h2>
       <p class="lede">שלושה תרחישים עם סוכן קידוד. לכל אחד: זהו איזו בעיה מופיעה, ובחרו את הניסוח הנכון.</p>
 
-      <div class="exsummary">
+      <div aria-live="polite" class="exsummary">
         <b id="ex-count">0 / 3 תרגילים עברו</b>
         <div class="bar"><i id="ex-bar"></i></div>
       </div>
@@ -535,7 +535,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">אין הבחנה בין טסטים שבודקים את ההתנהגות הרצויה, לבין טסטים שמתאימים להתנהגות (הבאגית) הקיימת</button>
             <button class="choice" type="button" data-diag="2">שם חבילה שלא אומת שהוא קיים בפועל — יכול להיות הזיה (slopsquatting)</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -544,7 +544,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice en" type="button" data-fix="1">the checkout returns 500 intermittently since deploy abc123 [stack trace]. build 2-3 hypotheses ranked by likelihood before changing code, write a failing test that reproduces it, fix the root cause — don't suppress the error — then run the payments test suite and show the output</button>
             <button class="choice en" type="button" data-fix="2">explain in general how checkout flows usually work</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -563,7 +563,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">אין הבחנה בין טסטים שבודקים את ההתנהגות הרצויה, לבין טסטים שמתאימים להתנהגות (הבאגית) הקיימת</button>
             <button class="choice" type="button" data-diag="2">שם חבילה שלא אומת שהוא קיים בפועל — יכול להיות הזיה (slopsquatting)</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -572,7 +572,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice en" type="button" data-fix="1">make the tests pass however you need to, I don't mind which approach</button>
             <button class="choice en" type="button" data-fix="2">this is TDD: write tests from these input/output pairs first, don't mock code that doesn't exist yet. run them and confirm they fail without any implementation. then implement without modifying the tests until they all pass</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -591,7 +591,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice" type="button" data-diag="1">אין הבחנה בין טסטים שבודקים את ההתנהגות הרצויה, לבין טסטים שמתאימים להתנהגות (הבאגית) הקיימת</button>
             <button class="choice" type="button" data-diag="2">שם חבילה שלא אומת שהוא קיים בפועל — יכול להיות הזיה (slopsquatting)</button>
           </div>
-          <div class="fb" data-diagfb></div>
+          <div aria-live="polite" class="fb" data-diagfb></div>
         </div>
         <div class="exdiag">
           <p>2. איזה שכתוב מתקן את הבעיה?</p>
@@ -600,7 +600,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
             <button class="choice en" type="button" data-fix="1">search the npm registry for this exact package name first. if it doesn't exist, suggest a real, verified alternative — and don't add new dependencies without asking</button>
             <button class="choice en" type="button" data-fix="2">rename it to a package that sounds similar and install that instead</button>
           </div>
-          <div class="fb" data-fixfb></div>
+          <div aria-live="polite" class="fb" data-fixfb></div>
         </div>
         <div class="exrow"><span class="exbadge" data-badge></span></div>
       </div>
@@ -636,7 +636,7 @@ footer { padding: 56px 0 84px; text-align: center; color: var(--ink-faint); font
       </div>
       <div class="callout info" style="margin-top:28px;">
         <span class="ico">🚀</span>
-        <p><strong>בשיעור הבא</strong>, האחרון בקורס "הנדסת פרומפטים למפתחים", סוגרים את המסע.</p>
+        <p><strong>בשיעור הבא, האחרון בקורס:</strong> ניהול הקשר בשיחות ארוכות, ספריית תבניות אישית, ופרויקט מסכם על בעיה אמיתית משלכם.</p>
       </div>
       <div class="mission-done" id="mission-done"></div>
     </div>
@@ -891,6 +891,15 @@ var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-moti
   });
 
   if (window.reportProgress) window.reportProgress(0, cards.length);
+})();
+/* ---------- a11y: expose the selected state of toggle buttons to screen readers ---------- */
+(function () {
+  var sel = "button.otbtn, button.fstep, .rn-tab, .fsc, .tpl-add-btn";
+  function sync(b) { b.setAttribute("aria-pressed", /(^|\s)(active|on)(\s|$)/.test(b.className) ? "true" : "false"); }
+  document.querySelectorAll(sel).forEach(function (b) {
+    sync(b);
+    new MutationObserver(function () { sync(b); }).observe(b, { attributes: true, attributeFilter: ["class"] });
+  });
 })();
 </script>
 
